@@ -38,11 +38,11 @@ Good: rely on named scopes at all times.
     
 Bad:
 
-  @users = User.where('account_id = ? AND created_at > ?', foo, bar)
+    @users = User.where('account_id = ? AND created_at > ?', foo, bar)
 
 Worse:
 
-	@users = User.find_by_sql(OH_GOD_KILL_ME)
+    @users = User.find_by_sql(OH_GOD_KILL_ME)
 
 
 ### Models
