@@ -1,11 +1,7 @@
 My mom told me that ActiveRecord doesn't scale!
 Fortunately, here comes the...
 
-----------------------------------------------
-
 # Guidelines for fast & reusable ActiveRecord
-
-----------------------------------------------
 
 This is a smell of bad design:
 
