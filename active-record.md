@@ -28,7 +28,9 @@ The only case where your database will "do" something for you beyond storage is 
 
 Controllers, views, helpers, view objects, presenters, decorators should never contain any SQL. At all. Even SQL expressions. Seriously, you'll thank us later.
 
-Good: rely on named scopes at all times.
+They should not use relation builders (the `where`, `order`, `group` methods and friends) but instead rely on named scopes at all times.
+
+Good: 
 
     @users = current_user.account.users.created_after(1.year.ago)
     
@@ -48,9 +50,7 @@ Models should not contain any SQL query.
 They can, however, contain SQL _expressions_ in the form of `where` conditions for instance.
 The only place where this should happen is **named scopes**, which you should use extensively.
 
-    scope :recently_created, lambda { |timestamp| {
-      conditions: ['created_at > ?', timestamp]
-    }}
+    scope :recently_created, -> { |timestamp| where('created_at > ?', timestamp) }
 
 You can define class methods for often-used chains of scopes, as long as they return a `Relation` or smething scopish:
 
@@ -62,6 +62,17 @@ You can define class methods for often-used chains of scopes, as long as they re
     extend ClassMethods
 
 Be careful though, if you're doing anything more complex than chaining a few scopes it probably needs to go to a query object (see below).
+
+For the sake of reuse, remember that scopes are code: make scopes generic as necessary, avoid scope proliferation.
+
+Good:
+
+    scope :created_after, -> { |timestamp| ... }
+    
+Bad:
+
+    scope :created_since_last_year, -> { where('created_at > ?', 1.year.ago) }
+    scope :created_since_yesterday, -> { where('created_at > ?', 1.day.ago.beginning_of_day) }
 
 
 ### Migrations
