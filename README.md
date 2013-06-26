@@ -1322,7 +1322,7 @@ at all.
       end
 
       def inspect
-        "objects count: #{@objects.size}"
+        "#<#{self.class} objects count: #{@objects.size}>"
       end
     end
     ```
