@@ -1313,12 +1313,12 @@ at all.
       end
     end
     ```
-* If using Rails, disregard the `to_s` method and use `inspect` if having big initializers (a lot of data in initializers for example a big array).
+* If using Rails, disregard the `to_s` method and use `inspect` if having many/large instance variables (for example a big array).
     ```ruby
     class ObjectWrapper
       def initialize(count)
         @count = count
-        @objects= @count.times{ |i| Obj.new(i) }
+        @objects = @count.times{ |i| Obj.new(i) }
       end
 
       def inspect
