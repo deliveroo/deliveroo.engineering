@@ -4,7 +4,7 @@
 
 ----
 
-Welcome to the [HouseTrip](http:://www.housetrip.com) CSS Styleguide, derived from Github's. We think it's cool and hope you will too. Before reading this, you should have a general understanding for **[specificity](http://www.w3.org/TR/CSS2/cascade.html#specificity)**, the **[Sass](http://sass-lang.com/)** syntax, and **[KSS](https://github.com/kneath/kss)** documentation.
+Welcome to the [HouseTrip](http:://www.housetrip.com) CSS Styleguide, derived from Github's and others. We think it's cool and hope you will too. Before reading this, you should have a general understanding for **[specificity](http://www.w3.org/TR/CSS2/cascade.html#specificity)**, the **[Sass](http://sass-lang.com/)** syntax, and **[KSS](https://github.com/kneath/kss)** documentation.
 
 Parts of this also assume you're using the excellent **[Compass](http://compass-style.org)** library.
 
