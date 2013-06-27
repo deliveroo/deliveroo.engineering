@@ -32,7 +32,7 @@ A very important thing to remember is that **Styles are code**. Sass code deserv
 
 Here is good example syntax:
 
-  // This is a good example!
+    // This is a good example!
     $textColor:       #000
     $backgroundColor: white
 
