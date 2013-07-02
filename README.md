@@ -1296,7 +1296,7 @@ at all.
 * Try to make your classes as
   [SOLID](http://en.wikipedia.org/wiki/SOLID_(object-oriented_design\))
   as possible.
-* Always supply a proper `to_s` method for classes that represent
+* Supply a proper `to_s` method for classes that represent
   domain objects.
 
     ```Ruby
@@ -1313,7 +1313,19 @@ at all.
       end
     end
     ```
+* If using Rails, disregard the `to_s` method and use `inspect` if having many/large instance variables (for example a big array).
+    ```ruby
+    class ObjectWrapper
+      def initialize(count)
+        @count = count
+        @objects = @count.times{ |i| Obj.new(i) }
+      end
 
+      def inspect
+        "#<#{self.class} objects count: #{@objects.size}>"
+      end
+    end
+    ```
 * Use the `attr` family of functions to define trivial accessors or
 mutators.
 
