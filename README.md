@@ -908,6 +908,19 @@ you if you forget either of the rules above!
 and clear, `warn` allows you to suppress warnings if you need to (by
 setting the warn level to 0 via `-W0`).
 
+* Favor the use of `String#%` over not-so-Rubyish `sprintf`.
+
+    ```Ruby
+    # bad
+    sprintf('%{count} unicorns', { count: 11 })
+    # => '11 unicorns'
+
+    # good
+    '%{count} unicorns' % { count: 11 }
+    # => '11 unicorns'
+
+    ```
+
 * Favor the use of `Array#join` over the fairly cryptic `Array#*` with
   a string argument.
 
