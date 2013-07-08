@@ -465,6 +465,26 @@ Think you have a counter-example? You're wrong. Don't say we didn't tell you.
 		.button
           margin-right: 0.25em
 
+
+### keep it DRY - use sass iterator
+
+- Use `@each` iterator and string interpolation do keep it DRY
+
+    Good:
+
+        @each $code in en, fr, de
+		  .small_flag_#{$code}
+		    @include small-flags-sprite("#{$code}")
+
+    Bad:
+
+        .small_flag_en
+          @include small-flags-sprite("en")
+        .small_flag_fr
+          @include small-flags-sprite("fr")
+        .small_flag_de
+          @include small-flags-sprite("de")
+
 ### IE6/7 Support
 
 Don't.
