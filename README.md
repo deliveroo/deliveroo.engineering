@@ -468,7 +468,7 @@ Think you have a counter-example? You're wrong. Don't say we didn't tell you.
 
 ### keep it DRY - use sass iterator
 
-- Use `@each` iterator and string interpolation do keep it DRY
+- Use `@each` iterator and string interpolation to keep it DRY
 
     Good:
 
