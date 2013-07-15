@@ -1782,7 +1782,7 @@ this rule only to arrays with two or more elements.
     # good - fetch raises a KeyError making the problem obvious
     heroes.fetch(:supermann)
     ```
-* Use `fetch` with second argument to use a default value with inexpensive call
+* Use `fetch` with second argument to use a default which has an immediate value like`String`, `Fixnum`, etc or makes an inexpensive call
 
    ```Ruby
    batman = { name: 'Bruce Wayne', is_evil: false }
