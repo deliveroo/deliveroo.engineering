@@ -1793,7 +1793,7 @@ this rule only to arrays with two or more elements.
    # good - fetch work correctly with falsy values
    batman.fetch(:is_evil, true) # => false
    ```
-* Prefer the use of the block instead of the default value in `fetch`
+* Be lazy: Prefer the use of the block instead of the default value in `fetch`
 
    ```Ruby
    batman = {name: 'Bruce Wayne'}
