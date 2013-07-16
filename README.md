@@ -1782,7 +1782,7 @@ this rule only to arrays with two or more elements.
     # good - fetch raises a KeyError making the problem obvious
     heroes.fetch(:supermann)
     ```
-* Use `fetch` with second argument to use a default value
+* Use `fetch` with second argument to use a default which has an immediate value like `String`, `Fixnum`, etc or makes an inexpensive call
 
    ```Ruby
    batman = { name: 'Bruce Wayne', is_evil: false }
@@ -1792,6 +1792,19 @@ this rule only to arrays with two or more elements.
 
    # good - fetch work correctly with falsy values
    batman.fetch(:is_evil, true) # => false
+   ```
+* Be lazy: Prefer the use of the block instead of the default value in `fetch`
+
+   ```Ruby
+   batman = {name: 'Bruce Wayne'}
+   
+   # bad - if we use the default value, we eager evaluate it
+   # so it can slow the program down if done multiple times
+   batman.fetch(:powers, get_batman_powers) # get_batman_powers is expensive
+
+   # good - blocks are lazy evaluated, so only triggered in case of KeyError exception
+
+   batman.fetch(:powers) { get_batman_powers }
    ```
 
 * Rely on the fact that as of Ruby 1.9 hashes are ordered.
