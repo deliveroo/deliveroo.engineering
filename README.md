@@ -51,6 +51,29 @@ App.Views.SearchPropertyView = Backbone.View.extend({})
 App.Views.SearchProperty = Backbone.View.extend({})
 ```
 
+* Use singular for `models` and plural for `collections`
+
+```javascript
+App.Models.Property = Backbone.Model.extend({})
+App.Collections.Properties = Backbone.Collection.extend({})
+```
+
+* Use singular or plural for `views` depending if you passing a model or collection
+
+```javascript
+App.Views.SearchProperty = Backbone.View.extend({})
+
+new App.Views.SearchProperty({
+  model: new App.Models.Property(...)
+});
+
+App.Views.SearchProperties = Backbone.View.extend({})
+
+new App.Views.SearchProperties({
+  collection: [new App.Models.Property(...)]
+})
+```
+
 ## Namespacing
 
 * Always use a root element to not pollute the window namespace
