@@ -99,7 +99,7 @@ App.Views.SearchProperty = Backbone.View.extend({})
 * Always have a file that contains all namespace initialization
 
 ```javascript
-var App = {}
+window.App = {}
 
 App.Models = {}
 App.Collections = {}
@@ -124,8 +124,12 @@ App.Views = {}
     ├── collections1.js
     └── collections2.js
   ├── views
-    ├── view1.js
-    └── view2.js
+    ├── context1
+      ├── view1.js
+      └── view2.js
+    ├── context2
+      ├── view1.js
+      └── view2.js
 ```
 
 * Requiring the files should follow this order
