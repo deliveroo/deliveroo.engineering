@@ -4,6 +4,7 @@ The Backbone Style Guide
 ## Table of contents
 * [Naming](#naming)
 * [Namespacing](#namespacing)
+* [File Organization](#file-organization)
 
 
 ## Naming
@@ -50,7 +51,7 @@ App.Views.SearchPropertyView = Backbone.View.extend({})
 App.Views.SearchProperty = Backbone.View.extend({})
 ```
 
-### Namespacing
+## Namespacing
 
 * Always use a root element to not pollute the window namespace
 
@@ -70,4 +71,37 @@ App.SearchProperty = Backbone.View.extend({})
 
 // Good
 App.Views.SearchProperty = Backbone.View.extend({})
+```
+
+
+## File Organization
+
+* Assuming `root` is where you have your javascript assets, the file organization should follow these rules:
+
+```
+<root>
+  ├── app.js # initialize namespaces here
+  ├── lib
+    ├── jquery.min.js
+    ├── underscore.min.js
+    └── myotherlib.min.js
+  ├── models
+    ├── model1.js
+    └── model2.js
+  ├── collections
+    ├── collections1.js
+    └── collections2.js
+  ├── views
+    ├── view1.js
+    └── view2.js
+```
+
+* Requiring the files should follow this order
+
+```
+  lib/*  
+  app.js  
+  models/*  
+  collections/*  
+  views/*  
 ```
