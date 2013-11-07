@@ -136,7 +136,7 @@ If using Rails:
 
 * the 3rd party code (jQuery, Backbone, Underscore, etc) should be in `/vendor/assets/javascripts` 
 
-* the application code in `/app/assets/javascripts`
+* the application code should be in `/app/assets/javascripts`
 
 
 Requiring the files should follow this order
