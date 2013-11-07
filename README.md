@@ -96,7 +96,7 @@ App.SearchProperty = Backbone.View.extend({})
 App.Views.SearchProperty = Backbone.View.extend({})
 ```
 
-* Always have a file that contains all namespace initialization
+* Have exactly 1 file that contains all namespace initialization
 
 ```javascript
 window.App = {}
