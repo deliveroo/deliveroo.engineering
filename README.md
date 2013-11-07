@@ -9,7 +9,7 @@ The Backbone Style Guide
 
 ## Naming
 
-* Use `camelCase` for variables and functions
+Use `camelCase` for variables and functions
 
 ```javascript
 // Bad
@@ -31,7 +31,7 @@ function myFunction(args){
 }
 ```
 
-* Use `CapitalizedWords` for classes and namespaces
+Use `CapitalizedWords` for classes and namespaces
 
 ```javascript
 // Bad
@@ -41,7 +41,7 @@ app.views.search_property = Backbone.View.extend({})
 App.Views.SearchProperty = Backbone.View.extend({})
 ```
 
-* Do not use {model|view|collection} when naming `models`, `views` or `collections`
+Do not use {model|view|collection} when naming `models`, `views` or `collections`
 
 ```javascript
 // Bad
@@ -51,14 +51,14 @@ App.Views.SearchPropertyView = Backbone.View.extend({})
 App.Views.SearchProperty = Backbone.View.extend({})
 ```
 
-* Use singular for `models` and plural for `collections`
+Use singular for `model` classes and plural for `collection` classes
 
 ```javascript
 App.Models.Property = Backbone.Model.extend({})
 App.Collections.Properties = Backbone.Collection.extend({})
 ```
 
-* Use singular or plural for `views` depending if you passing a model or collection
+Use singular or plural for `views` depending if you passing a model or collection
 
 ```javascript
 App.Views.SearchProperty = Backbone.View.extend({})
@@ -76,7 +76,7 @@ new App.Views.SearchProperties({
 
 ## Namespacing
 
-* Always use a root element to not pollute the window namespace
+Always use a root element to not pollute the window namespace
 
 ```javascript
 // Bad
@@ -86,7 +86,7 @@ SearchProperty = ...
 App.SearchProperty = ...
 ```
 
-* Always use namespaces under the root element to reference backbone components as `Models`, `Views` or `Collections`.
+Always use namespaces under the root element to reference backbone components as `Models`, `Views` or `Collections`.
 
 ```javascript
 // Bad
@@ -96,7 +96,7 @@ App.SearchProperty = Backbone.View.extend({})
 App.Views.SearchProperty = Backbone.View.extend({})
 ```
 
-* Have exactly 1 file that contains all namespace initialization
+Have exactly 1 file that contains all namespace initialization and bind the root namespace to `window`
 
 ```javascript
 window.App = {}
@@ -108,15 +108,15 @@ App.Views = {}
 
 ## File Organization
 
-* Assuming `root` is where you have your javascript assets, the file organization should follow these rules:
+Assuming `root` is where you have your javascript assets, the file organization should follow these rules:
 
 ```
 <root>
   ├── app.js # initialize namespaces here
   ├── lib
-    ├── jquery.min.js
-    ├── underscore.min.js
-    └── myotherlib.min.js
+    ├── lib1.min.js
+    ├── lib2.min.js
+    └── lib3.min.js
   ├── models
     ├── model1.js
     └── model2.js
@@ -132,7 +132,14 @@ App.Views = {}
       └── view2.js
 ```
 
-* Requiring the files should follow this order
+If using Rails:
+
+* the 3rd party code (jQuery, Backbone, Underscore, etc) should be in `/vendor/assets/javascripts` 
+
+* the application code in `/app/assets/javascripts`
+
+
+Requiring the files should follow this order
 
 ```
   lib/*  
