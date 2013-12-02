@@ -11,7 +11,7 @@
 - Use soft-tabs with a two space indent.
 - Always use camelCase, never underscores.
 - Use implicit parentheses when possible.
-- Follow @jashkenas's style. See the [documentation](http://jashkenas.github.com/coffee-script/) for good examples.
+- Follow [@jashkenas's style](http://jashkenas.github.com/coffee-script/). Also, it has good examples.
 - Any top level objects should be namespaced under the `HouseTrip` namespace.
 
 Most of the rest of this guide applies to CoffeeScript too, so please do follow it.
