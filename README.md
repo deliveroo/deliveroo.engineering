@@ -19,22 +19,27 @@
 
 - In a context, define `before` blocks, then `let` blocks, then leave a blank line and start defining assertions.
 - If you have a subject for the context place it between pre-definitions and assertions, again with a blank line
+- Keep any code that's not assertions outside `it` blocks. Use `let` and `before` blocks for that.
 
 ```ruby
-context 'with a photo' do
-  before { initialize_stuff }
-  let(:review) { Review.new }
+describe Review do
+  context 'with a photo' do
+    before { initialize_stuff }
+    let(:photo) { Photo.new }
 
-  subject { review }
+    subject { Review.new }
 
-  it { should be_blank }
-  its(:rating) { should be_nil }
+    it { should be_blank }
+    its(:rating) { should be_nil }
+  end
 end
 ```
 
 ## Syntax
 
-Make heavy use of RSpec helpers. For example, for all predicates you can use the `be_` syntax
+Make heavy use of RSpec helpers.
+
+- For all predicates you can use the `be_` syntax
 
 ```ruby
 # bad
@@ -42,6 +47,16 @@ it { subject.published? eql(true) }
 
 # good
 it { subject be_published }
+```
+
+- When testing size of an array or array-like object (e.g.: an ActiveRecord relation) use the `have` matcher. RSpec will send the trailing method and `size` to the object for you
+
+```ruby
+# bad
+it { subject.reivew.size.should eql(3) }
+
+# good
+it { should have(3).reviews }
 ```
 
 ## Single expectations
