@@ -2,16 +2,47 @@
 
 ### Table of contents
 
-1. [Single expectations](#single-expectations)
+1. [Code organization](#code-organization)
 2. [Syntax](#syntax)
-3. [Code organization](#code-organization)
-4. [subject](#subject)
-5. [let](#let)
-6. [Mocks and stubs](#mocks-and-stubs)
-7. [Shared examples](#shared-examples)
-8. [Custom matchers](#custom-matchers)
-9. [Test interface](#test-interface)
-10. [Stub HTTP requests](#stub-http-requests)
+3. [Single expectations](#single-expectations)
+4. [Describing objects](#describing-objects)
+5. [Using contexts](#using-contexts)
+6. [subject](#subject)
+7. [let](#let)
+8. [Mocks and stubs](#mocks-and-stubs)
+9. [Shared examples](#shared-examples)
+10. [Custom matchers](#custom-matchers)
+11. [Test interface](#test-interface)
+12. [Stub HTTP requests](#stub-http-requests)
+
+## Code organization
+
+- In a context, define `before` blocks, then `let` blocks, then leave a blank line and start defining assertions.
+- If you have a subject for the context place it between pre-definitions and assertions, again with a blank line
+
+```ruby
+context 'with a photo' do
+  before { initialize_stuff }
+  let(:review) { Review.new }
+
+  subject { review }
+
+  it { should be_blank }
+  its(:rating) { should be_nil }
+end
+```
+
+## Syntax
+
+Make heavy use of RSpec helpers. For example, for all predicates you can use the `be_` syntax
+
+```ruby
+# bad
+it { subject.published? eql(true) }
+
+# good
+it { subject be_published }
+```
 
 ## Single expectations
 
@@ -37,32 +68,37 @@ context 'with a new review'
 end
 ```
 
-## Syntax
-
-Make heavy use of RSpec helpers. For example, for all predicates you can use the `be_` syntax
+## Describing objects
 
 ```ruby
 # bad
-it { subject.published? eql(true) }
+describe 'the authenticate method for User' do
+describe 'if the user is an admin' do
 
 # good
-it { subject be_published }
+describe '.authenticate' do
+describe '#admin?' do
 ```
 
-## Code organization
-
-- In a context, define `before` blocks, then `let` blocks, then leave a blank line and start defining assertions.
-- If you have a subject for the context place it between pre-definitions and assertions, again with a blank line
+## Using contexts
 
 ```ruby
-context 'with a photo' do
-  before { initialize_stuff }
-  let(:review) { Review.new }
+# bad
+it 'has 200 status code if logged in' do
+  expect(response).to respond_with 200
+end
 
-  subject { review }
+it 'has 401 status code if not logged in' do
+  expect(response).to respond_with 401
+end
 
-  it { should be_blank }
-  its(:rating) { should be_nil }
+# good
+context 'when logged in' do
+  it { should respond_with 200 }
+end
+
+context 'when logged out' do
+  it { should respond_with 401 }
 end
 ```
 
@@ -110,41 +146,6 @@ end
 
 If you need something initialized immediately (e.g.: database records are involved) use `let!`, so that your object gets evaluated like it was in a `before` block.
 
-
-
-## describe
-
-```ruby
-# bad
-describe 'the authenticate method for User' do
-describe 'if the user is an admin' do
-
-# good
-describe '.authenticate' do
-describe '#admin?' do
-```
-
-## context
-
-```ruby
-# bad
-it 'has 200 status code if logged in' do
-  expect(response).to respond_with 200
-end
-
-it 'has 401 status code if not logged in' do
-  expect(response).to respond_with 401
-end
-
-# good
-context 'when logged in' do
-  it { should respond_with 200 }
-end
-
-context 'when logged out' do
-  it { should respond_with 401 }
-end
-```
 
 ## Mocks and stubs
 
