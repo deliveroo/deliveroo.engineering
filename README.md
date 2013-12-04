@@ -2,11 +2,12 @@
 
 ## Table of contents
 
-TBD
+1. [Code organization](#code-organization)
 
 ### Code organization
 
-- In a context, define `before` blocks, then `let` blocks, then leave a blank line and start defining assertions. If you have a subject for the context place it between pre-definitions and assertions, again with a blank line
+- In a context, define `before` blocks, then `let` blocks, then leave a blank line and start defining assertions.
+- If you have a subject for the context place it between pre-definitions and assertions, again with a blank line
 
 ```ruby
 context 'with a photo' do
