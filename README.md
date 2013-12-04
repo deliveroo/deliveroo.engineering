@@ -1,10 +1,55 @@
 # HouseTrip RSpec Style Guide
 
-## Table of contents
+### Table of contents
 
-1. [Code organization](#code-organization)
+1. [Single expectations](#single-expectations)
+2. [Syntax](#syntax)
+3. [Code organization](#code-organization)
+4. [subject](#subject)
+5. [let](#let)
+6. [Mocks and stubs](#mocks-and-stubs)
+7. [Shared examples](#shared-examples)
+8. [Custom matchers](#custom-matchers)
+9. [Test interface](#test-interface)
+10. [Stub HTTP requests](#stub-http-requests)
 
-### Code organization
+## Single expectations
+
+The 'one expectation' tip is more broadly expressed as 'each test should make only one assertion'. This helps you on finding possible errors, going directly to the failing test, and to make your code readable.
+
+In isolated unit specs, you want each example to specify one (and only one) behavior. Multiple expectations in the same example are a signal that you may be specifying multiple behaviors.
+
+```ruby
+# bad
+it 'checks a new review'
+  review = Review.new(:rating => 9)
+
+  review.rating.should eql(9)
+  review.should be_valid
+end
+
+# good
+context 'with a new review'
+  subject { Review.new(:rating => 9) }
+
+  it { should be_valid }
+  its(:rating) { should eql(9) }
+end
+```
+
+## Syntax
+
+Make heavy use of RSpec helpers. For example, for all predicates you can use the `be_` syntax
+
+```ruby
+# bad
+it { subject.published? eql(true) }
+
+# good
+it { subject be_published }
+```
+
+## Code organization
 
 - In a context, define `before` blocks, then `let` blocks, then leave a blank line and start defining assertions.
 - If you have a subject for the context place it between pre-definitions and assertions, again with a blank line
@@ -21,19 +66,65 @@ context 'with a photo' do
 end
 ```
 
-### describe
+## subject
+
+- If you have several tests related to the same subject use subject{} to DRY them up.
+- Make use of `its` to send messages to the `subject` and check its characteristics
 
 ```ruby
+# bad
+it { expect(assigns('message')).to match /it was born in Belville/ }
+it { expect(assigns('message').creator).to match /Topolino/ }
+
 # good
+subject { assigns('message') }
+it { should match /it was born in Billville/ }
+its(:creator) { should match /Topolino/ }
+```
+
+## let
+
+When you have to assign a variable instead of using a before block to create an instance variable, use let. Using let the variable lazy loads only when it is used the first time in the test and get cached until that specific test is finished.
+
+```ruby
+# bad
+describe '#type_id' do
+  before { @resource = FactoryGirl.create :device }
+  before { @type     = Type.find @resource.type_id }
+
+  it 'sets the type_id field' do
+    expect(@resource.type_id).to == @type.id
+  end
+end
+
+# good
+describe '#type_id' do
+  let(:resource) { FactoryGirl.create :device }
+  let(:type)     { Type.find resource.type_id }
+
+  it 'sets the type_id field' do
+    resource.type_id.should eql(type.id)
+  end
+end
+```
+
+If you need something initialized immediately (e.g.: database records are involved) use `let!`, so that your object gets evaluated like it was in a `before` block.
+
+
+
+## describe
+
+```ruby
+# bad
 describe 'the authenticate method for User' do
 describe 'if the user is an admin' do
 
-# bad
+# good
 describe '.authenticate' do
 describe '#admin?' do
 ```
 
-### context
+## context
 
 ```ruby
 # bad
@@ -54,3 +145,26 @@ context 'when logged out' do
   it { should respond_with 401 }
 end
 ```
+
+## Mocks and stubs
+
+- Never mock or stub stuff of the class you're testing
+- Stub external dependencies
+
+## Shared examples
+
+TDB
+
+## Custom matchers
+
+TDB
+
+## Test interface, not implementation
+
+Test object inner workings and application behaviour (integration tests). If you are about to test a controller, stop and move away logic from it.
+
+TBC
+
+## Stub HTTP requests
+
+TBD
