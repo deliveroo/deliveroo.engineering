@@ -321,11 +321,24 @@ Properties should be grouped together:
 - then aspect-related properties (`font`, `border`, `color`),
 - finally calls to `@content` mixins, like `when-bigger-than-mobile` in the following example:
 
+Good:
+
+```sass
+.container
+  font-size: 24px
+  +when-bigger-than-mobile
+    color: white
+    background-color: black
+
+```
+Bad:
+
 ```sass
 .container
   +when-bigger-than-mobile
     color: white
     background-color: black
+  font-size: 24px
 ```
 
 ### Extending and mixing in
