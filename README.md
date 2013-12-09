@@ -329,7 +329,6 @@ Good:
   +when-bigger-than-mobile
     color: white
     background-color: black
-
 ```
 Bad:
 
