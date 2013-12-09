@@ -68,7 +68,7 @@ In general, the CSS file organization should follow something like this
 	│   └── _type.css.sass
 	└── pages                          # view specific partials
 	    └── welcome.css.sass           #   mostly forbidden
-    
+
 
 ### Where to put stuff?
 
@@ -86,7 +86,7 @@ If using Rails 3.1+, use [Sprockets](https://github.com/sstephenson/sprockets) t
 
 	.rule
       color: $myVar
-    
+
 In other words:
 
 - each file must import exactly what it needs (as load order may change)
@@ -115,7 +115,7 @@ Good:
     $myColor: black
     #some-stuff .what-ever-ranking
     	color: $myColor
-    
+
 Bad:
 
     $MYCOLOR: black
@@ -133,7 +133,7 @@ Good:
 
     .button.button-alert
     	color: red
-    
+
 Bad:
 
     .button.button-red
@@ -147,7 +147,7 @@ Good (and fast):
     	@extend widget
     .carousel-hero
     	font-size: x-large
-    
+
     // bad
     #home-page .carousel
     	@extend widget
@@ -161,15 +161,15 @@ Follow object orientation guidelines. If this is jargon to you, [this article](h
 - Factor out common styles as superclasses (technically more like mixins).
 
 	Good:
-	
+
 		.button
 			@extend widget
 			font-family: sans-serif
 		.button-alert
 			color: red
-	
+
 		<a class="button button-alert">
-		
+
 	Bad:
 
 		.button
@@ -179,22 +179,22 @@ Follow object orientation guidelines. If this is jargon to you, [this article](h
 			@extend widget
 			font-family: sans-serif
 			color: red
-	
+
 		<a class="button-alert">
 
 
 - Class hierarchies should be listed rather than using `@extend` (a la Bootstrap).
 
 	Good:
-	
+
 		.button
 			@extend widget
 			font-family: sans-serif
 		.button-alert
 			color: red
-	
+
 		<a class="button button-alert">
-		
+
 	Bad:
 
 		.button
@@ -203,18 +203,18 @@ Follow object orientation guidelines. If this is jargon to you, [this article](h
 		.button-alert
 			@extend button
 			color: red
-	
+
 		<a class="button-alert">
 
 - Namespace class names.
 
 	Good:
-	
+
 		.button.button-instant-booking
 		.property.property-instant-booking
-	
+
 	Bad:
-	    
+
 	    .button.instant-booking
 	    .property.instant-booking
 
@@ -222,22 +222,22 @@ Follow object orientation guidelines. If this is jargon to you, [this article](h
 - Separate containers/positioning from content/aspect classes:
 
 	Good:
-	
+
 		.avatar
 			+rounded-corners(100px)
 			background-image: url("/avatar.png")
-			
+
 		.pull-left
 			float: left
-	
+
 	Bad:
-	    
+
 	    .avatar
 			+rounded-corners(100px)
 			background-image: url("/avatar.png")
 			float: left
 
- 
+
 
 
 ### Classes used in Javascript
@@ -262,12 +262,12 @@ When styling a component, start with an element + class namespace (prefer class 
 	  %li Category 1
 	  %li Category 2
 	  %li Category 3
-      
+
     // Sass
 	%ul.category-list // element + class namespace
 	  & > li          // direct descendant selector > for list items
 	    list-style-type: disc
-	
+
 	  a              // minimal specificity for all links
 	    color: $alert_red
 
@@ -282,7 +282,7 @@ Good:
 
 	.hero-list
     	font-size: x-large
-        
+
 	a.call-to-action
     	color: red
 
@@ -316,9 +316,17 @@ The basics:
 Properties should be grouped together:
 
 - first calls to `@extend`,
-- then calls to mixins (`@include`),
+- then calls to one line mixins (`@include`),
 - then layout-related properties (`position`, `float`, `display`, `width`, `heigth`),
-- finally aspect-related properties (`font`, `border`, `color`).
+- then aspect-related properties (`font`, `border`, `color`),
+- finally calls to `@content` mixins, like `when-bigger-than-mobile` in the following example:
+
+```sass
+.container
+  +when-bigger-than-mobile
+    color: white
+    background-color: black
+```
 
 ### Extending and mixing in
 
@@ -350,14 +358,14 @@ If it's not enough, issue a fix to Compass, don't work around it.
 Good:
 
     @import compass/css3/images
-   
+
     .squid
       +linear-gradient(pink, cyan)
 
 Bad:
 
     @import compass/css3/images
-   
+
     .squid
       -o-linear-gradient: top, pink, cyan
       -webkit-gradient:   linear, top, bottom, pink, cyan
@@ -378,7 +386,7 @@ Use `px` for `font-size`, because it offers absolute control over text. Addition
 Should we move towards the much more favourable Icon Fonts rather than PNG sprites. Something like [Font Awesome](http://fortawesome.github.io/Font-Awesome/) would be a great place to start.
 
     <i class="icon-search icon-large icon-blue">
-    
+
 is all that would be needed in order to display a large, blue magnifying glass icon
 
 Given the likelyhood that the font doesn't contain all the icons needed fo the whole site, we might consider using [Font Custom](http://fontcustom.com/) and have the design team contribute to expanding the icon set.
@@ -424,7 +432,7 @@ Think you have a counter-example? You're wrong. Don't say we didn't tell you.
 
 		.foo
 		  content: ""
-    
+
 - Quote attribute values in selectors
 
     	input[type="checkbox"]
@@ -434,7 +442,7 @@ Think you have a counter-example? You're wrong. Don't say we didn't tell you.
 
 		.foo
     	  margin: 0
-    
+
 - Comma separated selectors on multiple lines
 
         td,
@@ -447,18 +455,18 @@ Think you have a counter-example? You're wrong. Don't say we didn't tell you.
           border: 1px solid red, 2px dotted blue
 
 - Use shorthand properties where possible
-	
+
     Good:
-    
+
 		.button
           margin: 1em 0
-    
+
     Bad:
-    
+
     	.button
           margin: 0
           margin-left:  1em
-          margin-right: 1em        
+          margin-right: 1em
 
 - Put 0s in front of values or lengths between -1 and 1.
 
@@ -534,7 +542,7 @@ Good:
     # Coffee
     $('.js-alertable').on 'click', () ->
 	  alert $(this).data('confirm')
-        
+
 Bad (Sass-Coffee coupling):
 
     # Haml
