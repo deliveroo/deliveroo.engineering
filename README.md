@@ -1055,7 +1055,7 @@
     this._firstName = 'Panda';
     ```
 
-  - When saving a reference to `this` use `_this`.
+  - To keep reference to `this` bind your function.
 
     ```javascript
     // bad
@@ -1074,12 +1074,19 @@
       };
     }
 
-    // good
+    // bad
     function() {
       var _this = this;
       return function() {
         console.log(_this);
       };
+    }
+
+    // good
+    function() {
+      return function() {
+        console.log(this);
+      }.bind(this);
     }
     ```
 
