@@ -1056,6 +1056,7 @@
     ```
 
   - To keep reference to `this` bind your function.
+  - If you absolutely need both contexts, use `_this`
 
     ```javascript
     // bad
@@ -1074,11 +1075,11 @@
       };
     }
 
-    // bad
+    // not good, but sometimes necessary
     function() {
       var _this = this;
       return function() {
-        console.log(_this);
+        console.log("Calling " + this + " from " + _this);
       };
     }
 
