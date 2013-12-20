@@ -1055,7 +1055,8 @@
     this._firstName = 'Panda';
     ```
 
-  - When saving a reference to `this` use `_this`.
+  - To keep reference to `this` bind your function.
+  - If you absolutely need both contexts, use `_this`
 
     ```javascript
     // bad
@@ -1074,12 +1075,19 @@
       };
     }
 
-    // good
+    // not good, but sometimes necessary
     function() {
       var _this = this;
       return function() {
-        console.log(_this);
+        console.log("Calling " + this + " from " + _this);
       };
+    }
+
+    // good
+    function() {
+      return function() {
+        console.log(this);
+      }.bind(this);
     }
     ```
 
