@@ -4,6 +4,19 @@
 
 *Forked from the [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)*
 
+
+## Preamble: the TL,DR
+
+- Write new JavaScript in CoffeeScript. This applies to any non-trivial change to existing JavaScript.
+- Use soft-tabs with a two space indent.
+- Always use camelCase, never underscores.
+- Use implicit parentheses when possible.
+- Follow [@jashkenas's style](http://jashkenas.github.com/coffee-script/). Also, it has good examples.
+- Any top level objects should be namespaced under the `HouseTrip` namespace.
+
+Most of the rest of this guide applies to CoffeeScript too, so please do follow it.
+
+
 ## <a name='TOC'>Table of Contents</a>
 
   1. [Types](#types)
