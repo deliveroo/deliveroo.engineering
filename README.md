@@ -10,11 +10,12 @@
 6. [subject](#subject)
 7. [let](#let)
 8. [Mocks and stubs](#mocks-and-stubs)
-9. [Shared examples](#shared-examples)
-10. [Custom matchers](#custom-matchers)
-11. [Test interface](#test-interface)
-12. [Stub HTTP requests](#stub-http-requests)
-13. [Other stuff](#other-stuff)
+9. [Integration testing](#integration-testing)
+10. [Shared examples](#shared-examples)
+11. [Custom matchers](#custom-matchers)
+12. [Test interface](#test-interface)
+13. [Stub HTTP requests](#stub-http-requests)
+14. [Other stuff](#other-stuff)
 
 ## Code organization
 
@@ -168,19 +169,23 @@ If you need something initialized immediately (e.g.: database records are involv
 - Never mock or stub stuff of the class you're testing
 - Stub external dependencies
 
+## Integration testing
+
+Integration tests in Rspec live int the `spec/features` folder and need to be tagged with `:js => true` in order to be run with javascript support (PhantomJS via Poltergeist). Interaction with the page content should only be done through page objects which are stored in `spec/support/pages`. This enforces better encapsulation and enables reuse.
+
 ## Shared examples
 
-TDB
+TBD
 
 ## Custom matchers
 
-TDB
+TBD
 
 ## Test interface, not implementation
 
 Test object inner workings and application behaviour (integration tests). If you are about to test a controller, stop and move away logic from it.
 
-TBC
+TBD
 
 ## Stub HTTP requests
 
