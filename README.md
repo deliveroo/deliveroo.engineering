@@ -2,6 +2,7 @@
 
 ### Table of contents
 
+0. [It's Ruby code!](#its-ruby-code)
 1. [Code organization](#code-organization)
 2. [Syntax](#syntax)
 3. [Single expectations](#single-expectations)
@@ -16,6 +17,10 @@
 12. [Test interface](#test-interface)
 13. [Stub HTTP requests](#stub-http-requests)
 14. [Other stuff](#other-stuff)
+
+## It's Ruby code!
+
+The golden rule: RSpec code is Ruby. Any Ruby styleguide rule applies; e.g.: don't write multiline blocks with `{ }` but use `do end`.
 
 ## Code organization
 
