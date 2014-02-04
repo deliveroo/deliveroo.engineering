@@ -20,7 +20,10 @@
 
 ## It's Ruby code!
 
-The golden rule: RSpec code is Ruby. Any Ruby styleguide rule applies; e.g.: don't write multiline blocks with `{ }` but use `do end`.
+The golden rule: RSpec code is Ruby. Any [Ruby styleguide](https://github.com/HouseTrip/ruby-style-guide) rule applies.
+
+Examples:
+- Don't write multiline blocks with `{ }` but use `do end`.
 
 ## Code organization
 
