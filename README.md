@@ -23,7 +23,7 @@
 The golden rule: RSpec code is Ruby. Any [Ruby styleguide](https://github.com/HouseTrip/ruby-style-guide) rule applies.
 
 Examples:
-- Don't write multiline blocks with `{ }` but use `do end`.
+- Don't write multiline `let`s and `subject`s with `{ }`, use `do end` instead.
 
 ## Code organization
 
