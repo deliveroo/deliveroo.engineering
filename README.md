@@ -264,7 +264,7 @@ When styling a component, start with an element + class namespace (prefer class 
 	  %li Category 3
 
     // Sass
-	%ul.category-list // element + class namespace
+	ul.category-list // element + class namespace
 	  & > li          // direct descendant selector > for list items
 	    list-style-type: disc
 
