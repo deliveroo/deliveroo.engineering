@@ -40,6 +40,7 @@ Most of the rest of this guide applies to CoffeeScript too, so please do follow 
   1. [Events](#events)
   1. [Modules](#modules)
   1. [jQuery](#jquery)
+  1. [Selectors](#selectors)
   1. [ES5 Compatibility](#es5)
   1. [Testing](#testing)
   1. [Performance](#performance)
@@ -1383,6 +1384,11 @@ Most of the rest of this guide applies to CoffeeScript too, so please do follow 
 
     **[[⬆]](#TOC)**
 
+## <a name="selector">Selector</a>
+
+Try to prefix all javascript-based selectors with `js-`. This is taken from slightly obtrusive javascript. The idea is that you should be able to tell a presentational class from a functional class. Most of the codebase doesn't do this, let's try and move toward it.
+
+**[[⬆]](#TOC)**
 
 ## <a name='es5'>ECMAScript 5 Compatibility</a>
 
