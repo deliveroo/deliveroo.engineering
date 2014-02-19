@@ -1386,7 +1386,7 @@ Most of the rest of this guide applies to CoffeeScript too, so please do follow 
 
 ## <a name="selector">Selector</a>
 
-Try to prefix all javascript-based selectors with `js-`. This is taken from slightly obtrusive javascript. The idea is that you should be able to tell a presentational class from a functional class. Most of the codebase doesn't do this, let's try and move toward it.
+Prefix all javascript-based selectors with `js-`. This is taken from slightly obtrusive javascript. The idea is that you should be able to tell a presentational class from a functional class.
 
 **[[⬆]](#TOC)**
 
