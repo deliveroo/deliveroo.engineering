@@ -298,7 +298,7 @@ Most of the rest of this guide applies to CoffeeScript too, so please do follow 
     })();
     ```
 
-  - If your function has only one line inside, consider the following, for better redability:
+  - If your function has only one short line inside, consider the following, for better redability:
 
     ```javascript
       var oneliner = function oneliner() { return true; };
