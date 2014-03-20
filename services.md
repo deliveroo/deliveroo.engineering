@@ -203,6 +203,13 @@ Adding a technology to the lists above can only be done by a consensus of the
 technical leads, with veto from the lead of engineering.
 
 
+#### Other technical requirements
+
+- JSON default, Gziped JSON and MessagePack optional seconds.
+- SSL only, reject non-SSL
+- HTTP Basic authentication, token auth only when dealing with non-HT 3rd party
+  that requires it
+
 --------------------------------------------------------------------------------
 
 ### Extracting a feature into a service
