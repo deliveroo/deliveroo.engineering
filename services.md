@@ -23,7 +23,7 @@ the domain, and then usually exposes a representation of said entities to third
 parties.
 
 A service may be responsible for transformations of entity representations or
-manipulatino of their state.
+manipulation of their state.
 
 A service communicates with others by exchanging state information about
 entities.
