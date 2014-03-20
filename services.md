@@ -29,7 +29,7 @@ exchanging state information about domain entities
 
 --------------------------------------------------------------------------------
 
-### Philosophy tenets
+### Principles / philosophy
 
 12factor
 
@@ -38,6 +38,12 @@ rest
 representational state notification / event-driven
 
 limited local knowledge
+
+Typical dont's
+
+- Sharing a database layer. If two "services" communicate through Mongo,
+  RabbitMQ, etc, they're actually one single service. They must communicate over
+  HTTP, and there are no exceptions.
 
 --------------------------------------------------------------------------------
 
@@ -58,10 +64,10 @@ From top to bottom of the production stack:
 | Front-end logic         | Coffeescript + Backbone.JS          |
 | Serving HTTP            | Unicorn                             |
 | Responding to requests  | Rails 4                             |
+| Querying HTTP           | Faraday                             |
 | Logic                   | Ruby 2.1+                           |
 | Persisting data         | ActiveRecord/MySQL                  |
 | Caching data            | Memcache                            |
-| Querying HTTP           | Faraday                             |
 | Hosting                 | Heroku                              |
 
 In development:
@@ -75,16 +81,16 @@ Alternatives should only be considered when there's a legitimate reason to
 (which does not, ever, include "I want to play with it"). Using an alternative
 should convince a majority amongst the team's technical leadership.
 
-| Concern                 | Technology                          |
+| Concern                 | Alternative technologies            |
 |-------------------------|-------------------------------------|
 | Styling                 | *none*                              |
 | Front-end logic         | *none*                              |
 | Serving HTTP            | Rainbows                            |
 | Responding to requests  | Sinatra                             |
+| Querying HTTP           | *none*                              |
 | Logic                   | *none*                              |
 | Persisting data         | Mongo, Redis                        |
 | Caching data            | Redis                               |
-| Querying HTTP           | *none*                              |
 | Hosting                 | Amazon EC2                          |
 
 Adding a technology to the lists above can only be done by a consensus of the
