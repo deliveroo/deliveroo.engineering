@@ -13,8 +13,7 @@ design decisions when building services.
 
 A service is a software entity that can be defined as a function of what third
 parties it interacts with, which domain concepts it operates on, and how it
-transforms
-them.
+transforms them.
 
 Domain concepts typically map to classes (bookings, users), and domain entities
 to instances (a given booking, a given user).
