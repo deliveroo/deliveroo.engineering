@@ -36,13 +36,13 @@ entities.
 
 The overarching principles in service design are:
 
-- Compactness: a service is sole responsible for clearly defined functions on
+- **Compactness**: a service is sole responsible for clearly defined functions on
   the domain, and for clearly defined sets of entities in the domain.
-- Abstraction: a service's implementation details are entirely hidden behind its
+- **Abstraction**: a service's implementation details are entirely hidden behind its
   interface, including non-functionals (ie. scability of a service, or lack
   thereos, is not the consumer's concern).
 
-#### 12 Factor App
+#### Twelve Factor App
 
 We adopt the principles outlined in the [12 Factor App](http://12factor.net/) to
 build good services. As a summary:
@@ -63,36 +63,76 @@ build good services. As a summary:
 
 #### REST over HTTP
 
-Services only ever communicate with the rest of the world (other services or end
-users) over and HTTP interface, respecting REST principles.
+Services must only ever communicate with the rest of the world (other services
+or end users) over and HTTP interface, respecting REST principles.
 
 In particular (but not limited to):
 
 - HTTP verbs should be used.
 - GET requests should be idempotent and cacheable.
 - URL terms in any API should reflect domain concepts.
-- Hypermedia should be used whenever a response
+- Hypermedia links should be provided in responses.
 
-representational state notification / event-driven
 
-Local knowledge should be limited.
-services shouldn't know most other services
-typically, only the service that has authority on the concepts they need to
-manipulate
-or even just where the bus of events is located
+#### Representational State Notification
 
-this is achieved through configuration (i.e. through the environment)
-no server names or URLs in a service's codebase
+Or in other words, **ask, don't tell**.
 
-also achieve through good use of hypermedia links 
-example -- GET booking, hypermedia to property
+When services need to coordinate or synchronize state information about domain
+entitites (normally flowing out of the service that has authority on that part
+of the domain), this should be achieved in an event-driven manner.
 
-Typical dont's
+An event can simply be defined as:
+
+- The identity of the identity whose state changed (ie. its autoritative URL)
+- The type of state change, one of *created*, *updated*, *deleted*.
+
+An event should *not* have a "payload", ie. a representation of the entity.
+
+Note that an event itself is an entity, one that is typically only ever created
+over HTTP.
+
+Consumer services should register with the authoritative service to receive
+those events. Ideally, this should be achieved through an event bus.
+
+Local knowledge should be limited: authoritative services should not know about
+their consumers (they never reference to consumer DNS names).
+Generally, services shouldn't know most other services unless necessary.
+
+Consumer services know about source services through configuration (i.e. through the environment): no server names or URLs in a service's codebase
+
+
+#### API design basics
+
+Again because of the local knowledge criterion, services should have minimal
+knowledge of any service's API they consume.  This can be achieved through good
+use of hypermedia links.
+
+For instance, imagining a resource (API term for domain concept) names
+`bookings` that references a resource named `property`, you'd want this type of
+API:
+
+    >> GET /api/bookings/123
+    << {
+    <<   url: '/api/bookings/123', 
+    <<   property: { 
+    <<     url: '/api/properties/456'
+    <<   }
+    << }
+
+which lets you
+
+- not rely on IDs (which are an internal implementation detail of our service);
+- not need to know how the URL for a property entity is constructed.
+
+
+#### Typical dont's
 
 - Remote procedure call, e.g. APIs like `GET /api/bookings/123/cancel`. This
   must be replaced with state transfer (`PATCH
   /api/bookings/123?state=cancelled`) or
   higher-level concepts (`POST /api/bookings/123/cancellation`).
+
 - Sharing a database layer. If two "services" communicate through Mongo,
   RabbitMQ, etc, they're actually one single service. They must communicate over
   HTTP, and there are no exceptions.
@@ -100,6 +140,21 @@ Typical dont's
 --------------------------------------------------------------------------------
 
 ### Defining a service
+
+TODO
+
+- use cases
+- authoritative on which concepts
+- responsible for which function
+- API
+- Events
+- Arch diagram
+
+all part of the README besides the usuel sections (getting started, installing,
+running, debugging, contributing)
+
+example of the search service
+
 
 --------------------------------------------------------------------------------
 
@@ -153,3 +208,6 @@ technical leads, with veto from the lead of engineering.
 
 ### Extracting a feature into a service
 
+methodology section
+
+use example of search -- introducing a service layers that maps the api 1:1
