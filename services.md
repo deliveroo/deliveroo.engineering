@@ -199,8 +199,20 @@ should convince a majority amongst the team's technical leadership.
 | Caching data            | Redis                               |
 | Hosting                 | Amazon EC2                          |
 
+
+#### Introducing new technologies
+
 Adding a technology to the lists above can only be done by a consensus of the
 technical leads, with veto from the lead of engineering.
+
+To put it simply, the philosophy is:
+
+- Ruby is core. If it can be done it Ruby with reasonable performance, it
+  should.
+- Introducing _any_ new technology in the stack must be (a) justified by use
+  cases that cannot be covered by the existing stack, and (b) at least half
+  the team must be trained with the new technology before it reaches
+  production.
 
 
 #### Other technical requirements
