@@ -38,8 +38,8 @@ The overarching principles in service design are:
 - **Compactness**: a service is sole responsible for clearly defined functions on
   the domain, and for clearly defined sets of entities in the domain.
 - **Abstraction**: a service's implementation details are entirely hidden behind its
-  interface, including non-functionals (ie. scability of a service, or lack
-  thereos, is not the consumer's concern).
+  interface, including non-functionals (ie. scalability of a service, or lack
+  thereof, is not the consumer's concern).
 
 #### Twelve Factor App
 
@@ -78,12 +78,12 @@ In particular (but not limited to):
 Or in other words, **ask, don't tell**.
 
 When services need to coordinate or synchronize state information about domain
-entitites (normally flowing out of the service that has authority on that part
+entities (normally flowing out of the service that has authority on that part
 of the domain), this should be achieved in an event-driven manner.
 
 An event can simply be defined as:
 
-- The identity of the identity whose state changed (ie. its autoritative URL)
+- The identity of the entity whose state changed (ie. its authoritative URL)
 - The type of state change, one of *created*, *updated*, *deleted*.
 
 An event should *not* have a "payload", ie. a representation of the entity.
@@ -107,7 +107,7 @@ Again because of the local knowledge criterion, services should have minimal
 knowledge of any service's API they consume.  This can be achieved through good
 use of hypermedia links.
 
-For instance, imagining a resource (API term for domain concept) names
+For instance, imagining a resource (API term for domain concept) named
 `bookings` that references a resource named `property`, you'd want this type of
 API:
 
@@ -149,7 +149,7 @@ TODO
 - Events
 - Arch diagram
 
-all part of the README besides the usuel sections (getting started, installing,
+all part of the README besides the usual sections (getting started, installing,
 running, debugging, contributing)
 
 example of the search service
@@ -157,9 +157,9 @@ example of the search service
 
 --------------------------------------------------------------------------------
 
-### Prefered technology stack
+### Preferred technology stack
 
-Because a zoo of technologies leads to disaster, we purpusedly limit the set of
+Because a zoo of technologies leads to disaster, we purposedly limit the set of
 technologies we use.
 
 From top to bottom of the production stack:
@@ -207,8 +207,8 @@ technical leads, with veto from the lead of engineering.
 
 - JSON default, Gziped JSON and MessagePack optional seconds.
 - SSL only, reject non-SSL
-- HTTP Basic authentication, token auth only when dealing with non-HT 3rd party
-  that requires it
+- HTTP Basic authentication, token authentication only when dealing with
+  non-HouseTrip 3rd party that requires it
 
 --------------------------------------------------------------------------------
 
