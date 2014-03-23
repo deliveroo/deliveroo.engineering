@@ -114,10 +114,8 @@ API:
 
     >> GET /api/bookings/123
     << {
-    <<   url: '/api/bookings/123', 
-    <<   property: { 
-    <<     url: '/api/properties/456'
-    <<   }
+    <<   url: 'https://bookings.example.com/api/bookings/123', 
+    <<   property_url: 'https://monolith.example.com/api/properties/456'
     << }
 
 which lets you
@@ -131,9 +129,11 @@ does so by listening to the event bus for booking lifecycle events. If using
 hypermedia links as in the above, it only ever needs to know about the bus's
 location, as it will dynamically obtain addresses for the entities it needs to
 know about. If not, it needs to know both (a) who is authoritative for bookings
-and properties, (b) where the authority resides, and (c) how the authority
-constructs URLs for entities of interest. This would breach the local knowledge
-requirement and tighly couple the service architecture.
+and properties, (b) where the authority resides for each resource, and (c) how
+the various authorities constructs URLs for entities of interest. This would
+breach the local knowledge requirement and tighly couple the service
+architecture.
+
 
 #### Typical dont's
 
