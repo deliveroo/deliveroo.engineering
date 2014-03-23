@@ -125,6 +125,15 @@ which lets you
 - not rely on IDs (which are an internal implementation detail of our service);
 - not need to know how the URL for a property entity is constructed.
 
+_Sidebar: why is this important?_
+Imagine a service that consumes bookings to aggregate statistics. Ideally, it
+does so by listening to the event bus for booking lifecycle events. If using
+hypermedia links as in the above, it only ever needs to know about the bus's
+location, as it will dynamically obtain addresses for the entities it needs to
+know about. If not, it needs to know both (a) who is authoritative for bookings
+and properties, (b) where the authority resides, and (c) how the authority
+constructs URLs for entities of interest. This would breach the local knowledge
+requirement and tighly couple the service architecture.
 
 #### Typical dont's
 
