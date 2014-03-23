@@ -132,6 +132,9 @@ which lets you
   must be replaced with state transfer (`PATCH
   /api/bookings/123?state=cancelled`) or
   higher-level concepts (`POST /api/bookings/123/cancellation`).
+  <br/>
+  _Smell_: the API contains verbs (typically actions/calls) instead of nouns
+  (typically concepts/resources).
 
 - Sharing a database layer. If two "services" communicate through Mongo,
   RabbitMQ, etc, they're actually one single service. They must communicate over
