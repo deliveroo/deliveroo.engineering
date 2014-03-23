@@ -64,7 +64,7 @@ build good services. As a summary:
 #### REST over HTTP
 
 Services must only ever communicate with the rest of the world (other services
-or end users) over and HTTP interface, respecting REST principles.
+or end users) over an HTTP interface, respecting REST principles.
 
 In particular (but not limited to):
 
