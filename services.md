@@ -235,6 +235,38 @@ Excellent case reflecting our thought process (by @eparreno):
 
 ### Extracting a feature into a service
 
-methodology section
+Imagine a tightly-coupled feature currently living in a monolithic application,
+which you'd like to extract into a service.
 
-use example of search -- introducing a service layers that maps the api 1:1
+For instance, a search engine: that is, for a holiday rental website, a function
+that conceptually maps
+
+    search := (properties, availability, pricing, parameters) -> (properties, prices)
+
+The following series of steps is the (strongly) recommended way to perform the
+extraction.
+
+1. Define the domain concepts, and who has authority on them (here, the
+   monolithic application would retain authority on properties, availaiblity,
+   and pricing).
+2. Define the API of the service (as a RESTful HTTP API).
+3. Define a client interface, with a Ruby API that closely matches the service's API (this can be done
+   before implementing the service).
+4. Implement the client interface in terms of the original implementation of the
+   feature (thus making it a _facade_)
+5. Change all existing use cases of the feature to use the client.
+6. Implement the service.
+7. Modify the client to use the service instead of the original implementation.
+8. Remove the original implementation.
+
+The key idea here is to implement a client facade. In our experience, for any
+significant feature, any other approach is highly likely to fail or take
+significantly more resource overall.
+
+Step 6 (service implementation) can be started in parallel just after step 2
+(API), although it may be prudent to consider the API might suffer iteration
+while working on the facade.
+
+Step 7 (service client) can likewise be started earlier, although prudence is
+advised for similar reasons.
+
