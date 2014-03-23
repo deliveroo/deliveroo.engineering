@@ -215,6 +215,14 @@ To put it simply, the philosophy is:
   the team must be trained with the new technology before it reaches
   production.
 
+Excellent case reflecting our thought process (by @eparreno):
+
+> A couple of friends of mine are working at GitHub, and they told me that they
+> chose to use MRI across all the apps instead of having some of them using
+> JRuby and some others using MRI. They prefer to pay the price of MRI "low
+> performance" rather than maintaining different stacks.
+
+
 
 #### Other technical requirements
 
