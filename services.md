@@ -35,8 +35,9 @@ entities.
 
 The overarching principles in service design are:
 
-- **Compactness**: a service is sole responsible for clearly defined functions on
-  the domain, and for clearly defined sets of entities in the domain.
+- **Cohesion**: a service is sole responsible for clearly defined functions on
+  the domain, and for clearly defined sets of entities in the domain (a.k.a
+  compactness, autonomy).
 - **Abstraction**: a service's implementation details are entirely hidden behind its
   interface, including non-functionals (ie. scalability of a service, or lack
   thereof, is not the consumer's concern).
