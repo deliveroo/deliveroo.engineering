@@ -1508,6 +1508,38 @@ in *Ruby* now, not in *Python*.
     end
     ```
 
+* Do not share state between methods, or communicate through instance variables
+
+  ```ruby
+  # bad
+  def stuff
+    do_this
+    do_that
+  end
+
+  def do_this
+    @stuff = []
+  end
+
+  def do_that
+    @stuff.reverse!
+  end
+
+  # good
+  def stuff
+    result = make_this
+    change_that(result)
+  end
+
+  def make_this
+    []
+  end
+
+  def change_that(ary)
+    ary.reverse
+  end
+  ```
+
 ## Exceptions
 
 * Signal exceptions using the `fail` method. Use `raise` only when
