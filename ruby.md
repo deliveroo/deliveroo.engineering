@@ -1528,14 +1528,14 @@ in *Ruby* now, not in *Python*.
   # good
   def stuff
     result = make_this
-    change_that(result)
+    transform_that(result)
   end
 
   def make_this
     []
   end
 
-  def change_that(ary)
+  def transform_that(ary)
     ary.reverse
   end
   ```
