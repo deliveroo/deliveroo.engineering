@@ -1508,6 +1508,12 @@ in *Ruby* now, not in *Python*.
     end
     ```
 
+* Avoid public accessors unless necessary. More than a couple of accessors is a
+  smell your class is exposing too much.
+
+* Do not use private accessors. Use state variables, as it makes it easier to
+  detect overuse of object state between methods.
+
 ## Exceptions
 
 * Signal exceptions using the `fail` method. Use `raise` only when
