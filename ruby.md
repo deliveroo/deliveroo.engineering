@@ -1508,6 +1508,47 @@ in *Ruby* now, not in *Python*.
     end
     ```
 
+* Do not share state between methods, or communicate through instance variables
+
+  ```ruby
+  # bad
+  def stuff
+    do_this
+    do_that
+  end
+
+  def do_this
+    @stuff = []
+  end
+
+  def do_that
+    @stuff.reverse!
+  end
+
+  # good
+  def stuff
+    result = make_this
+    transform_that(result)
+  end
+
+  def make_this
+    []
+  end
+
+  def transform_that(ary)
+    ary.reverse
+  end
+  ```
+
+  In the example `do_this` and `do_that` both modify the same instance
+  variable `@stuff` to produce the result of `def stuff`. 
+  The same result can be achieved in the "good" variant without any instance
+  variable.
+
+  Note that doing things in sequence is not bad; the bad practice is passing
+  arguments or return values through state variables.
+
+
 ## Exceptions
 
 * Signal exceptions using the `fail` method. Use `raise` only when
