@@ -1,6 +1,11 @@
 
 # Building services
 
+[[What's a service?]] |
+[[Principles / philosophy]] |
+[[Defining a service]] | 
+[[Preferred technology stack]]
+
 We strive towards a service-oriented, event-driven architecture.
 
 This guide intends to pave the road and help readers make good architecture and
