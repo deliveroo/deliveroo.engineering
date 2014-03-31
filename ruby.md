@@ -1364,7 +1364,7 @@ mutators.
 * Do not use private accessors. Use state variables, as it makes it easier to
   detect overuse of object state between methods.
 
-    ```ruby
+    ```Ruby
     # good
     def initialize(options = {})
       @foo = options.fetch(:foo)
