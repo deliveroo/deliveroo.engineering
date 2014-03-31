@@ -1364,6 +1364,29 @@ mutators.
 * Do not use private accessors. Use state variables, as it makes it easier to
   detect overuse of object state between methods.
 
+    ```ruby
+    # good
+    def initialize(options = {})
+      @foo = options.fetch(:foo)
+    end
+
+    def run
+      @foo.reverse
+    end
+
+    # bad
+    def initialize(options = {})
+      @foo = options.fetch(:foo)
+    end
+
+    def run
+      foo.reverse
+    end
+
+    private
+    attr_reader :foo
+    ```
+
 * Consider using `Struct.new`, which defines the trivial accessors,
 constructor and comparison operators for you.
 
