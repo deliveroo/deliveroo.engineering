@@ -1404,7 +1404,7 @@ constructor and comparison operators for you.
     # better
     Person = Struct.new(:first_name, :last_name) do
     end
-    ````
+    ```
 
 * Don't extend a `Struct.new` - it already is a new class. Extending it introduces a superfluous class level and may also introduce weird errors if the file is required multiple times.
 
