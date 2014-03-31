@@ -13,6 +13,7 @@ consistent, reliable, reusable software.
 4. [Javascript](https://github.com/HouseTrip/guidelines/blob/master/javascript.md)
 5. [Backbone](https://github.com/HouseTrip/guidelines/blob/master/backbone.md)
 6. [SASS / CSS](https://github.com/HouseTrip/guidelines/blob/master/sass-css.md)
+7. [Services / SOA](https://github.com/HouseTrip/guidelines/blob/master/services.md)
 
 #### Contributing
 
