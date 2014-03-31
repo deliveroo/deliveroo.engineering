@@ -1358,6 +1358,12 @@ mutators.
     end
     ```
 
+* Avoid public accessors unless necessary for your class to be usable.
+  More than a couple of accessors is a smell your class is exposing too much.
+
+* Do not use private accessors. Use state variables, as it makes it easier to
+  detect overuse of object state between methods.
+
 * Consider using `Struct.new`, which defines the trivial accessors,
 constructor and comparison operators for you.
 
@@ -1507,12 +1513,6 @@ in *Ruby* now, not in *Python*.
       end
     end
     ```
-
-* Avoid public accessors unless necessary. More than a couple of accessors is a
-  smell your class is exposing too much.
-
-* Do not use private accessors. Use state variables, as it makes it easier to
-  detect overuse of object state between methods.
 
 ## Exceptions
 
