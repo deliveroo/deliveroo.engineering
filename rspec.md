@@ -11,12 +11,13 @@
 6. [subject](#subject)
 7. [let](#let)
 8. [Mocks and stubs](#mocks-and-stubs)
-9. [Integration testing](#integration-testing)
-10. [Shared examples](#shared-examples)
-11. [Custom matchers](#custom-matchers)
-12. [Test interface](#test-interface)
-13. [Stub HTTP requests](#stub-http-requests)
-14. [Other stuff](#other-stuff)
+9. [Testing modules](#testing-modules)
+10. [Integration testing](#integration-testing)
+11. [Shared examples](#shared-examples)
+12. [Custom matchers](#custom-matchers)
+13. [Test interface](#test-interface)
+14. [Stub HTTP requests](#stub-http-requests)
+15. [Other stuff](#other-stuff)
 
 ## It's Ruby code!
 
@@ -176,6 +177,57 @@ If you need something initialized immediately (e.g.: database records are involv
 
 - Never mock or stub stuff of the class you're testing
 - Stub external dependencies
+
+## Testing modules
+
+Instead of creating a class in which to include the module under test, which is
+global and this will populate subsequent tests, either extend an object or create
+an anonymous class.
+
+```ruby
+# bad
+class MySpecClass < SomeOtherClass
+  include SomeModule
+end
+
+describe SomeModule do
+  subject { MySpecClass.new }
+  # ...
+end
+```
+
+### Extend an object
+
+```ruby
+# good
+
+my_spec_class = Object.new.extend(SomeModule)
+
+describe SomeModule do
+  subject { my_spec_class.new }
+  # ...
+end
+```
+
+### Anonymous class
+
+Use an anonymous class if you need to decent from something other than Object or
+you need to do more than just include a module.
+
+```ruby
+# good
+
+my_spec_class = Class.new(SomeOtherClass) do
+  include SomeModule
+
+  attr_accessor :foo
+end
+
+describe SomeModule do
+  subject { my_spec_class.new }
+  # ...
+end
+```
 
 ## Integration testing
 
