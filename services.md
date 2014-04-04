@@ -4,7 +4,8 @@
 [What's a service?](#whats-a-service) |
 [Principles / philosophy](#principles--philosophy) |
 [Defining a service](#defining-a-service) | 
-[Preferred technology stack](#preferred-technology-stack)
+[Preferred technology stack](#preferred-technology-stack) |
+[Configuration](#service-configuration)
 
 We strive towards a service-oriented, event-driven architecture.
 
@@ -286,4 +287,35 @@ while working on the facade.
 
 Step 7 (service client) can likewise be started earlier, although prudence is
 advised for similar reasons.
+
+
+### Service configuration
+
+As per the 12factor principles, configuration lives in the environment.
+
+This means that while Yaml file may exist in the repo, they should be about
+data. Therefore it is a smell this to have enviroment names mentioned in such files.
+
+For Ruby apps the `dotenv` gem must be used, as it reproduces the runtime behaviour of Heroku.
+
+- There should be one general `.env` file for settings shared across environments,
+  and one `.env.<name>` file per environment where these should be overridden.
+- Settings **should not** be copied between files if the values are identical.
+- The `.env` file should have sensible settings that "just work" in development.
+- Settings should be prefixed with the service name.
+
+Setttings should also be clearly commented
+
+Example:
+
+    # .env
+    # base URL for the upstream service
+    MYAPP_UPSTREAM_SERVICE=https://geonames.org/
+    # timeout for requests
+    MYAPP_TIMEOUT=10
+
+    # .env.staging
+    # be less tolerant than the default to mimic production
+    MYAPP_TIMEOUT=5
+
 
