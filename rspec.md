@@ -181,8 +181,7 @@ If you need something initialized immediately (e.g.: database records are involv
 ## Testing modules
 
 Instead of creating a class in which to include the module under test, which is
-global and this will populate subsequent tests, either extend an object or create
-an anonymous class.
+global and will populate subsequent tests, create an anonymous class.
 
 ```ruby
 # bad
@@ -194,37 +193,10 @@ describe SomeModule do
   subject { MySpecClass.new }
   # ...
 end
-```
 
-### Extend an object
-
-```ruby
 # good
-
-my_spec_class = Object.new.extend(SomeModule)
-
 describe SomeModule do
-  subject { my_spec_class.new }
-  # ...
-end
-```
-
-### Anonymous class
-
-Use an anonymous class if you need to decent from something other than Object or
-you need to do more than just include a module.
-
-```ruby
-# good
-
-my_spec_class = Class.new(SomeOtherClass) do
-  include SomeModule
-
-  attr_accessor :foo
-end
-
-describe SomeModule do
-  subject { my_spec_class.new }
+  subject { Class.new(SomeOtherClass) { include SomeModule } }
   # ...
 end
 ```
