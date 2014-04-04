@@ -294,7 +294,7 @@ advised for similar reasons.
 As per the 12factor principles, configuration lives in the environment.
 
 This means that while Yaml file may exist in the repo, they should be about
-data. A smell this is not done is having enviroment as key names in such files.
+data. Therefore it is a smell this to have enviroment names mentioned in such files.
 
 For Ruby apps the `dotenv` gem must be used, as it reproduces the runtime behaviour of Heroku.
 
