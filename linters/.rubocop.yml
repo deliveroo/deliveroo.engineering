@@ -1,10 +1,10 @@
 AllCops:
-  Excludes:
+  Exclude:
     - script/*
     - db/*
     - tmp/*
     - vendor/*
-  Includes:
+  Include:
     - tasks/*.rake
   RunRailsCops: true
 
@@ -824,8 +824,8 @@ Output:
   Description: 'Checks for calls to puts, print, etc.'
   Enabled: false
 
-ReadAttribute:
-  Description: 'Prefer self[:attribute] over read_attribute(:attribute).'
+ReadWriteAttribute:
+  Description: 'Checks for read_attribute(:attr) and write_attribute(:attr, val)'
   Enabled: true
 
 ScopeArgs:
