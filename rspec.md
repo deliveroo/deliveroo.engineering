@@ -11,12 +11,13 @@
 6. [subject](#subject)
 7. [let](#let)
 8. [Mocks and stubs](#mocks-and-stubs)
-9. [Integration testing](#integration-testing)
-10. [Shared examples](#shared-examples)
-11. [Custom matchers](#custom-matchers)
-12. [Test interface](#test-interface)
-13. [Stub HTTP requests](#stub-http-requests)
-14. [Other stuff](#other-stuff)
+9. [Testing modules](#testing-modules)
+10. [Integration testing](#integration-testing)
+11. [Shared examples](#shared-examples)
+12. [Custom matchers](#custom-matchers)
+13. [Test interface](#test-interface)
+14. [Stub HTTP requests](#stub-http-requests)
+15. [Other stuff](#other-stuff)
 
 ## It's Ruby code!
 
@@ -176,6 +177,29 @@ If you need something initialized immediately (e.g.: database records are involv
 
 - Never mock or stub stuff of the class you're testing
 - Stub external dependencies
+
+## Testing modules
+
+Instead of creating a class in which to include the module under test, which is
+global and will populate subsequent tests, create an anonymous class.
+
+```ruby
+# bad
+class MySpecClass < SomeOtherClass
+  include SomeModule
+end
+
+describe SomeModule do
+  subject { MySpecClass.new }
+  # ...
+end
+
+# good
+describe SomeModule do
+  subject { Class.new(SomeOtherClass) { include SomeModule } }
+  # ...
+end
+```
 
 ## Integration testing
 
