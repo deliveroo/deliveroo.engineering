@@ -76,7 +76,7 @@ In particular (but not limited to):
 
 - HTTP verbs should be used.
 - GET requests should have no side-effects (on any entity of this concept or others) and be cacheable.
-- POST and PATCH requests should be idempotent (requesting them more than once does not change state further)
+- PUT and PATCH requests should be idempotent (submitting them more than once should not change state further)
 - URL terms in any API should reflect domain concepts.
 - Hypermedia links should be provided in responses.
 
