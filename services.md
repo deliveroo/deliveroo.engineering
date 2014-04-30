@@ -193,6 +193,7 @@ From top to bottom of the production stack:
 | Logic                   | Ruby 2.1+                           |
 | Persisting data         | ActiveRecord/MySQL                  |
 | Caching data            | Memcache                            |
+| Background processing   | Resque+Redis                        |
 | Hosting                 | Heroku                              |
 
 In development:
@@ -216,6 +217,7 @@ should convince a majority amongst the team's technical leadership.
 | Logic                   | *none*                              |
 | Persisting data         | Mongo, Redis                        |
 | Caching data            | Redis                               |
+| Background processing   | DJ (monorail only)                  |
 | Hosting                 | Amazon EC2                          |
 
 
