@@ -64,11 +64,15 @@ it { subject be_published }
 
 ```ruby
 # bad
-it { subject.reivew.size.should eql(3) }
+it { subject.reviews.size.should eql(3) }
 
 # good
 it { should have(3).reviews }
 ```
+
+### `specify` versus `it`
+
+`specify` and `it` are aliases, you should prefer `it` as it reads better.
 
 ## Single expectations
 
