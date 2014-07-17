@@ -7,14 +7,16 @@ consistent, reliable, reusable software.
 
 #### Guides
 
-1. [Active Record](https://github.com/HouseTrip/guidelines/blob/master/active-record.md)
-2. [Ruby](https://github.com/HouseTrip/guidelines/blob/master/ruby.md)
-3. [Rspec](https://github.com/HouseTrip/guidelines/blob/master/rspec.md)
-4. [Javascript](https://github.com/HouseTrip/guidelines/blob/master/javascript.md)
-5. [Backbone](https://github.com/HouseTrip/guidelines/blob/master/backbone.md)
-6. [SASS / CSS](https://github.com/HouseTrip/guidelines/blob/master/sass-css.md)
-7. [Services / SOA](https://github.com/HouseTrip/guidelines/blob/master/services.md)
-8. [Rails](https://github.com/HouseTrip/guidelines/blob/master/rails.md)
+- [Active Record](https://github.com/HouseTrip/guidelines/blob/master/active-record.md)
+- [Ruby](https://github.com/HouseTrip/guidelines/blob/master/ruby.md)
+- [Sustainable
+  testing](https://github.com/HouseTrip/guidelines/blob/master/sustainable-testing.md)
+- [Rspec](https://github.com/HouseTrip/guidelines/blob/master/rspec.md)
+- [Javascript](https://github.com/HouseTrip/guidelines/blob/master/javascript.md)
+- [Backbone](https://github.com/HouseTrip/guidelines/blob/master/backbone.md)
+- [SASS / CSS](https://github.com/HouseTrip/guidelines/blob/master/sass-css.md)
+- [Services / SOA](https://github.com/HouseTrip/guidelines/blob/master/services.md)
+- [Rails](https://github.com/HouseTrip/guidelines/blob/master/rails.md)
 
 #### Contributing
 
