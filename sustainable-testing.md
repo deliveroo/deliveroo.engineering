@@ -159,13 +159,15 @@ objects for instance.
 A different angle on the previous recipe, really: if your models are thin you
 can mock them out in any service object or other consumer.
 
-Any addition of a method to models, beyond "sugar" methods (that test or combine
+Any addition of a method to models, even "sugar" methods (that test or combine
 attributes) is a smell. Save-time callbacks are the strongest smell of bad
 coupling.
 
 If you need to react to persistence events, `after_save` is not your friend,
 neither are observers; prefer using a local event bus like the excellent
 [wisper](https://github.com/krisleech/wisper).
+
+If you need sugar, write a presenter using `SimpleDelegator`.
 
 
 #### Test persistence in query objects only.
