@@ -190,6 +190,40 @@ neither are observers; prefer using a local event bus like the excellent
 
 If you need sugar, write a presenter using `SimpleDelegator`.
 
+Good:
+
+```ruby
+class User < ActiveRecord::Base ; end
+
+class UserPresenter < SimpleDelegator
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+end
+
+class UserStateMachine
+  def initialize(user)
+    @user = user
+  end
+
+  def state=(new_state)
+    # magic goes here
+  end
+end
+```
+
+Bad:
+
+```ruby
+class User < ActiveRecord::Base
+  acts_as_kitchen_sink
+
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+end
+```
+
 
 #### Test persistence in query objects only.
 
