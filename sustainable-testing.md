@@ -9,6 +9,10 @@ the same traps.
 
 This document is written with Ruby and RSpec in mind.
 
+_See also:_ Mike Pack has written a great article on [High-Low
+testing](http://mikepackdev.com/blog_posts/39-high-low-testing) which shares the
+same attitude as this document and has good complements.
+
 
 ## Key features of a good test suite
 
