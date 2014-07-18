@@ -18,7 +18,7 @@ This document is written with Ruby and RSpec in mind.
 
 3. Run time of partial build should never exceed 10 seconds.
 
-4. The test suite should run consistently, no matter what the order if the
+4. The test suite should run consistently, no matter what the order of the
    individual tests is.
 
 
