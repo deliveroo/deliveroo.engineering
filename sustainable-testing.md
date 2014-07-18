@@ -116,7 +116,7 @@ increase the time taken by a full run (`require` is free for already-loaded
 files), and increases decoupling (random runs will surface implicit
 dependencies).
 
-As an example of `spec/support` cases, on might
+As an example of `spec/support` cases, one might
 
 - load the Rails environment in integration tests;
 - in a query object test, load
@@ -126,6 +126,10 @@ As an example of `spec/support` cases, on might
   [`spec/support/rack_test`](https://github.com/HouseTrip/routemaster/blob/master/spec/support/rack_test.rb)
   to add the requisite methods to the RSpec DSL.
 - in an API test, load `spec/support/webmock` to stub out external API calls.
+
+[`spec_requirer`](https://github.com/HouseTrip/spec_requirer) is a good way to
+simplify loading just what you need for a readable syntax.
+
 
 
 ## Running the whole suite quickly
