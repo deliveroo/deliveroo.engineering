@@ -146,12 +146,29 @@ Service objects normally have a very compact concern, and a single public method
 (often called `run`).
 
 If your service depends on stored data, avoid loading it in the service object;
-prefer to delegate that role to query objects (which can me mocked).
+prefer to delegate that role to query objects (which can be mocked).
 
-Likewise, avoid persisting data in service objects, and leave that role to the
-caller.
+A common pattern is to inject repositories:
+
+```ruby
+class MyService
+  def initialize(user_repo: User)
+    @user_repo = user_repo
+  end
+
+  def execute
+    @user_repo.find(...)
+  end
+end
+```
+
 In consumers of service objects, mock them out, and stub `save!` in any output
 objects for instance.
+
+Caveat: when using ActiveRecord, any "chained" query should be isolated into a
+query object, otherwise the temptation to use `stub_chain` will be strong.
+The query object can be mocked in the same way as a repository class.
+
 
 
 #### Keep "models" thin and never implement business logic in models.
@@ -187,6 +204,17 @@ tests).
 - Testing private methods is often a symptom of "god objects".
 
 - Stubbing private method is a combination of the above :)
+  In such cases, the private method can generally be isolated to its own
+  testable class or value object:
+
+    ```ruby
+    private
+
+    def calculate_it
+      CalculateIt.new(data: @field1).value
+    end
+    ```
+
 
 - Using stub chains is a smell you should be using dependency injection (and
   injecting test doubles)
@@ -194,4 +222,7 @@ tests).
 - Mocks falling out of sync (when using dependency injection) can be resolved
   using [verified
   doubles](https://relishapp.com/rspec/rspec-mocks/v/3-0/docs/verifying-doubles).
+  This is **not** possible for ActiveRecord objects (their accessors are
+  dynamically defined by checking the database schema); we recommend maintaining a
+  factory of mocks for those (and keeping it in sync with the schema).
 
