@@ -19,7 +19,7 @@ This document is written with Ruby and RSpec in mind.
 3. Run time of partial build should never exceed 10 seconds.
 
 4. The test suite should run consistently, no matter what the order if the
-   indiividual tests is.
+   individual tests is.
 
 
 ## Running partial builds
@@ -30,13 +30,13 @@ applications.
 Using auto-loaders (spring, zeus, spork) is **discouraged**: temptation to use
 them is usually a symptom of other issues (bad `spec_helper`, application too
 large), and they always end up creating more issues than they solve (weird load
-dependency issues, test suite unstability).
+dependency issues, test suite instability).
 
 
 ## Running consistently
 
-Rspec should always be configured to run in random order (the default).
-"Flakyness", ie. tests randomly failing depending un run order is a **bug**, and
+RSpec should always be configured to run in random order (the default).
+"Flakyness", ie. tests randomly failing depending on run order is a **bug**, and
 a flaky test suite gives no confidence that regressions are avoided.
 
 Flaky tests suites should be resolved as a priority, as any further development
@@ -46,7 +46,7 @@ is compromised.
 ## Running the whole suite quickly
 
 - Limit integration tests to core features. An excellent unit test suite is
-  sufficient to cover mosst failure scenarios.
+  sufficient to cover most failure scenarios.
 
 - Always fail early, using RSpec's `--fail-fast` for instance.
 
@@ -86,11 +86,11 @@ any code not required for basic RSpec setup.
 ### Require just what is needed
 
 Rails comes with a bad practice that is hugely damaging both to decoupling
-functionnality and to speed of tests: it loads "all the things" every time the
+functionality and to speed of tests: it loads "all the things" every time the
 environment is loaded—which means reading Ruby sources from disk and compiling
 it. For even a medium-sized application, that can easily be 1000s of files.
 
-Rails's bad behaviour is why when a class `A` references a class `B` (peharps
+Rails's bad behaviour is why when a class `A` references a class `B` (perhaps
 `A` is a factory of `B`'s, for instance), you don't need to `require 'b'` in
 `a.rb`. **You should** make dependencies explicit.
 
@@ -108,7 +108,7 @@ The same rule applies in tests: each test file requires
 - the very small `spec_helper`;
 - any files in `spec/support` it needs to function;
 - the single class that is being tested;
-- (optionally) support classes, e.g classes of objects you need to inject as
+- (optionally) support classes, e.g. classes of objects you need to inject as
   dependencies.
 
 This guarantees running just that spec has a minimal footprint, does not
@@ -150,7 +150,7 @@ prefer to delegate that role to query objects (which can me mocked).
 
 Likewise, avoid persisting data in service objects, and leave that role to the
 caller.
-In consumers of service ojects, mock them out, and stub `save!` in any output
+In consumers of service objects, mock them out, and stub `save!` in any output
 objects for instance.
 
 
@@ -181,10 +181,10 @@ tests).
 
 
 
-- Stubbing out methods on the object being tested is a symtom of bad internal APIs
+- Stubbing out methods on the object being tested is a symptom of bad internal APIs
   or poor coupling.
 
-- Testing private methods is often a symtom of "god objects".
+- Testing private methods is often a symptom of "god objects".
 
 - Stubbing private method is a combination of the above :)
 
@@ -194,3 +194,4 @@ tests).
 - Mocks falling out of sync (when using dependency injection) can be resolved
   using [verified
   doubles](https://relishapp.com/rspec/rspec-mocks/v/3-0/docs/verifying-doubles).
+
