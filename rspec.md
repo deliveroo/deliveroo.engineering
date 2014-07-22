@@ -59,6 +59,7 @@ it { subject.published? eql(true) }
 # good
 it { subject be_published }
 ```
+*Rspec 1.3 only*: For methods which return a boolean, e.g. `active?`, use `eq false` not `be_false`, since `be_false` will allowed `nil` as well as `false` and is the same as `be_falsey` in rspec 3.
 
 - When testing size of an array or array-like object (e.g.: an ActiveRecord relation) use the `have` matcher. RSpec will send the trailing method and `size` to the object for you
 
