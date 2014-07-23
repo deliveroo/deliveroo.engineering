@@ -259,7 +259,36 @@ tests).
 
 
 - Using stub chains is a smell you should be using dependency injection (and
-  injecting test doubles)
+  injecting test doubles):
+
+    ```ruby
+    # Bad
+    def MyService.run
+      last_booking = @user.bookings.last
+      ...
+    end
+
+    mock_user.stub_method_chain(:bookings, :last).and_return(mock_booking)
+
+
+    # Better
+    def MyService.run
+      last_booking = LastBookingFinder.new(@user).value
+      ...
+    end
+    allow_any_instance_of(LastBookingFinder).to receive(:value).and_return(mock_booking)
+
+
+    # Good
+    def MyService.initialize(user:, booking_finder: nil)
+      booking_finder ||= LastBookingFinder.new(user)
+      ...
+    end
+
+    # in spec
+    let(:fake_finder) { double value: mock_booking }
+    subject { described_class.new(booking_finder: fake_finder) }
+    ```
 
 - Mocks falling out of sync (when using dependency injection) can be resolved
   using [verified
