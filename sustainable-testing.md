@@ -16,11 +16,13 @@ same attitude as this document and has good complements.
 
 ## Key features of a good test suite
 
-1. Run time of the overall test suite should never exceed 5 minutes.
+1. Run time of the overall test suite should be low enough to not leave "the
+   zone". Ideally it should not exceed 5 minutes.
 
 2. It is possible to run a partial build on file modifications.
 
-3. Run time of partial build should never exceed 10 seconds.
+3. Run time of partial build should be fast enough to give instant feedback on
+   the class/method currently being changed. It should stay under 10 seconds.
 
 4. The test suite should run consistently, no matter what the order of the
    individual tests is.
