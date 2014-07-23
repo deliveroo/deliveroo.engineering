@@ -79,7 +79,7 @@ As an example, [Routemaster's
 `spec_helper`](https://github.com/HouseTrip/routemaster/blob/master/spec/spec_helper.rb)
 is very short: it just configures RSpec.
 
-It doesn't load any code, or any "environment", not should it.
+It doesn't load any code, or any "environment", nor should it.
 
 Remember that this file will be loaded every single time you run a partial test
 (e.g. after saving a file if using Guard), so the cost of adding things to
