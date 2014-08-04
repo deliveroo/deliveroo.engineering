@@ -223,7 +223,7 @@ or
 
 In general, use semantic naming.
 
-You may notice a few places where varients of a class use a color-based naming. For example `block.block_blue` in the `components/_block.sass`. This is because that's exactly what the varient is: "a block with a blue background".
+You may notice a few places where variants of a class use a color-based naming. For example `block.block_blue` in the `components/_block.sass`. This is because that's exactly what the variant is: "a block with a blue background".
 
 If you have a choice, be semantic, but if the style is purely visual, name it that way.
 
@@ -236,7 +236,7 @@ Recent experience across the industry, in writing CSS for large scale websites, 
 
 So remember, do not fear multiple classes on elements.
 
-Our choice of layout grid system (bootstrap) and some of our utility classes are inherrantly 'unsemantic' but it's designed for reuse of CSS and agility in putting pages together.
+Our choice of layout grid system (bootstrap) and some of our utility classes are inherently 'unsemantic' but it's designed for reuse of CSS and agility in putting pages together.
 
 
 ## Do not nest classes in CSS/SASS
