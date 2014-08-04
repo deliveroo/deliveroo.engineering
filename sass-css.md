@@ -111,15 +111,15 @@ Put `0` in front of values or lengths between -1 and 1.
 
 ## Do not style ids
 
-CSS `#something` values have very high specificity. Style with classes. In fact, use `#id`s as sparingly as possible.
+CSS `#something` values have very high [specificity](http://www.w3.org/TR/selectors/#specificity). Style with classes. In fact, use `#id`s as sparingly as possible.
 
-## Do not style javscript classes
+## Do not style JavaScript classes
 
 We have a convention of using `.js-hook-for-behaviour` classes to target JS. Don't style these, even if if means creating 'parallel' classes for styling.
 
 ## Do not use images for gradients
 
-There's no need when we have CSS gradients at our disposal.
+There's no need when we have CSS gradients at our disposal that work across all major browsers, including IE.
 
 ## Do not transform text server side
 
