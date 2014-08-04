@@ -508,7 +508,7 @@ There is *never* a good reason to write page-specific styles, so `pages` should 
 
 ## Emails
 
-_We are moving to responsive emails, starting with `UserMailer#welcome`... please get in touch if you have email related stories. There is probably a case for _
+_We are moving to responsive emails... please speak to your lead developer if you have email related stories._
 
 The rules above apply, mostly. We have CSS inliners (`premailer` in Rails 2) that mostly do the heavy lifting for you.
 
