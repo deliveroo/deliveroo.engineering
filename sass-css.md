@@ -1,335 +1,161 @@
-# Sass style guide
+SASS/CSS is _not_ code, but you can apply a lot the same principles to it. Knowing how it's different though, and different again on a large site, is key to producing reusable, fast and understandable styling.
 
-[File Organization](#file-organization) | [Naming conventions](#naming-conventions) | [Selectors](#selectors) | [Rulesets, Properties, Data types](#rulesets-properties-and-data-types) | [Integration with HTML and Javascript code](#integration-with-html-and-javascript-code)
+On a large site the most important thing to understand is to strive for re-use as much as possible.
 
-----
+With that end the overall strategy of our SASS/CSS is to take some well understood (and battle-tested) functionality from bootstrap and add our components on top.
 
-Welcome to the [HouseTrip](http:://www.housetrip.com) CSS Styleguide, derived from Github's and others. We think it's cool and hope you will too. Before reading this, you should have a general understanding for **[specificity](http://www.w3.org/TR/CSS2/cascade.html#specificity)**, the **[Sass](http://sass-lang.com/)** syntax, and **[KSS](https://github.com/kneath/kss)** documentation.
+> With great power, comes great responsibility.
+> --Uncle Ben (the Spiderman one, not the rice one)
 
-Parts of this also assume you're using the excellent **[Compass](http://compass-style.org)** library.
+SASS is 'processed' into CSS which means you have to think about the text being spat out at the end of the compile process. Behaviours that make sense in Ruby might not make sense in SASS if speed and maintainability are you goals.
 
-While we port our styles over to object-orientated Sass with KSS documentation, please make sure to upgrade an entire element's Sass/CSS at once. Do not mix small amounts of OO-Sass in with "classic" Sass. *Do your future self a favor!*
+_PS They should be your goals._
 
-If you're visiting from the internet, feel free to learn from our style. This is a guide we use for our own apps internally at HouseTrip. We encourage you to set up one that works for your own team.
+*Pragmatism* above all things.
 
-### An introduction
+An intro to our technologies:
 
-> "Part of being a good steward to a successful project is realizing that writing code for yourself is a Bad Idea. If thousands of people are using your code, then write your code for maximum clarity, not your personal preference of how to get clever within the spec." - Idan Gazit
+## SASS ([sass-lang.org](http://sass-lang.com/))
 
-A very important thing to remember is that **Styles are code**. Sass code deserves the same love you give to code in other languages: clean, well organised, object-orientated, structured, well named, commented exactly like you'd write your Ruby (or any other language) code.
+Our pre-processor of choice.
 
-- Don't try to prematurely optimize your code; keep it readable and understandable.
-- All code in any code-base should look like a single person typed it, even when many people are contributing to it.
-- Strictly enforce the agreed-upon style.
-- If in doubt when deciding upon a style use existing, common patterns.
+Generally we prefer the indented, HAML-style SASS syntax over the CSS-style SCSS syntax.
 
+## KSS ([kneath/kss](https://github.com/kneath/kss))
 
-### Basic coding Style
+A commenting style for our stylesheets. Can be used (in theory) to generate a component library, or styleguide.
 
-- Use soft-tabs with a two space indentation.
-- Use `//` for comment blocks.
-- Document styles with [KSS](https://github.com/kneath/kss).
+Original launch [blog post](http://warpspire.com/posts/kss/).
 
-Here is good example syntax:
+## The Styleguide (housetrip.com/en/styleguide)
 
-    // This is a good example!
-    $textColor:       #000
-    $backgroundColor: white
+As part of the web app we have a component library, where designers and developers can examine existing components and are encouraged to examine and reuse components where they can.
 
-    // Base settings
-	.styleguide-format
-	  border:     1px solid $textColor
-	  color:      $textColor
-	  background: $backgroundColor
+Our approach is broadly Rails partial based for HTML reuse. If a component is used elsewhere in the app it should be a partial and most likely added to these documents.
 
+There's also a section for more global formatting (forms, typography, grid) and some useful utility styles.
 
-## File Organization
 
-In general, the CSS file organization should follow something like this
+# History
 
-	<root>
-	├── application.css.sass           # toplevel (mostly empty!)
-	├── application
-	│   ├── _mixins.sass               # all reusable mixins
-	│   ├── _variables.sass            # colors, dimensions
-	│   ├── components                 # reusable visual elemenet, and layouts
-	│   │   ├── _badges.css.sass       #    not tied to specific models
-	│   │   └── _responsive_table.css.sass
-	│   ├── fonts.css.sass             # all fonts
-    │   └── models                     # representation of app models
-	│       ├── _attachments.css.sass  #   one file or more per model
-	│       ├── _comment.css.sass
-    │       ├── _idea.css.sass
-	│       └── _user.css.sass
-    ├── bootstrap_ext                  # patches to 3rd party libs
-	│   ├── _buttons.css.sass          #   reflect the names
-	│   ├── _code.css.sass             #   of library files
-	│   ├── _floats.css.sass
-	│   └── _type.css.sass
-	└── pages                          # view specific partials
-	    └── welcome.css.sass           #   mostly forbidden
+We have currently 4 main areas of SASS/CSS in our app.
 
+* **legacy** - used for old fixed width designs. DO NOT ADD CODE HERE.
+* **admin** - used for admin areas, bootstrap with customisation
+* **v4** _(name to change)_ - the responsive pages: home, search results & property pages
+* **landing_pages** - fast minimal styles for the landing pages launched summer 2014
 
-### Where to put stuff?
+The final two are in the process of being combined into a _one true way_ set of styles.
 
-Any `$variable` or `=mixin` that is used in more than one file should be put in `_variables` or `_mixins`. Others should be put at the top of the file where they're used.
+Longer term we need to move older pages off the legacy styles and get admin onto only one version of bootstrap, with less customisation.
 
-As a rule of thumb, don't nest further than 3 levels deep. If you find yourself going further, think about reorganizing your rules (either the specificity needed, or the layout of the nesting).
 
-There is *never* a good reason to write page-specific styles, so `pages` should be empty. If it isn't, each file name should be the snake-cased, full path to the corresponding view partial.
+# Rules
 
-### @import
+## Basics
 
-If using Rails 3.1+, use [Sprockets](https://github.com/sstephenson/sprockets) to **require** files. However, you should explicitly **import** any Sass that does not generate styles in the particular Sass file you'll be needing it's helpers in. Here's a good example:
+We prefer the indented SASS syntax
 
-	@import "application/variables"
+Use soft-tabs with a two space indentation
 
-	.rule
-      color: $myVar
+No CSS in the view layer on HTML elements.
 
-In other words:
+## Comments
 
-- each file must import exactly what it needs (as load order may change)
-- do not import full third part libraries (e.g. Compass), import just what you need.
+Use `//` for comment blocks
 
+```sass
+// a comment
+.hero
+  ...
+```
 
-Good:
+## Use double quotes
 
-	@import compass/css3/images
+```sass
+.foo
+  content: ""
+```
 
-Bad:
+Also quote attribute values in selectors
 
-	@import compass
+```sass
+input[type="checkbox"]
+  color: red
+```
 
+## Avoid specifying units for zero-values
 
-## Naming conventions
+```sass
+.foo
+  margin: 0
+```
 
-Variables are `$camelCased`.
-Classes and IDs use dashes, not snake case.
-Mixins use dashes too.
+## Spaces after commas
 
-Acronyms and domain lingo are forbidden.
+Include a space after each comma in comma-separated property or function values
 
-Good:
+```sass
+.bordered-thing
+  border: 1px solid red, 2px dotted blue
+```
 
-    $myColor: black
-    #some-stuff .what-ever-ranking
-    	color: $myColor
+## Use zeros for small values
 
-Bad:
+Put `0` in front of values or lengths between -1 and 1.
 
-    $MYCOLOR: black
-    #someStuff .what_ever_SQS
-    	color: $MYCOLOR
+```sass
+.button
+  margin-right: 0.25em
+```
 
-### Semantic, view agnostic naming
+## Do not style ids
 
+CSS `#something` values have very high specificity. Style with classes. In fact, use `#id`s as sparingly as possible.
 
-Class names should reflect intent or function, not layout or aspect.
-Name classes semantically.
-If you can't come up with a readable name for new class, ask someone for advice!
+## Do not style javscript classes
 
-Good:
+We have a convention of using `.js-hook-for-behaviour` classes to target JS. Don't style these, even if if means creating 'parallel' classes for styling.
 
-    .button.button-alert
-    	color: red
+## Do not use images for gradients
 
-Bad:
+There's no need when we have CSS gradients at our disposal.
 
-    .button.button-red
-    	color: red
+## Do not transform text server side
 
-Never make styles specific to a page, and generally avoid making classes dependent on _where_ they're going to be used.
+Think of the user who wants to copy and paste that text, or the next developer who needs to change the style. Implement all-caps with `text-transform:uppercase`, not (in Ruby) `String#upcase`.
 
-Good (and fast):
+## Never use `!important`
 
-    .carousel
-    	@extend widget
-    .carousel-hero
-    	font-size: x-large
+It's like leaving a loaded gun lying around. Think you have a counter-example? You're wrong. Don't say we didn't tell you.
 
-    // bad
-    #home-page .carousel
-    	@extend widget
-    	font-size: x-large
 
-
-### Object orientation
-
-Follow object orientation guidelines. If this is jargon to you, [this article](http://coding.smashingmagazine.com/2011/12/12/an-introduction-to-object-oriented-css-oocss/) is a good starting point. In particular:
-
-- Factor out common styles as superclasses (technically more like mixins).
-
-	Good:
-
-		.button
-			@extend widget
-			font-family: sans-serif
-		.button-alert
-			color: red
-
-		<a class="button button-alert">
-
-	Bad:
-
-		.button
-			@extend widget
-			font-family: sans-serif
-		.button-alert
-			@extend widget
-			font-family: sans-serif
-			color: red
-
-		<a class="button-alert">
-
-
-- Class hierarchies should be listed rather than using `@extend` (a la Bootstrap).
-
-	Good:
-
-		.button
-			@extend widget
-			font-family: sans-serif
-		.button-alert
-			color: red
-
-		<a class="button button-alert">
-
-	Bad:
-
-		.button
-			@extend widget
-			font-family: sans-serif
-		.button-alert
-			@extend button
-			color: red
-
-		<a class="button-alert">
-
-- Namespace class names.
-
-	Good:
-
-		.button.button-instant-booking
-		.property.property-instant-booking
-
-	Bad:
-
-	    .button.instant-booking
-	    .property.instant-booking
-
-
-- Separate containers/positioning from content/aspect classes:
-
-	Good:
-
-		.avatar
-			+rounded-corners(100px)
-			background-image: url("/avatar.png")
-
-		.pull-left
-			float: left
-
-	Bad:
-
-	    .avatar
-			+rounded-corners(100px)
-			background-image: url("/avatar.png")
-			float: left
-
-
-
-
-### Classes used in Javascript
-
-Never reference `js-` prefixed class names from CSS files. `js-` are used exclusively from JS files.
-
-Use the `js-` prefix for class names that are shared between HTML and JS.
-
-## Selectors
-
-### Classes vs. IDs
-
-Elements that occur **exactly once** inside a page should use IDs, otherwise, use classes. When in doubt, use a class name.
-
-- **Good** candidates for ids: header, footer, modal popups.
-- **Bad** candidates for ids: navigation, item listings, item view pages (ex: issue view).
-
-When styling a component, start with an element + class namespace (prefer class names over ids), prefer direct descendant selectors by default, and use as little specificity as possible. Here is a good example:
-
-	/ Haml
-	%ul.category-list
-	  %li Category 1
-	  %li Category 2
-	  %li Category 3
-
-    // Sass
-	ul.category-list // element + class namespace
-	  & > li          // direct descendant selector > for list items
-	    list-style-type: disc
-
-	  a              // minimal specificity for all links
-	    color: $alert_red
-
-### CSS Specificity guidelines
-
-Above all: always used the least specific selectors possible.
-In Sass, this means that you should **never nest more than 2 levels deep**.
-
-If you feel the need to, your classes are probably not semantic (enough).
-
-Good:
-
-	.hero-list
-    	font-size: x-large
-
-	a.call-to-action
-    	color: red
-
-Bad:
-
-	.hero-list .item a.call-to-action
-    	font-size: x-large
-    	color: red
-
-Extra rules:
-
-- **Avoid the descendent selector** (e.g. `.sidebar h3`). It's a sign of non-OO styling.
-- Avoid attaching classes to elements in your stylesheet (e.g. `div.header`, `h1.title`).
-- **Do not use IDs** in CSS selectors. IDs are for Javascript use.
-- If you must use an ID selector (`#selector`) make sure that you have no more than one in your rule declaration. A rule like `#header .search #quicksearch { ... }` is considered harmful.
-- When modifying an existing element for a specific use, try to use specific class names. Instead of `.listings-layout.bigger` use rules like `.listings-layout.listings-bigger`. Think about ack/greping your code in the future.
-- The class names `disabled`, `mousedown`, `danger`, `hover`, `selected`, and `active` should always be namespaced by a class (`button.selected` is a good example).
-
-
-## Rulesets: Properties and Data types
-
-The basics:
-
-- Put at least one space after `:` in property declarations
-- Align consecutive property values.
-- Never use color codes (`#000`) or names (`black`) outside of variable declarations.
-
-
-### Ordering properties
+## Specific Coding Style
 
 Properties should be grouped together:
 
-- first calls to `@extend`,
-- then calls to one line mixins (`@include`),
-- then layout-related properties (`position`, `float`, `display`, `width`, `heigth`),
-- then aspect-related properties (`font`, `border`, `color`),
-- finally calls to `@content` mixins, like `when-bigger-than-mobile` in the following example:
+- Put at least one space after `:` in property declarations
+- then layout-related properties (`position`, `float`, `display`
+- then size related `width`, `height`, `margin`, `padding`
+- then aspect-related properties (`color`, `border`)
+- finally calls to responsive mixins, like `+respond-min($screen-sm-min)`
 
 Good:
 
 ```sass
-.container
-  font-size: 24px
-  +when-bigger-than-mobile
-    color: white
-    background-color: black
+.hero
+  display: table
+  position: relative
+
+  width: 100%
+
+  color: $color-white
+  background-color: $color-gray
+
+  +respond-min($screen-sm-min)
+    height: 576px
 ```
+
 Bad:
 
 ```sass
@@ -340,202 +166,357 @@ Bad:
   font-size: 24px
 ```
 
-### Extending and mixing in
+## Prefixed properties
 
-Always prefer `@extend` over mixins. Mixins duplicate rulesets whereas extensions reuse them (hence extension is much faster when your styles get rendered).
-Prefer having multiple classes over both.
+Do not use browser-specific, prefixed properties directly.
 
-Good:
+We will implement [autoprefixer](https://github.com/ai/autoprefixer) into our asset pipeline.
 
-	.widget
-    	+rounded-corners(3px)
-    .button
-    	@extend widget
-    .
-nn
-Bad:
 
-Call mixins with `+my-mixin(...)` instead of with `@include`.
+## Pixels vs. Ems
 
-Good:
+We use `px` for `font-size`, because it offers absolute control over text, `em` is a battle for another day.
 
-Bad:
+Additionally, unit-less `line-height` is preferred because it does not inherit a percentage value of its parent element, but instead is based on a multiplier of the `font-size`.
 
-### Prefixed properties
 
-Do not use browser-specific, prefixed properties directly. Compass does that for you.
+## IE6/7 Support
 
-If it's not enough, issue a fix to Compass, don't work around it.
-
-Good:
-
-    @import compass/css3/images
-
-    .squid
-      +linear-gradient(pink, cyan)
-
-Bad:
-
-    @import compass/css3/images
-
-    .squid
-      -o-linear-gradient: top, pink, cyan
-      -webkit-gradient:   linear, top, bottom, pink, cyan
-
-### Colours
-
-
-Prefer to use use functions (`transparentize`, `lighten`) over RGBA. You'd probably get the math wrong, and it'd be less readable, so why bother?
-
-
-### Pixels vs. Ems
-
-Use `px` for `font-size`, because it offers absolute control over text. Additionally, unit-less `line-height` is preferred because it does not inherit a percentage value of its parent element, but instead is based on a multiplier of the `font-size`.
-
-
-### Icon Fonts
-
-Should we move towards the much more favourable Icon Fonts rather than PNG sprites. Something like [Font Awesome](http://fortawesome.github.io/Font-Awesome/) would be a great place to start.
-
-    <i class="icon-search icon-large icon-blue">
-
-is all that would be needed in order to display a large, blue magnifying glass icon
-
-Given the likelyhood that the font doesn't contain all the icons needed fo the whole site, we might consider using [Font Custom](http://fontcustom.com/) and have the design team contribute to expanding the icon set.
-
-Sprites/images may need to be used in the meantime.
-
-
-### Let CSS do the styling
-
-**Do not** use images for gradients. There's no need when we have CSS gradients at our disposal.
-
-Good:
-
-	.hero-unit
-	    +gradient($light_gray,white)
-
-Bad:
-
-	.hero-unit
-    	background-image: url("/gradient.png")
-
-
-**Do not** transform text server side. Think of the user who wants to copy and paste that text, or the next developer who needs to change the style.
-
-Implement all-caps with `text-transform:uppercase`, not (in Ruby) `String#upcase`.
-
-
-### Shoehorning
-
-Never use `!important`. It's like leaving a loaded gun lying around.
-It means
-Think you have a counter-example? You're wrong. Don't say we didn't tell you.
-
-
-### Odds and ends
-
-- Use lowercase and shorthand hex values
-
-		.foo
-		  color: #2ca
-
-- Use single or double quotes consistently. Preference is for double quotes.
-
-		.foo
-		  content: ""
-
-- Quote attribute values in selectors
-
-    	input[type="checkbox"]
-          color: red
-
-- Where allowed, avoid specifying units for zero-values
-
-		.foo
-    	  margin: 0
-
-- Comma separated selectors on multiple lines
-
-        td,
-        th
-          color: $blue
-
-- Include a space after each comma in comma-separated property or function values
-
-		.button
-          border: 1px solid red, 2px dotted blue
-
-- Use shorthand properties where possible
-
-    Good:
-
-		.button
-          margin: 1em 0
-
-    Bad:
-
-    	.button
-          margin: 0
-          margin-left:  1em
-          margin-right: 1em
-
-- Put 0s in front of values or lengths between -1 and 1.
-
-		.button
-          margin-right: 0.25em
-
-
-### keep it DRY - use sass iterator
-
-- Use `@each` iterator and string interpolation to keep it DRY
-
-    Good:
-
-        @each $code in en, fr, de
-		  .small_flag_#{$code}
-		    @include small-flags-sprite("#{$code}")
-
-    Bad:
-
-        .small_flag_en
-          @include small-flags-sprite("en")
-        .small_flag_fr
-          @include small-flags-sprite("fr")
-        .small_flag_de
-          @include small-flags-sprite("de")
-
-### IE6/7 Support
-
-Don't.
-
-From Christian Heilmann ([@codepo8](http://github.com/codepo8))
-
-> **Stop building for the past** – using a library should not be an excuse for a company to use outdated browsers. This hurts the web and is a security issue above everything else. No, IE6 doesn’t get any smooth animations – you can not promise that unless you spend most of your time testing in it.
+**Don't.** IE8 is next on the hit list.
 
 We have officially dropped support for these old browsers and are prompting people to update. We really do not want to spend our time fixing and testing for this small sebset of our userbase.
 
 
+# Guidelines
 
-## Integration with HTML and Javascript code
+## Naming
 
-### HTML
+There are many variants of how to name your classes, we have settled on a simple style derived from [BEM](http://bem.info) that looks like `.thing-to-be-styled_modifer`.
 
-All new style should be oject-orientated; therefore:
+So for example in the `components/_hero.sass` file...
 
-- Do not use the `<style>` tag to add custom CSS to pages.
-- Do not use the `style=` HTML attribute to style specific DOM elements.
+```sass
+.hero
+  ...
+.hero-background
+  ...
+.hero-content
+  ...
+.hero-title
+  ...
+.hero-title_left
+  ...
+```
+
+Modifier or variant classes are designed to be used with their un-modified version. So if you were creating a left aligned hero title you'd use...
+
+```haml
+.hero-title.hero-title_left
+  Content Goes Here
+```
+
+or
+
+```html
+<div class="hero-title hero-title_left">Content Goes Here</div>
+```
+
+In general, use semantic naming.
+
+You may notice a few places where varients of a class use a color-based naming. For example `block.block_blue` in the `components/_block.sass`. This is because that's exactly what the varient is: "a block with a blue background".
+
+If you have a choice, be semantic, but if the style is purely visual, name it that way.
 
 
-### Emails
+## Semantics and Fear of Classes
 
-The rules above apply. You should use normal style files and object orientation, and let your CSS inliner (`premailer` in Rails 2, `roadie` in Rails 3) do the heavy lifting for you.
+A lot has been written on the value of semantics to HTML and CSS a lot of this thinking is derived (rightly) from getting us out of the "tables for layout" era. We're out, we made it.
+
+Recent experience across the industry, in writing CSS for large scale websites, has forced some re-examination of the lust for minimal classes.
+
+So remember, do not fear multiple classes on elements.
+
+Our choice of layout grid system (bootstrap) and some of our utility classes are inherrantly 'unsemantic' but it's designed for reuse of CSS and agility in putting pages together.
+
+
+## Do not nest classes in CSS/SASS
+
+Once you start nesting it is very easy to get into specificty nightmares. Rules surprisingly overwriting each other, leading to more specificity in the code you're writing or even the dreaded `!important` declaration.
+
+It's often used to give context to your components...
+
+```sass
+.landing-page
+  ...
+  .search-box
+    ...
+    > h2
+      ...
+```
+
+All this does is lock that component to that page and prevent reuse. Try this instead.
+
+```sass
+.landing-page
+  ...
+.search-box
+  ...
+.search-box-title
+  ...
+```
+
+Try and think *in generalities* when naming. Avoid `.button-for-search-filters`, use `.button-tiny`, there might even be one already you can use.
+
+If there isn't, don't slavishly create another kind of something, work with your designer to try and use existing styles.
+
+
+## Do not style html elements other than globally
+
+Use descriptive classes.
+
+```sass
+.hero
+  ...
+.hero-title
+  ...
+```
+
+over
+
+```sass
+.hero
+  ...
+  h2
+    ...
+```
+
+Encourages reuse and lack of surprises. And allows our 'base' styling to remain consistant.
+
+
+## Do not style typography in your component CSS
+
+Most often you'll want to change the typography of something within your element. We have the somewhat ugly-but-effective `.h0`-`.h6` styles which you can apply to change those around and keep to our typographic hierarchy.
+
+i.e. `<h2 class="h6">` has the typographic styling of an `<h6>`
+
+Yes it's a bit ugly, but it contains the proliferation of margins, paddings, font-sizes & line-heights across the CSS. It also helps us stick to our typographic grid.
+
+
+## Use descriptive naming if you have to build a new component
+
+When naming, think 'what is this' not 'where is this' or 'how is it used', the last two can change.
+
+If you can't come up with a readable name for new class, ask someone for advice!
+
+Think `.search-form` not `.landing-page-hero-search-form`.
+Think `.btn.btn_large.btn_primary` not `.btn-on-map-overlay`.
+
+
+* Variables use `$dashes-in-their-names`.
+* Mixins use dashes too.
+* Acronyms and domain lingo are forbidden.
+
+
+## Nested imports
+
+... are confusing. Don't do it.
+
+The top-level stylesheets should include all required `@import` directives and be well commented.
+
+The only dependancies for a component should be the 'global' styles: typography, colours etc. These will be included by any top-level stylesheet.
+
+
+# SASS extend, just don't
+
+You shouldn't use `extend` it's cognitively tricky and can produce huge style sheets.
+
+SASS is _generated_ into CSS, `extend` often ends up with CSS rules repeated for the selector. Just use the classes in the HTML. _Keep it simple._
+
+e.g.
+
+```sass
+.font-size-xxl
+  font-size: 600px
+
+.hero-title
+  @extend .font-size-xxl
+  text-shadow: 10px solid #000
+```
+
+becomes
+
+```css
+.font-size-xxl, .hero-title {
+  font-size: 600px;
+}
+.hero-title {
+  text-shadow: 10px solid #000
+}
+```
+
+The extend is an indirection and rapidly becomes complex when extend is used in multiple places. It's simpler for 'future you' to get the same result by doing this in your HTML. This is what the _cascade_ in Cascading Style Sheets is for.
+
+```sass
+.font-size-stupid
+  font-size: 600px
+
+.hero-title
+  text-shadow: 10px solid #000
+```
+
+```html
+<h2 class="font-size-stupid hero-title">Mega Title</h2>
+```
+
+
+# HouseTrip Style
+
+We use a tweaked bootstrap (v3) grid to layout our pages.
+
+The [bootstrap documentation](http://getbootstrap.com/css/#grid) is the best place to read up on how that works. We can use all of the existing types of bootstrap grid classes: e.g. `col-sm-offset-X`, `.col-sm-push-3`.
+
+It uses (currently) only the `.col-sm-X` classes for the desktop version, we are not ready for full responsivity in our designs, but by following these guidelines _we can get there_.
+
+There are also `.col-xs-X` that apply for all screen widths, including mobile, but use these sparingly.
+
+
+## Do not reinvent the wheel
+
+Look at the component library. Look at other pages. Are there elements you could re-use?
+
+Talk with your designers. Can we use this element that already exists rather than introduce a new variant?
+
+Only use variables when they are truly global. Then put them in `global/_variables`.
+
+
+## Components should flex within the grid element they are inside
+
+A component should be styled independantly of the containing `col-sm-X` `div`. Overall width of a component is provided by the grid, elements within your component can be positioned within _that_ context.
+
+Use floats and absolute positioning where required. You shouldn't need to do anything crazy like using negative margins, if you do find yourself doing it, there's probably another way.
+
+You can also use nested `.row` and `.col-sm-X` classes within your components for additional grid-based layout.
+
+
+## SVG
+
+For all non-photographic images we should try and use SVG. It is XML-based and therefore textand this compresses extremely well.
+
+We can also inline SVG to reduce HTTP requests as we move away from any support other than IE8.
+
+### A note on icon-fonts
+
+Icon fonts are great. Including *all the icons* is not great. Generating classes for all the icons you need is a recipie for exventual CSS bloat.
+
+We currently have the glyphicons fonts included in v4, but we use only a handful for their stated purpose (tiny icons next to text) and spend a lot of time in CSS tweaking their position.
+
+Whilst icon fonts are not _off the table_ for simplicity let's stick with SVG for now.
+
+
+## Colors
+
+We have all the housetrip brand colours in `global/_colors.sass`, use these variables. Use from the top of that file and don't add any more, we are trying to reduce the number of colors and color variables.
+
+For black and white use `#000` and `#fff`.
+
+Prefer to use use functions (`transparentize`, `lighten`) over RGBA. You'd probably get the math wrong, and it'd be less readable, so why bother?
+
+
+## Possible Smells
+
+* Setting widths in CSS
+* Setting heights in CSS, just let the content flow
+* Setting font-size, line-height
+* CSS for use in one page
+* Location-based naming of classes
+
+
+
+# File Organization
+
+```
+<app/assets/stylesheets>
+├── application.sass               # app spreadsheet
+├── legacy_application.sass        # don't add stuff in here
+│
+├── components                     # reusable elemenets
+│   ├── _badges.css.sass
+│   ├── _block.sass
+│   ├── _footer.sass
+│   ├── _hero.sass
+│   ├── _highlight.sass
+│   ├── ...
+│   └── _navigation.sass
+│
+├── global
+│   ├── _colors.sass               # colors
+│   ├── _fonts.sass                # font-face
+│   ├── _responsive_mixins.sass    # mixins
+│   ├── _typography.sass           # typography
+│   └── _variables.sass            # fonts
+│
+├── vendor                         # vendored (as scss files)
+│   ├── _normalize.scss            # normalize cross-browser
+│   ├── _jquery.plugin.scss        # js plugin css
+│   └── bootstrap                  # bootstrap scss files
+│       ├── _forms_variables.scss  # our tweaks to the vars
+│       ├── _forms.scss
+│       ├── _grid_variables.scss   # our tweaks to the vars
+│       ├── _grid.scss
+│       ├── _attachments.scss
+│       └── ...
+│       └── _utilities.scss
+│
+├── legacy						   # HERE BE DRAGONS
+│   ├── ...
+│   └── _lots.sass
+│
+├── v4   						   # working on moving into
+│   ├── ...                        # the new coding standards
+│   └── ...
+│
+└── pages                          # view specific partials
+      └── controller_name            # try not to do this
+          ├── _index.scss
+          └── _show.scss
+```
+
+## Adding Third Party CSS
+
+Goes in `vendor` directory, unedited. If there are multiple files, use a directory.
+
+Most included files will be css files so change the extension to `.scss`. If you _do_ have to make changes, keep them small (this is most likely changes to image paths) and do it in a seperate commit.
+
+I prefer to include non-minified source, so that future changes to plugins can be easily seen in a `git diff`.
+
+For example the the mixins from [bootstrap-sass](https://github.com/twbs/bootstrap-sass/) go into `vendor/bootstrap/_mixins.scss`.
+
+
+## Work in Progress
+
+If you are unsure put the CSS where you think it needs to go and reach out to the wider team pre-pull request. You'll also get feedback during the PR process.
+
+We don't _do_ potential timebombs like `wip.sass` with later cleanup. Treat CSS as production-ready.
+
+
+## Page specific styles
+
+There is *never* a good reason to write page-specific styles, so `pages` should be empty. If it isn't, each file name should be the snake-cased, full path to the corresponding view partial.
+
+
+# Going Off Topic
+
+## Emails
+
+_We are moving to responsive emails, starting with `UserMailer#welcome`... please get in touch if you have email related stories. There is probably a case for _
+
+The rules above apply, mostly. We have CSS inliners (`premailer` in Rails 2) that mostly do the heavy lifting for you.
 
 The notable exception being, of course, that most of your layout will be done with tables.
 
 Avoid using floats, padding, and margins in emails.
 
-### Javascript
+## Javascript
 
 JQuery will typically use CSS-style selectors to designate objects, but this doesn't mean you're allowed to tightly couple the two.
 
@@ -548,9 +529,11 @@ Good:
 
     # Haml
     .js-alertable.message#message_123{ data: { confirm: 'hey!' } }
+
     # Sass
     .message
       border: 1px dotted red
+
     # Coffee
     $('.js-alertable').on 'click', () ->
 	  alert $(this).data('confirm')
@@ -559,18 +542,19 @@ Bad (Sass-Coffee coupling):
 
     # Haml
     .message#message_123{ data: { confirm: 'hey!' } }
+
     # Sass
     .message
       border: 1px dotted red
+
     # Coffee
     $('.message').on 'click', () ->
 	  alert $(this).data('confirm')
-
 
 
 -------------------------------------------------------
 
 Thanks for reading!
 
-Of you disagree with something, or think the guide lacks something, feel free to issue a pull request against the guide!
+If you disagree with something, or think the guide lacks something, feel free to issue a pull request against the guide!
 Be prepared to defend, as we usually merge only when a consensus is reached.
