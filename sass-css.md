@@ -380,6 +380,24 @@ It uses (currently) only the `.col-sm-X` classes for the desktop version, we are
 There are also `.col-xs-X` that apply for all screen widths, including mobile, but use these sparingly.
 
 
+### Special case div-itis avoidance
+
+When you are simply after the full width of a container, there is no need to do this...
+
+```haml
+.row
+  .col-sm-12
+    %h1
+```
+
+You can simply omit the `row` and `col-sm-12`
+
+```haml
+%h1
+```
+
+Voila.
+
 ## Do not reinvent the wheel
 
 Look at the component library. Look at other pages. Are there elements you could re-use?
