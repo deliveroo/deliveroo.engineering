@@ -77,7 +77,7 @@ Use `//` for comment blocks
   content: ""
 ```
 
-Also quote attribute values in selectors
+Also quote attribute values in selectors, for consistency and code highlighting.
 
 ```sass
 input[type="checkbox"]
