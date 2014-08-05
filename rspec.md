@@ -212,7 +212,8 @@ Integration tests in Rspec live int the `spec/features` folder and need to be ta
 
 ## Shared examples
 
-TBD
+Do NOT use them. They make things DRY but the cost is too high. If it fails it makes things much more difficult to debug, and the error messages can be confusing.
+Also when used across files, it is less readable and making them reusable can become a challenge very fast.
 
 ## Custom matchers
 
