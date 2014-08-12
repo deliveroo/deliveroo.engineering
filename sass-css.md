@@ -415,6 +415,8 @@ Use floats and absolute positioning where required. You shouldn't need to do any
 
 You can also use nested `.row` and `.col-sm-X` classes within your components for additional grid-based layout.
 
+It's also a possible smell if you find yourself setting widths rather than relying on the grid.
+
 
 ## SVG
 
