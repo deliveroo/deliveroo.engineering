@@ -295,9 +295,9 @@ Encourages reuse and lack of surprises. And allows our 'base' styling to remain 
 
 ## Do not style typography in your component CSS
 
-Most often you'll want to change the typography of something within your element. We have the somewhat ugly-but-effective `.h0`-`.h6` styles which you can apply to change those around and keep to our typographic hierarchy.
+Most often you'll want to change the typography of something within your element. We have the somewhat ugly-but-effective `.text-l` to `.text-xxl` styles which you can apply to change those around and keep to our typographic hierarchy.
 
-i.e. `<h2 class="h6">` has the typographic styling of an `<h6>`
+i.e. `<p class="text-xxl">` has the typographic styling of an `<h1>`
 
 Yes it's a bit ugly, but it contains the proliferation of margins, paddings, font-sizes & line-heights across the CSS. It also helps us stick to our typographic grid.
 
