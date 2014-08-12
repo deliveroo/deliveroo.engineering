@@ -328,7 +328,7 @@ The only dependancies for a component should be the 'global' styles: typography,
 
 # SASS extend, just don't
 
-You shouldn't use `extend` it's cognitively tricky and can produce huge style sheets.
+You shouldn't use `extend` it's cognitively tricky and can produce huge style sheets. Particularly avoid any use of `@extend` that references a class from other file because it couples their compilation.
 
 SASS is _generated_ into CSS, `extend` often ends up with CSS rules repeated for the selector. Just use the classes in the HTML. _Keep it simple._
 
