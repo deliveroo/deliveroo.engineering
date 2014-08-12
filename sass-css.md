@@ -267,7 +267,7 @@ All this does is lock that component to that page and prevent reuse. Try this in
 
 Try and think *in generalities* when naming. Avoid `.button-for-search-filters`, use `.button-tiny`, there might even be one already you can use.
 
-If there isn't, don't slavishly create another kind of something, work with your designer to try and use existing styles.
+If there isn't, don't slavishly create another kind of something, work with your designer to try and reuse existing styles.
 
 
 ## Do not style html elements other than globally
@@ -440,16 +440,6 @@ For black and white use `#000` and `#fff`.
 Prefer to use use functions (`transparentize`, `lighten`) over RGBA. You'd probably get the math wrong, and it'd be less readable, so why bother?
 
 
-## Possible Smells
-
-* Setting widths in CSS
-* Setting heights in CSS, just let the content flow
-* Setting font-size, line-height
-* CSS for use in one page
-* Location-based naming of classes
-
-
-
 # File Organization
 
 ```
@@ -507,7 +497,7 @@ Most included files will be css files so change the extension to `.scss`. If you
 
 I prefer to include non-minified source, so that future changes to plugins can be easily seen in a `git diff`.
 
-For example the the mixins from [bootstrap-sass](https://github.com/twbs/bootstrap-sass/) go into `vendor/bootstrap/_mixins.scss`.
+For example the mixins from [bootstrap-sass](https://github.com/twbs/bootstrap-sass/) go into `vendor/bootstrap/_mixins.scss`.
 
 
 ## Work in Progress
