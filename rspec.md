@@ -99,6 +99,23 @@ context 'with a new review'
 end
 ```
 
+### Namespaced classes/modules
+
+Specs for namespaced classes/modules should have their specs namespaced, its
+less verbose and reads better.
+
+```ruby
+# bad
+describe Foo::Bar do
+end
+
+# good
+module Foo
+  describe Bar do
+  end
+end
+```
+
 ## Describing objects
 
 ```ruby
