@@ -1196,6 +1196,27 @@ at all.
 
 ## Classes & Modules
 
+* Expand the namespacing on to separate lines.
+
+    ```ruby
+    # bad
+    module Foo::Bar
+      class Baz
+      end
+    end
+
+    # good
+    module Foo
+      module Bar
+        class Baz
+        end
+      end
+    end
+    ```
+
+The only case where this does not apply is when a class inherits from the same
+class in which it is namespaced such as `class Foo::Bar < Foo`.
+
 * Use a consistent structure in your class definitions.
 
     ```Ruby
