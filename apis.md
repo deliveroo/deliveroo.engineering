@@ -47,6 +47,11 @@ General principles
 - parameters v segment: ownership? makes sense without the parameter? index
   needed?
 
+## Versioning
+
+Accept-Version client headers
+
+Version, Vary response headers
 
 ## Responses
 
@@ -92,7 +97,7 @@ General principles
 Optimistic Locking
 lock_version field
 
-## Errors
+## Return codes & errors
 
 text/plain
 only valuable for users
@@ -108,6 +113,11 @@ don't confuse syntax & semantic failures
 - 409 Conflict -> POST with unique fields
 - 422 Unprocessable entity -> inconsistency in GET/POST parameters
 - 428 Precondition failed -> GET/PUT cycles (see versioning entities)
+
+success codes
+
+- 200 v 204
+- 200 v 201 v 202
 
 ### "Extra" parameters
 
