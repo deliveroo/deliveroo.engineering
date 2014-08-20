@@ -49,9 +49,24 @@ General principles
 
 ## Versioning
 
-Accept-Version client headers
+version using the path
+authoritative URLs replaced with URL templates:
 
-Version, Vary response headers
+`/api/{version}/properties/1234`
+
+## i18n
+
+not decided. options:
+- use headers (Accept-Language), not testable by PMs easily
+- user param (locale)
+
+in either option, how can we auto-cache for multiple locales?
+
+## Multi-tenancy
+
+- "tenant" is the first component of the path after `/api/{version}`
+- mandatory for all services but the monorail
+
 
 ## Responses
 
