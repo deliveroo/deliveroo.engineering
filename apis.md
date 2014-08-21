@@ -1,26 +1,115 @@
-# Designing APIs
+# Designing APIs in a microservices architecture
 
-This set of guidelines outline how to design APIs that are reusable and match
-with out [Service
+This set of guidelines and conventions outline how to design APIs that are
+reusable and match with out [Service
 design](https://github.com/HouseTrip/guidelines/blob/master/active-record.m://github.com/HouseTrip/guidelines/blob/master/services.md)
 guidelines.
 
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](http://doctoc.herokuapp.com/)*
 
-General principles
+  - [General principles](#general-principles)
+    - [RESTful](#restful)
+    - [Hypermedia / HatEoAS](#hypermedia--hateoas)
+    - [Many-calls](#many-calls)
+  - [API and domain modeling](#api-and-domain-modeling)
+    - [Naming & paremeters](#naming-&-paremeters)
+  - [Documentation](#documentation)
+  - [General API conventions](#general-api-conventions)
+    - [Authentication](#authentication)
+    - [Versioning](#versioning)
+    - [i18n](#i18n)
+    - [Multi-tenancy](#multi-tenancy)
+  - [Conventions on responses](#conventions-on-responses)
+    - [GET endpoints (for single resources)](#get-endpoints-for-single-resources)
+    - ["Index" GET endpoints (for collections)](#index-get-endpoints-for-collections)
+    - [POST and PUT endpoints](#post-and-put-endpoints)
+    - [PATCH endpoints](#patch-endpoints)
+    - [Versioning entities](#versioning-entities)
+    - [Return codes and errors](#return-codes-and-errors)
+    - ["Extra" parameters](#extra-parameters)
+    - [Caching](#caching)
+    - [Compression](#compression)
+  - [Tools and Examples](#tools-and-examples)
+    - [Clients](#clients)
+    - [Servers](#servers)
+  - [Further reading](#further-reading)
 
-- Representational State Transfer
-  - only verbs are HTTP verbs
-  - idempotency
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-- HATEOAS
-  - dynamic discovery or URLs 
-  - no URL construction in clients (which would be tight coupling)
+----------
+
+## General principles
+
+We choose to adopt three general principles. Here's a shortcut to remember:
+
+> **RESTful, Hypermedia, Many-calls**
+
+
+### RESTful
+
+We decide that our APIs will let consumers perform [Representational State
+Transfer](http://en.wikipedia.org/wiki/Representational_state_transfer), as
+opposed to Remote Procedure Call.  In particular, this means that:
+
+1. The top-level concepts of the APIs are always **nouns**, i.e. paths
+   contain nouns which refer to the domain concepts.
+
+2. The only verbs are HTTP verbs: `GET` to read, `POST` to create, `PUT` and
+   `PATCH` to modify, `DELETE` to destroy, and `HEAD` to obtain metadata.
+   
+3. Read methods (`GET`, `HEAD`) have no side effects, and write methods (`PUT`,
+   `PATCH`) are idempotent.
+
+
+Example of verb v noun usage:
+
+- Good: `POST /bookings { property: { id: 1234 } }`
+- Bad: `POST /property/1234/book`
+
+Example of proper method usage:
+
+- Good: `PATCH /bookings/432 { state: "requested", payment_id: 111 }`
+- Bad:  `POST  /bookings/432 { state: "requested", payment_id: 111 }`
+
+### Hypermedia / HATEOAS
+
+The principle of [HATEOAS](http://en.wikipedia.org/wiki/HATEOAS) is that "a
+client interacts with a network application entirely through hypermedia provided
+dynamically by application servers. (...) The HATEOAS constraint decouples
+client and server in a way that allows the server functionality to evolve
+independently."
+
+In practice, this means that interacting with the API should rely on **URLs, not
+IDs** (like our internal, numeric identifiers for resources):
+
+- In responses, associations are specified using their URL.
+- Consumers should not need to construct URLs, instead using only URLs
+  dynamically discovered in responses.
+
+Ideally the domain can be discovered by calling `OPTIONS` on the root:
+
+    > OPTIONS *
+    < { 
+    <   _links: {
+    <     properties: "/api/{version}/properties",
+    <     bookings:   "/api/{version}/bookings"
+    <   },
+    <   versions: ["v1", "v2"]
+    < }
+
+This lowers coupling as consumers no longer need to maintain a copy of the
+routing table of the services they consumer.
+
+
+### Many-calls
 
 - make many calls
   - client cost is low (reusable connections, parallelism)
   - better scalability (small requests, dispatched to many servers; caching; small DB queries)
 
-## Domain modeling
+## API and domain modeling
 
 - concepts v database
 - mutation of entities can need to be materialised
@@ -28,33 +117,41 @@ General principles
   gray area: localised property descriptions
     modifying the domain for performance reasons
 
+- surfacing concepts for technical reasons
+
+### Naming & paremeters
+
+- URLs nesting follows the domain (/properites/:id:/photos)
+- parameters v segment: ownership? makes sense without the parameter? index
+  needed?
+
+no params for GET in general
+
+exception: supporting "legacy", non-compliant apps in a transition process
+
 
 ## Documentation
 
 - APIs documented (apiary) & discussed before being implemented (design)
 
 
-## Authentication
+## General API conventions
+
+### Authentication
 
 - HTTP Basic
 - Digest + persistent connections (otherwise 2x request overhead of the digest
   challenge-response)
 
 
-## Naming & paremeters
-
-- URLs nesting follows the domain (/properites/:id:/photos)
-- parameters v segment: ownership? makes sense without the parameter? index
-  needed?
-
-## Versioning
+### Versioning
 
 version using the path
 authoritative URLs replaced with URL templates:
 
 `/api/{version}/properties/1234`
 
-## i18n
+### i18n
 
 not decided. options:
 - use headers (Accept-Language), not testable by PMs easily
@@ -62,13 +159,25 @@ not decided. options:
 
 in either option, how can we auto-cache for multiple locales?
 
-## Multi-tenancy
+jesper [12:20] 
+:question: Any reasons why we translate the api endpoints?  example: `/en/api/internal/v1/properties/{property_id}` http://docs.internalapiv10.apiary.io/
+
+mezis [12:21] 
+i18n is a representation. "translating" the endpoints would infer distinct resources.
+so `/api/internal/v1/properties/{id}.json{?locale}` would make more sense. (edited)
+(hopefully that just made sense!)
+I'll add a paragraph in the upcoming "APIs guideline" document
+
+Event better (more standard): use the `Accept-Language` header (it's part of
+HTTP)
+
+### Multi-tenancy
 
 - "tenant" is the first component of the path after `/api/{version}`
 - mandatory for all services but the monorail
 
 
-## Responses
+## Conventions on responses
 
 - hypermedia links
 - no document nesting in responses
@@ -112,7 +221,7 @@ in either option, how can we auto-cache for multiple locales?
 Optimistic Locking
 lock_version field
 
-## Return codes & errors
+### Return codes and errors
 
 text/plain
 only valuable for users
@@ -140,7 +249,7 @@ are an error
 payload in POST/PUT, parameters in GET
 
 
-## Caching
+### Caching
 
 - GET endpoints heavily cached for immutable entities (photos, translations)
      faraday cache middleware
@@ -148,34 +257,31 @@ payload in POST/PUT, parameters in GET
 
 - architecture / domain / authority on concepts and on functions
 
+- optimistic caching first: Cache-Control + client cache
+- pessimistic caching second: ETag/If-None-Match
 
-## Localisation
-
-
-jesper [12:20] 
-:question: Any reasons why we translate the api endpoints?  example: `/en/api/internal/v1/properties/{property_id}` http://docs.internalapiv10.apiary.io/
-
-mezis [12:21] 
-i18n is a representation. "translating" the endpoints would infer distinct resources.
-so `/api/internal/v1/properties/{id}.json{?locale}` would make more sense. (edited)
-(hopefully that just made sense!)
-I'll add a paragraph in the upcoming "APIs guideline" document
-
-Event better (more standard): use the `Accept-Language` header (it's part of
-HTTP)
+may be ignored for GETs when using routemaster
 
 
-## Tools
+### Compression
+
+optional
+
+
+## Tools and Examples
 
 ### Clients
 
 Faraday (for simple APIs / use cases)
 Hyperclient / Hyperresource (uses Faraday)
 
+routemaster-receiver (to come)
+
 ### Servers
 
-Grape + Roar
 Rails + Roar
+
+no Grape, Rails-API (because of no router)
 
 ## Further reading
 
