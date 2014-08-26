@@ -88,9 +88,10 @@ IDs** (like our internal, numeric identifiers for resources):
 - Consumers should not need to construct URLs, instead using only URLs
   dynamically discovered in responses.
 
-Ideally the domain can be discovered by calling `OPTIONS` on the root:
+Ideally the domain can be discovered by calling `GET` on the root:
 
-    > OPTIONS *
+    > GET /api
+    > Accept: application/hal+json
     < { 
     <   _links: {
     <     properties: "/api/{version}/properties",
@@ -101,6 +102,9 @@ Ideally the domain can be discovered by calling `OPTIONS` on the root:
 
 This lowers coupling as consumers no longer need to maintain a copy of the
 routing table of the services they consumer.
+
+HATEOS is difficult to achieve in practice on large APIs, but is a very valuable
+target to aim for.
 
 
 ### Many-calls
