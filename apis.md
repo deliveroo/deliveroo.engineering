@@ -217,6 +217,17 @@ HTTP)
   X-Pagination-Total)
 - per_page, page query parameters
 
+Rationale: 
+
+In domain terms, an index endpoint actually returns a _view_ on the _collection_
+of resources; ie. the resource returned is the view.
+The current page, links, and page size are _data_ of that view. The number of
+pages and the total number of resources depend (if your view can filter it's
+data; if it can only order it's metadata). (edited)
+
+For the sake of consistency, I'd argue that the 2 latter should be both in the
+payload (because it's usually data) and the headers (because you want to count).
+(edited)
 
 ### POST and PUT endpoints
 
