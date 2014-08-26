@@ -123,6 +123,15 @@ target to aim for.
 
 - surfacing concepts for technical reasons
 
+Can the user's avatar change without the user becoming a "different" user? Does it change on a different schedule? Can a user _not_ have an avatar?
+Yes -> hint it's not intrinsic.
+Is an avatar used similarly to another concept (property photo)
+Yes -> hint it's probably the same top-level domain model.
+
+KArlo:
+it is a difficult question, but one question could be: "is this value or entity be the same for someone else - if no, it is intrinsic"
+for example, my avatar should never be user by someone else -> intrinsic
+
 ### Naming & paremeters
 
 - URLs nesting follows the domain (/properites/:id:/photos)
