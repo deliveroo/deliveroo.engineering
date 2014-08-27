@@ -337,13 +337,17 @@ http://restful-api-design.readthedocs.org/
 http://en.wikipedia.org/wiki/Representational_state_transfer
 http://en.wikipedia.org/wiki/HATEOAS
 
-example decently well-though API
+example decently well-though APIs and guidelines
+https://github.com/gocardless/http-api-design
 https://developer.github.com
 
 context and debate
 http://devblog.reverb.com/post/47197560134/hal-siren-rabl-roar-garner-building-hypermedia
 http://www.foxycart.com/blog/the-hypermedia-debate
 http://stackoverflow.com/questions/9055197/splitting-hairs-with-rest-does-a-standard-json-rest-api-violate-hateoas
+
+spec for json-api
+http://jsonapi.org
 
 specs for `application/hal+json`
 http://stateless.co/hal_specification.html
