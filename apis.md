@@ -113,6 +113,8 @@ target to aim for.
   - client cost is low (reusable connections, parallelism)
   - better scalability (small requests, dispatched to many servers; caching; small DB queries)
 
+Corner case: mobile-friendly APIs.
+
 
 ### Concise
 
