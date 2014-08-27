@@ -44,7 +44,7 @@ guidelines.
 
 We choose to adopt three general principles. Here's a shortcut to remember:
 
-> **RESTful, Hypermedia, Many-calls**
+> **RESTful, Hypermedia, Many-calls, Concise**
 
 
 ### RESTful
@@ -112,6 +112,16 @@ target to aim for.
 - make many calls
   - client cost is low (reusable connections, parallelism)
   - better scalability (small requests, dispatched to many servers; caching; small DB queries)
+
+
+### Concise
+
+- one way to query for data or make changes
+  - no multiple routes for the same resource (/users/1234 v /properties/11/host)
+  - avoid embedded documents
+  - avoid multiple naming (host, guest, author -> user)
+  - IDs v URLs: favour URLs
+
 
 ## API and domain modeling
 
