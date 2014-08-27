@@ -208,13 +208,20 @@ HTTP)
 - no document nesting in responses
   - avoids endless debate on where to limit, what fields to limit to
 
-### GET endpoints (for single resources)
+- JSON-HAL
 
+### Single-resource representationc
+
+- alwasy numeric ID
+- alwasy link to self
 - intrinsic properties only (eg nested photos)
   - think hard when exposing a field, case by case
   - e.g. photos - image_file_name
 - intrinsic-ness might be gray (e.g. modeling descriptions as a separate concept)
 - plus counts (which cannot be expressed otherwise), in hypermedia links section
+
+### GET endpoints (for single resources)
+
 
 ### "Index" GET endpoints (for collections)
 
