@@ -248,6 +248,10 @@ For the sake of consistency, I'd argue that the 2 latter should be both in the
 payload (because it's usually data) and the headers (because you want to count).
 (edited)
 
+But: X- headers are deprecated
+http://tools.ietf.org/html/rfc6648
+
+
 ### POST and PUT endpoints
 
 
