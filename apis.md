@@ -144,6 +144,21 @@ KArlo:
 it is a difficult question, but one question could be: "is this value or entity be the same for someone else - if no, it is intrinsic"
 for example, my avatar should never be user by someone else -> intrinsic
 
+on associations (case of country_id and friends embedded in properties):
+
+    the `_id`
+   is a hint. The fact there are _multiple_ `{place type}_id` fields is a stronger
+   one: those fields are actually a normalised one-to-many relationship, which is
+   currently embedded as it is in the DB (that's another hint: the DB structure is
+   often very wrong).
+
+   Now for the "it's not black and white" part. If we only had, say, city and
+   country; I'd say just chuck it in `/properties`. Especially if we never need
+   any data about places (e.g. population).
+   But it's not just 2, it's 4..N (and we do eventually need data, like the name,
+   and probably some copy as well which lives in landing pages for now)
+
+
 ### Naming & paremeters
 
 - URLs nesting follows the domain (/properites/:id:/photos)
