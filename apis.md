@@ -195,7 +195,8 @@ authoritative URLs replaced with URL templates:
 
 not decided. options:
 - use headers (Accept-Language), not testable by PMs easily
-- user param (locale)
+- use param (locale)
+- use path
 
 in either option, how can we auto-cache for multiple locales?
 
@@ -210,6 +211,45 @@ I'll add a paragraph in the upcoming "APIs guideline" document
 
 Event better (more standard): use the `Accept-Language` header (it's part of
 HTTP)
+
+
+discussion:
+
+    The options we have for i18n of the internal API are:
+    3.1. The HTTP standard (`Accept-Version` headers).
+     pro: standard
+     con: not easily testable by PMs in a browser
+    3.2. Use a param
+     pro: testability
+     cons: what's the default is param missing?
+                so far our UIDs for resources are query-less URLs
+                changes to RM notification needed (URLs -> URL templates)
+    3.3. Use a path component
+      pros: testability, consistency with current
+                consistency with how we (plan to) do versioning
+      cons: matches our current monorail routing very badly (magic path translations) = hard to implement
+                 same changes to RM notification (edited)
+
+    to provide examples:
+
+    3.1.
+    authoritative UID stays the URL  `.../en/api/v1/properties/1234`
+    header `Accept-Language: en`
+
+    3.2.
+    authoritative UID becomes the template `.../en/api/v1/properties/1234{?locale}`
+
+    3.3.
+    authoritative UID becomes the template `/{locale}/api/v1/properties/1234` (edited)
+
+    in 3.1 and 3.2, the `/en` part of the path is a legacy artifact of our crazy router and is completely ignored for i18n purposes. (edited)
+
+    (not that in all cases, the API should _not_ respond on other TLDs than `.com`)
+
+    in 3.1. and 3.2., the `self` links for any translated resource will need to be changed
+
+    as will any client code
+
 
 ### Multi-tenancy
 
@@ -265,6 +305,29 @@ payload (because it's usually data) and the headers (because you want to count).
 
 But: X- headers are deprecated
 http://tools.ietf.org/html/rfc6648
+
+Example:
+
+```json
+# GET /api/widgets?page=3
+{
+  "per_page": 10,
+  "page":     3,
+  "total":    22,
+  "_links": {
+    "self":   "/api/widgets?page=3",
+    "prev":   "/api/widgets?page=2",
+    "next":   null,
+    "first":  "/api/widgets"
+    "last":   "/api/widgets?page=3"
+  },
+  "widgets": [
+    { "id": 111, "_links": { self: "/api/widgets/111" } },
+    { "id": 112, "_links": { self: "/api/widgets/112" } }
+  ]
+}
+```
+
 
 
 ### POST and PUT endpoints
