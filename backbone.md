@@ -112,25 +112,24 @@ Assuming `root` is where you have your javascript assets, the file organization 
 
 ```
 <root>
-  ├── vendor
-    ├── vendor1.min.js
-    ├── vendor2.min.js
-    └── vendor3.min.js
-  ├── lib
-    ├── lib1.min.js
-    ├── lib2.min.js
-    └── lib3.min.js  
-  ├── app.js # initialize namespaces here
+  ├── collections
+    ├── collections1.js
+    └── collections2.js
   ├── helpers
     ├── helper1.min.js
     ├── helper2.min.js
     └── helper3.min.js
+  ├── lib
+    ├── lib1.min.js
+    ├── lib2.min.js
+    └── lib3.min.js  
   ├── models
     ├── model1.js
     └── model2.js
-  ├── collections
-    ├── collections1.js
-    └── collections2.js
+  ├── vendor
+    ├── vendor1.min.js
+    ├── vendor2.min.js
+    └── vendor3.min.js
   ├── views
     ├── context1
       ├── view1.js
@@ -138,15 +137,16 @@ Assuming `root` is where you have your javascript assets, the file organization 
     ├── context2
       ├── view1.js
       └── view2.js
+  ├── app.js # initialize namespaces here
 ```
 
 ### Purpose of folders:
 
-* `vendor` - All 3rd party code (jquery, backbone, underscore, plugins, etc..). This files **should not be modified** and they should contain as a comment on top of file which version they at or the file name should reflect the version **jquery-2.6.6.6**. In case they need to be modified - always consider issuing a PR for the owner - they should be moved to `lib` folder.
+* `helpers` - Same as lib but has dependencies on the application specifics. Example: date functions that convert Date to String objects with a specific format, compute a full name based on a backbone model first name and last name, handling a push state of a specific page, etc..
 
 * `lib` - All library code created by our team that supports the app itself but could be applied on other contexts  - extended jquery plugins, specific galleries, etc..
 
-* `helpers` - Same as lib but has dependencies on the application specifics. Example: date functions that convert Date to String objects with a specific format, compute a full name based on a backbone model first name and last name, handling a push state of a specific page, etc..
+* `vendor` - All 3rd party code (jquery, backbone, underscore, plugins, etc..). This files **should not be modified** and they should contain as a comment on top of file which version they at or the file name should reflect the version **jquery-2.6.6.6**. In case they need to be modified - always consider issuing a PR for the owner - they should be moved to `lib` folder.
 
 * `views` - Whenever possible introduce context folders to facilitate understanding of the logic and place of the several components. Name it like: `search`, `search_bar`, `filters`, `gallery`. This helps not only cracking the code but enforces components to be named after their context folder: `SearchSort`, `SearchBarCalendar`, `SearchBarGuests`, `FiltersPanel`, etc..
 
