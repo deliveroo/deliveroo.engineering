@@ -112,11 +112,19 @@ Assuming `root` is where you have your javascript assets, the file organization 
 
 ```
 <root>
-  ├── app.js # initialize namespaces here
+  ├── vendor
+    ├── vendor1.min.js
+    ├── vendor2.min.js
+    └── vendor3.min.js
   ├── lib
     ├── lib1.min.js
     ├── lib2.min.js
-    └── lib3.min.js
+    └── lib3.min.js  
+  ├── app.js # initialize namespaces here
+  ├── helpers
+    ├── helper1.min.js
+    ├── helper2.min.js
+    └── helper3.min.js
   ├── models
     ├── model1.js
     └── model2.js
@@ -132,9 +140,20 @@ Assuming `root` is where you have your javascript assets, the file organization 
       └── view2.js
 ```
 
+### Purpose of folders:
+
+* `vendor` - All 3rd party code (jquery, backbone, underscore, plugins, etc..)
+
+* `lib` - All library code created by our team that supports the app itself but could be applied on other contexts  - extended jquery plugins, specific galleries, etc..
+
+* `helpers` - Same as lib but has dependencies on the application specifics. Example: date functions that convert Date to String objects with a specific format, compute a full name based on a backbone model first name and last name, handling a push state of a specific page, etc..
+
+* `views` - Whenever possible introduce context folders to facilitate understanding of the logic and place of the several components. Name it like: `search`, `search_bar`, `filters`, `gallery`. This helps not only cracking the code but enforces components to be named after their context folder: `SearchSort`, `SearchBarCalendar`, `SearchBarGuests`, `FiltersPanel`, etc..
+
+
 If using Rails:
 
-* the 3rd party code (jQuery, Backbone, Underscore, etc) should be in `/vendor/assets/javascripts` 
+* the `vendor` folder should be in `/vendor/assets/javascripts` 
 
 * the application code should be in `/app/assets/javascripts`
 
@@ -142,8 +161,10 @@ If using Rails:
 Requiring the files should follow this order
 
 ```
+  vendor/*
   lib/*  
-  app.js  
+  app.js
+  helpers/*
   models/*  
   collections/*  
   views/*  
