@@ -142,7 +142,7 @@ Assuming `root` is where you have your javascript assets, the file organization 
 
 ### Purpose of folders:
 
-* `vendor` - All 3rd party code (jquery, backbone, underscore, plugins, etc..)
+* `vendor` - All 3rd party code (jquery, backbone, underscore, plugins, etc..). This files **should not be modified** and they should contain as a comment on top of file which version they at or the file name should reflect the version **jquery-2.6.6.6**. In case they need to be modified - always consider issuing a PR for the owner - they should be moved to `lib` folder.
 
 * `lib` - All library code created by our team that supports the app itself but could be applied on other contexts  - extended jquery plugins, specific galleries, etc..
 
