@@ -641,6 +641,8 @@ name:     "Manor by the lake"
 version:  "ed6edecf-0f7c-44c1-b575-ed3a279a35bc"
 #< HTTP/1.0 200 OK
 id:       1337
+name:     "Manor by the lake"
+version:  "daaa8952-612d-4080-b818-634dcd573a69"
 _links:
   self:   "/properties/1337"
 ```
