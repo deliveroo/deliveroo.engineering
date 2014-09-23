@@ -156,6 +156,12 @@ architecture.
   RabbitMQ, etc, they're actually one single service. They must communicate over
   HTTP, and there are no exceptions.
 
+
+#### Further reading
+
+API design has its specific set of guidelines, outlined in the [Designing
+APIs](https://github.com/HouseTrip/guidelines/blob/master/apis.md) document.
+
 --------------------------------------------------------------------------------
 
 ### Defining a service
