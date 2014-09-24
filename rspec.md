@@ -12,7 +12,7 @@
 7. [let](#let)
 8. [Mocks and stubs](#mocks-and-stubs)
 9. [Testing modules](#testing-modules)
-10. [Integration testing](#integration-testing)
+10. [Acceptance test](#acceptance-tests)
 11. [Shared examples](#shared-examples)
 12. [Custom matchers](#custom-matchers)
 13. [Test interface](#test-interface)
@@ -223,9 +223,36 @@ describe SomeModule do
 end
 ```
 
-## Integration testing
+## Acceptance tests
 
-Integration tests in Rspec live int the `spec/features` folder and need to be tagged with `:js => true` in order to be run with javascript support (PhantomJS via Poltergeist). Interaction with the page content should only be done through page objects which are stored in `spec/support/pages`. This enforces better encapsulation and enables reuse.
+Acceptance tests in Rspec live in the `spec/features` folder and need to be tagged with `:js => true` in order to be run with javascript support (PhantomJS via Poltergeist). Interaction with the page content should only be done through page objects which are stored in `spec/support/pages`. This enforces better encapsulation and enables reuse.
+
+### Page objects
+
+http://dev.housetrip.com/2014/05/22/page-objects/
+
+There is a difference between a visible and present, as well as hidden and absent.
+
+```ruby
+class MyComponent
+  # returns true if elements exists _and_ is not visible
+  def hidden?
+    @page.has_selector?(selector, visible: false)
+  end
+
+  # returns true if element exists _and_ is visible
+  def visible?
+    @page.has_selector?(selector, visible: true)
+  end
+
+  # returns true if element does not exist
+  def absent?
+    @page.has_no_selector?(selector)
+  end
+end
+```
+
+It was decided not to override `present?` and `blank?`.
 
 ## Shared examples
 
