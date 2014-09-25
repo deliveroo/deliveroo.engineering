@@ -225,7 +225,7 @@ end
 
 ## Acceptance tests
 
-Acceptance tests in Rspec live in the `spec/features` folder and need to be tagged with `:js => true` in order to be run with javascript support (PhantomJS via Poltergeist). Interaction with the page content should only be done through page objects which are stored in `spec/support/pages`. This enforces better encapsulation and enables reuse.
+Acceptance tests in Rspec live in the `spec/features` folder and need to be tagged with `feature: true` in order to be run with javascript support (PhantomJS via Poltergeist). Interaction with the page content should only be done through page objects which are stored in `spec/support/pages`. This enforces better encapsulation and enables reuse.
 
 ### Page objects
 
