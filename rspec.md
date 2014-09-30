@@ -231,23 +231,16 @@ Acceptance tests in Rspec live in the `spec/features` folder and need to be tagg
 
 http://dev.housetrip.com/2014/05/22/page-objects/
 
-There is a difference between a visible and present, as well as hidden and absent.
-
 ```ruby
 class MyComponent
-  # returns true if elements exists _and_ is not visible
+  # Returns true if elements exists _and_ is not visible
   def hidden?
     @page.has_selector?(selector, visible: false)
   end
 
-  # returns true if element exists _and_ is visible
+  # Returns true if element exists _and_ is visible. This is Capybara default behaviour.
   def visible?
     @page.has_selector?(selector, visible: true)
-  end
-
-  # returns true if element does not exist
-  def absent?
-    @page.has_no_selector?(selector)
   end
 end
 ```
