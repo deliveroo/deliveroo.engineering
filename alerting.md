@@ -22,10 +22,10 @@ Example: Disk space on a web worker is < 5 GB.
 ### Check your alert is valid
 
 Why do we need the alert? A good answer would be: "Because if we don't alert on `<insert your reason here>` users won’t be able to book and we are going to lose money!"
-* Another scenario worth considering: "Imagine it’s Saturday night and your
-* feature is breaking. Do you need to wake up the Duty engineer or can we live
-* with the broken feature until Monday morning?"
-* Last but not least: "Is the step you want to monitor on the happy path? Should it be?"
+
+Another scenario worth considering: "Imagine it’s Saturday night and your feature is breaking. Do you need to wake up the Duty engineer or can we live with it being broken until Monday morning?"
+
+Last but not least: "Is the step you want to monitor on the happy path? Should it be?"
 
 ### Alert on symptoms, not causes
 
