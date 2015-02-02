@@ -1,6 +1,6 @@
 # Alerting guidelines
 
-Inspired by https://docs.google.com/document/d/199PqyG3UsyXlwieHaqbGiWVa8eMWi8zzAn0YfcApr8Q/edit
+Inspired by these [alerting guidelines](https://docs.google.com/document/d/199PqyG3UsyXlwieHaqbGiWVa8eMWi8zzAn0YfcApr8Q/edit) written by an ex-Site Reliability Engineer at Google.
 
 ## What is an alert?
 
@@ -13,7 +13,7 @@ An alert is a real, actionable, urgent message sent to an engineer or a group of
 ## What is a notification?
 
 Notification is a message that does not require immediate attention. It reflects a system state and serves as a heads-up – gives you a chance to prevent an alert.
-Messages are not sent to duty engineers but rather than that just pushed to #notification channel.
+Messages are not sent to duty engineers but are just pushed to #notification channel.
 
 Example: Disk space on a web worker is < 5 GB.
 
@@ -31,7 +31,7 @@ Last but not least: "Is the step you want to monitor on the happy path? Should i
 
 Symptom based alerting is focused around creating rules and conditions that mimic those of an end user. Setting the alert on the symptom allows you to catch multiple causes with a single alert rule.
 
-Users care about a feature not working not why it’s not working – users care about a symptom not cause. For example an user might be upset when:
+Users care about a feature not working not why it’s not working – users care about a symptom not cause. For example a user might be upset when:
 * Page loads are slow
 * There are errors on page or page does not load completely
 * Invalid data is displayed
@@ -40,7 +40,7 @@ Users care about a feature not working not why it’s not working – users care
 Example:
 The end user does not care about MySQL server being unreachable. She cares about not being able to view a property or sign in.
 
-Example 2: Less extreme example would be users not receiving transactional emails. There might be multiple causes why (code error, delayed jobs not processing, Mandrill not accessible, ...). Alerting on cause would mean setting up alerts for each cause.
+Example 2: A less extreme example would be users not receiving transactional emails. There might be multiple causes why (code error, delayed jobs not processing, Mandrill not accessible, ...). Alerting on cause would mean setting up alerts for each cause.
 
 ### Peer review for all alerts
 
