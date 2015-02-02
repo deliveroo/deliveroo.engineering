@@ -76,7 +76,7 @@ Cons:
 Pros:
 * Background process healthcheck (i.e. scheduler is working)
 * Ensuring background jobs are being processed (i.e. properties being imported, rates synced)
-* Define custom alert required for the business (i.e.
+* Define custom alert required for the business (i.e. queue staleness alerts)
 
 Cons:
 * The logic that can be applied to a monitored action is pretty rudimentary. You can only set alerting rules on a single monitored action.
