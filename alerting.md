@@ -42,6 +42,14 @@ The end user does not care about MySQL server being unreachable. She cares about
 
 Example 2: A less extreme example would be users not receiving transactional emails. There might be multiple causes why (code error, delayed jobs not processing, Mandrill not accessible, ...). Alerting on cause would mean setting up alerts for each cause.
 
+### Test on staging
+
+Good developers test on staging. Without going to much into details;
+
+New Relic has staging policy group for applications and transaction set up - make sure your monitor is included in one of them. When an alert is triggered you'll be notified to Slack `#staging-alert` channel.
+
+Similar, testing DataDog monitors on staging requires selecting staging hosts and annotating monitor message with @slack-staging-alerts.
+
 ### Peer review for all alerts
 
 Every added alert should be reviewed by another engineer. Think of it as a PR for the new alert. This ensures knowledge is shared and an extra pair of eyes may spot some obvious errors.
@@ -66,6 +74,7 @@ Pros:
 * Setting up response times and errors per user action (i.e. high error rate on user registration)
 * Pinging an application (pingdom-like health check, checks if the application is online and responds with success)
 * Tracking response times on the web server
+* Application and transaction policies to segment applications & transactions into appropriate groups, i.e. API, End User, Admin.
 
 Cons:
 * Very sensitive when monitoring end user response times (slow clients)
