@@ -58,7 +58,7 @@ Was the alert raised in timely fashion?
 Was it a genuine alert (signal) and not a fake one (noise)?
 Did you take any actions in order to fix it?
 
-	If all above questions are answered affirmatively, congratulations! If not, iterate!
+If all above questions are answered affirmatively, congratulations! If not, iterate!
 
 ### New Relic (NR)
 
@@ -93,9 +93,9 @@ It also allows us to view a report of past alerts and write notes on an individu
 * Read the alert message and acknowledge the alert on PagerDuty. It’s important to acknowledge the alert so it doesn’t escalate and send email to every engineer in roots@housetrip.com group, or SMS messages to non duty-engineers.
 * The alert message tells you about the symptom, your mission is to identify the cause. The message should point you in the right direction. i.e. “no enquiry email sent” should point towards the DJ not being processed.
 * Fixing the issue. Don’t spend too much time on a perfect solution but find one that does the job and fixes the cause. Usually:
-* turn off a feature flag
-* temporary disable an ab test
-* disable the feature with a hotfix
+  * turn off a feature flag
+  * temporary disable an AB test
+  * deploy a hotfix
 * Write a note on the PagerDuty alert. Be brief, don’t spend more time on documenting the alert than it took you fixing it. The note should include:
 * What was the cause? Bonus points for including links to useful dashboards on NR or DD
 * How did you fix the cause; useful for future duty comrades
@@ -103,7 +103,16 @@ It also allows us to view a report of past alerts and write notes on an individu
 
 ## Caveats
 
-1. All this symptom based alerting is nice and brings the mindset closer to the end user’s, but what does one do when we have to deal with special situations like:
-detecting very rare failures (< 1%) – setting up the alert on symptoms would generate noise or ignore the cause. You don’t want to create noisy alerts!
-2. Symptom based alerting comes too late – an example here is how to deal with running out of quotas (free disk space, free Redis memory, …). Instead of alerting too late (less than a couple of hours until running out of storage), send a notification which raises the issue earlier (if we continue to grow at this rate, we will run out of quota in 1+ days) that can be resolved in office hours.
-setting up the alerting around the symptom is too complicated – this goes hand in hand with the previous point. On a few rare occasions defining the symptom becomes overwhelming, hard to maintain and understand (i.e. read replica has become inaccessible). If it’s much simpler and accurate to alert on cause compared to the symptom, it’s worth making an exception to the rule.
+All this symptom based alerting is nice and brings the mindset closer to the end user’s, but what does one do when we have to deal with special situations like:
+
+### Detecting very rare failures (< 1%)
+
+Setting up the alert on symptoms would generate noise or ignore the cause. You don’t want to create noisy alerts!
+
+### Symptom based alerting comes too late
+
+An example here is how to deal with running out of quotas (free disk space, free Redis memory, …). Instead of alerting too late (less than a couple of hours until running out of storage), send a notification which raises the issue earlier (if we continue to grow at this rate, we will run out of quota in 1+ days) that can be resolved in office hours.
+
+### Setting up the alerting around the symptom is too complicated
+
+This goes hand in hand with the previous point. On a few rare occasions defining the symptom becomes overwhelming, hard to maintain and understand (i.e. read replica has become inaccessible). If it’s much simpler and accurate to alert on cause compared to the symptom, it’s worth making an exception to the rule.
