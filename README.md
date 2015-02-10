@@ -17,6 +17,7 @@ consistent, reliable, reusable software.
 - [SASS / CSS](https://github.com/HouseTrip/guidelines/blob/master/sass-css.md)
 - [Services / SOA](https://github.com/HouseTrip/guidelines/blob/master/services.md)
 - [Rails](https://github.com/HouseTrip/guidelines/blob/master/rails.md)
+- [Alerting](https://github.com/HouseTrip/guidelines/blob/master/alerting.md)
 
 #### Contributing
 
