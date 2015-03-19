@@ -1,4 +1,4 @@
-### HouseTrip engineering guidelines
+### Deliveroo engineering guidelines
 
 This repo hosts all of the style guides and guidelines that we refer to.
 
