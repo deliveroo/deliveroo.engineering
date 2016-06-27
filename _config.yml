@@ -33,6 +33,7 @@ defaults:
       layout:     guidelines
 
 exclude:
+  - archive
   - Gemfile
   - Gemfile.lock
   - Guardfile
