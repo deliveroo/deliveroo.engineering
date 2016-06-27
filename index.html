@@ -10,7 +10,7 @@ title: Deliveroo nerd squad
       {% for _page in site.guidelines %}
         {% if _page.title %}
           <li>
-            <a href="{{ _page.url }}">
+            <a href="{{ site.baseurl }}{{ _page.url }}">
               {{ _page.title }}
             </a>
           </li>
@@ -26,14 +26,14 @@ title: Deliveroo nerd squad
         <li>
           <a class="pull-xs-right"
             href="{{site.github.repository_url}}/blob/gh-pages/{{_page.path}}">[edit]</a>
-          <a href="{{ _page.url }}">{{ _page.title }}</a>
+          <a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a>
           {{ _page.exerpt | markdownify }}
         </li>
       {% endfor %}
 
       {% for _page in site.posts limit:17 offset:3 %}
         <li>
-          <a href="{{ _page.url }}">
+          <a href="{{ site.baseurl }}{{ _page.url }}">
             {{ _page.title }}
           </a>
         </li>
