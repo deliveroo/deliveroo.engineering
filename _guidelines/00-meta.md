@@ -55,3 +55,11 @@ Nothing is (currently) done automatically when a pull request is merged, though,
 so you may want to broadcast in `#geek` or via email as appropriate.
 
 
+#### Formatting guidelines
+
+This site uses Jekyll and Github Pages, so Markdown is favoured.
+
+Use of emoji is encouraged!
+
+Please respect an 80 column limit in the source to facilitate reviews.
+
