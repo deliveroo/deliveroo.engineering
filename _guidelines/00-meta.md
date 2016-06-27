@@ -5,7 +5,7 @@ subtitle:   "Guidelines about guidelines"
 
 #### Why we do this
 
-In a large team, buidling and maintaining multiple software assets, code
+In a large team, building and maintaining multiple software assets, code
 consistency and acquired good practices matter.
 
 Having solid guidelines is a pillar of maintainable software, much like
