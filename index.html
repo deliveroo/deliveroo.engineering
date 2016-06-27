@@ -1,23 +1,43 @@
 ---
-layout: default
+layout: page
+title: Deliveroo nerd squad
 ---
 
-<div class="home">
+<div class="row m-t-2">
+  <div class="col-xs-12 col-md-5">
+    <h2 class="dg-column-title">Guidelines</h2>
+    <ul>
+      {% for _page in site.guidelines %}
+        {% if _page.title %}
+          <li>
+            <a href="{{ _page.url }}">
+              {{ _page.title }}
+            </a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
 
-  <h1 class="page-heading">Posts</h1>
+  <div class="col-xs-12 col-md-7">
+    <h2 class="dg-column-title">Recent updates</h2>
+    <ul>
+      {% for _page in site.posts limit:3 %}
+        <li>
+          <a class="pull-xs-right"
+            href="{{site.github.repository_url}}/blob/gh-pages/{{_page.path}}">[edit]</a>
+          <a href="{{ _page.url }}">{{ _page.title }}</a>
+          {{ _page.exerpt | markdownify }}
+        </li>
+      {% endfor %}
 
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
-
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
-      </li>
-    {% endfor %}
-  </ul>
-
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
-
+      {% for _page in site.posts limit:17 offset:3 %}
+        <li>
+          <a href="{{ _page.url }}">
+            {{ _page.title }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
 </div>
