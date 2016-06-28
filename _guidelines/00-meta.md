@@ -32,7 +32,8 @@ Coding guidelines are curated collectively.
 This is the process we choose to follow:
 
 1. Anyone can submit a pull request to change, or add to any guideline document
-   (including this one).
+   (including this one). Each document has an "edit" link at the top to help, so
+   editing is possible within Github.
 
 2. Changes are reviewed by lead engineers. Anyone can comment on the content.
 
