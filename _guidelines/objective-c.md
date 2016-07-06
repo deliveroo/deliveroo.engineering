@@ -5,6 +5,4 @@ collection: guidelines
 ---
 
 
-Contents go here.
-
-
+https://github.com/deliveroo/orderapp_ios/wiki/Coding-standards
