@@ -1,4 +1,4 @@
-guard 'jekyll-plus', :serve => true do
+guard 'jekyll-plus', :serve => true, :port => 4002 do
   watch /.*/
   ignore /^_site/
 end

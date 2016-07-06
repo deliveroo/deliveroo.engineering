@@ -10,8 +10,8 @@ title: Deliveroo
 email: root@deliverooco.uk
 description: > # this means to ignore newlines until "baseurl:"
   Deliveroo's coding guidelines
-baseurl: "/guidelines" # the subpath of your site, e.g. /blog
-url: "http://deliveroo.github.io" # the base hostname & protocol for your site
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "http://deliveroo.engineering" # the base hostname & protocol for your site
 
 repository: "deliveroo/guidelines"
   
