@@ -10,7 +10,13 @@ layout: default
   <h1 class="dg-title">
     {{ page.title }}
   </h1>
-  <div class="dg-subtitle">coding guidelines</div>
+  <div class="dg-subtitle">
+    {% if page.subtitle %}
+      {{ page.subtitle }}
+    {% else %}
+      coding guidelines
+    {% endif %}
+  </div>
 
 
   {{ content }}
