@@ -1,6 +1,6 @@
 ---
 layout:     guidelines
-title:      "Java"
+title:      "Android"
 collection: guidelines
 ---
 
