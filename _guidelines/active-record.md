@@ -91,12 +91,13 @@ Worse:
 
 ### Models
 
-Models should not contain any SQL query.
+Models should not contain any SQL queries.
 
 They can, however, exceptionally contain SQL _expressions_ in the form of
-`where` conditions for instance; although using Arel to express conditions is
-preferred when possible. The only place where this should happen is **named
-scopes**, which you should use extensively.
+`where` conditions for instance; although using
+[Arel](https://github.com/rails/arel) to express conditions is preferred when
+possible. The only place where this should happen is **named scopes**, which you
+should use extensively.
 
 Okay:
 
@@ -117,7 +118,8 @@ scope :created_after, -> { |timestamp|
 If a scope contains a SQL snippet (ie. if it's not pure Arel), it should be unit
 tested.
 
-It's okay to define class methods for often-used chains of scopes, as long as they return a `Relation` or smething scopish:
+It's okay to define class methods for often-used chains of scopes, as long as
+they return a `Relation` or something scopish:
 
 ```ruby
 module ClassMethods
@@ -128,9 +130,11 @@ end
 extend ClassMethods
 ```
 
-Be careful though, if you're doing anything more complex than chaining a few scopes it probably needs to go to a query object (see below).
+Be careful though, if you're doing anything more complex than chaining a few
+scopes it probably needs to go to a query object (see below).
 
-For the sake of reuse, remember that scopes are code: make scopes generic as necessary, avoid scope proliferation.
+For the sake of reuse, remember that scopes are code: make scopes generic as
+necessary, avoid scope proliferation.
 
 Good:
 
@@ -155,16 +159,21 @@ for performance.
 
 Good: `User.account_is(account)`, `User.created_after(date)` 
 
-Bad: `User.member_of(account)`, `User.recently_created(date)`
+Bad: `User.member_of(account)`, `User.recently_created(date)`,
+`User.account_id_is(account.id)`
 
 
 ### Migrations
 
 Migrations are one of the only places which should contain SQL queries. In fact,
-migrations should contain _only_ SQL queries, and **no code using models**.
+migrations should contain _only_ SQL queries, and **no code using ActiveRecord
+models**.
 
 This is because your migration has to work up and down even if your model no
 longer exists, has been renamed, or has had and internal API change!
+
+Migrations _maybe_ exceptionally use PORO models to facilitate complex data
+changes, though.
 
 Good (roughly):
 
@@ -186,9 +195,35 @@ Bad:
       end
     end
 
-Remember to clear the cache after running migrations that change data if the
-affected model is cached; or to update the event bus with `noop`s as appropriate
+Remember to clear the cache[^cache] after running migrations that change data if the
+affected model is cached; or to update the event bus[^bus] with `noop`s as appropriate
 to refresh subscribers.
+
+[^cache]: [Clearing the Rails cache in the Deliveroo monolith](https://makandracards.com/deliveroo/41342-orderweb-clearing-the-rails-cache).
+
+[^bus]: [Event bus basics at Deliveroo](https://makandracards.com/deliveroo/41074-event-bus-basics-howto).
+
+#### Zero-downtime migrations
+
+Because we do rolling deploys (with Heroku's "preboot" feature), both the old
+and new code will be running at the same time.
+
+There are two options to make this work without causing exceptions:
+
+Preferred:
+
+- The new code should ship with the migration. It must support that the
+  migration has not been run yet.
+  The migration is run manually after the deploy is completed.
+- This pattern works bet when _changing_ or _deleting_ tables or columns.
+
+Okay:
+
+- The migration is shipped before the new code ships, from a separate pull
+  request. The old code must work with and without migrations.
+- This pattern makes the most sense when _adding_ tables or columns that are not
+  used by old code, but it's not required.
+
 
 ### Query objects
 
@@ -196,7 +231,7 @@ An application of [one of the
 PoEAA](http://www.martinfowler.com/eaaCatalog/queryObject.html), this is meant
 to encapsulate a query:
 
-- it is instanciated with a number of criteria
+- it is instantiated with a number of criteria
 - it has an `#execute` method that either has a side effect, or iterates over
   query results
 
@@ -209,7 +244,7 @@ Example (roughly):
 
 ```ruby
 class Query::RecentlyCreatedUserFinder
-  def initialize(account:nil, timestamp:nil)
+  def initialize(account: nil, timestamp: nil)
     @account = account or raise ArgumentError
     @timestamp = timestamp || 1.week.ago
   end
@@ -225,13 +260,13 @@ end
 ```
 
 Note that it's still vastly preferred to use Railsy querying and Arel in query
-opjects.
+objects.
 
 Improved example:
 
 ```ruby
 class Query::RecentlyCreatedUserFinder
-  def initialize(account:nil, timestamp:nil)
+  def initialize(account: nil, timestamp: nil)
     @account = account or raise ArgumentError
     @timestamp = timestamp || 1.week.ago
   end
@@ -246,6 +281,29 @@ class Query::RecentlyCreatedUserFinder
   end
 end
 ```
+
+In terms of usage, this translates into:
+
+Good:
+```ruby
+query = Query::RecentlyCreatedUserFinder.new(account: foo, timestamp: bar)
+query.execute do |user|
+  do_stuff user
+end
+```
+
+Bad:
+```ruby
+relation = User.where(account_id: foo.id).where('created_at < ?', bar)
+relation.find_each do |user|
+  do_stuff user
+end
+```
+
+Using a query object is better because:
+- it's easier to test (an iterator can be injected)
+- it doesn't have odd "kind of enumerable but not really" properties like
+  `ActiveRecord::Relation`
 
 
 ## Performance considerations
@@ -268,4 +326,5 @@ Coming soon.
 
 Coming soon.
 
+----
 
