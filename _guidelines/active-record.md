@@ -91,15 +91,161 @@ Worse:
 
 ### Models
 
-Coming soon.
+Models should not contain any SQL query.
+
+They can, however, exceptionally contain SQL _expressions_ in the form of
+`where` conditions for instance; although using Arel to express conditions is
+preferred when possible. The only place where this should happen is **named
+scopes**, which you should use extensively.
+
+Okay:
+
+```ruby
+scope :created_after, -> { |timestamp| where('created_at > ?', timestamp) }
+```
+
+Better (no SQL, no issue with using the scope in joins):
+
+```ruby
+scope :created_after, -> { |timestamp| 
+  where self.class.arel_table[:created_at].gt timestamp
+}
+```
+
+#### Scope chains
+
+If a scope contains a SQL snippet (ie. if it's not pure Arel), it should be unit
+tested.
+
+It's okay to define class methods for often-used chains of scopes, as long as they return a `Relation` or smething scopish:
+
+```ruby
+module ClassMethods
+  def recently_created_in_account(date:, account:)
+    created_after(date).account_is(account)
+  end
+end
+extend ClassMethods
+```
+
+Be careful though, if you're doing anything more complex than chaining a few scopes it probably needs to go to a query object (see below).
+
+For the sake of reuse, remember that scopes are code: make scopes generic as necessary, avoid scope proliferation.
+
+Good:
+
+```ruby
+scope :created_after, -> { |timestamp| ... }
+```
+    
+Bad:
+
+```
+scope :created_since_last_year, -> { where('created_at > ?', 1.year.ago) }
+scope :created_since_yesterday, -> { where('created_at > ?', 1.day.ago.beginning_of_day) }
+```
+
+#### Naming
+
+We choose to name scopes using the `{attribute}_{operator}` pattern when
+possible.
+
+Scope parameters should be records, not IDs, wherever possible and not hurtful
+for performance.
+
+Good: `User.account_is(account)`, `User.created_after(date)` 
+
+Bad: `User.member_of(account)`, `User.recently_created(date)`
+
 
 ### Migrations
 
-Coming soon.
+Migrations are one of the only places which should contain SQL queries. In fact,
+migrations should contain _only_ SQL queries, and **no code using models**.
+
+This is because your migration has to work up and down even if your model no
+longer exists, has been renamed, or has had and internal API change!
+
+Good (roughly):
+
+    def up
+      add_column :users, :age, :integer
+      update %{
+        UPDATE users
+        SET age = TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE())
+      }
+    end
+
+Bad:
+
+    def up
+      add_column :users, :age, :integer
+      User.find_each do |u|
+        u.age = Date.today.year - u.date_of_birth.year
+        u.save!
+      end
+    end
+
+Remember to clear the cache after running migrations that change data if the
+affected model is cached; or to update the event bus with `noop`s as appropriate
+to refresh subscribers.
 
 ### Query objects
 
-Coming soon.
+An application of [one of the
+PoEAA](http://www.martinfowler.com/eaaCatalog/queryObject.html), this is meant
+to encapsulate a query:
+
+- it is instanciated with a number of criteria
+- it has an `#execute` method that either has a side effect, or iterates over
+  query results
+
+This is the only type of classes where `ActiveRecord::Base#find_by_sql` or
+`ActiveRecord::Base#connection` are allowed.  You'll typically use your
+connection's `#select_values`, `#select_rows`, and `#update` methods to do
+something useful.
+
+Example (roughly):
+
+```ruby
+class Query::RecentlyCreatedUserFinder
+  def initialize(account:nil, timestamp:nil)
+    @account = account or raise ArgumentError
+    @timestamp = timestamp || 1.week.ago
+  end
+  
+  def execute
+    ids = User.connection.select_values(sanitize([%{
+      SELECT id FROM users
+      WHERE created_at < ? AND account_id = ?
+    }, @timestamp, @account.id]))
+    ids.each { |id| yield User.find(id) }
+  end
+end
+```
+
+Note that it's still vastly preferred to use Railsy querying and Arel in query
+opjects.
+
+Improved example:
+
+```ruby
+class Query::RecentlyCreatedUserFinder
+  def initialize(account:nil, timestamp:nil)
+    @account = account or raise ArgumentError
+    @timestamp = timestamp || 1.week.ago
+  end
+  
+  def execute
+    User.
+    where(account_id: @account.id).
+    where('created_at < ?', @timestamp).
+    find_each do |user|
+      yield user
+    end
+  end
+end
+```
 
 
 ## Performance considerations
