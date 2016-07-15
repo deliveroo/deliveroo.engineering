@@ -144,7 +144,7 @@ scope :created_after, -> { |timestamp| ... }
     
 Bad:
 
-```
+```ruby
 scope :created_since_last_year, -> { where('created_at > ?', 1.year.ago) }
 scope :created_since_yesterday, -> { where('created_at > ?', 1.day.ago.beginning_of_day) }
 ```
@@ -177,27 +177,31 @@ changes, though.
 
 Good (roughly):
 
-    def up
-      add_column :users, :age, :integer
-      update %{
-        UPDATE users
-        SET age = TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE())
-      }
-    end
+```ruby
+def up
+  add_column :users, :age, :integer
+  update %{
+    UPDATE users
+    SET age = TIMESTAMPDIFF(YEAR, date_of_birth, CURDATE())
+  }
+end
+```
 
 Bad:
 
-    def up
-      add_column :users, :age, :integer
-      User.find_each do |u|
-        u.age = Date.today.year - u.date_of_birth.year
-        u.save!
-      end
-    end
+```ruby
+def up
+  add_column :users, :age, :integer
+  User.find_each do |u|
+    u.age = Date.today.year - u.date_of_birth.year
+    u.save!
+  end
+end
+```
 
-Remember to clear the cache[^cache] after running migrations that change data if the
-affected model is cached; or to update the event bus[^bus] with `noop`s as appropriate
-to refresh subscribers.
+If applicable, remember to clear the cache[^cache] after running migrations that
+change data if the affected model is cached; or to send update events on the
+event bus[^bus] to refresh subscribers.
 
 [^cache]: [Clearing the Rails cache in the Deliveroo monolith](https://makandracards.com/deliveroo/41342-orderweb-clearing-the-rails-cache).
 
@@ -243,13 +247,13 @@ something useful.
 Example (roughly):
 
 ```ruby
-class Query::RecentlyCreatedUserFinder
+class User::RecentlyCreatedFinder
   def initialize(account: nil, timestamp: nil)
     @account = account or raise ArgumentError
     @timestamp = timestamp || 1.week.ago
   end
   
-  def execute
+  def call
     ids = User.connection.select_values(sanitize([%{
       SELECT id FROM users
       WHERE created_at < ? AND account_id = ?
@@ -265,13 +269,13 @@ objects.
 Improved example:
 
 ```ruby
-class Query::RecentlyCreatedUserFinder
+class User::RecentlyCreatedFinder
   def initialize(account: nil, timestamp: nil)
     @account = account or raise ArgumentError
     @timestamp = timestamp || 1.week.ago
   end
   
-  def execute
+  def call
     User.
     where(account_id: @account.id).
     where('created_at < ?', @timestamp).
@@ -285,14 +289,16 @@ end
 In terms of usage, this translates into:
 
 Good:
+
 ```ruby
-query = Query::RecentlyCreatedUserFinder.new(account: foo, timestamp: bar)
-query.execute do |user|
+query = User::RecentlyCreatedFinder.new(account: foo, timestamp: bar)
+query.call do |user|
   do_stuff user
 end
 ```
 
 Bad:
+
 ```ruby
 relation = User.where(account_id: foo.id).where('created_at < ?', bar)
 relation.find_each do |user|
