@@ -219,7 +219,7 @@ Preferred:
 - The new code should ship with the migration. It must support that the
   migration has not been run yet.
   The migration is run manually after the deploy is completed.
-- This pattern works bet when _changing_ or _deleting_ tables or columns.
+- This pattern works better when _changing_ or _deleting_ tables or columns.
 
 Okay:
 
