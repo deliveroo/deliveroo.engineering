@@ -94,9 +94,13 @@ Worse:
 Models should not contain any SQL queries.
 
 They can, however, exceptionally contain SQL _expressions_ in the form of
-`where` conditions for instance; although using
-[Arel](https://github.com/rails/arel) to express conditions is preferred when
-possible. The only place where this should happen is **named scopes**, which you
+`where` conditions for instance. 
+
+Using [Arel](https://github.com/rails/arel) to express conditions can also be
+used; bear in mind Arel is a somewhat private API that changes between Rails
+versions, so unit-testing scopes is even more important there.
+
+The only place where either should happen is **named scopes**, which you
 should use extensively.
 
 Okay:
