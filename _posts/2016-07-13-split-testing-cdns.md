@@ -30,7 +30,7 @@ Read on for how we set this up and analysed the results.
 
 ---
 
-## Context
+## Current infrastructure
 
 We currently use a CDN[^cdn]
 for delivery of assets (Javascript, CSS, and images) to clients (web and native
@@ -67,7 +67,7 @@ datacenter.
 
 ## Testable infrastructure variants
 
-We set up 4 variants of our infrastructure:
+We've set up 4 variants of our infrastructure:
 `cdn0` is the existing, Cloudfront-based setup - the control.
 `cdn1` to `cdn3` to replaces Cloudfront with various Fastly configurations:
 
@@ -96,11 +96,12 @@ To get a sense of what performance differences we could observe between
 countries, we set up a synthetic check per test variant in [NR
 Synthetics][nrsynth].
 
-Each of these checks is configured to request a given asset (our main CSS file)
-every minute, from a number of different locations across the globe; NR Insights
-lets us access detailed reports of performance for each individual request.
+Each of these checks was configured to request a given asset (our main CSS file)
+every minute, from a number of different locations across the globe; [NR
+Insights][nrinsights] lets us access detailed reports of performance for each
+individual request.
 
-Because Cloudfront is our existing setup, We allowed for a 1-week warmup period:
+Because Cloudfront is our existing setup, we allowed for a 1-week warmup period:
 we wouldn't want to compare another CDN cache until we were confident that most
 POPs had had a chance to cache the asset in question.
 
@@ -111,10 +112,11 @@ Insights][nrinsights].
 ![Infrastructure variants](/images/2016-07-13-split-testing-cdns--03.png)
 {: .dg-figure}
 
-At first glance, this looks like Cloudfront (`cdn0`) is massively winning over
-Fastly (`cdn[1-3]`). The trick here is that Cloudfront is part of Amazon's
+At first glance, this graphs looks like Cloudfront (`cdn0`) is massively winning
+over Fastly (`cdn[1-3]`). The trick here is that Cloudfront is part of Amazon's
 infrastructure, so it's unfairly advantaged whenever the pinging server is also
-in AWS — most of the cases here.
+in AWS. This is the case for most of the pinging servers used here, as hinted to
+by `AWS` in their names.
 
 The single case where the pinging server is outside of both Amazon's and
 Fastly's infrastructure (the London server, at Linode) seems to lean in favour
@@ -177,10 +179,14 @@ against in [NR Insights][nrinsights]:
 ```
 
 From thereon, it's just a matter of waiting enough time for enough data to be
-harvested and reaching statistical significance.
+harvested to reach statistical significance.
 
 
 ### Performance for actual users
+
+For this second test, we ran a proper A/B test trying to falsify the
+hypothesis: in a given country, for a given device type, Cloudfront and Fastly
+perform the same.
 
 > ##### Why split the analysis by country _and_ platform?
 >
@@ -193,10 +199,6 @@ harvested and reaching statistical significance.
 > we're splitting on device types as a proxy. This is determined by interpreting
 > the user-agent header for each HTTP request.
 {: .dg-sidebar}
-
-For this second test, we'll run a proper A/B test trying to falsify the
-hypothesis: in a given country, for a given device type, Cloudfront and Fastly
-perform the same.
 
 The metric we'll look at is the duration between the "time to first byte" (the
 point at which, when loading a page, a browser starts receiving the HTTP
@@ -229,9 +231,9 @@ SINCE '2016-07-01'
 LIMIT 20
 ```
 
-That's not extremely convenient, and we'll need to post-process anyhow (to run
-the [T-Test](https://en.wikipedia.org/wiki/Student%27s_t-test) math), so half an
-hour or copying-and-pasting into Excel follows.
+The HTML output isn't very convenient, but we needed to post-process the data
+(to run the [T-Test](https://en.wikipedia.org/wiki/Student%27s_t-test) math), so
+half an hour or copying-and-pasting into Excel follows.
 
 Intermission: for proper A/B testing, have a read of [Evan Miller's Awesome
 A/B Testing Tools](http://www.evanmiller.org/ab-testing/). One of my favourite
@@ -241,8 +243,8 @@ bookmarks.
 {: .dg-figure}
 
 This graphs the ratio of load+render times for Fastly (`cdn1` variant, the best
-one) versus Cloudfront (`cdn0`), split by the users' countries - anything on the
-right, Fastly wins.
+one) versus Cloudfront (`cdn0`, our pre-existing set up), split by the users'
+countries - anything on the right, Fastly wins.
 
 The error bars are for _p < 0.05_, not good enough for Science or Nature but
 generally accepted as good enough for multivariate tests in tech companies.
@@ -312,11 +314,11 @@ But once split by country and platform results are surprising.
 Error bars here are still for _p_ < 0.05, so any result where the error bar
 crosses zero can be discarded. This leaves us with:
 
-- Germany and France see a significant improvement in both performance and
+- :smile: Germany and France see a significant improvement in both performance and
   conversion.
-- Most other countries have conversion and performance trending in the same
+- :relieved: Most other countries have conversion and performance trending in the same
   direction.
-- But... while Australian mobiles see a significant improvement in performance
+- :open_mouth: While Australian mobiles see a significant improvement in performance
   but conversion is significantly worse!
 
 We don't have a solid explanation for this last point. While it's possible that
@@ -324,10 +326,29 @@ some Aussie ISPs do something bad to our HTTP requests that cause some to fail,
 we haven't been able to reproduce error cases or received error reports form our
 local teams or local customers.
 
+A more common explanation would be that the volumes of data used for this test
+aren't high enough (yet); it's possible the test hasn't converged yet.
+Statistical significance [is not a stopping
+rule](http://conversionxl.com/statistical-significance-does-not-equal-validity/#statistical-significance-is-not-a-stopping-rule)
+when running tests.
+
+Digging into how conversion has evolved over time during the test reveals that,
+during the course of the test, our Australian market suffered a conversion blip:
+
+![Infrastructure variants](/images/2016-07-13-split-testing-cdns--06.png)
+{: .dg-figure}
+
+There was an unrelated product issue in Australia — which may well have skewed
+test results.  Conversely, looking at one of the cases where Fastly won over
+Cloudfront, we saw that conversion was indeed up reasonably consistenly:
+
+![Infrastructure variants](/images/2016-07-13-split-testing-cdns--07.png)
+{: .dg-figure}
+
 
 ### Conclusions
 
-This leave us with our heads scratching, and a demonstration that AB tests
+This left us scratching our heads somewhat, and a demonstration that AB tests
 aren't a panacea: they can give strong results... but they can also give very
 confusing results if there's a hidden variable.
 
@@ -337,9 +358,9 @@ focus groups early on and user research down the line; for infrastructure,
 performance measurements and synthetic matter.
 
 In other words, we'll trust our A/B test at a global level: across 1 million
-users, we're seeing a small conversion uplift. But we'll prefer to provisionally
-trust that performance improvements are a good thing rather that letting the
-apparent inconsistency in a few locations block us.
+users, we're seeing a small, consistent conversion uplift. But we'll prefer to
+provisionally trust that performance improvements are a good thing rather that
+letting the apparent inconsistency in a few locations block us.
 
 Finally, the overall conversion gains can feel pretty underwhelming compared to
 the performance gains, but remember that this test only affects assets — the
