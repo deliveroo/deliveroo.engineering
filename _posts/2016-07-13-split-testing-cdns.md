@@ -252,10 +252,12 @@ generally accepted as good enough for multivariate tests in tech companies.
 Unlike for our earlier synthetic tests, the results are quite clear cut:
 
 - Fastly is significantly faster almost everywhere.
-- Notable exceptions exist: the UAE (Fastly doesn't ahve a POP there yet); Spain
-  on desktops (no obvious explanation), Ireland and Singapore on mobiles (Fastly
-  probably has a weaker presence there than Cloudfront — likely as the capitals
-  there are Amazon datacenter cities).
+- Notable exceptions exist:
+  - the UAE: Fastly doesn't have a POP there yet;
+  - Spain on desktops (no obvious explanation);
+  - Ireland and Singapore on mobiles: Fastly probably has a weaker presence
+    there than Cloudfront — likely as the capitals there are Amazon datacenter
+    cities.
 
 At this point we could opt to just switch over to Fastly and bite the bullet in
 places where it's slightly weaker; but what ultimately matters is not how fast
@@ -264,11 +266,12 @@ our site and apps are, but how many users we satisfy.
 
 ### Impact on conversion
 
-For this last test, we're using the same A/B test setup as above, but this time
-we're measuring conversion across CDN variants, countries, and platforms.
+For this last test, we've used the same A/B test setup as above, but this time
+we measured conversion across CDN variants, countries, and platforms.
 
-We use [Segment][segment] to relay and store our analytics. The gist is that
-form anywhere in our backend, we can say:
+We use [Segment][segment] to relay and store our analytics.  It allows us to
+track events, including custom attributes (metadata), from anywhere in our back
+end application:
 
 ```ruby
 $segment.track 'Session Started', cdn: $cdn
@@ -276,12 +279,12 @@ $segment.track 'Session Started', cdn: $cdn
 $segment.track 'Completed Order', cdn: $cdn
 ```
 
-and end up with a record in Redshift, tagged with the user who made the request,
-the browser, the country, the CDN variant used, and a whole lot of other bits of
-metadata we won't use here.
+This inserts a record in Redshift, tagged with the user who made the request,
+the browser, the country, and the CDN variant used (as well as a whole lot of
+other bits of metadata we won't use here).
 
-Again, once that's set up, it's just a matter of waiting until there's enough
-data to run a significant [χ²
+Again, once that had been set up, it was just a matter of waiting until there's
+enough data to run a significant [χ²
 test](https://en.wikipedia.org/wiki/Chi-squared_test).
 
 Overall, the test results are reassuringly consistent with the changes in
@@ -289,7 +292,7 @@ performance: depending on the Fastly setup (`cdn[1-3]`), we observe either no
 conversion change (+0.0% ±0.8%, _p_ = 0.5), or a slight improvement (+0.9%
 ±0.9%, _p_ = 0.02).
 
-But once split by country and platform results are surprising.
+But once split by country and platform, the results are surprising.
 
 
 ![Infrastructure variants](/images/2016-07-13-split-testing-cdns--05.png)
@@ -308,11 +311,16 @@ But once split by country and platform results are surprising.
 > to be; so when the error bars encompass zero (no change in the metric), the
 > "real" result we'd observe if we'd repeat the test an infinite number of times
 > could go either way.
+>
+> This said, it's not uncommon to say the conversion "trends" in the direction
+> of the observed value (the coloured bars on our graphs) even when the error
+> bracket is wide.
 > 
 {: .dg-sidebar}
 
 Error bars here are still for _p_ < 0.05, so any result where the error bar
-crosses zero can be discarded. This leaves us with:
+crosses zero are subject to caution; we'll ignore those here. This leaves us
+with:
 
 - :smile: Germany and France see a significant improvement in both performance and
   conversion.
