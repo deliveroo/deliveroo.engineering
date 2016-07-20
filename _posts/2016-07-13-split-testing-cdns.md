@@ -7,19 +7,26 @@ exerpt: >
   usually run such tests for user-visible interface changes, this is an example
   of running a (successful!) multivariate test between CDNs.
 
+
+  The outcome is a **7% improvement** in asset load times globally, translating
+  into a **+1% conversion** on our site.
+
 ---
 
 TL,DR:
 
-- Fastly is generally more performant than AWS Cloudfront — for our userbase.
-- A/B testing CDNs is easy (with out toolset).
-- Synthetic performance checks (e.g. with Pingdom) do not reflect end user
-  performance experience.
+- [Fastly][fastly] is generally more performant than [AWS
+  Cloudfront][cloudfront] — for our userbase.
+- A/B testing CDNs is easy (with our toolset).
+- Synthetic performance checks (e.g. with [Pingdom][pingdom]) do not reflect end
+  user performance experience.
 
-We split tested Cloudfront vs. Fastly across 1,000,000 users, in 12
-countries, on 3 continents, over a significant time period. Using Fastly
-improved page load times by up to 50% and site conversion by up to a whopping
-3.9% (with _p_ < 0.01). Read on for the caveats!
+We split tested Cloudfront vs. Fastly across **1,000,000 users**, in **12
+countries**, on 3 continents, over a significant time period. Using Fastly
+improved asset load times by up to 50% in some areas, and site conversion went
+up by 7.2% in the best case... and down by 6.6% in the worst (with _p_ < 0.05).
+
+Read on for how we set this up and analysed the results.
 
 ---
 
@@ -33,8 +40,8 @@ server that's closer to the end user, latency-wise.
 
 [^cdn]: [Content Delivery Network](https://en.wikipedia.org/wiki/Content_delivery_network)
 
-Because our hosting started with AWS, we originally used [CloudFront]() —
-relatively easy to set up, does the job...
+Because our hosting started with AWS, we originally used
+CloudFront — relatively easy to set up, does the job...
 
 ... until we started expanding the business in regions where CloudFront's
 coverage seems a little more spotty, e.g. Australia, Singapore, or Hong Kong.
@@ -50,21 +57,24 @@ so, as with Australia.
 
 Our current HTTP infrastructure has 3 tiers:
 
-- Client requests hit either a CDN (assets) or our reverse proxy (NGinx).
+- Client requests hit either a CDN (assets) or our reverse proxy
+  ([Nginx][nginx]).
 - The CDN loads from the proxy on misses.
-- The proxy is backed by a Heroku-hosted application.
+- The proxy is backed by a [Heroku][heroku]-hosted application.
 
 Both the proxy and the Heroku app are hosted by AWS, in the `eu-west-1` (Dublin)
 datacenter.
 
-## Testable instructure variants
+## Testable infrastructure variants
 
-We set up 4 variants of our infrastrucutre:
+We set up 4 variants of our infrastructure:
 `cdn0` is the existing, Cloudfront-based setup - the control.
 `cdn1` to `cdn3` to replaces Cloudfront with various Fastly configurations:
 
-- `cdn1` uses Fastly's "shield" feature, whereby local POPs[^pop] are backed by a
-  second-tier cache (also managed by Fastly). This cache is located in London —
+- `cdn1` uses Fastly's ["shield"
+  feature](https://docs.fastly.com/guides/about-fastly-services/about-fastlys-origin-shielding-features),
+  whereby local POPs[^pop] are backed by a second-tier cache (also managed by
+  Fastly). This cache is located in London —
   as close as possible to our main datacenter.
 - `cdn2` uses our current reverse proxy (which has some in-memory caching) as
   the CDN's upstream. This most closely mimics our Cloudfront setup.
@@ -73,7 +83,7 @@ We set up 4 variants of our infrastrucutre:
 Each of those is given a different DNS entry for each of our TLDs,
 `cdn[0-3].deliveroo.*`, and set up to serve over HTTPS.
 
-[^pop]: "Point of Presence". This refers to the many caching servers a CDN places as close as possible to users, typically within ISPs' datacenters.
+[^pop]: "Point of Presence". This refers to the many caching servers a CDN places as close as possible to users, typically within ISPs' datacenters. POP placement significantly influences performance.
 
 ![Infrastructure variants](/images/2016-07-13-split-testing-cdns--02.png)
 {: .dg-figure}
@@ -83,7 +93,8 @@ Each of those is given a different DNS entry for each of our TLDs,
 ### Synthetic performance comparison
 
 To get a sense of what performance differences we could observe between
-countries, we set up a synthetic check per test variant in NR Synthetics.
+countries, we set up a synthetic check per test variant in [NR
+Synthetics][nrsynth].
 
 Each of these checks is configured to request a given asset (our main CSS file)
 every minute, from a number of different locations across the globe; NR Insights
@@ -154,8 +165,8 @@ We use [NR Browser][nrbrowser], which injects a bit of Javascript in each HTML
 page and reports on performance — somewhat like a dumbed-down
 [Webpagetest](http://www.webpagetest.org/), but on every single page view.
 
-The JS library lets us "tag" each pageview with a metadata that we can later
-query against in [NR Insights][nrinsights]:
+The JS library lets us "tag" each pageview with metadata that we can later query
+against in [NR Insights][nrinsights]:
 
 ```html
 <script type="text/javascript">
@@ -190,10 +201,10 @@ perform the same.
 The metric we'll look at is the duration between the "time to first byte" (the
 point at which, when loading a page, a browser starts receiving the HTTP
 response) and the "page loaded" event (when
-all synchronous assets have been laoded and the page has been rendered).
+all synchronous assets have been loaded and the page has been rendered).
 
 This is the part of the page load lifecycle where differences in asset load
-timings may have an impact. Given all other things are unchanges, it's the
+timings may have an impact. Given all other things are unchanged, it's the
 _only_ factor of change, which is what we're after in an A/B test.
 
 Conveniently, New Relic
@@ -244,7 +255,7 @@ Unlike for our earlier synthetic tests, the results are quite clear cut:
   probably has a weaker presence there than Cloudfront — likely as the capitals
   there are Amazon datacenter cities).
 
-At this point we could opt to jsut switch over to Fastly and bite the bullet in
+At this point we could opt to just switch over to Fastly and bite the bullet in
 places where it's slightly weaker; but what ultimately matters is not how fast
 our site and apps are, but how many users we satisfy.
 
@@ -308,27 +319,41 @@ crosses zero can be discarded. This leaves us with:
 - But... while Australian mobiles see a significant improvement in performance
   but conversion is significantly worse!
 
-We don't have an explanation for this last point. It's possible that major
-Aussie ISPs do something bad to our HTTP requests that cuase some to fail, but
+We don't have a solid explanation for this last point. While it's possible that
+some Aussie ISPs do something bad to our HTTP requests that cause some to fail,
 we haven't been able to reproduce error cases or received error reports form our
 local teams or local customers.
 
-This leave us with our heads scratching, and another example that AB tests
-aren't perfect: they can give strong results... but they can also give very
-inconsistent results if there's a hidden variable.
+
+### Conclusions
+
+This leave us with our heads scratching, and a demonstration that AB tests
+aren't a panacea: they can give strong results... but they can also give very
+confusing results if there's a hidden variable.
 
 Our take on this is to, as we did above, couple A/B testing with other
 sources that we know correlate to conversion. For user interfaces, this can be
 focus groups early on and user research down the line; for infrastructure,
-performance measurements and synthetic checks won't be displaced by A/B testing
-anytime soon!
+performance measurements and synthetic matter.
+
+In other words, we'll trust our A/B test at a global level: across 1 million
+users, we're seeing a small conversion uplift. But we'll prefer to provisionally
+trust that performance improvements are a good thing rather that letting the
+apparent inconsistency in a few locations block us.
+
+Finally, the overall conversion gains can feel pretty underwhelming compared to
+the performance gains, but remember that this test only affects assets — the
+TTFB (time-to-first-byte) of our pages is unchanged.
+
+We expect further improvement in our TTFB for key pages (homepage, listing
+pages) to further improve performance.
 
 ## Tools used
 
 - [Amazon Cloudfront][cloudfront] and [Fastly][fastly]: the two CDNs we've
   pitted against eachother.
-- New Relic [Synthetics][nrsynth]: a Pindgom clone that lest up repeatedly call
-  and HTTP endpoint and get statistics on response time.
+- New Relic [Synthetics][nrsynth]: a Pindgom clone that lets us repeatedly call
+  an HTTP endpoint and get statistics on response time.
 - New Relic [Browser][nrbrowser]: a small Javascript extension that reports
   performance data on page loads (think a simplified
   [WebPageTest.org](webpagetest.org) on every page load).
@@ -348,5 +373,7 @@ anytime soon!
 [nrbrowser]: https://newrelic.com/browser
 [split]: https://github.com/splitrb/split#split
 [segment]: https://segment.com/
+[pingdom]: https://www.pingdom.com/
+
 
 ---- 
