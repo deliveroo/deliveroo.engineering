@@ -318,23 +318,120 @@ Using a query object is better because:
 
 ## Performance considerations
 
-Coming soon.
+You don't need a database administrator—if you follow a few simple rules.
+Otherwise carelessly crafted queries can easily blow up your app servers, your
+database servers, or both.
+
 
 ### Indices
 
-Coming soon.
+Starting with the obvious. If there's no index for your particular query, it
+will be slow.
+
+Rules of thumb:
+
+- always create an **index on foreign keys** (every field ending with `_id`).
+- always run `EXPLAIN` on non-trivial queries
+- do not add more indices until you actually have a problem.
+
+More indices do not always help: the more indices, the slower the updates, and
+your RDBMS _will_ get confused and pick the wrong one.
+
+
+### Using the client
+
+Do more in the client side: unlike the database, the Ruby client can be scaled
+out without any particular limit.
+
+A typical example is sorting client-side, whether or not the result set is large
+(sorting will be less costly than just allocating the ActiveRecord instances):
+
+```ruby
+# Good:
+DeliveryZone.all.sort_by(&:code)
+
+# Bad:
+DeliveryZone.order(:code).all
+```
+
+In many cases, grouping or filtering on the client-side might be just as fast
+for users, and lighter for the database, ie. preferable.
 
 ### Multi-table queries
 
-Coming soon.
+Rule of thumb: count one for each of `group`, `join`, `having`, `where`, `order`
+in your query. More than three? Things will blow up.
+
+In particular, multiple joins are a symptom of over-normalized data modeling.
+
+Rule of thumb: do not be afraid to **introduce join models** (and the
+corresponding join tables). They're easier to test, and they represent concepts
+you'll have to name anyways.
+
+If that isn't enough: precalculate, use caching, and **do your math in Ruby**.
+Your app code can scale very well (possibly through scheduled jobs), the
+database cannot.
+
 
 ### Memory swapping
 
-Coming soon.
+Rule of thumb: if you're not certain how many records your query will retrieve,
+eventually it's going to retreive too many and you'll blow up your machine's
+memory (known as _swapping_).
+
+Alway **paginate or limit** unless domain knowledge tells you clearly you don't
+have to.
+
+```ruby
+# Good:
+User.paginate(page:1, per_page:10)
+User.limit(10)
+    
+# Fine:
+User.find_in_batches { |batch| ... }
+
+# Bad:
+User.all
+```
+
 
 ### Contention
 
-Coming soon.
+It's a lot easier for any (database) server to schedule and parallelise lots of
+small tasks than a few monstrous ones.
+
+If a given query touches (reads from or writes to) more than a few 1000 rows or
+5% of a given table at a time (whichever is the smaller), you're going to blow
+things up.
+
+Of course this is particularly true if the table in question is heavily used.
+
+Rule of thumb: **use batches** to process groups of records.
+
+```ruby
+# Good:
+User.find_each { |u| puts u.id }
+
+# Bad:
+User.each { |u| puts u.id }
+```
+
+Sometimes it will be a bit more complex to batch your queries, so you'll want to
+introduce this only once you have "enough" records:
+
+```ruby
+# Good:
+offset, step, max_id = 0, 100, User.maximum(:id)
+    
+while offset < max_id
+  User.where('id BETWEEN ? AND ?', offset, offset + step - 1)
+      .update_all(updated_at: Time.now)
+  offset += step
+end
+
+# Bad:
+User.update_all(updated_at: Time.now)
+```
 
 ----
 
