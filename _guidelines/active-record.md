@@ -415,7 +415,7 @@ Rule of thumb: if you're not certain how many records your query will retrieve,
 eventually it's going to retreive too many and you'll blow up your machine's
 memory (known as _swapping_).
 
-Alway **paginate or limit** unless domain knowledge tells you clearly you don't
+Always **paginate or limit** unless domain knowledge tells you clearly you don't
 have to.
 
 ```ruby
