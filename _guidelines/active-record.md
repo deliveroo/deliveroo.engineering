@@ -338,7 +338,7 @@ More indices do not always help: the more indices, the slower the updates, and
 your RDBMS _will_ get confused and pick the wrong one.
 
 
-### Using the client
+### Using the database client
 
 Do more in the client side: unlike the database, the Ruby client can be scaled
 out without any particular limit.
@@ -364,13 +364,43 @@ in your query. More than three? Things will blow up.
 
 In particular, multiple joins are a symptom of over-normalized data modeling.
 
-Rule of thumb: do not be afraid to **introduce join models** (and the
-corresponding join tables). They're easier to test, and they represent concepts
-you'll have to name anyways.
-
-If that isn't enough: precalculate, use caching, and **do your math in Ruby**.
+If that isn't enough: precalculate, use caching, and **do your math in Ruby** as
+described in the revious section.
 Your app code can scale very well (possibly through scheduled jobs), the
 database cannot.
+
+Example, listing 3 restaurants a user recently ordered from and didn't rate
+poorly:
+
+```ruby
+# Good: precalculated model
+ids = RecentlyOrderedFromAndNotPoorlyRatedRestaurants.
+  where(user_id: current_user.id).
+  order(:created_at).
+  limit(3).
+  pluck(:restaurant_id)
+restaurants = Restaurant.where(id: ids)
+
+# Bad: trying to do it "live" (pseudocode)
+restaurants = Restaurant.
+  joins('RIGHT JOIN orders ON orders.restaurant_id = restaurants.id').
+  joins('LEFT JOIN ratings ON ratings.order_id = orders.id').
+  where(
+    order: { 
+      user_id: current_user, status: 'delivered',
+    },
+    ratings: {
+      stars: [nil, 4, 5]
+    }
+  ).
+  group(:id).
+  order('MAX(orders.created_at)').
+  limit(3)
+```
+
+The "live" option might _look_ fast enough locally, because there's no
+competition for resources — but the complicated query causes a lot of locking,
+reads a lot of data, and is particularly hard to index well.
 
 
 ### Memory swapping
