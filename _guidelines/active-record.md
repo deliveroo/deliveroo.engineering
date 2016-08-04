@@ -319,8 +319,9 @@ Using a query object is better because:
 ## Performance considerations
 
 You don't need a database administrator—if you follow a few simple rules.
-Otherwise carelessly crafted queries can easily blow up your app servers, your
-database servers, or both.
+Otherwise carelessly crafted queries can easily [blow
+up](https://lh4.googleusercontent.com/-cRJAh7Fc6lc/UIrkedikWiI/AAAAAAAAA5g/FcFYfSafM5E/w506-h367/Green%2BData%2BCenter%2BServer%2BHeat%2BFire%2BFlames%2BComputer.png)
+your app servers, your database servers, or both.
 
 
 ### Indices
@@ -331,8 +332,10 @@ will be slow.
 Rules of thumb:
 
 - always create an **index on foreign keys** (every field ending with `_id`).
-- always run `EXPLAIN` on non-trivial queries
-- do not add more indices until you actually have a problem.
+- always run `EXPLAIN` on non-trivial queries (the
+  [manual](https://www.postgresql.org/docs/9.5/static/using-explain.html) helps)
+- do not add more indices until you actually have a problem (no premature
+  optimisation).
 
 More indices do not always help: the more indices, the slower the updates, and
 your RDBMS _will_ get confused and pick the wrong one.
@@ -359,8 +362,8 @@ for users, and lighter for the database, ie. preferable.
 
 ### Multi-table queries
 
-Rule of thumb: count one for each of `group`, `join`, `having`, `where`, `order`
-in your query. More than three? Things will blow up.
+Rule of thumb: count one for each `group`, `join`, `having`, `where`, `order` in
+your query. More than three? Things will blow up.
 
 In particular, multiple joins are a symptom of over-normalized data modeling.
 
@@ -401,6 +404,9 @@ restaurants = Restaurant.
 The "live" option might _look_ fast enough locally, because there's no
 competition for resources — but the complicated query causes a lot of locking,
 reads a lot of data, and is particularly hard to index well.
+
+Avoiding multi-table queries is _not_ premature optimisation as it usually also
+makes the code vastly simpler to read.
 
 
 ### Memory swapping
