@@ -103,3 +103,5 @@ Taken in part from the following sources:
     ```
 
 **[⬆ back to top](#table-of-contents)**
+
+# }
