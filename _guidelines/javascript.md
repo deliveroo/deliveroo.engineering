@@ -51,6 +51,8 @@ Taken in part from the following sources:
       birthYear: 1815,
       superPower: 'computers',
     };
+
+    // etc
     ```
 
   <a name="commas--dangling"></a>
@@ -58,7 +60,7 @@ Taken in part from the following sources:
 
     > Why? This leads to cleaner git diffs. Also, transpilers like Babel will remove the additional trailing comma in the transpiled code which means you don't have to worry about the [trailing comma problem](https://satishchilukuri.com/blog/entry/ie-8-and-trailing-commas-in-javascript) in legacy browsers.
 
-    ```javascript
+    ```diff
     // bad - git diff without trailing comma
     const hero = {
          firstName: 'Florence',
@@ -73,7 +75,8 @@ Taken in part from the following sources:
          lastName: 'Nightingale',
     +    inventorOf: ['coxcomb chart', 'modern nursing'],
     };
-
+    ```
+    ```javascript
     // bad
     const hero = {
       firstName: 'Dana',
@@ -95,6 +98,8 @@ Taken in part from the following sources:
       'Batman',
       'Superman',
     ];
+
+    // etc
     ```
 
 **[⬆ back to top](#table-of-contents)**
