@@ -351,10 +351,10 @@ A typical example is sorting client-side, whether or not the result set is large
 
 ```ruby
 # Good:
-DeliveryZone.all.sort_by(&:code)
+DeliveryZone.where(country: { tld: 'fr' }).sort_by(&:code)
 
 # Bad:
-DeliveryZone.order(:code).all
+DeliveryZone.where(country: { tld: 'fr' }).order(:code)
 ```
 
 In many cases, grouping or filtering on the client-side might be just as fast
@@ -363,7 +363,7 @@ for users, and lighter for the database, ie. preferable.
 ### Multi-table queries
 
 Rule of thumb: count one for each `group`, `join`, `having`, `where`, `order` in
-your query. More than three? Things will blow up.
+your query. More than three? Things will :boom: blow up.
 
 In particular, multiple joins are a symptom of over-normalized data modeling.
 
@@ -376,14 +376,33 @@ Example, listing 3 restaurants a user recently ordered from and didn't rate
 poorly:
 
 ```ruby
-# Good: precalculated model
+# Good: precalculated "thin" model
+
+# Nightly: update model
+Order.where(created_at: 25.hours.ago .. Time.current).find_each do |order|
+  RecentlyOrderedFromAndNotPoorlyRatedRestaurants.find_or_create_by!(
+    user_id:        order.user_id,
+    restaurant_id:  order.restaurant_id,
+    created_at:     order.created_at
+  )
+end
+OrderRating.where(created_at: 25.hours.ago .. Time.current).find_each do
+|rating|
+  next unless (1..3).include? rating.stars
+  RecentlyOrderedFromAndNotPoorlyRatedRestaurants.where(order_id:
+  rating.order_id).destroy_all
+end
+
+# At point of request
 ids = RecentlyOrderedFromAndNotPoorlyRatedRestaurants.
   where(user_id: current_user.id).
   order(:created_at).
   limit(3).
   pluck(:restaurant_id)
 restaurants = Restaurant.where(id: ids)
+```
 
+```ruby
 # Bad: trying to do it "live" (pseudocode)
 restaurants = Restaurant.
   joins('RIGHT JOIN orders ON orders.restaurant_id = restaurants.id').
@@ -450,23 +469,6 @@ User.find_each { |u| puts u.id }
 
 # Bad:
 User.each { |u| puts u.id }
-```
-
-Sometimes it will be a bit more complex to batch your queries, so you'll want to
-introduce this only once you have "enough" records:
-
-```ruby
-# Good:
-offset, step, max_id = 0, 100, User.maximum(:id)
-    
-while offset < max_id
-  User.where('id BETWEEN ? AND ?', offset, offset + step - 1)
-      .update_all(updated_at: Time.now)
-  offset += step
-end
-
-# Bad:
-User.update_all(updated_at: Time.now)
 ```
 
 ----
