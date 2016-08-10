@@ -318,23 +318,158 @@ Using a query object is better because:
 
 ## Performance considerations
 
-Coming soon.
+You don't need a database administrator—if you follow a few simple rules.
+Otherwise carelessly crafted queries can easily [blow
+up](https://lh4.googleusercontent.com/-cRJAh7Fc6lc/UIrkedikWiI/AAAAAAAAA5g/FcFYfSafM5E/w506-h367/Green%2BData%2BCenter%2BServer%2BHeat%2BFire%2BFlames%2BComputer.png)
+your app servers, your database servers, or both.
+
 
 ### Indices
 
-Coming soon.
+Starting with the obvious. If there's no index for your particular query, it
+will be slow.
+
+Rules of thumb:
+
+- always create an **index on foreign keys** (every field ending with `_id`).
+- always run `EXPLAIN` on non-trivial queries (the
+  [manual](https://www.postgresql.org/docs/9.5/static/using-explain.html) helps)
+- do not add more indices until you actually have a problem (no premature
+  optimisation).
+
+More indices do not always help: the more indices, the slower the updates, and
+your RDBMS _will_ get confused and pick the wrong one.
+
+
+### Using the database client
+
+Do more in the client side: unlike the database, the Ruby client can be scaled
+out without any particular limit.
+
+A typical example is sorting client-side, whether or not the result set is large
+(sorting will be less costly than just allocating the ActiveRecord instances):
+
+```ruby
+# Good:
+DeliveryZone.where(country: { tld: 'fr' }).sort_by(&:code)
+
+# Bad:
+DeliveryZone.where(country: { tld: 'fr' }).order(:code)
+```
+
+In many cases, grouping or filtering on the client-side might be just as fast
+for users, and lighter for the database, ie. preferable.
 
 ### Multi-table queries
 
-Coming soon.
+Rule of thumb: count one for each `group`, `join`, `having`, `where`, `order` in
+your query. More than three? Things will :boom: blow up.
+
+In particular, multiple joins are a symptom of over-normalized data modeling.
+
+If that isn't enough: precalculate, use caching, and **do your math in Ruby** as
+described in the revious section.
+Your app code can scale very well (possibly through scheduled jobs), the
+database cannot.
+
+Example, listing 3 restaurants a user recently ordered from and didn't rate
+poorly:
+
+```ruby
+# Good: precalculated "thin" model
+
+# Nightly: update model
+Order.where(created_at: 25.hours.ago .. Time.current).find_each do |order|
+  RecentlyOrderedFromAndNotPoorlyRatedRestaurants.find_or_create_by!(
+    user_id:        order.user_id,
+    restaurant_id:  order.restaurant_id,
+    created_at:     order.created_at
+  )
+end
+OrderRating.where(created_at: 25.hours.ago .. Time.current).find_each do
+|rating|
+  next unless (1..3).include? rating.stars
+  RecentlyOrderedFromAndNotPoorlyRatedRestaurants.where(order_id:
+  rating.order_id).destroy_all
+end
+
+# At point of request
+ids = RecentlyOrderedFromAndNotPoorlyRatedRestaurants.
+  where(user_id: current_user.id).
+  order(:created_at).
+  limit(3).
+  pluck(:restaurant_id)
+restaurants = Restaurant.where(id: ids)
+```
+
+```ruby
+# Bad: trying to do it "live" (pseudocode)
+restaurants = Restaurant.
+  joins('RIGHT JOIN orders ON orders.restaurant_id = restaurants.id').
+  joins('LEFT JOIN ratings ON ratings.order_id = orders.id').
+  where(
+    order: { 
+      user_id: current_user, status: 'delivered',
+    },
+    ratings: {
+      stars: [nil, 4, 5]
+    }
+  ).
+  group(:id).
+  order('MAX(orders.created_at)').
+  limit(3)
+```
+
+The "live" option might _look_ fast enough locally, because there's no
+competition for resources — but the complicated query causes a lot of locking,
+reads a lot of data, and is particularly hard to index well.
+
+Avoiding multi-table queries is _not_ premature optimisation as it usually also
+makes the code vastly simpler to read.
+
 
 ### Memory swapping
 
-Coming soon.
+Rule of thumb: if you're not certain how many records your query will retrieve,
+eventually it's going to retreive too many and you'll blow up your machine's
+memory (known as _swapping_).
+
+Always **paginate or limit** unless domain knowledge tells you clearly you don't
+have to.
+
+```ruby
+# Good:
+User.paginate(page:1, per_page:10)
+User.limit(10)
+    
+# Fine:
+User.find_in_batches { |batch| ... }
+
+# Bad:
+User.all
+```
+
 
 ### Contention
 
-Coming soon.
+It's a lot easier for any (database) server to schedule and parallelise lots of
+small tasks than a few monstrous ones.
+
+If a given query touches (reads from or writes to) more than a few 1000 rows or
+5% of a given table at a time (whichever is the smaller), you're going to blow
+things up.
+
+Of course this is particularly true if the table in question is heavily used.
+
+Rule of thumb: **use batches** to process groups of records.
+
+```ruby
+# Good:
+User.find_each { |u| puts u.id }
+
+# Bad:
+User.each { |u| puts u.id }
+```
 
 ----
 
