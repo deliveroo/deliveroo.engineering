@@ -16,6 +16,7 @@ Taken in part from the following sources:
 
   1. [Destructuring](#Destructuring)
   1. [Commas](#commas)
+  1. [Types](#types)
   1. [Naming Conventions](#naming-conventions)
   1. [Modules](#modules)
 
@@ -89,6 +90,45 @@ Taken in part from the following sources:
 **[⬆ back to top](#table-of-contents)**
 
 ## Commas
+
+## Types
+
+  <a name="types--primitives"></a><a name="1.1"></a>
+  - [Primitives](#types--primitives): When you access a primitive type you work directly on its value.
+
+    + `string`
+    + `number`
+    + `boolean`
+    + `null`
+    + `undefined`
+
+    ```javascript
+    const foo = 1;
+    let bar = foo;
+
+    bar = 9;
+
+    console.log(foo, bar); // => 1, 9
+    ```
+
+  <a name="types--complex"></a><a name="1.2"></a>
+  - [Complex](#types--complex): When you access a complex type you work on a reference to its value.
+
+    + `object`
+    + `array`
+    + `function`
+
+    ```javascript
+    const foo = [1, 2];
+    const bar = foo;
+
+    bar[0] = 9;
+
+    console.log(foo[0], bar[0]); // => 9, 9
+    ```
+
+**[⬆ back to top](#table-of-contents)**
+
 
 <a name="commas--leading-trailing"></a>
   - [Leading commas:](#commas--leading-trailing) **Nope.** eslint: [`comma-style`](http://eslint.org/docs/rules/comma-style.html) jscs: [`requireCommaBeforeLineBreak`](http://jscs.info/rule/requireCommaBeforeLineBreak)
