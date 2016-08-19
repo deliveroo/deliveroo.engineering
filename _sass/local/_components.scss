@@ -28,3 +28,16 @@ $dg-title-margin:   1.5rem;
 .dg-edit-link {
   line-height:    3.5rem;
 }
+
+.dg-sidebar {
+  @extend .p-a-1;
+  @extend .m-a-1;
+  float:          right;
+  background:     $gray-lighter;
+  max-width:      33%;
+
+  & > :last-child {
+    @extend .m-b-0;
+  }
+}
+

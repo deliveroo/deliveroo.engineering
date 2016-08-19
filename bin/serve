@@ -1,2 +1,2 @@
 #!/bin/sh
-JEKYLL_GITHUB_TOKEN=$(cat token) bundle exec guard start
+JEKYLL_GITHUB_TOKEN=$(cat token) bundle exec jekyll serve -P 4002
