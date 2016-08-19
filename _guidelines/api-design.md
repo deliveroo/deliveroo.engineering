@@ -314,7 +314,7 @@ and catch any URL construction in PRs, but for anything exposed to third-party
 API consumers (integrators, developers in the general public) — it's unlikely
 that everyone will stick to these ideals.
 
-Performance contraints can also be quite different.
+Performance constraints can also be quite different.
 
 ### 6.1. Mobile-friendly APIs
 
@@ -330,7 +330,7 @@ Our recommendation is to
    "chatty" interface.
 
 The benefit of this approach is that the caching capabilities of the RESTful
-approach are preserved. The adapter service can agressively cache
+approach are preserved. The adapter service can aggressively cache
 representations, but has little logic beyond that — in particular, it owns no
 domain concept and should normally have no persistent storage.
 
