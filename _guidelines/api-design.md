@@ -100,7 +100,7 @@ Ideally the domain can be discovered by calling `GET` on the root:
 
 ```
 GET /api
-Accept: application/hal+json
+Accept: application/json
 
 HTTP/1.0 200 OK
 Content-Type: application/json
