@@ -4,47 +4,41 @@ title:      "API design"
 collection: guidelines
 ---
 
+
+
+> These guidelines mostly apply to _internal_ APIs, meant to be consumed by
+> software we build and maintain.
+>
+> APIs that face the public, or 3rd-party integrators, or simply our own apps
+> outside the datacenter, have very different constraints.
+> The section [external-facing APIs](#external-facing) has details on how to
+> handle those cases.
+{: .dg-sidebar.dg-warning }
+
 # Designing APIs in a resource-oriented architecture
 
 This set of guidelines and conventions outline how to design APIs that are
 reusable and match with our [Service
 design](http://deliveroo.engineering/guide/services) guidelines.
 
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-  - [1. General principles](#1-general-principles)
-    - [1.1. RESTful](#11-restful)
-    - [1.2. Hypermedia / HATEOAS](#12-hypermedia--hateoas)
-    - [1.3. Fine-grained](#13-fine-grained)
-  - [2. API and domain modelling](#2-api-and-domain-modelling)
-    - [2.1. Listing intrinsic properties](#21-listing-intrinsic-properties)
-    - [2.2. Listing relations](#22-listing-relations)
-    - [2.3. Normalising concepts](#23-normalising-concepts)
-  - [3. Documenting APIs](#3-documenting-apis)
-  - [4. Conventions on requests](#4-conventions-on-requests)
-    - [4.1. Content type negotiation](#41-content-type-negotiation)
-    - [4.2. Path segments](#42-path-segments)
-    - [4.3. Naming](#43-naming)
-    - [4.4. Parameters](#44-parameters)
-    - [4.5. Multi-tenancy](#45-multi-tenancy)
-    - [4.6. Security](#46-security)
-    - [4.7. Versioning](#47-versioning)
-    - [4.8. Internationalisation (i18n)](#48-internationalisation-i18n)
-  - [5. Conventions on responses](#5-conventions-on-responses)
-    - [5.1. Single-resource representation](#51-single-resource-representation)
-    - [5.2. Single-entity GET endpoints](#52-single-entity-get-endpoints)
-    - [5.3. Collection GET endpoints](#53-collection-get-endpoints)
-    - [5.4 POST, creating entities](#54-post-creating-entities)
-    - [5.5 PUT and PATCH, mutating entities](#55-put-and-patch-mutating-entities)
-    - [5.6. Return codes and errors](#56-return-codes-and-errors)
-    - [5.7. Query parameters](#57-query-parameters)
-    - [5.8. Caching](#58-caching)
-    - [5.9. Compression](#59-compression)
-  - [6. Tools of the trade](#6-tools-of-the-trade)
-    - [Clients](#clients)
-    - [Servers](#servers)
-  - [7. Further reading](#7-further-reading)
+
+- [1. General principles](#1-general-principles)
+  - [1.1. RESTful](#11-restful)
+  - [1.2. Hypermedia / HATEOAS](#12-hypermedia--hateoas)
+  - [1.3. Fine-grained](#13-fine-grained)
+- [2. API and domain modelling](#2-api-and-domain-modelling)
+- [3. Documenting APIs](#3-documenting-apis)
+- [4. Conventions on requests](#4-conventions-on-requests)
+- [5. Conventions on responses](#5-conventions-on-responses)
+- [6. External-facing APIs](#6-external-facing-apis)
+  - [6.1. Mobile-friendly APIs](#61-mobile-friendly-apis)
+  - [6.2. Public-friendly APIs](#62-public-friendly-apis)
+- [7. Tools of the trade](#7-tools-of-the-trade)
+- [8. Further reading](#8-further-reading)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -109,22 +103,28 @@ GET /api
 Accept: application/hal+json
 
 HTTP/1.0 200 OK
-Content-Type: application/hal+json;v=2
+Content-Type: application/json
 Vary: Accept
-{ 
-  "_links": {
-    "properties": "/api/properties",
-    "bookings":   "/api/bookings"
-  },
-  "versions": ["v1", "v2"]
-}
+
+_links:
+  properties:
+    href: /api/properties
+  property:
+    href: /api/properties/{id}
+    templated: true
+  bookings:
+    href: /api/bookings
+  booking:
+    href: /api/bookings/{id}
+    templated: true
 ```
 
 This lowers coupling as consumers no longer need to maintain a copy of the
-routing table of the services they consumer.
+routing table of the services they consume.
 
 HATEOAS is difficult to achieve in practice on large APIs, but is a very
-valuable target to aim for.
+valuable target to aim for - it significantly improves maintainability and
+allows for high-level clients that can "walk" relationships transparently.
 
 
 ### 1.3. Fine-grained
@@ -167,19 +167,49 @@ If an entity's representation contains a representations of its relations,
 - the parent entity can often no longer be efficiently cached (as the cache
   would need to be invalidated whenever the related entity changes).
 
-In practice, embedded documents should be avoided.
+In practice, embedded documents should be avoided as they make caching horribly
+difficult.
 
 Good:
+
+```yml
+#> GET /properties
+#< HTTP/1.0 200 OK
+_links:
+  property: 
+    - href: /properties/123
+    - href: /properties/124
+```
 
 ```yml
 #> GET /properties/123
 #< HTTP/1.0 200 OK
 id: 123
+name: "Beautiful duplex flat in Marylebone"
 _links:
-  host: /users/111
+  host:
+    href: /users/111
 ```
 
 Bad:
+
+Embedding on index requests.
+
+```yml
+#> GET /properties
+#< HTTP/1.0 200 OK
+property:
+  - id: 123
+    _links:
+      host:
+        href: /users/111
+  - id: 124
+    _links:
+      host:
+        href: /users/112
+```
+
+Embedding on resource requests.
 
 ```yml
 #> GET /properties/123
@@ -191,7 +221,8 @@ _embedded:
     name: "John O'Foobar"
 ```
 
-Exceptions can be made on a case-by-case basis, see the "Domain modelling" section below.
+Exceptions on embedding can be made on a case-by-case basis, see the "Domain
+modelling" section below.
 
 **Few fields should be returned**
 
@@ -244,6 +275,9 @@ build a **facade service** which:
 Such a facade service can be considered a "view service" which pre-renders to
 JSON.
 
+See also the [External-facing APIs](#external-facing) for generics on
+non-internal APIs.
+
 
 ----------
 
@@ -263,9 +297,61 @@ JSON.
 
 ----------
 
-## 6. Tools of the trade
+{: #external-facing}
+
+## 6. External-facing APIs
+
+
+We want to do our best to make out internal services use HATEOAS and we can try
+and catch any URL construction in PRs, but for anything exposed to third-party
+API consumers (integrators, developers in the general publicc) — it's unlikely
+that everyone will stick to these ideals.
+
+Performance contraints can also be quite different.
+
+### 6.1. Mobile-friendly APIs
+
+To build APIs that are friendly to mobile consumers, special attention is needed
+to limit the numebr of requests. This is because mobile connections are
+(relatively) high latency, and the cost of the roundtrip can result in bad user
+experience.
+
+Our recommendation is to
+
+1. Still expose "pure", RESTful, hypermedia APIs, but not to the app directly;
+2. Provide a "mobile adapter" service that uses the pure APIs to provide a less
+   "chatty" interface.
+
+The benefit of this approach is that the caching capabilities of the RESTful
+approach are preserved. The adapter service can agressively cache
+representations, but has little logic beyond that — in particular, it owns no
+domain concept and should normally have no persistent storage.
+
+In particular, the mobile adapter can take care of user-facing request
+authentication; whereas the internal services only need to care about
+service-to-service authentication.
+
+
+### 6.2. Public-friendly APIs
+
+For external services we should to stick to a somewhat different set of
+principles, because of the low incentive for 3rd-party consumers to support
+maintainability of _our_ software.
+
+1. As above, public APIs should be implemented in terms or our private, "pure"
+   APIs, in separate adapter services.
+2. API URLs should never change (because consumers risk constructing their own).
+3. While it is still recommended to include hypermedia links to encourage good
+   practices, is it not mandated loike for internal services.
+4. The recommended practice for versioning is DNS-based: a new (breaking/major)
+   version of a set of public-facing APIS should be an entirely new domain (e.g.
+   `v2.my-api.example.com`), with entirely segregated infrastructure.
 
 ----------
 
-## 7. Further reading
+## 7. Tools of the trade
+
+----------
+
+## 8. Further reading
 
