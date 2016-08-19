@@ -63,11 +63,14 @@ opposed to Remote Procedure Call.  In particular, this means that:
 1. The top-level concepts of the APIs are always **nouns**, i.e. paths
    contain nouns which refer to the domain concepts.
 
-2. The only verbs are HTTP verbs: `GET` to read, `POST` to create, `PUT` and
-   `PATCH` to modify, `DELETE` to destroy, and `HEAD` to obtain metadata.
+2. The only verbs are HTTP verbs: `GET` to read, `POST` to create, `PATCH` to
+   modify, `DELETE` to destroy, and `HEAD` to obtain metadata.
    
-3. Read methods (`GET`, `HEAD`) have no side effects, and write methods (`PUT`,
-   `PATCH`) are idempotent.
+3. Read methods (`GET`, `HEAD`) have no side effects, and write methods
+   (`PATCH`) are idempotent.
+
+4. `DELETE` is _not_ idempotent and should return 404 or 410 when the resource
+   does not exist (or not any longer).
 
 
 Example of verb v noun usage:
@@ -79,6 +82,9 @@ Example of proper method usage:
 
 - Good: `PATCH /bookings/432 { state: "requested", payment_id: 111 }`
 - Bad:  `POST  /bookings/432 { state: "requested", payment_id: 111 }`
+
+Note that the `PUT` verb, which is fairly ambiguous (can both create or update a
+resource) should generally not be used.
 
 
 ### 1.2. Hypermedia / HATEOAS
@@ -276,7 +282,8 @@ Such a facade service can be considered a "view service" which pre-renders to
 JSON.
 
 See also the [External-facing APIs](#external-facing) for generics on
-non-internal APIs.
+non-internal APIs; [this article](http://dec0de.me/2014/09/resn-routemaster/)
+also has a more elaborate explanation and example.
 
 
 ----------
@@ -304,7 +311,7 @@ non-internal APIs.
 
 We want to do our best to make out internal services use HATEOAS and we can try
 and catch any URL construction in PRs, but for anything exposed to third-party
-API consumers (integrators, developers in the general publicc) — it's unlikely
+API consumers (integrators, developers in the general public) — it's unlikely
 that everyone will stick to these ideals.
 
 Performance contraints can also be quite different.
@@ -312,7 +319,7 @@ Performance contraints can also be quite different.
 ### 6.1. Mobile-friendly APIs
 
 To build APIs that are friendly to mobile consumers, special attention is needed
-to limit the numebr of requests. This is because mobile connections are
+to limit the number of requests. This is because mobile connections are
 (relatively) high latency, and the cost of the roundtrip can result in bad user
 experience.
 
@@ -342,7 +349,7 @@ maintainability of _our_ software.
    APIs, in separate adapter services.
 2. API URLs should never change (because consumers risk constructing their own).
 3. While it is still recommended to include hypermedia links to encourage good
-   practices, is it not mandated loike for internal services.
+   practices, is it not mandated like for internal services.
 4. The recommended practice for versioning is DNS-based: a new (breaking/major)
    version of a set of public-facing APIS should be an entirely new domain (e.g.
    `v2.my-api.example.com`), with entirely segregated infrastructure.
