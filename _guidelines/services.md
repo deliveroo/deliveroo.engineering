@@ -115,7 +115,7 @@ hand.
 
 Rationale: if left unchecked, services degenerate into monoliths; this is
 natural as  "just adding code" to any codebase  is the immediate shortest path
-to shipping new functionnality (a local maximum in terms of team velocity, if
+to shipping new functionality (a local maximum in terms of team velocity, if
 you will). One key goal of service architectures is to allow scaling not just
 the infrastructure, but the _team_ working on a set of pieces of software.
 
