@@ -419,7 +419,7 @@ Remarks:
 - Providing `.env.example` is an antipattern as all sensible defaults for
   development should be in `.env`.
 - `.env` is committed to the repo and should _not_ be in `.gitignore`.
-- Do not use `dotenv-rails` as this gem automatically loads `.env.[RAILS_ENV]`,
+- Use `dotenv-rails` as this gem automatically loads `.env.[RAILS_ENV]`,
   to support `.env.development` overrides.
 - If you are not using Heroku, you can use [renv](https://github.com/mezis/renv)
   to store configuration in a similar style.
