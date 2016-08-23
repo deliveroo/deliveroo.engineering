@@ -241,6 +241,9 @@ underlying storage columns.
 
 Look out for implicitly embedded relations as a possible API design issue, and
 normalise/decouple the API.
+Also note that a service does not necessarily need
+to expose _all_ it knows about a resource; and definitely should not expose
+anything only relevant to _how_ it persists it.
 
 
 **Many calls may be required**
