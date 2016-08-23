@@ -293,6 +293,104 @@ also has a more elaborate explanation and example.
 
 ## 2. API and domain modelling
 
+Defining good APIs (with respect to the principles outlined above) relies on
+domain-driven design.
+
+This, in turn, requires one to abstract out any implementation details
+(particularly, how "things" will be stored in a database), and instead reflect
+on what the domain is, how it can be split down into concepts and operations on
+those.  Clarity on naming is crucial.
+
+We recommend reading about [Domain driven
+design](http://en.wikipedia.org/wiki/Domain-driven_design), although in many
+cases common sense can be enough.
+
+An **entity** of the domain is _an object that is not defined by its attributes,
+but rather by a thread of continuity and its identity_. A given user, a given
+property are entities; their name may change without breaking the "thread of
+identity". We refer to a given identity by a (unique) identifier, its URL. For
+instance, _User 1234_ can solely referred to by the URL `/users/1234`.
+
+A **concept** of a domain is the set of entities that have a similar
+representation and lifecycle; _users_ or _properties_ are concepts.
+
+An entity can have any number of _representations_. The canonical one is
+obtained by requesting its URL, and is composed of
+
+- a set of intrinsic properties, and
+- links to related entities (using their URL);
+
+Note that **intrinsic properties** are not "database fields"; the worst possible
+way to represent an entity is by dumping the way it's been stored in a legacy
+system.
+
+### 2.1. Listing intrinsic properties
+
+Listing intrinsic properties is a difficult task, as it's usually a grey area
+with no hard answers. We can, however, provide a number of _hints_ that a
+property is intrinsic (and therefore should be part of the representation) or
+extrinsic (and should probably be part of a linked entity's representation,
+instead).
+
+No single hint can lead to the conclusion that a given property is intrinsic or
+extrinsic; it's generally the addition that matters.
+
+Hint towards extrinsic: is a user's avatar a property, or a separate entity?
+
+- *Separate change*: The URL of a user's avatar image can change without the
+  identity of the user changing.
+- *Optional property*: A user can not have an avatar, and it's commonplace.
+- *Structured properties*: A property bedroom has a number of beds, bed types,
+  surface.
+- *Shared concept*: an avatar is an image, and other concepts (e.g. properties)
+  relate to images.
+
+Hints towards intrinsic:
+
+- *Value object*: 
+    - A property's name is a simple string. The string itself is immutable.
+    - A user's avatar an image, which itself is a file with a storage location,
+      a size, dimensions, and a MIME type, but is immutable.
+
+A classic trap is the "physical inclusion" trap. For instance, _bedrooms are
+inside properties_ does not imply that the representation of bedrooms must be
+properties of the representation of properties. They _can_, but that's a
+modelling decision; one can, for instance
+
+- Decide that bedrooms should not exist as a standalone concept, because they're
+  immutable;
+- Decide they exist as a standalone concept, but embed their representation
+  inside that of their parent property, because they're _almost_ immutable (and
+  deal with possible caching issues);
+- Decide they're simply a relation of properties, because they're mutable or the
+  payload size would be too large.
+
+
+### 2.2. Listing relations
+
+Typically, when exposing a concept with an API, the database will contain a
+number of `thing_id` columns.
+
+These are *relations*, not properties; the payload can contain a number of links
+to the corresponding resources, but should not (ever) contain `thing_id`
+properties.
+
+
+### 2.3. Normalising concepts
+
+Elaborating on the example above, it's not uncommon for an entity to refer to
+multiple, similar others. A property's record can for instance contain a
+`city_id`, `region_id`, and `country_id`.
+
+The naive transformation into an API would be to entities of the `city`,
+`region`, and `country` concepts;
+
+One could argue this is a lack of normalisation; and that cities, regions, and
+countries are actually entities of a broader `places` concept; properties then
+relate to a number of places with varied `kind` properties, and which relate to
+each other as a tree (or digraph).
+
+
 ----------
 
 ## 3. Documenting APIs
