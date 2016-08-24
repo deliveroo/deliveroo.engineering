@@ -46,6 +46,10 @@ design](http://deliveroo.engineering/guide/services) guidelines.
 equivalent Yaml instead of JSON for conciseness; actual responses should still
 be JSON.
 
+In our examples, as a use case we'll generally assume we're building APIs for a
+hotel booking website - concepts will include hotels, rooms, bookings for
+instance.
+
 
 ## 1. General principles
 
@@ -75,8 +79,8 @@ opposed to Remote Procedure Call.  In particular, this means that:
 
 Example of verb v noun usage:
 
-- Good: `POST /bookings { property: { id: 1234 } }`
-- Bad: `POST /property/1234/book`
+- Good: `POST /bookings { hotel: { id: 1234 } }`
+- Bad: `POST /hotel/1234/book`
 
 Example of proper method usage:
 
@@ -113,10 +117,10 @@ Content-Type: application/json
 Vary: Accept
 
 _links:
-  properties:
-    href: /api/properties
-  property:
-    href: /api/properties/{id}
+  hotels:
+    href: /api/hotels
+  hotel:
+    href: /api/hotels/{id}
     templated: true
   bookings:
     href: /api/bookings
@@ -157,12 +161,12 @@ Good:
     
     GET   /users/{id}              # single user
     GET   /users                   # user index
-    GET   /properties/{id}/guests  # property's user index
+    GET   /hotels/{id}/guests      # hotel's user index
 
 Bad:
 
-    GET   /users/{id}                  # single user
-    GET   /properties/{id}/guest/{id}  # duplicate!
+    GET   /users/{id}              # single user
+    GET   /hotels/{id}/guest/{id}  # duplicate!
 
 
 **Embedding entities should be avoided**
@@ -179,21 +183,21 @@ difficult.
 Good:
 
 ```yml
-#> GET /properties
+#> GET /hotels
 #< HTTP/1.0 200 OK
 _links:
-  property: 
-    - href: /properties/123
-    - href: /properties/124
+  hotel: 
+    - href: /hotels/123
+    - href: /hotels/124
 ```
 
 ```yml
-#> GET /properties/123
+#> GET /hotels/123
 #< HTTP/1.0 200 OK
 id: 123
-name: "Beautiful duplex flat in Marylebone"
+name: "Luxury resort in Marylebone"
 _links:
-  host:
+  manager:
     href: /users/111
 ```
 
@@ -202,27 +206,27 @@ Bad:
 Embedding on index requests.
 
 ```yml
-#> GET /properties
+#> GET /hotels
 #< HTTP/1.0 200 OK
-property:
+hotel:
   - id: 123
     _links:
-      host:
+      manager:
         href: /users/111
   - id: 124
     _links:
-      host:
+      manager:
         href: /users/112
 ```
 
 Embedding on resource requests.
 
 ```yml
-#> GET /properties/123
+#> GET /hotels/123
 #< HTTP/1.0 200 OK
 id: 123
 _embedded:
-  host:
+  manager:
     id:   111
     name: "John O'Foobar"
 ```
@@ -307,12 +311,12 @@ cases common sense can be enough.
 
 An **entity** of the domain is _an object that is not defined by its attributes,
 but rather by a thread of continuity and its identity_. A given user, a given
-property are entities; their name may change without breaking the "thread of
+hotel are entities; their name may change without breaking the "thread of
 identity". We refer to a given identity by a (unique) identifier, its URL. For
 instance, _User 1234_ can solely referred to by the URL `/users/1234`.
 
 A **concept** of a domain is the set of entities that have a similar
-representation and lifecycle; _users_ or _properties_ are concepts.
+representation and lifecycle; _users_ or _hotels_ are concepts.
 
 An entity can have any number of _representations_. The canonical one is
 obtained by requesting its URL, and is composed of
@@ -340,29 +344,28 @@ Hint towards extrinsic: is a user's avatar a property, or a separate entity?
 - *Separate change*: The URL of a user's avatar image can change without the
   identity of the user changing.
 - *Optional property*: A user can not have an avatar, and it's commonplace.
-- *Structured properties*: A property bedroom has a number of beds, bed types,
-  surface.
+- *Structured properties*: An avatar has width, height, colour depth.
 - *Shared concept*: an avatar is an image, and other concepts (e.g. properties)
   relate to images.
 
 Hints towards intrinsic:
 
 - *Value object*: 
-    - A property's name is a simple string. The string itself is immutable.
-    - A user's avatar an image, which itself is a file with a storage location,
-      a size, dimensions, and a MIME type, but is immutable.
+    - A hotel's name is a simple string. The string itself is immutable.
+    - A user's avatar is an image, which itself is a file with a storage
+      location, a size, dimensions, and a MIME type, but is immutable.
 
-A classic trap is the "physical inclusion" trap. For instance, _bedrooms are
-inside properties_ does not imply that the representation of bedrooms must be
-properties of the representation of properties. They _can_, but that's a
+A classic trap is the "physical inclusion" trap. For instance, _rooms are
+inside hotels_ does not imply that the representation of rooms must be
+properties of the representation of hotels. They _can_, but that's a
 modelling decision; one can, for instance
 
-- Decide that bedrooms should not exist as a standalone concept, because they're
+- Decide that rooms should not exist as a standalone concept, because they're
   immutable;
 - Decide they exist as a standalone concept, but embed their representation
-  inside that of their parent property, because they're _almost_ immutable (and
+  inside that of their parent hotel, because they're _almost_ immutable (and
   deal with possible caching issues);
-- Decide they're simply a relation of properties, because they're mutable or the
+- Decide they're simply a relation of hotels, because they're mutable or the
   payload size would be too large.
 
 
@@ -375,11 +378,33 @@ These are *relations*, not properties; the payload can contain a number of links
 to the corresponding resources, but should not (ever) contain `thing_id`
 properties.
 
+Good:
+
+```yml
+#> GET /hotels/123
+#< HTTP/1.0 200 OK
+id: 123
+_links:
+  self:
+    href: /hotels/123
+  city:
+    href: /cities/456
+```
+  
+
+Bad:
+
+```yml
+#> GET /hotels/123
+#< HTTP/1.0 200 OK
+id: 123
+city_id: 456
+```
 
 ### 2.3. Normalising concepts
 
 Elaborating on the example above, it's not uncommon for an entity to refer to
-multiple, similar others. A property's record can for instance contain a
+multiple, similar others. A hotel's record can for instance contain a
 `city_id`, `region_id`, and `country_id`.
 
 The naive transformation into an API would be to entities of the `city`,
@@ -388,7 +413,8 @@ The naive transformation into an API would be to entities of the `city`,
 One could argue this is a lack of normalisation; and that cities, regions, and
 countries are actually entities of a broader `places` concept; properties then
 relate to a number of places with varied `kind` properties, and which relate to
-each other as a tree (or digraph).
+each other as a tree (or digraph) — but depending on the use case, this might be
+cumbersome over-normalisation.
 
 
 ----------
