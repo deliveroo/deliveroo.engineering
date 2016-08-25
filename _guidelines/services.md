@@ -413,8 +413,7 @@ behaviour of Heroku. The `.env` file should have sensible settings that "just
 work" in development, and can be used as an example list of settings for
 deployments. A `.env.development` file should be supported for local overrides.
 
-Settings should be prefixed with the service name.
-Settings should also be clearly commented (in `.env`).
+Settings should be clearly commented (in `.env`).
 
 Example:
 
