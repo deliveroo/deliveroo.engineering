@@ -421,13 +421,543 @@ cumbersome over-normalisation.
 
 ## 3. Documenting APIs
 
+API users are both developers and machines; therefore, you should:
+
+- Discuss APIs _before_ starting any implementation: you're wearing your
+  designer hat here.
+- Documented in a human-readable format. We recommend
+  [Apiary](http://apiary.io/) and the [API Blueprint](http://apiblueprint.org/)
+  standard `.apib` files.
+
 ----------
 
 ## 4. Conventions on requests
 
+### 4.1. Content type negotiation
+
+All requests _should_ include the `Accept: application/hal+json` headers.
+
+Requests _may_ use the `application/json` MIME type instead for backwards
+compatibility reasons.
+
+The `Accept` header _may_ include the `v` parameter to specify the API version
+requested; see "Versioning" below.
+
+Server _may_ react to the `Accept-Language` header, see "i18n" below.
+
+
+### 4.2. Path segments
+
+There _should not_ be more than 3 path segments, API root (typically `/`,
+`/api`, or `/api/{tenant}`) excluded.
+
+In practice:
+
+- each concept _must_ be exposed as a top level segment, e.g. `/photos{/id}`,
+  `/properties{/id}`, etc)
+- resources _should not_ be nested, e.g. `/properties/{id}/photos/{pid}` is bad)
+- there _may_ be a nested index for related entities, e.g.
+  `/properties/{id}/photos`.
+
+As a rule of thumb, there _should not_ be more than one (numeric) identifier per
+URL.
+
+### 4.3. Naming
+
+All path segments which refer to a domain concept _should_ be plurals, except if
+there is only zero or one entity in the concept, or it is a index endpoint for a
+relation.
+
+Note that relation endpoints _must_ link to a toplevel endpoint.
+
+Example: 
+
+```
+/manager_profiles/{id}
+/users/{id}/manager_profile
+
+/photos/{id}
+/hotels/{id}/photos
+```
+
+### 4.4. Parameters
+
+Endpoints returning single entities _should not_ accept any parameters. They
+_may_ return an error if parameters are passed.
+
+- Good: `/properties/{id}`
+- Bad: `/properties/{id}{?fields}`
+
+Collection endpoints _may_ accept parameters (e.g. for filtering). If they do,
+those _must_ be specified in the root document's link relations.
+
+Example:
+
+```yml
+#> GET /api
+#< HTTP/1.0 200 OK
+_links:
+  property:
+    href:      "/properties/{id}"
+    templated: true
+  properties:
+    href:      "/properties{?published}"
+    templated: true
+  property_photos:
+    href:      "/properties/{id}/photos{?default}"
+    templated: true
+```
+
+_Note_: in a root document, the `href` fields will typically be URI templates as
+per RFC 6570.
+
+
+### 4.5. Security
+
+A service _must_ accept connections over HTTPS. It _should not_ respond over
+plain HTTP, and in particular, it _should not_ redirect from HTTP to HTTPS. It
+_should_ respond to plain HTTP requests with status 426, Upgrade Required.
+
+A service _should_ require HTTP Basic authentication. It _should_ ignore the
+username and use the password as a token. It _may_ accept unauthenticated
+requests for some endpoints.
+
+Rationale: why not HTTP Digest?
+
+- Digest has 2x request overhead of the Basic for the first request
+  (challenge-response);
+- It is not needed with SSL, as (a) the enclosing protocol is encrypted and has
+  its own challenge-response mechanism, and (b) refusing connections over HTTP
+  reduces the risk of cleartext passwords.
+
+Rationale: why not an `X-Token` header?
+
+- Because that's functionally equivalent to HTTP Basic, which has universal
+  support in clients libraries and browser-based testing tools.
+
+Rationale: why not `?token=abcd` in the query string?
+
+- Because that violates REST (the query string is part of the URL)
+- Because URLs can leak (at least, to logs)
+- Because it's unnecessary (see above)
+
+### 4.7. Versioning
+
+A service _may_ provide different APIs (endpoints and representations) in the
+form of API versions.
+
+Clients _may_ specify a desired version as the `v` parameter of the `Accept`
+header, for instance:
+
+    Accept: application/hal+json;v=2
+
+The service _should_ respond with status 406, Not Acceptable if the version is
+unavailable.
+
+If a version was specified by the client, and is available, the service _must_
+respond with the same version:
+
+    # Request:
+    Accept: application/hal+json;v=2
+
+    # Response:
+    Content-Type: application/hal+json;v=2
+
+If the version was unspecified, the server _should_ use the latest available
+version, and specify the `Vary` header, as future request may yield a different
+response:
+
+    # Request:
+    Accept: application/hal+json
+
+    # Response:
+    Content-Type: application/hal+json;v=2
+    Vary: Accept
+
+Finally, a service's root endpoint _should_ list the available versions:
+
+```yml
+#> GET /api
+#< HTTP/1.0 200 OK
+_links:
+  ... 
+_versions:
+  - 1
+  - 2
+```
+
+
+_Note_: Another Approach is to version APIs through path segments (e.g.
+`/api/v1/things/123`). We choose not to follow it. The major issue is that
+entities may have multiple URLs which risk being misinterpreted as referencing
+different entities.
+
+
+
+### 4.8. Internationalisation (i18n)
+
+A service _may_ provide internationalised representations of entities.
+
+A client _may_ specify their desired locale using the `Accept-Language` header
+as per [RFC
+2616](http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.4).
+
+If representation is localised, the service _should_ include the
+`Content-Language` header in the response.
+
+If the locale requested is not available, the service _should_ respond with
+status 406, Not Acceptable.
+
+If the response does not match the requested locale exactly (either more than
+one locale options were requested, or none), the service _should_ include the
+`Vary: Accept-Language` header in the response.
+
+Rationale:
+
+- Including the locale in the path (e.g. `/api/en/things/123`) suffers from the
+  same lack-of-uniqueness issue mentioned in "versioning" above.
+- Including the locale in a parameter violates conventions on parameters.
+- Localisation is inherently a representation concern, and HTTP mandates such
+  concerns to be addressed using protocol headers.
+
 ----------
 
 ## 5. Conventions on responses
+
+Responses _should_ be valid
+[JSON-HAL](https://tools.ietf.org/html/draft-kelly-json-hal) documents.
+
+In addition, embedded entities (using `_embedded`) should be avoided when
+possible, and only introduced:
+
+- for collections; or
+- for excruciating performance reasons; or
+- when the (partial) representation of the embedded entity is immutable with
+  respect to the parent.
+
+
+### 5.1. Single-resource representation
+
+A single resource representation _should_ have a numeric `id` field.  It _must_
+have a link to `self`.  It _may_ contain a number of intrinsic properties of the
+entity (see the "domain modelling" discussion above.
+
+Example:
+
+```yml
+#> GET /hotels/1234
+#< HTTP/1.0 200 OK
+id:   1337
+name: "The Four Seasons*****"
+lat:  1.2345
+lng:  45.678
+_links:
+  self:
+    href:   "/hotels/1337"
+  reviews:  
+    href:   "/hotels/1337/reviews"
+  manager:     
+    href:   "/users/8008"
+    type:   "user"
+  photos:
+    href:   "/hotels/1337/photos"
+```
+
+Note that intrinsic-ness of a given property is a gray area: think hard and have
+a debate whenever considering adding another property to a representation.
+
+There may occasionally be arguments outside the domain, e.g. performance
+considerations.  For instance, one may decide to model hotel descriptions
+(which are lengthy text blobs) as a relation to hotels, instead of as an
+intrinsic field, because (a) the payload would become very large, and (b) it is
+seldom needed by consumers.
+
+As a particular case, note that fields that count relations (eg. `photos_count`
+in the example above) are _not_ intrinsic and _should not_ be made part of the
+representation.
+
+In exceptional cases, counts (which are a property of the relation) _may_ be
+mentioned as a part of the link metadata. Consumers should not expect the value
+to be authoritative, and should refer to the relation URL if consistency is
+required.
+
+Example:
+
+```yml
+#> GET /hotels/1234
+#< HTTP/1.0 200 OK
+id:   1337
+_links:
+  self:     "/hotels/1337"
+  photos:
+    href:   "/hotels/1337/photos"
+    count:  27
+```
+
+
+### 5.2. Single-entity GET endpoints
+
+A single-entity GET endpoint _should_ always be of one of the forms
+
+- `/{concept-plural}/{id}` for typical concepts (e.g. `/hotels/1234`);
+- `/{concept-singular}` for singletons (e.g. `/exchange_rate`)
+- `/{parent}/{id}/{concept-singular}` for singleton relations (e.g.
+  `/users/1234/manager_profile`).
+
+Such endpoints _must_ return the representation of a single entity, and any
+links, as described in the previous section.
+
+Partial responses (e.g. with `field` query param) _should not_ be returned.
+
+
+### 5.3. Collection GET endpoints
+
+A collection GET endpoint _should_ be of one of the forms:
+
+- `/{concept-plural}`, e.g. `/properties`
+- `/{parent}/{id}/{concept-plural}`, e.g. `/properties/1234/photos`
+
+Such endpoints _must_ return a representation of the collection, and embed a
+list of (possibly partial) representations of some of the entities.
+
+_Rationale_:
+In domain terms, an index endpoint actually returns a _view_ on the _collection_
+of resources; ie. the resource returned is the view.  The current page, links,
+and page size are _data_ (intrinsics) of that view. The number of pages and the
+total number of resources depend (if your view can filter it's data; if it can
+only order it's metadata).
+
+A collection representation
+
+- _should_ link to relations `next` and `prev` for pagination purposes;
+- _must_ include the properties `page`, `per_page`, `total`
+
+In a collection representation, embedded representations _may_ be incomplete,
+but _should_ include at least a numeric `id` and the mandatory link to `self`.
+
+Example:
+
+```yml
+#> GET /hotels?checkin=2016-01-02&checkout=2016-01-09
+#< HTTP/1.0 200 OK
+page:     1
+per_page: 10
+total:    153277
+_links:
+  self:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
+  prev:   null
+  next:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+_embedded:
+  hotels:
+    - id: 1
+      _links:
+        self: "/hotels/1"
+    ...
+    - id: 10
+      _links:
+        self: "/hotels/2"
+```
+
+
+### 5.4 POST, creating entities
+
+A collection GET endpoint _may_ respond to the POST method to create new entities.
+
+If it exists, it _should_ return status:
+
+- 201 Created if the entity was successfully created, or
+- 400 Bad Request if the entity cannot be created with the information in the request body.
+
+Additional 4xx response codes _may_ be used:
+
+- 412 Precondition Failed if e.g. the resource wouldn't statisfy some uniqueness criterion;
+- 415 Unsupported if using versioning and the server doesn't support the
+  specified version.
+
+The response _must_ be a valid single resource representation, although it _may_
+be partial, including at least the numeric `id` and the mandatory link to self.
+
+Example:
+
+```yml
+#> POST /properties
+name: "Castle by the lake"
+lat:  1.2345
+lng:  45.678
+#< HTTP/1.0 201 Created
+id: 1337
+_links:
+  self: "/properties/1337"
+```
+
+### 5.5 PATCH, mutating entities
+
+A single-resource GET endpoint _may_ respond to the PATCH method to modify
+existing entities.
+
+The response status _should_ be
+
+- 200 OK, if the modification succeeded.
+- 400 Bad Request, if the modification failed.
+- 412 Precondition failed, when failing to honour `If-Match` or
+  `If-Unmodified-Since` headers.
+
+The response _must_ be a valid single resource representation, although it _may_
+be partial, including at least the numeric `id` and the mandatory link to self.
+
+Example:
+
+```yml
+#> GET /hotels/1337
+#< HTTP/1.0 200 OK
+#< Last-Modified: Tue, 15 Nov 1994 12:45:26 GMT
+#< Etag: "e04c6ca4-6ac9-11e6-ab5a-cf7dd1791cc9"
+id:       1337
+name:     "Castle by the lake"
+_links:
+  self:   "/hotels/1337"
+
+#> PATCH /hotels/1337
+#> If-Match: "e04c6ca4-6ac9-11e6-ab5a-cf7dd1791cc9
+name:     "Manor by the lake"
+#< HTTP/1.0 200 OK
+id:       1337
+name:     "Manor by the lake"
+_links:
+  self:   "/hotels/1337"
+```
+
+
+### 5.6. Return codes and errors
+
+In the case of client or server errors (i.e. when the return code is 400+), the
+content-type _should_ be `application/hal+json`.
+
+The results are not just intended to be acted on by machines, but rather
+presented to users.
+
+The response _should_ be an `errors` object whose keys are either keys present
+in the original request, parameter names, or the `general` key for failures not
+attributable to a request key.
+
+Each value _should_ be a human readable message, localised according to the
+`Accept-Language` header.
+
+Example: index with out-of-bounds page:
+
+```yml
+#> GET /hotels?page=52196
+#< HTTP/1.0 404 Not Found
+errors:
+  page: "Page is out of bounds"
+```
+
+Example of a PATCH version fail:
+
+```yml
+#> PATCH /hotels/1337
+#> If-Match: "e04c6ca4-6ac9-11e6-ab5a-cf7dd1791cc9"
+name:       "Manor by the Lake"
+#< HTTP/1.0 409 Conflict
+errors:
+  version:  "Resource was updated since you read it."
+```
+
+Example of bad/missing values in POST:
+
+```yml
+#> POST /hotels/1337
+lat: "foobar"
+#< HTTP/1.0 400 Bad Request
+errors:
+  name:  "Name is required."
+  lat:   "Latitude must be a floating-point number."
+  lng:   "Latitude is required."
+```
+
+HTTP status codes should be used as possible to being semantic where these
+guidelines are unclear. In particular, syntactic and semantic failures should
+not be confused:
+
+- 400 Bad Request: bad _syntax_ (unknown route, missing required fields or
+  parameters, unknown extra parameters, bad field or parameter values).
+- 404 Not Found: the specified entity does not exist (unknown routes should not
+  404).
+- 409 Conflict: PATCH and PUT failures with unique fields.
+- 412 Precondition failed: resource versioning issues.
+
+Likewise, for success codes:
+
+- POST and PATCH should never result in a 200 (generally 201, occasionally 202).
+- 204 should not be returned.
+
+
+### 5.7. Query parameters
+
+Single-entity endpoints _should not_ accept query parameters (for any HTTP
+method).
+
+Those endpoints _may_ return 400 Bad Request if parameters are specified.
+
+Collection GET endpoints are the only endpoints that usually accept query
+parameters. Those _should_ accept the `page` and `per_page` parameters. They
+_may_ accept parameters that match property names of the corresponding concept;
+if they do, they _should_ 
+
+- use the parameter value for filtering purposes (i.e. return entities whose
+  corresponding property has the specified value), and
+- mention those parameters in the link relation of the root document.
+
+They _may_ accept the _order_ parameter; if they do,
+
+- the accepted values _should_ be comma-separated lists of property names,
+  possibly prefixed; and
+- they _should_ return entities ordered accordingly.
+
+Example:
+
+```
+GET /properties?page=1&order=-updated_at,name
+```
+
+They _may_ also respond to other parameters, although it is not recommended. If
+they do those _should_ be mentioned in the root document and the behaviour is
+unspecified.
+
+
+### 5.8. Caching
+
+Caching efficiency is a critical aim of well-designed APIs, as it is influential
+on service performance; cache consistency is as important.
+
+Responses to single-resource GET endpoints _should_ specify a `Cache-Control`
+header.
+
+- If the entity is mutable, the value _should_ be `no-cache`.
+- If the entity is immutable, the value _should_ be
+  `public; max-age=31536000` (one year).
+
+Responses to collection GET endpoints _should not_ specify a `Cache-Control` header.
+
+# 5.9 Mutable resource versioning
+
+Single-entity endpoints _should_ return an `Etag` header and a `Last-Modified`
+header.
+
+They _should_ accept `If-None-Match` and `If-Modified-Since` and return status
+304 (and no payload) as appropriate.
+
+Mutation endpoints _should_ honour the `If-Match` and `If-Unmodified-Since`
+headers as appropriate.
+
+
+### 5.10. Compression
+
+Servers _may_ support the `Accept-Encoding` header for compression purposes, but
+this is not mandatory.
+
+*Rationale*: latency is more important than bandwidth savings for most internal
+APIs; therefore the overhead of compression is seldom justified.
 
 ----------
 
