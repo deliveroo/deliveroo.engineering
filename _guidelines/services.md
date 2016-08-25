@@ -296,14 +296,17 @@ hypermedia links in the future.
 - Remote procedure call, e.g. APIs like `GET /api/bookings/123/cancel`. This
   must be replaced with state transfer (`PATCH
   /api/bookings/123?state=cancelled`) or higher-level concepts (`POST
-  /api/bookings/123/cancellation`).  <br/> _Smell_: the API contains verbs
-  (typically actions/calls) instead of nouns
+  /api/bookings/123/cancellation`).
+  <br/>
+  _Smell_: the API contains verbs (typically actions/calls) instead of nouns
   (typically concepts/resources).
 
 - Sharing a database layer. If two "services" communicate through Mongo,
   RabbitMQ, etc—or even just connect to the same shared datastore—they're
   actually one single service. They must communicate over HTTP, exclusively, and
   there are no exceptions.
+  <br/>
+  _Smell_: one service connects to another service's database.
 
 
 #### Further reading
@@ -319,13 +322,17 @@ APIs](../guides/) document.
 Because a zoo of technologies leads to disaster, we purposely limit the set of
 technologies we use.
 
+_Reminder_: this applies to new services/apps, and signficant changes to
+existing ones. Some existing services/apps might not be aligned to this at time
+of writing.
+
 From top to bottom of the production stack:
 
 {: .table.table-sm}
-| Concern                 | Technology (customer-facing)        | Technology (internal)   |
-|-------------------------|-------------------------------------|-------------------------|
-| Style & Layout          | SCSS                                | SCSS + Bootstrap        |
-| Front-end logic         | React JS                            | Rails UJS + JQuery    	|
+| Concern                 | Technology                          |
+|-------------------------|-------------------------------------|
+| Style & Layout          | SCSS + Bootstrap                    |
+| Front-end logic         | Rails (UJS + JQuery)    	          |
 | Caching HTTP						| Fastly CDN													|
 | Serving HTTP            | Puma                                |
 | Responding to requests  | Rails 5                             |
@@ -351,11 +358,15 @@ Alternatives should only be considered when there's a legitimate reason to
 (which does not, ever, include "I want to play with it"). Using an alternative
 should convince a majority amongst the team's technical leadership.
 
+These alternatives are (currently) deemed acceptable in some use cases, where
+the technology in the table above does not fit the bill (e.g. on reliability or
+performance grounds).
+
 {: .table.table-sm}
 | Concern                 | Alternative technologies            |
 |-------------------------|-------------------------------------|
 | Style & Layout          | *none*                              |
-| Front-end logic         | *none*                              |
+| Front-end logic         | React JS                            |
 | Serving HTTP            | *none*                              |
 | Caching HTTP						| *none*    													|
 | Responding to requests  | Sinatra                             |
