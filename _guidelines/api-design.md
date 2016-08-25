@@ -411,7 +411,7 @@ The naive transformation into an API would be to entities of the `city`,
 `region`, and `country` concepts;
 
 One could argue this is a lack of normalisation; and that cities, regions, and
-countries are actually entities of a broader `places` concept; properties then
+countries are actually entities of a broader `places` concept; hotels would then
 relate to a number of places with varied `kind` properties, and which relate to
 each other as a tree (or digraph) — but depending on the use case, this might be
 cumbersome over-normalisation.
@@ -454,10 +454,10 @@ There _should not_ be more than 3 path segments, API root (typically `/`,
 In practice:
 
 - each concept _must_ be exposed as a top level segment, e.g. `/photos{/id}`,
-  `/properties{/id}`, etc)
-- resources _should not_ be nested, e.g. `/properties/{id}/photos/{pid}` is bad)
+  `/hotels{/id}`, etc)
+- resources _should not_ be nested, e.g. `/hotels/{id}/photos/{pid}` is bad)
 - there _may_ be a nested index for related entities, e.g.
-  `/properties/{id}/photos`.
+  `/hotels/{id}/photos`.
 
 As a rule of thumb, there _should not_ be more than one (numeric) identifier per
 URL.
@@ -465,17 +465,18 @@ URL.
 ### 4.3. Naming
 
 All path segments which refer to a domain concept _should_ be plurals, except if
-there is only zero or one entity in the concept, or it is a index endpoint for a
-relation.
+there is only zero or one entity in the concept (singleton relations).
 
 Note that relation endpoints _must_ link to a toplevel endpoint.
 
 Example: 
 
 ```
+# Singleton
 /manager_profiles/{id}
 /users/{id}/manager_profile
 
+# Normal case
 /photos/{id}
 /hotels/{id}/photos
 ```
@@ -485,8 +486,8 @@ Example:
 Endpoints returning single entities _should not_ accept any parameters. They
 _may_ return an error if parameters are passed.
 
-- Good: `/properties/{id}`
-- Bad: `/properties/{id}{?fields}`
+- Good: `/hotels/{id}`
+- Bad: `/hotels/{id}{?fields}`
 
 Collection endpoints _may_ accept parameters (e.g. for filtering). If they do,
 those _must_ be specified in the root document's link relations.
@@ -497,14 +498,14 @@ Example:
 #> GET /api
 #< HTTP/1.0 200 OK
 _links:
-  property:
-    href:      "/properties/{id}"
+  hotel:
+    href:      "/hotels/{id}"
     templated: true
-  properties:
-    href:      "/properties{?published}"
+  hotels:
+    href:      "/hotels{?published}"
     templated: true
-  property_photos:
-    href:      "/properties/{id}/photos{?default}"
+  hotel_photos:
+    href:      "/hotels/{id}/photos{?default}"
     templated: true
 ```
 
@@ -714,8 +715,8 @@ Partial responses (e.g. with `field` query param) _should not_ be returned.
 
 A collection GET endpoint _should_ be of one of the forms:
 
-- `/{concept-plural}`, e.g. `/properties`
-- `/{parent}/{id}/{concept-plural}`, e.g. `/properties/1234/photos`
+- `/{concept-plural}`, e.g. `/hotels`
+- `/{parent}/{id}/{concept-plural}`, e.g. `/hotels/1234/photos`
 
 Such endpoints _must_ return a representation of the collection, and embed a
 list of (possibly partial) representations of some of the entities.
@@ -780,14 +781,14 @@ be partial, including at least the numeric `id` and the mandatory link to self.
 Example:
 
 ```yml
-#> POST /properties
+#> POST /hotels
 name: "Castle by the lake"
 lat:  1.2345
 lng:  45.678
 #< HTTP/1.0 201 Created
 id: 1337
 _links:
-  self: "/properties/1337"
+  self: "/hotels/1337"
 ```
 
 ### 5.5 PATCH, mutating entities
@@ -917,7 +918,7 @@ They _may_ accept the _order_ parameter; if they do,
 Example:
 
 ```
-GET /properties?page=1&order=-updated_at,name
+GET /hotels?page=1&order=-updated_at,name
 ```
 
 They _may_ also respond to other parameters, although it is not recommended. If
