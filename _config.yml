@@ -17,6 +17,8 @@ repository: "deliveroo/deliveroo.engineering"
   
 # Build settings
 markdown: kramdown
+kramdown:
+  parse_block_html: true
 
 # Plugins
 gems:
