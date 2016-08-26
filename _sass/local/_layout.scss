@@ -1,0 +1,41 @@
+@mixin unstyled-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+} // @mixin unstyled-list
+
+@function breakpoint($width) {
+  @if type-of($width) == 'number' {
+    @return $width;
+  } @elseif type-of($width) == 'string' {
+    @if map-has-key($breakpoints, $width) {
+      @return map-get($breakpoints, $width);
+    }
+    @error "No breakpoint called `#{$width}` exists in the `$breakpoints` map";
+  }
+
+  @return null;
+} // @function breakpoint()
+
+@mixin min-width($width) {
+  @media only screen and (min-width: #{breakpoint($width)}) {
+    @content;
+  }
+} // @mixin min-width
+
+@mixin max-width($width) {
+  @media only screen and (max-width: #{breakpoint($width) - 1px}) {
+    @content;
+  }
+} // @mixin max-width
+
+@mixin between-widths($min-width, $max-width) {
+  @media only screen and (min-width: #{breakpoint($min-width)}) and (max-width: #{breakpoint($max-width) - 1px}) {
+    @content;
+  }
+} // @mixin between-widths
+
+@mixin auto-width($breakpoint, $vertical-margins: 0) {
+  max-width: breakpoint($breakpoint);
+  margin: $vertical-margins auto;
+} // @mixin auto-width

@@ -1,21 +1,14 @@
-<header class="site-header">
-  <nav class="navbar navbar-light bg-faded">
-    <div class="container">
-      <a class="navbar-brand site-title" href="{{ site.baseurl }}/">
-        {{ site.title }}
-      </a>
-      
-      <ul class="nav navbar-nav">
-        {% for _page in site.pages %}
-          {% if _page.title and _page.nav %}
-            <li class="nav-item">
-              <a class="nav-link" href="{{ _page.url | prepend: site.baseurl }}">
-                {{ _page.title }}
-              </a>
-            </li>
-          {% endif %}
-        {% endfor %}
-      </ul>
-    </div>
+<header id="navigation">
+  <a href="{{ site.baseurl }}/">{{ site.title }}</a>
+  <nav>
+    <ul>
+      {% for _page in site.pages %}
+        {% if _page.title and _page.nav %}
+          <li>
+            <a href="{{ _page.url | prepend: site.baseurl }}">{{ _page.title }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
   </nav>
 </header>

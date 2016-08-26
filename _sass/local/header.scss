@@ -1,0 +1,18 @@
+header#navigation {
+  background-color: color(dark_grey);
+  padding: 0 10px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  
+  a {
+    // TODO: needs a logo, and some left-padding
+    color: white;
+    border: none;
+    font-size: font-size(small-heading);
+    
+    &:hover {
+      color: color(teal);
+    } // header#navigation a:hover
+  } // header#navigation a
+} // header#navigation
