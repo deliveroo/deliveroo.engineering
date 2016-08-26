@@ -25,20 +25,14 @@ design](http://deliveroo.engineering/guide/services) guidelines.
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
-- [1. General principles](#1-general-principles)
-  - [1.1. RESTful](#11-restful)
-  - [1.2. Hypermedia / HATEOAS](#12-hypermedia--hateoas)
-  - [1.3. Fine-grained](#13-fine-grained)
-- [2. API and domain modelling](#2-api-and-domain-modelling)
-- [3. Documenting APIs](#3-documenting-apis)
-- [4. Conventions on requests](#4-conventions-on-requests)
-- [5. Conventions on responses](#5-conventions-on-responses)
-- [6. External-facing APIs](#6-external-facing-apis)
-  - [6.1. Mobile-friendly APIs](#61-mobile-friendly-apis)
-  - [6.2. Public-friendly APIs](#62-public-friendly-apis)
-- [7. Tools of the trade](#7-tools-of-the-trade)
-- [8. Further reading](#8-further-reading)
+  - [General principles](#general-principles)
+  - [API and domain modelling](#api-and-domain-modelling)
+  - [Documenting APIs](#documenting-apis)
+  - [Conventions on requests](#conventions-on-requests)
+  - [Conventions on responses](#conventions-on-responses)
+  - [External-facing APIs](#external-facing-apis)
+  - [Tools of the trade](#tools-of-the-trade)
+  - [Further reading](#further-reading)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -51,14 +45,14 @@ hotel booking website - concepts will include hotels, rooms, bookings for
 instance.
 
 
-## 1. General principles
+## General principles
 
 We choose to adopt three general principles. Here's a shortcut to remember:
 
 > **RESTful, Hypermedia, Fine-grained**
 
 
-### 1.1. RESTful
+### RESTful
 
 We decide that our APIs will let consumers perform [Representational State
 Transfer](http://en.wikipedia.org/wiki/Representational_state_transfer), as
@@ -91,7 +85,7 @@ Note that the `PUT` verb, which is fairly ambiguous (can both create or update a
 resource) should generally not be used.
 
 
-### 1.2. Hypermedia / HATEOAS
+### Hypermedia / HATEOAS
 
 The principle of [HATEOAS](http://en.wikipedia.org/wiki/HATEOAS) is that "a
 client interacts with a network application entirely through hypermedia provided
@@ -109,12 +103,11 @@ only URLs dynamically discovered in responses.
 Ideally the domain can be discovered by calling `GET` on the root:
 
 ```
-GET /api
-Accept: application/json
+#> GET /api
+#> Accept: application/json
 
-HTTP/1.0 200 OK
-Content-Type: application/json
-Vary: Accept
+#< HTTP/1.0 200 OK
+#< Content-Type: application/json
 
 _links:
   hotels:
@@ -137,7 +130,7 @@ valuable target to aim for - it significantly improves maintainability and
 allows for high-level clients that can "walk" relationships transparently.
 
 
-### 1.3. Fine-grained
+### Fine-grained
 
 
 A fine-grained API should provide
@@ -295,7 +288,7 @@ also has a more elaborate explanation and example.
 
 ----------
 
-## 2. API and domain modelling
+## API and domain modelling
 
 Defining good APIs (with respect to the principles outlined above) relies on
 domain-driven design.
@@ -328,7 +321,7 @@ Note that **intrinsic properties** are not "database fields"; the worst possible
 way to represent an entity is by dumping the way it's been stored in a legacy
 system.
 
-### 2.1. Listing intrinsic properties
+### Listing intrinsic properties
 
 Listing intrinsic properties is a difficult task, as it's usually a grey area
 with no hard answers. We can, however, provide a number of _hints_ that a
@@ -369,7 +362,7 @@ modelling decision; one can, for instance
   payload size would be too large.
 
 
-### 2.2. Listing relations
+### Listing relations
 
 Typically, when exposing a concept with an API, the database will contain a
 number of `thing_id` columns.
@@ -401,7 +394,7 @@ id: 123
 city_id: 456
 ```
 
-### 2.3. Normalising concepts
+### Normalising concepts
 
 Elaborating on the example above, it's not uncommon for an entity to refer to
 multiple, similar others. A hotel's record can for instance contain a
@@ -419,7 +412,7 @@ cumbersome over-normalisation.
 
 ----------
 
-## 3. Documenting APIs
+## Documenting APIs
 
 API users are both developers and machines; therefore, you should:
 
@@ -431,9 +424,9 @@ API users are both developers and machines; therefore, you should:
 
 ----------
 
-## 4. Conventions on requests
+## Conventions on requests
 
-### 4.1. Content type negotiation
+### Content type negotiation
 
 All requests _should_ include the `Accept: application/hal+json` headers.
 
@@ -446,7 +439,16 @@ requested; see "Versioning" below.
 Server _may_ react to the `Accept-Language` header, see "i18n" below.
 
 
-### 4.2. Path segments
+### Resource lifecycle
+
+All GET requests for a single resource _may_ specify `If-*` headers to avoid
+fetching payloads when revelant (thus expecting a possible 304 response).
+
+All PATCH requests _must_ include at least one `If-*` header (either
+`If-Unmodified-Since` or `If-Match`) to avoid editing conflicts.
+
+
+### Path segments
 
 There _should not_ be more than 3 path segments, API root (typically `/`,
 `/api`, or `/api/{tenant}`) excluded.
@@ -462,7 +464,7 @@ In practice:
 As a rule of thumb, there _should not_ be more than one (numeric) identifier per
 URL.
 
-### 4.3. Naming
+### Naming
 
 All path segments which refer to a domain concept _should_ be plurals, except if
 there is only zero or one entity in the concept (singleton relations).
@@ -481,7 +483,7 @@ Example:
 /hotels/{id}/photos
 ```
 
-### 4.4. Parameters
+### Parameters
 
 Endpoints returning single entities _should not_ accept any parameters. They
 _may_ return an error if parameters are passed.
@@ -513,7 +515,7 @@ _Note_: in a root document, the `href` fields will typically be URI templates as
 per RFC 6570.
 
 
-### 4.5. Security
+### Security
 
 A service _must_ accept connections over HTTPS. It _should not_ respond over
 plain HTTP, and in particular, it _should not_ redirect from HTTP to HTTPS. It
@@ -542,7 +544,7 @@ Rationale: why not `?token=abcd` in the query string?
 - Because URLs can leak (at least, to logs)
 - Because it's unnecessary (see above)
 
-### 4.7. Versioning
+### Versioning
 
 A service _may_ provide different APIs (endpoints and representations) in the
 form of API versions.
@@ -595,7 +597,7 @@ different entities.
 
 
 
-### 4.8. Internationalisation (i18n)
+### Internationalisation (i18n)
 
 A service _may_ provide internationalised representations of entities.
 
@@ -623,7 +625,7 @@ Rationale:
 
 ----------
 
-## 5. Conventions on responses
+## Conventions on responses
 
 Responses _should_ be valid
 [JSON-HAL](https://tools.ietf.org/html/draft-kelly-json-hal) documents.
@@ -637,7 +639,7 @@ possible, and only introduced:
   respect to the parent.
 
 
-### 5.1. Single-resource representation
+### Single-resource representation
 
 A single resource representation _should_ have a numeric `id` field.  It _must_
 have a link to `self`.  It _may_ contain a number of intrinsic properties of the
@@ -696,7 +698,7 @@ _links:
 ```
 
 
-### 5.2. Single-entity GET endpoints
+### Single-entity GET endpoints
 
 A single-entity GET endpoint _should_ always be of one of the forms
 
@@ -710,8 +712,12 @@ links, as described in the previous section.
 
 Partial responses (e.g. with `field` query param) _should not_ be returned.
 
+Responses _should_ include a `Last-Modified` or `ETag` header, and _may_ include
+both. The ETag should be based on a hash of the response payload, not on
+timestamps.
 
-### 5.3. Collection GET endpoints
+
+### Collection GET endpoints
 
 A collection GET endpoint _should_ be of one of the forms:
 
@@ -760,7 +766,7 @@ _embedded:
 ```
 
 
-### 5.4 POST, creating entities
+### POST, creating entities
 
 A collection GET endpoint _may_ respond to the POST method to create new entities.
 
@@ -791,7 +797,7 @@ _links:
   self: "/hotels/1337"
 ```
 
-### 5.5 PATCH, mutating entities
+### PATCH, mutating entities
 
 A single-resource GET endpoint _may_ respond to the PATCH method to modify
 existing entities.
@@ -802,6 +808,9 @@ The response status _should_ be
 - 400 Bad Request, if the modification failed.
 - 412 Precondition failed, when failing to honour `If-Match` or
   `If-Unmodified-Since` headers.
+- 428 Precondition Required, when the request lack a `If-*` header.
+- 415 Unsupported if using versioning and the server doesn't support the
+  specified version.
 
 The response _must_ be a valid single resource representation, although it _may_
 be partial, including at least the numeric `id` and the mandatory link to self.
@@ -829,7 +838,7 @@ _links:
 ```
 
 
-### 5.6. Return codes and errors
+### Return codes and errors
 
 In the case of client or server errors (i.e. when the return code is 400+), the
 content-type _should_ be `application/hal+json`.
@@ -893,7 +902,7 @@ Likewise, for success codes:
 - 204 should not be returned.
 
 
-### 5.7. Query parameters
+### Query parameters
 
 Single-entity endpoints _should not_ accept query parameters (for any HTTP
 method).
@@ -926,7 +935,7 @@ they do those _should_ be mentioned in the root document and the behaviour is
 unspecified.
 
 
-### 5.8. Caching
+### Caching
 
 Caching efficiency is a critical aim of well-designed APIs, as it is influential
 on service performance; cache consistency is as important.
@@ -940,7 +949,7 @@ header.
 
 Responses to collection GET endpoints _should not_ specify a `Cache-Control` header.
 
-# 5.9 Mutable resource versioning
+### Mutable resources
 
 Single-entity endpoints _should_ return an `Etag` header and a `Last-Modified`
 header.
@@ -952,7 +961,7 @@ Mutation endpoints _should_ honour the `If-Match` and `If-Unmodified-Since`
 headers as appropriate.
 
 
-### 5.10. Compression
+### Compression
 
 Servers _may_ support the `Accept-Encoding` header for compression purposes, but
 this is not mandatory.
@@ -964,7 +973,7 @@ APIs; therefore the overhead of compression is seldom justified.
 
 {: #external-facing}
 
-## 6. External-facing APIs
+## External-facing APIs
 
 
 We want to do our best to make out internal services use HATEOAS and we can try
@@ -974,7 +983,7 @@ that everyone will stick to these ideals.
 
 Performance constraints can also be quite different.
 
-### 6.1. Mobile-friendly APIs
+### Mobile-friendly APIs
 
 To build APIs that are friendly to mobile consumers, special attention is needed
 to limit the number of requests. This is because mobile connections are
@@ -997,7 +1006,7 @@ authentication; whereas the internal services only need to care about
 service-to-service authentication.
 
 
-### 6.2. Public-friendly APIs
+### Public-friendly APIs
 
 For external services we should to stick to a somewhat different set of
 principles, because of the low incentive for 3rd-party consumers to support
@@ -1014,9 +1023,9 @@ maintainability of _our_ software.
 
 ----------
 
-## 7. Tools of the trade
+## Tools of the trade
 
 ----------
 
-## 8. Further reading
+## Further reading
 
