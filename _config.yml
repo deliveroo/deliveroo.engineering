@@ -29,7 +29,7 @@ gems:
 collections:
   guidelines:
     output:       true
-    permalink:    /guide/:path/
+    permalink:    /guidelines/:path/
 
 defaults:
   - scope:
