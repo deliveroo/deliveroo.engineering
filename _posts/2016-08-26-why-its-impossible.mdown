@@ -1,0 +1,37 @@
+---
+layout: post
+title:  "Why it's impossible for devs to give dates"
+date:   2016-06-27 10:13:59
+exerpt: "Or 'Why your tiny change will take three weeks'"
+---
+
+_By Graham Paterson_
+
+If you work in a tech company, there's been a time when you need a developer to help you with something. Maybe it’s small, like an image change on your website. Maybe it’s huge, like a new feature that opens you up to new customers. No matter the size — you need to know how long it’ll take. You need to know this for your preparation, your customers and your sanity.
+
+The trouble is, developers **hate** giving dates. Even rough estimations are hard to get, and this creates friction. There’s no simple solution to this, but by understanding where developers come from you can begin to ease the pain. So, the question is…
+
+## Why is it so hard for a developer to give timeframes?
+
+Like a nun in a hurry, I’m going to use an analogy. Let’s say your company’s product/service has 4 main features — and compare it to being an estate agent, with four houses to sell.
+
+You have a customer who says “I would buy house 3, if it had an extra room”. “Great”, you say, “we’ve built rooms before, and we can definitely do that. Let me see how long it’ll take”. And you ask the builder “Look, we’ve got a potential buyer if we get one more room, roughly how long does that take?”. This is the equivalent of asking a developer to build part of a new feature.
+
+The builder knows that there are lots more specifics needed. Where will the room go? Will it be added onto the outside of the house? On which floor? Could we get the same result splitting an existing room in two? Does the room need electricity/water? Does it need several doors? Will it be underground? If so, will it need a stairs? An elevator? Does the room have to go over two floors? Might it be easier to just build another small house? These answers will take time themselves, and all massively affect speed of building.
+
+Building a new room on the ground floor, and building a new room underground with an elevator, are very different skills. The builder can do both, but he’s never done an underground room before. So if you go with that, he doesn’t know how long it will take. Maybe longer, as they need to dig first. But maybe shorter, as the ground provides natural walls. The builder simply doesn’t know, as he has never done this type of task before.
+
+The builder in question has only worked on house 1, which is built on hard ground. House 3 was build on sand. It is perfectly fine, but as soon as you build a new room, it’ll start to sink. So if we really need this room, we’ll first need to shore up the foundations. The builder has no idea how long this will take as he’s not familiar with the foundations, and will need to understand them first.
+
+But let's say that the room required is simple, with well-defined specs, and the foundations are actually fine. The builder knows that similar rooms have taken 30 days. But the builder also knows that house 2 is more worth more, and there is a high likelihood of new rooms being needed for that in the next month as well. So even though it is 30 days of _actual_ work, it will likely take more than a month to deliver.
+
+And even if there is no work to come, the builder knows that house 1, 2 and 4 are in urgent need of repair. They’re fine right now, but bits have been falling off lately. The builder knows that he’ll probably have to do some repair work on these houses for a few days or weeks, in the near future. It’s not clear exactly when, but the work will need doing.
+
+Finally, the builder himself doesn’t want to give a date and then change it. Human beings love benchmarking. If the builder says “maybe 30 days from now”, and tomorrow he learns it will be 60 days; in the customer’s mind it is one month late, before work has even begun.
+
+And so it is with developers. No-one wants to feel like they’re letting colleagues or customers down, and they certainly don’t want to make promises that they can’t keep. Pieces of work are often infinitely more complicated than simply writing the code to do what you want.
+
+Unfortunately, I can’t offer any great solution in instances where deadlines are required — each depends on your own needs and relationships. However, no matter the situation, understanding the way developers work is a great first step.
+
+
+
