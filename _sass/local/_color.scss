@@ -25,19 +25,19 @@
 } // @function color()
 
 // usage:
-// color(teal)                           => #04bab1
-// color(dark_grey, 75%)                 => #626666
-// color(light_grey, $transparency: 0.2) => rgb(140, 155, 155, 0.2)
-// color(teal, $darken: 20%)             => #03958e
+// color(pumpkin)                          => #ff8100
+// color(beetroot, 75%)                    => #ea3f72
+// color(burger_sauce, $transparency: 0.2) => rgb(255, 173, 148, 0.8)
+// color(teal, $darken: 20%)               => #00988c
 //
 // or if you prefer, actual usage:
 //
 // div.foo {
-//   background-color: color(teal, 25%);
+//   background-color: color(seaweed, 25%);
 // }
 //
 // =>
 //
 // div.foo {
-//   background-color: #43cbc5;
+//   background-color: #bfdad9;
 // }
