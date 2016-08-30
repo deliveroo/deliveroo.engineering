@@ -12,6 +12,11 @@ a {
   } // a:hover
 } // a
 
+h1, h2, h3, h4 {
+  font-family: $title-font;
+  font-weight: 600;
+}
+
 h1 {
   font-size: font-size(large-heading);
   line-height: 48px;
@@ -22,11 +27,15 @@ h2 {
   font-size: font-size(medium-heading);
 }
 
-h3, h4, h5 {
+h3 {
   font-size: font-size(small-heading);
 }
 
-h6 {
+h4 {
+  font-size: font-size(smallish-heading);
+}
+
+h5, h6 {
   font-size: font-size(extra-small-heading);
 }
 

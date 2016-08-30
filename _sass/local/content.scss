@@ -125,6 +125,18 @@ article {
     } // @min-width(desktop_small) article aside
   } // article aside
   
+  blockquote {
+    @include auto-width(desktop_small, $vertical-margins: 2em);
+    color: color(anchovy);
+    border-left: 4px solid color(anchovy, 40%);
+    padding-left: 10px;
+    box-sizing: border-box;
+  } // article blockquote
+  
+  ul, ol {
+    @include auto-width(desktop_small, $vertical-margins: 2em);
+  } // article {ul, ol}
+  
   div.footnotes {
     color: color(dark_grey, 80%);
     
@@ -133,3 +145,59 @@ article {
     } // article div.footnotes a.reversefootnote
   } // article div.footnotes
 } // article
+
+ol#markdown-toc {
+  @include auto-width(desktop_small);
+  font-size: font-size(small-body);
+  counter-reset: root;
+  padding-left: 0;
+  margin-bottom: 6em;
+  
+  > li {
+    counter-increment: root;
+
+    &:before {
+      content: counter(root) ".";
+    } // ol#markdown-toc > li:before
+
+    > ol {
+      counter-reset: subsection;
+
+      > li {
+        counter-increment: subsection;
+
+        &:before {
+          content: counter(root) "." counter(subsection) " ";
+        } // ol#markdown-toc > li > ol > li:before
+        
+        > ol {
+          counter-reset: subsubsection;
+          
+          > li {
+            counter-increment: subsubsection;
+            
+            &:before {
+              content: counter(root) "." counter(subsection) "." counter(subsubsection) " ";
+            } // ol#markdown-toc > li > ol > li > ol > li:before
+          } // ol#markdown-toc > li > ol > li > ol > li
+        } // ol#markdown-toc > li > ol > li > ol
+      } // ol#markdown-toc > li > ol > li
+    } // ol#markdown-toc > li > ol
+  } // ol#markdown-toc > li
+  
+  ol {
+    margin-top: 0.5em;
+  } // ol#markdown-toc ol
+  
+  li {
+    list-style-type: none;
+    
+    & + li {
+      margin-top: 0.5em;
+    } // ol#markdown-toc li + li
+    
+    &:before {
+      margin-right: 0.25em;
+    } // ol#markdown-toc li:before
+  } // ol#markdown-toc li
+} // ol#markdown-toc

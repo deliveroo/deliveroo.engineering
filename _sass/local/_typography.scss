@@ -18,13 +18,15 @@
 
 $font-sizes: (
   extra-small-heading: 18px,
+  smallish-heading:    20px,
   small-heading:       22px,
   medium-heading:      28px,
   large-heading:       40px,
   extra-large-heading: 60px,
   large-body:          18px,
   medium-body:         16px,
-  small-body:          14px
+  small-body:          14px,
+  smallest-body:       12px
 );
 
 @include font-face-shim('stratos', 'stratos/stratosdeliverooweb-thin', 100);
