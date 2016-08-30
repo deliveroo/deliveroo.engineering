@@ -1,14 +1,14 @@
 a {
   text-decoration: none;
-  color: color(teal);
+  color: color(aubergine, 75%);
   transition-property: color, border;
   transition-duration: 0.4s;
-  border-bottom: 2px solid transparentize(color(teal), 0.8);
+  border-bottom: 2px solid transparentize(color(aubergine, 75%), 0.8);
   
   &:hover {
-    color: color(teal, 60%);
+    color: color(aubergine, 50%);
     transition-duration: 0.2s;
-    border-color: transparentize(color(teal, 60%), 0.4);
+    border-color: transparentize(color(aubergine, 50%), 0.4);
   } // a:hover
 } // a
 
@@ -18,12 +18,16 @@ h1, h2, h3, h4 {
 }
 
 h1 {
+  font-family: $title-font;
+  font-weight: 600;
   font-size: font-size(large-heading);
   line-height: 48px;
   margin: 0.5em 0;
 }
 
 h2 {
+  font-family: $title-font;
+  font-weight: 600;
   font-size: font-size(medium-heading);
 }
 
@@ -39,11 +43,10 @@ h5, h6 {
   font-size: font-size(extra-small-heading);
 }
 
-
 hr {
   border-width: 1px 0 0;
   border-style: solid;
-  border-color: color(light_grey, 40%);
+  border-color: color(anchovy, 40%);
   margin: 2em 0;
 }
 
@@ -69,16 +72,18 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  font-family: $default-font;
   font-size: 62.5%;
-  color: color(dark_grey);
-  background-color: color(light_grey, 5%);
+  color: color(mackeral);
+  background-color: color(anchovy, 5%);
+  text-rendering: optimizeLegibility;
   
   main {
     -webkit-flex: 1;
     flex: 1;
     padding: 50px 10px;
     font-size: font-size(medium-body);
-    line-height: 1.375;
+    line-height: 1.5;
 
     > * {
       @include auto-width(desktop_medium);

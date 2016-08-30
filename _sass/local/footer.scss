@@ -1,11 +1,11 @@
 footer {
-  color: color(teal, 40%);
-  background-color: color(teal);
+  color: color(aubergine, 25%);
+  background-color: color(aubergine);
   font-size: font-size(medium-body);
-  line-height: 1.375;
+  line-height: 1.5;
   
   a {
-    color: color(teal, 20%);
+    color: color(aubergine, 25%);
     border: none;
     
     &:hover {
@@ -32,7 +32,7 @@ footer {
       li {
         padding: 10px;
         line-height: 30px;
-        border-bottom: 1px solid color(teal, 80%);
+        border-bottom: 1px solid color(aubergine, 75%);
         
         a {
           display: block;

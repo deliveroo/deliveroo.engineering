@@ -1,9 +1,9 @@
 time.published {
-  color: color(light_grey);
+  color: color(anchovy);
 } // time.published
 
 p.author {
-  color: color(light_grey);
+  color: color(anchovy);
   margin-top: 0;
 } // p.author
 
@@ -16,7 +16,12 @@ section#recent-posts {
 
   div.post {
     h3 {
+      -webkit-font-smoothing: antialiased;
       margin-bottom: 0.5em;
+      
+      a {
+        border: none;
+      } // section#recent-posts div.post h3 a
     } // section#recent-posts div.post h3
     
     blockquote {
@@ -58,7 +63,8 @@ article {
   
   header {
     h1 {
-      color: color(teal, $darken: 80%);
+      color: color(aubergine);
+      -webkit-font-smoothing: antialiased;
     } // article header h1
   } // article header
   
@@ -84,7 +90,7 @@ article {
   } // article h{2…6}
   
   code.highlighter-rouge {
-    background-color: color(light_grey, 25%);
+    background-color: color(anchovy, 25%);
   } // article code.highlighter-rouge
   
   pre.highlight {
@@ -99,7 +105,7 @@ article {
   
   aside {
     padding: 10px;
-    background-color: color(light_grey);
+    background-color: color(anchovy);
     color: white;
     
     h3, h4, h5, h6 {
@@ -138,7 +144,7 @@ article {
   } // article {ul, ol}
   
   div.footnotes {
-    color: color(dark_grey, 80%);
+    color: color(mackeral, 80%);
     
     a.reversefootnote {
       border: none;
