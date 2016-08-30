@@ -285,10 +285,11 @@ which lets you
 #### Ruby clients
 
 It is not considered good practice to provide a dedicated Ruby client to
-consume an internal API: this would be a smell that the API is non-standard.
+consume a particular internal API, e.g a `payment-srv-client` Ruby gem. This
+would be a smell that the API is non-standard.
 
-We may however provide (or extend) a library to abstract out traversal of
-hypermedia links in the future.
+We may however provide (or extend) a generic library to abstract out traversal
+of hypermedia links, caching, and authentication in the future.
 
 
 #### Typical dont's
@@ -319,6 +320,18 @@ APIs](../guides/) document.
 
 ### Preferred technology stack
 
+
+{: .dg-sidebar}
+> ##### Does this feel restrictive?
+>
+> Our experience tells us that, under pressure or temptation, new technologies
+> can be introduced that result in hard-to-maintain software.
+>
+> New technologies can still most definitely be experimented with and introduced
+> in production, though—only, with due care!
+> 
+> The next section outlines our approach to doing so.
+
 Because a zoo of technologies leads to disaster, we purposely limit the set of
 technologies we use.
 
@@ -340,11 +353,16 @@ From top to bottom of the production stack:
 | Logic                   | Ruby                                |
 | Persisting data         | ActiveRecord/PostgreSQL; Redis      |
 | Caching data            | Redis                               |
-| Background processing   | Sidekiq                             |
+| Background processing   | Sidekiq[^sidekiq]                   |
 | Hosting                 | Heroku                              |
 | Logging                 | Papertrail                          |
 
 **NOTE:** You should aim to use the latest, stable versions of the above.
+
+[^sidekiq]:
+  Sidekiq should be used directly, not through ActiveJob. The latter hides the
+  job engine behind a simplistic abstraction, which prevents access to advanced
+  features, e.g. exclusive/loner jobs or automated retries with backoff.
 
 In development:
 
@@ -369,7 +387,7 @@ performance grounds).
 | Front-end logic         | React JS                            |
 | Serving HTTP            | *none*                              |
 | Caching HTTP						| *none*    													|
-| Responding to requests  | Sinatra                             |
+| Responding to requests  | *none*[^sinatra]                    |
 | Querying HTTP           | *none*                              |
 | Logic                   | *none*                              |
 | Persisting data         | ElasticSearch                 			|
@@ -377,20 +395,25 @@ performance grounds).
 | Background processing   | Resque                  						|
 | Hosting                 | *none*                          		|
 
+[^sinatra]:
+  We do not consider Sinatra anymore. With an Rails 5 app in API mode, latency
+  is comparable to Sinatra; and this avoids having an extra brick in the stack.
+  It's also well established that Sinatra apps tend to grow to mimic Rails's
+  MVC.
 
 #### Introducing new technologies
 
-Adding a technology to the lists above can only be done by a consensus of the
-technical leads.
+Adding a technology to the lists above can only be done by a consensus (beyond
+the immediate engineers wishing to introduce it), and with a rationale.
 
 To put it simply, the philosophy is:
 
 - Ruby is core. If it can be done it Ruby with reasonable performance, it
   should.
 - Introducing _any_ new technology in the stack must be (a) justified by use
-  cases that cannot be covered by the existing stack, and (b) at least half
-  the team must be trained with the new technology before it reaches
-  production.
+  cases that cannot be covered by the existing stack, and (b) a sufficient part
+  of the team should be trained with the new technology before it reaches
+  production, so that maintenance can be ensured.
 
 Excellent case reflecting our thought process:
 
@@ -471,7 +494,7 @@ In addition, services:
 - You **SHOULD** log to `$stdout` (per [12factor
   principles](http://12factor.net/logs)). The
   [rails_12factor](https://github.com/heroku/rails_12factor#rails-12factor-) gem
-  sets that up for you.
+  sets that up for you if using Rails <5.
 - You **SHOULD** log no more than 1-2 lines per user request or job.
 
 Heroku captures logs by default but it is **REQUIRED** that you add
