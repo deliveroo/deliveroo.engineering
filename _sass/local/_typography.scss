@@ -29,6 +29,9 @@ $font-sizes: (
   smallest-body:       12px
 );
 
+@include font-face-shim('adelle-sans', 'adelle-sans/AdelleSans-Light', 200);
+@include font-face-shim('adelle-sans', 'adelle-sans/AdelleSans-Regular', 400);
+@include font-face-shim('adelle-sans', 'adelle-sans/AdelleSans-Bold', 700);
 @include font-face-shim('stratos', 'stratos/stratosdeliverooweb-thin', 100);
 @include font-face-shim('stratos', 'stratos/stratosdeliverooweb-light', 200);
 @include font-face-shim('stratos', 'stratos/stratosdeliverooweb-semilight', 300);
