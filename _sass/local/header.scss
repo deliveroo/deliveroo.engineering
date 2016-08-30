@@ -24,7 +24,7 @@ $navbar-height:       60px;
 
 header#navigation {
   background-color: white;
-  box-shadow: 0 0 2px color(light_grey);
+  box-shadow: 0 0 2px color(soba);
   min-height: $navbar-height;
   
   nav {
@@ -45,7 +45,16 @@ header#navigation {
           padding-left: 0;
           
           a {
-            font-weight: bold; 
+            @include image-replacement('/images/logo_engineering',
+              $background-width: 175px,
+              $background-height: 40px,
+              $type: 'svg') {
+              width: 175px;
+              height: 40px;
+              background-position: center;
+            };
+            border: none;
+            margin: 0 auto;
           } // header#navigation nav ul li#logo a
         } // header#navigation nav ul li#logo
         
@@ -55,7 +64,7 @@ header#navigation {
         
         a {
           border: none;
-          color: color(dark_grey, $lighten: 50%);
+          color: color(anchovy);
           font-family: $default-font;
           font-size: font-size(medium-body);
           font-weight: normal;
@@ -64,26 +73,26 @@ header#navigation {
           transition-duration: 0.2s;
           
           &:hover {
-            color: color(dark_grey);
+            color: color(mackeral);
           } // header#navigation nav ul li a:hover
         } // header#navigation nav ul li a
         
         &:last-child a {
-          color: color(teal);
+          color: color(aubergine);
           
           &:hover {
-            color: color(dark_grey);
+            color: color(mackeral);
           } // header#navigation nav ul li:last-child a:hover
         } // header#navigation nav ul li:last-child a
         
         &.selected a {
           font-weight: bold;
-          color: color(dark_grey);
+          color: color(mackeral);
         } // header#navigation nav ul li.selected a
       } // header#navigation nav ul li
     } // header#navigation nav ul
   
-    @include max-width(tablet_small) {
+    @include max-width(tablet_large) {
       -webkit-justify-content: center;
       -webkit-align-items: flex-start;
       justify-content: center;
@@ -102,11 +111,11 @@ header#navigation {
               
               &#logo {
                 animation: none;
-              } // @max-width(tablet_small) header#navigation nav input#menu:checked ~ ul li#logo
-            } // @max-width(tablet_small) header#navigation nav input#menu:checked ~ ul li
-          } // @max-width(tablet_small) header#navigation nav input#menu:checked ~ ul
-        } // @max-width(tablet_small) header#navigation nav input#menu:checked
-      } // @max-width(tablet_small) header#navigation nav input#menu
+              } // @max-width(tablet_large) header#navigation nav input#menu:checked ~ ul li#logo
+            } // @max-width(tablet_large) header#navigation nav input#menu:checked ~ ul li
+          } // @max-width(tablet_large) header#navigation nav input#menu:checked ~ ul
+        } // @max-width(tablet_large) header#navigation nav input#menu:checked
+      } // @max-width(tablet_large) header#navigation nav input#menu
 
       label#checkbox-menu {
         @include image-replacement('/images/hamburger',
@@ -119,7 +128,7 @@ header#navigation {
         margin: 10px 0 10px 10px;
         cursor: pointer;
         user-select: none;
-      } // @max-width(tablet_small) header#navigation nav label#checkbox-menu
+      } // @max-width(tablet_large) header#navigation nav label#checkbox-menu
       
       ul {
         -webkit-flex-direction: column;
@@ -136,8 +145,8 @@ header#navigation {
           border-left: 4px solid transparent;
           
           &.selected {
-            border-color: color(teal);
-          } // @max-width(tablet_small) header#navigation nav ul li.selected
+            border-color: color(aubergine);
+          } // @max-width(tablet_large) header#navigation nav ul li.selected
         
           &#logo {
             animation: none;
@@ -150,25 +159,25 @@ header#navigation {
           
             & + li {
               margin-top: $navigation-padding * 2;
-            } // @max-width(tablet_small) header#navigation nav ul li#logo + li
+            } // @max-width(tablet_large) header#navigation nav ul li#logo + li
           
             a {
               span.wordmark {
                 display: none;
-              } // @max-width(tablet_small) header#navigation nav ul li#logo a span.wordmark
-            } // @max-width(tablet_small) header#navigation nav ul li#logo a 
-          } // @max-width(tablet_small) header#navigation nav ul li#logo
-        } // @max-width(tablet_small) header#navigation nav ul li
-      } // @max-width(tablet_small) header#navigation nav ul
-    } // @max-width(tablet_small) header#navigation nav
+              } // @max-width(tablet_large) header#navigation nav ul li#logo a span.wordmark
+            } // @max-width(tablet_large) header#navigation nav ul li#logo a 
+          } // @max-width(tablet_large) header#navigation nav ul li#logo
+        } // @max-width(tablet_large) header#navigation nav ul li
+      } // @max-width(tablet_large) header#navigation nav ul
+    } // @max-width(tablet_large) header#navigation nav
     
-    @include min-width(tablet_small) {
+    @include min-width(tablet_large) {
       padding: 0 10px;
 
       input#menu,
       label#checkbox-menu {
         display: none;
-      } // @min-width(tablet_small) header#navigation nav {input#menu, label#checkbox-menu}
+      } // @min-width(tablet_large) header#navigation nav {input#menu, label#checkbox-menu}
       
       ul {
         @include auto-width(desktop_medium);
@@ -178,7 +187,7 @@ header#navigation {
           -webkit-flex: 1;
           flex: 1;
           text-align: center;
-          line-height: 68px; // yes this is a magic number to offset the baseline to match the wordmark
+          line-height: $navbar-height;
           height: $navbar-height;
           
           &#logo {
@@ -188,36 +197,38 @@ header#navigation {
             a {
               margin: 0 0 0 5px;
               height: $navbar-height;
-            } // @min-width(tablet_small) header#navigation nav ul li#logo a
-          } // @min-width(tablet_small) header#navigation nav ul li#logo
+              background-position: center 8px;
+            } // @min-width(tablet_large) header#navigation nav ul li#logo a
+          } // @min-width(tablet_large) header#navigation nav ul li#logo
           
           a {
             border-bottom: 2px solid transparent;
-          } // @min-width(tablet_small) header#navigation nav ul li a
+          } // @min-width(tablet_large) header#navigation nav ul li a
           
           &:last-child {
             a {
               color: white;
-              background-color: color(teal);
+              background-color: color(aubergine);
               border-radius: 2px;
-              padding: 10px 10px 8px 10px;
+              padding: 10px 10px 8px;
+              box-shadow: 0 2px 0 transparentize(color(mackeral), 0.9);
               
               &:hover {
                 color: white;
-                background-color: color(teal, 80%);
-              } // @min-width(tablet_small) header#navigation nav ul li:last-child a:hover
-            } // @min-width(tablet_small) header#navigation nav ul li:last-child a
-          } // @min-width(tablet_small) header#navigation nav ul li:last-child
+                background-color: color(aubergine, 80%);
+              } // @min-width(tablet_large) header#navigation nav ul li:last-child a:hover
+            } // @min-width(tablet_large) header#navigation nav ul li:last-child a
+          } // @min-width(tablet_large) header#navigation nav ul li:last-child
           
           &.selected {
             a {
               display: inline-block;
-              border-color: color(teal);
+              border-color: color(aubergine);
               height: $navbar-height - 2px;
-            } // @min-width(tablet_small) header#navigation nav ul li.selected a
-          } // @min-width(tablet_small) header#navigation nav ul li.selected
-        } // @min-width(tablet_small) header#navigation nav ul li
-      } // @min-width(tablet_small) header#navigation nav ul
-    } // @min-width(tablet_small) header#navigation nav
+            } // @min-width(tablet_large) header#navigation nav ul li.selected a
+          } // @min-width(tablet_large) header#navigation nav ul li.selected
+        } // @min-width(tablet_large) header#navigation nav ul li
+      } // @min-width(tablet_large) header#navigation nav ul
+    } // @min-width(tablet_large) header#navigation nav
   } // header#navigation nav
 } // header#navigation
