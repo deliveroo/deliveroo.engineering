@@ -10,8 +10,7 @@
 @mixin font-face-shim($family, $file, $weight) {
   @font-face {
       font-family: '#{$family}';
-      src: url('fonts/#{$file}.woff'), // Modern Browsers
-           url('fonts/#{$file}.ttf', 'font') format('truetype'); // Android pre 4.4
+      src: url('fonts/#{$file}.woff');
       font-weight: $weight;
       font-style: normal;
   }
@@ -28,7 +27,16 @@ $font-sizes: (
   small-body:          14px
 );
 
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-thin', 100);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-light', 200);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-semilight', 300);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-regular', 400);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-medium', 500);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-semibold', 600);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-bold', 700);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-extrabold', 800);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-black', 900);
 
-$default-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-$title-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$default-font: 'adelle-sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$title-font: 'Stratos', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 $monospace-font: 'Menlo', 'Ubuntu Mono', 'Lucida Console', 'Monaco', monospace;
