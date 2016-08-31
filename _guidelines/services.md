@@ -259,7 +259,7 @@ use of hypermedia links.
 >> architecture.
 
 For instance, imagining a resource (the API term matching "domain concept")
-named `bookings` that references a resource named `property`, you'd want this
+named `bookings` that references a resource named `hotel`, you'd want this
 type of API:
 
 ```json
@@ -270,8 +270,8 @@ type of API:
     "self": {
       "href": "https://bookings.example.com/api/bookings/123"
     },
-    "property": {
-      "href": "https://monolith.example.com/api/properties/456"
+    "hotel": {
+      "href": "https://monolith.example.com/api/hotels/456"
     }
   }
 }
@@ -318,7 +318,7 @@ APIs](../guides/) document.
 
 ----------------------
 
-### Preferred technology stack
+### Preferred technology stack 
 
 
 {: .dg-sidebar}
@@ -326,6 +326,10 @@ APIs](../guides/) document.
 >
 > Our experience tells us that, under pressure or temptation, new technologies
 > can be introduced that result in hard-to-maintain software.
+>
+> If that's unconvincing, Dan McKinley of Stripe and Etsy fame sums it up well
+> in [Choose Boring Technology](http://mcfunley.com/choose-boring-technology)
+> ([slides](http://mcfunley.com/choose-boring-technology-slides)).
 >
 > New technologies can still most definitely be experimented with and introduced
 > in production, though—only, with due care!
@@ -338,6 +342,9 @@ technologies we use.
 _Reminder_: this applies to new services/apps, and signficant changes to
 existing ones. Some existing services/apps might not be aligned to this at time
 of writing.
+
+We include front-end technologies here, as it's likely that some services (≈ app
+exposing or consuming an internal API) also have a user interface.
 
 From top to bottom of the production stack:
 
