@@ -3,3 +3,12 @@ guidelines:  "/guidelines/"
 repository:  "https://github.com/deliveroo/deliveroo.engineering"
 design_blog: "http://deliveroo.design/"
 food_blog:   "http://deliveroo.co.uk/blog"
+navigation:
+  - url:   '/articles/'
+    title: 'Articles'
+  - url:   '/guidelines/'
+    title: 'Guidelines'
+  - url:   '/authors/'
+    title: 'Authors'
+  - url:   '/careers/'
+    title: 'Work with us!'
