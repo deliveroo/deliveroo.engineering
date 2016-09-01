@@ -428,7 +428,7 @@ API users are both developers and machines; therefore, you should:
 
 ### Content type negotiation
 
-All requests _should_ include the `Accept: application/hal+json` headers.
+All requests _should_ include the `Accept: application/json` headers.
 
 Requests _may_ use the `application/json` MIME type instead for backwards
 compatibility reasons.
@@ -552,7 +552,7 @@ form of API versions.
 Clients _may_ specify a desired version as the `v` parameter of the `Accept`
 header, for instance:
 
-    Accept: application/hal+json;v=2
+    Accept: application/json;v=2
 
 The service _should_ respond with status 406, Not Acceptable if the version is
 unavailable.
@@ -561,20 +561,20 @@ If a version was specified by the client, and is available, the service _must_
 respond with the same version:
 
     # Request:
-    Accept: application/hal+json;v=2
+    Accept: application/json;v=2
 
     # Response:
-    Content-Type: application/hal+json;v=2
+    Content-Type: application/json;v=2
 
 If the version was unspecified, the server _should_ use the latest available
 version, and specify the `Vary` header, as future request may yield a different
 response:
 
     # Request:
-    Accept: application/hal+json
+    Accept: application/json
 
     # Response:
-    Content-Type: application/hal+json;v=2
+    Content-Type: application/json;v=2
     Vary: Accept
 
 Finally, a service's root endpoint _should_ list the available versions:
@@ -773,13 +773,17 @@ A collection GET endpoint _may_ respond to the POST method to create new entitie
 If it exists, it _should_ return status:
 
 - 201 Created if the entity was successfully created, or
-- 400 Bad Request if the entity cannot be created with the information in the request body.
+- 400 Bad Request if the entity cannot be created with the information in the
+  request body.
 
 Additional 4xx response codes _may_ be used:
 
-- 412 Precondition Failed if e.g. the resource wouldn't statisfy some uniqueness criterion;
+- 412 Precondition Failed if e.g. the resource wouldn't statisfy some uniqueness
+  criterion;
 - 415 Unsupported if using versioning and the server doesn't support the
   specified version.
+- 429 Too Many Requests if the service throttles requests from an aggressive
+  client.
 
 The response _must_ be a valid single resource representation, although it _may_
 be partial, including at least the numeric `id` and the mandatory link to self.
@@ -837,11 +841,37 @@ _links:
   self:   "/hotels/1337"
 ```
 
+### DELETE, destroying entities
+
+A resource GET endpoint _may_ respond to the DELETE method to permanently
+destroy an existing entity.
+
+If it exists, it _should_ return status:
+
+- 204 No Content if the entity was successfully destroyed,
+- 404 Not Found if the entity does not exist
+- 410 Gone if the entity is known to have existed but no longer does.
+
+Additional 4xx response codes _may_ be used:
+
+- 412 Precondition Failed 
+- 415 Unsupported if using versioning and the server doesn't support the
+  specified version.
+
+The response _should_ be empty on success.
+
+Example:
+
+```yml
+#> DELETE /hotels/1234
+#< HTTP/1.0 204 No Content
+```
+
 
 ### Return codes and errors
 
 In the case of client or server errors (i.e. when the return code is 400+), the
-content-type _should_ be `application/hal+json`.
+content-type _should_ be `application/json`.
 
 The results are not just intended to be acted on by machines, but rather
 presented to users.
@@ -868,7 +898,7 @@ Example of a PATCH version fail:
 #> PATCH /hotels/1337
 #> If-Match: "e04c6ca4-6ac9-11e6-ab5a-cf7dd1791cc9"
 name:       "Manor by the Lake"
-#< HTTP/1.0 409 Conflict
+#< HTTP/1.0 412 Precondition failed
 errors:
   version:  "Resource was updated since you read it."
 ```
@@ -883,6 +913,16 @@ errors:
   name:  "Name is required."
   lat:   "Latitude must be a floating-point number."
   lng:   "Latitude is required."
+```
+
+Example of bad/missing values in POST:
+
+```yml
+#> POST /hotels/1337
+name: "Luxury resort"
+#< HTTP/1.0 409 Conflict
+errors:
+  name:  "Name must be unique."
 ```
 
 HTTP status codes should be used as possible to being semantic where these
@@ -900,7 +940,6 @@ Likewise, for success codes:
 
 - POST and PATCH should never result in a 200 (generally 201, occasionally 202).
 - 204 should not be returned.
-
 
 ### Query parameters
 
