@@ -23,6 +23,7 @@ h1 {
   font-size: font-size(large-heading);
   line-height: 48px;
   margin: 0.5em 0;
+  text-align: center;
 }
 
 h2 {
@@ -65,42 +66,3 @@ ul, ol {
     } // {ul, ol} li + li
   } // {ul, ol} li
 } // {ul, ol}
-
-body {
-  display: -webkit-flex;
-  -webkit-flex-direction: column;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  font-family: $default-font;
-  font-size: 62.5%;
-  color: color(mackeral);
-  background-color: color(anchovy, 5%);
-  text-rendering: optimizeLegibility;
-  
-  main {
-    -webkit-flex: 1;
-    flex: 1;
-    padding: 50px 10px;
-    font-size: font-size(medium-body);
-    line-height: 1.5;
-
-    > * {
-      @include auto-width(desktop_medium);
-    } // body main > *
-    
-    > h1,
-    > p {
-      margin-bottom: 50px;
-    } // body main > {h1, p}
-    
-    > ul,
-    > ol {
-      margin-top: 20px;
-    } // body main > {ul, ol}
-    
-    @include min-width(tablet_small) {
-      padding: 100px 10px;
-    } // @min-width(tablet_small) body main
-  } // body main
-} // body
