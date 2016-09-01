@@ -1,0 +1,13 @@
+---
+layout: default
+---
+<h2>Articles</h2>
+<ul>
+  {% for _page in site.posts %}
+    {% if _page.title %}
+      <li>
+        <a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a>
+      </li>
+    {% endif %}
+  {% endfor %}
+</ul>
