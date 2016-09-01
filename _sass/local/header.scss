@@ -60,13 +60,21 @@ header#navigation {
           font-size: font-size(medium-body);
           font-weight: normal;
           
-          transition-property: color;
+          transition-property: color, background;
           transition-duration: 0.2s;
           
           &:hover {
             color: color(dark_grey);
           } // header#navigation nav ul li a:hover
         } // header#navigation nav ul li a
+        
+        &:last-child a {
+          color: color(teal);
+          
+          &:hover {
+            color: color(dark_grey);
+          } // header#navigation nav ul li:last-child a:hover
+        } // header#navigation nav ul li:last-child a
         
         &.selected a {
           font-weight: bold;
@@ -186,6 +194,20 @@ header#navigation {
           a {
             border-bottom: 2px solid transparent;
           } // @min-width(tablet_small) header#navigation nav ul li a
+          
+          &:last-child {
+            a {
+              color: white;
+              background-color: color(teal);
+              border-radius: 2px;
+              padding: 10px 10px 8px 10px;
+              
+              &:hover {
+                color: white;
+                background-color: color(teal, 80%);
+              } // @min-width(tablet_small) header#navigation nav ul li:last-child a:hover
+            } // @min-width(tablet_small) header#navigation nav ul li:last-child a
+          } // @min-width(tablet_small) header#navigation nav ul li:last-child
           
           &.selected {
             a {

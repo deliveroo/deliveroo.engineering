@@ -10,5 +10,5 @@ navigation:
     title: 'Guidelines'
   - url:   '/authors/'
     title: 'Authors'
-  - url:   '/careers/'
+  - url:   'https://deliveroo.co.uk/careers'
     title: 'Work with us!'
