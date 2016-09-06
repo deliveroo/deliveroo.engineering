@@ -180,7 +180,7 @@ header#navigation {
       } // @min-width(tablet_large) header#navigation nav {input#menu, label#checkbox-menu}
       
       ul {
-        @include auto-width(desktop_medium);
+        @include auto-width(desktop_larger);
         width: 100%;
         
         li {

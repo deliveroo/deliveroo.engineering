@@ -9,6 +9,7 @@ body {
   color: color(mackeral);
   background-color: color(anchovy, 5%);
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
   
   main {
     -webkit-flex: 1;
@@ -17,9 +18,16 @@ body {
     font-size: font-size(medium-body);
     line-height: 1.5;
 
-    > * {
-      @include auto-width(desktop_medium);
-    } // body main > *
+    > h1,
+    > h2,
+    > p,
+    > section {
+      @include auto-width(desktop_larger);
+    } // body main > {h1, h2, p, section}
+    
+    > hr {
+      @include auto-width(desktop_larger, $vertical-margins: 2em);
+    } // body main > hr
     
     > h1 {
       margin-bottom: 10px;
@@ -58,8 +66,10 @@ p.tagline {
   } // .byline time.published
 } // .byline
 
+$post-gutter: 40px;
+
 section {
-  @include auto-width(desktop_medium);
+  @include auto-width(desktop_larger);
 
   & + h2 {
     margin-top: 50px;
@@ -68,7 +78,6 @@ section {
 
   div.post {
     h3 {
-      -webkit-font-smoothing: antialiased;
       margin-bottom: 0.5em;
       text-align: center;
       
@@ -137,12 +146,11 @@ section {
 } // section
 
 article {
-  @include auto-width(desktop_medium);
+  @include auto-width(desktop_small);
   
   header {
     h1 {
       color: color(aubergine);
-      -webkit-font-smoothing: antialiased;
     } // article header h1
     
     p.byline {
@@ -163,12 +171,8 @@ article {
   } // article figure
   
   h2, h3, h4, h5, h6 {
-    margin: 2em 0 1em;
+    margin: 3em 0 1em;
   } // article h{2…6}
-  
-  code.highlighter-rouge {
-    background-color: color(anchovy, 25%);
-  } // article code.highlighter-rouge
   
   pre.highlight {
     overflow: auto;

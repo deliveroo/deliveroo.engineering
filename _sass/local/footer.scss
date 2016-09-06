@@ -1,11 +1,13 @@
 footer {
-  color: color(aubergine, 25%);
-  background-color: color(aubergine);
-  font-size: font-size(medium-body);
+  $base-color: mackeral;
+  
+  color: color($base-color, 50%);
+  background-color: color($base-color);
+  font-size: font-size(small-body);
   line-height: 1.5;
   
   a {
-    color: color(aubergine, 25%);
+    color: color($base-color, 25%);
     border: none;
     
     &:hover {
@@ -15,11 +17,11 @@ footer {
   
   ul.links {
     @include unstyled-list;
-    @include auto-width(desktop_medium);
+    @include auto-width(desktop_larger);
   } // footer ul.links
   
   p {
-    @include auto-width(desktop_medium);
+    @include auto-width(desktop_larger);
     padding: 10px;
     
     &:last-child {
@@ -32,7 +34,7 @@ footer {
       li {
         padding: 10px;
         line-height: 30px;
-        border-bottom: 1px solid color(aubergine, 75%);
+        border-bottom: 1px solid color($base-color, 75%);
         
         a {
           display: block;
