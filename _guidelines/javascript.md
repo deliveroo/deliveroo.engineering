@@ -331,12 +331,12 @@ Taken in part from the following sources:
   - [PascalCase](#naming--PascalCase-singleton): Use PascalCase when you export a constructor / class / singleton / function library / bare object.
 
     ```javascript
-    const AirbnbStyleGuide = {
+    const DeliverooStyleGuide = {
       es6: {
       }
     };
 
-    export default AirbnbStyleGuide;
+    export default DeliverooStyleGuide;
     ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -350,15 +350,15 @@ Taken in part from the following sources:
 
     ```javascript
     // bad
-    const AirbnbStyleGuide = require('./AirbnbStyleGuide');
-    module.exports = AirbnbStyleGuide.es6;
+    const DeliverooStyleGuide = require('./DeliverooStyleGuide');
+    module.exports = DeliverooStyleGuide.es6;
 
     // ok
-    import AirbnbStyleGuide from './AirbnbStyleGuide';
-    export default AirbnbStyleGuide.es6;
+    import DeliverooStyleGuide from './DeliverooStyleGuide';
+    export default DeliverooStyleGuide.es6;
 
     // best
-    import { es6 } from './AirbnbStyleGuide';
+    import { es6 } from './DeliverooStyleGuide';
     export default es6;
     ```
 
@@ -369,10 +369,10 @@ Taken in part from the following sources:
 
     ```javascript
     // bad
-    import * as AirbnbStyleGuide from './AirbnbStyleGuide';
+    import * as DeliverooStyleGuide from './DeliverooStyleGuide';
 
     // good
-    import AirbnbStyleGuide from './AirbnbStyleGuide';
+    import DeliverooStyleGuide from './DeliverooStyleGuide';
     ```
 
   <a name="modules--no-export-from-import"></a><a name="10.3"></a>
@@ -383,11 +383,11 @@ Taken in part from the following sources:
     ```javascript
     // bad
     // filename es6.js
-    export { es6 as default } from './airbnbStyleGuide';
+    export { es6 as default } from './DeliverooStyleGuide';
 
     // good
     // filename es6.js
-    import { es6 } from './AirbnbStyleGuide';
+    import { es6 } from './DeliverooStyleGuide';
     export default es6;
     ```
 
