@@ -91,6 +91,10 @@ header#navigation {
         } // header#navigation nav ul li.selected a
       } // header#navigation nav ul li
     } // header#navigation nav ul
+
+    @include min-width(tablet_small) {
+      padding: 0 20px;
+    } // @max-width(tablet_small) header#navigation nav
   
     @include max-width(tablet_large) {
       -webkit-justify-content: center;
@@ -172,8 +176,6 @@ header#navigation {
     } // @max-width(tablet_large) header#navigation nav
     
     @include min-width(tablet_large) {
-      padding: 0 10px;
-
       input#menu,
       label#checkbox-menu {
         display: none;
@@ -230,5 +232,9 @@ header#navigation {
         } // @min-width(tablet_large) header#navigation nav ul li
       } // @min-width(tablet_large) header#navigation nav ul
     } // @min-width(tablet_large) header#navigation nav
+    
+    @include min-width(desktop_small) {
+      padding: 0 40px;
+    } // @min-width(desktop_small) header#navigation nav
   } // header#navigation nav
 } // header#navigation
