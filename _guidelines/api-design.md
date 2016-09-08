@@ -742,7 +742,7 @@ A collection representation
 In a collection representation, embedded representations _may_ be incomplete,
 but _should_ include at least a numeric `id` and the mandatory link to `self`.
 
-Example:
+Example: standard collection response
 
 ```yml
 #> GET /hotels?checkin=2016-01-02&checkout=2016-01-09
@@ -751,18 +751,44 @@ page:     1
 per_page: 10
 total:    153277
 _links:
-  self:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
-  prev:   null
-  next:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+  self:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
+  prev:     null
+  next:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+  hotels:
+    - href: "/hotels/1"
+    - href: "/hotels/2"
+```
+
+Example: collection response with partial embedded resources
+
+```yml
+#> GET /hotels?checkin=2016-01-02&checkout=2016-01-09
+#< HTTP/1.0 200 OK
+page:     1
+per_page: 10
+total:    153277
+_links:
+  self:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
+  prev:     null
+  next:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+  hotels:
+    - href: "/hotels/1"
+    - href: "/hotels/2"
 _embedded:
   hotels:
     - id: 1
       _links:
-        self: "/hotels/1"
+        self: 
+          href:   "/hotels/1"
     ...
     - id: 10
       _links:
-        self: "/hotels/2"
+        self: 
+          href:   "/hotels/2"
 ```
 
 
