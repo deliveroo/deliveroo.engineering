@@ -760,7 +760,7 @@ Most of the time it is fine for clients to cache data and it's often acceptable 
 
     Cache-Control: private, max-age={seconds}, must-revalidate
 
-If the resource is immutable then `{seconds}` should be `31536000` which is one year, the maximum allowed.
+If the resource is immutable then `{seconds}` should be `31536000` which is one year, the maximum allowed. Statuses `301`, `308` and `410` should be considered immutable as they are permanent conditions.
 
 For resources that absolutely must be up-to-date when used you still normally want to allow the efficient return of `304 Not Modified` so choose `no-cache` (note that this is typically the best choice for the `302`, `307` and `404` status codes mentione above):
 
