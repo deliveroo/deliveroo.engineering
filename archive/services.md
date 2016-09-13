@@ -168,6 +168,17 @@ A service needs to support multiple "tenants" by configuring itself (through its
 
 [insert diagram here]
 
+Services should be testable in isolation.
+
+Whereas for monoliths it is common to have a "staging" and a "production"
+instance of the monolith (the former being used for quality assurance), this
+does _not_ map simply to just having a "staging" and a "production" instance for
+each service in a federation—otherwise, there's a risk of high-coupling between
+_teams_ making changes to services.
+
+Re-using our introductory example with `app`, `user`, `payment`, and
+`inventory`, this is how the different environments intertwine:
+
 #### Typical dont's
 
 - Remote procedure call, e.g. APIs like `GET /api/bookings/123/cancel`. This

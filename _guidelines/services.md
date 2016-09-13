@@ -240,25 +240,309 @@ it can shove the data into ElasticSearch and offer a fast search UX.
 
 ### API design basics
 
+Again because of the local knowledge criterion, services should have minimal
+knowledge of any service's API they consume.  This can be achieved through good
+use of hypermedia links.
+
+{: .dg-sidebar}
+
+>> ##### Why is this important?
+>> 
+>> Imagine a service that consumes bookings to aggregate statistics. Ideally, it
+>> does so by listening to the event bus for booking lifecycle events. If using
+>> hypermedia links as in the above, it only ever needs to know about the bus's
+>> location, as it will dynamically obtain addresses for the entities it needs to
+>> know about. If not, it needs to know both (a) who is authoritative for bookings
+>> and properties, (b) where the authority resides for each resource, and (c) how
+>> the various authorities constructs URLs for entities of interest. This would
+>> breach the local knowledge requirement and tightly couple the service
+>> architecture.
+
+For instance, imagining a resource (the API term matching "domain concept")
+named `bookings` that references a resource named `hotel`, you'd want this
+type of API:
+
+```json
+// GET /api/bookings/123
+{
+  "id": "123",
+  "_links": {
+    "self": {
+      "href": "https://bookings.example.com/api/bookings/123"
+    },
+    "hotel": {
+      "href": "https://monolith.example.com/api/hotels/456"
+    }
+  }
+}
+```
+
+which lets you
+
+- not rely on IDs (which are an internal implementation detail of our service);
+- not need to know how the URL for a property entity is constructed.
+
+#### Ruby clients
+
+It is not considered good practice to provide a dedicated Ruby client to
+consume a particular internal API, e.g a `payment-srv-client` Ruby gem. This
+would be a smell that the API is non-standard.
+
+We may however provide (or extend) a generic library to abstract out traversal
+of hypermedia links, caching, and authentication in the future.
+
+
+#### Typical dont's
+
+- Remote procedure call, e.g. APIs like `GET /api/bookings/123/cancel`. This
+  must be replaced with state transfer (`PATCH
+  /api/bookings/123?state=cancelled`) or higher-level concepts (`POST
+  /api/bookings/123/cancellation`).
+  <br/>
+  _Smell_: the API contains verbs (typically actions/calls) instead of nouns
+  (typically concepts/resources).
+
+- Sharing a database layer. If two "services" communicate through Mongo,
+  RabbitMQ, etc—or even just connect to the same shared datastore—they're
+  actually one single service. They must communicate over HTTP, exclusively, and
+  there are no exceptions.
+  <br/>
+  _Smell_: one service connects to another service's database.
+
+
+#### Further reading
+
+API design has its specific set of guidelines, outlined in the [Designing
+APIs](../guides/) document.
+
+
+----------------------
+
+### Preferred technology stack 
+
+
+{: .dg-sidebar}
+> ##### Does this feel restrictive?
+>
+> Our experience tells us that, under pressure or temptation, new technologies
+> can be introduced that result in hard-to-maintain software.
+>
+> If that's unconvincing, Dan McKinley of Stripe and Etsy fame sums it up well
+> in [Choose Boring Technology](http://mcfunley.com/choose-boring-technology)
+> ([slides](http://mcfunley.com/choose-boring-technology-slides)).
+>
+> New technologies can still most definitely be experimented with and introduced
+> in production, though—only, with due care!
+> 
+> The next section outlines our approach to doing so.
+
+Because a zoo of technologies leads to disaster, we purposely limit the set of
+technologies we use.
+
+_Reminder_: this applies to new services/apps, and signficant changes to
+existing ones. Some existing services/apps might not be aligned to this at time
+of writing.
+
+We include front-end technologies here, as it's likely that some services (≈ app
+exposing or consuming an internal API) also have a user interface.
+
+From top to bottom of the production stack:
+
+{: .table.table-sm}
+| Concern                 | Technology                          |
+|-------------------------|-------------------------------------|
+| Style & Layout          | SCSS + Bootstrap                    |
+| Front-end logic         | Rails (UJS + JQuery)    	          |
+| Caching HTTP						| Fastly CDN													|
+| Serving HTTP            | Puma                                |
+| Responding to requests  | Rails 5                             |
+| Querying HTTP           | Faraday                             |
+| Logic                   | Ruby                                |
+| Persisting data         | ActiveRecord/PostgreSQL; Redis      |
+| Caching data            | Redis                               |
+| Background processing   | Sidekiq[^sidekiq]                   |
+| Hosting                 | Heroku                              |
+| Logging                 | Papertrail                          |
+
+**NOTE:** You should aim to use the latest, stable versions of the above.
+
+[^sidekiq]:
+  Sidekiq should be used directly, not through ActiveJob. The latter hides the
+  job engine behind a simplistic abstraction, which prevents access to advanced
+  features, e.g. exclusive/loner jobs or automated retries with backoff.
+
+In development:
+
+{: .table.table-sm}
+| Concern                 | Technology                          |
+|-------------------------|-------------------------------------|
+| Unit/integration testing| RSpec                               |
+| Acceptance testing      | RSpec + Capybara + PhantomJS        |
+
+Alternatives should only be considered when there's a legitimate reason to
+(which does not, ever, include "I want to play with it"). Using an alternative
+should convince a majority amongst the team's technical leadership.
+
+These alternatives are (currently) deemed acceptable in some use cases, where
+the technology in the table above does not fit the bill (e.g. on reliability or
+performance grounds).
+
+{: .table.table-sm}
+| Concern                 | Alternative technologies            |
+|-------------------------|-------------------------------------|
+| Style & Layout          | *none*                              |
+| Front-end logic         | React JS                            |
+| Serving HTTP            | *none*                              |
+| Caching HTTP						| *none*    													|
+| Responding to requests  | *none*[^sinatra]                    |
+| Querying HTTP           | *none*                              |
+| Logic                   | *none*                              |
+| Persisting data         | ElasticSearch                 			|
+| Caching data            | *none*                              |
+| Background processing   | Resque                  						|
+| Hosting                 | *none*                          		|
+
+[^sinatra]:
+  We do not consider Sinatra anymore. With an Rails 5 app in API mode, latency
+  is comparable to Sinatra; and this avoids having an extra brick in the stack.
+  It's also well established that Sinatra apps tend to grow to mimic Rails's
+  MVC.
+
+#### Introducing new technologies
+
+Adding a technology to the lists above can only be done by a consensus (beyond
+the immediate engineers wishing to introduce it), and with a rationale.
+
+To put it simply, the philosophy is:
+
+- Ruby is core. If it can be done it Ruby with reasonable performance, it
+  should.
+- Introducing _any_ new technology in the stack must be (a) justified by use
+  cases that cannot be covered by the existing stack, and (b) a sufficient part
+  of the team should be trained with the new technology before it reaches
+  production, so that maintenance can be ensured.
+
+Excellent case reflecting our thought process:
+
+> A couple of friends of mine are working at GitHub, and they told me that they
+> chose to use MRI across all the apps instead of having some of them using
+> JRuby and some others using MRI. They prefer to pay the price of MRI "low
+> performance" rather than maintaining different stacks.
+
 ----------------------
 
 ### Service configuration
+
+As per the 12factor principles, configuration lives in the environment.  This
+means that while Yaml files may exist in the repo, they should be about data.
+Therefore it is a smell to have environment names ("staging", "production")
+*anywhere* in a repository.
+
+For Ruby apps the `dotenv` gem should be used, as it reproduces the runtime
+behaviour of Heroku. The `.env` file should have sensible settings that "just
+work" in development, and can be used as an example list of settings for
+deployments. A `.env.development` file should be supported for local overrides.
+
+Settings should be clearly commented (in `.env`).
+
+Example:
+
+    # .env
+    # base URL for the upstream service
+    MYAPP_UPSTREAM_SERVICE=https://geonames.org/
+    # timeout for requests
+    MYAPP_TIMEOUT=10
+
+
+Remarks:
+
+- Providing `.env.example` is an antipattern as all sensible defaults for
+  development should be in `.env`.
+- `.env` is committed to the repo and should _not_ be in `.gitignore`.
+- Use `dotenv-rails` as this gem automatically loads `.env.[RAILS_ENV]`,
+  to support `.env.development` overrides.
+- If you are not using Heroku, you can use [renv](https://github.com/mezis/renv)
+  to store configuration in a similar style.
 
 ----------
 
 ### Continuous Deployment
 
+Services should strive to be deployed via Continuous Deployment (CD) when master
+is green. This can be done on Heroku easily enough via [deployment
+hooks](http://docs.travis-ci.com/user/deployment/heroku/) on Travis.
+
+Remarks:
+
+Apps running CD should, more than any other, have a zero-exception policy and
+excellent monitoring; otherwise it's all too easy to miss broken deploys.
+
 ----------
 
 ### Logging
+
+With any service, logging is imperative to being able to work out what is going
+on and to track and trace errors.
+
+In the case of an error, services should:
+
+  - log the fact there _was_ an exception/failure at `WARN` level.
+  - log the stack trace at `DEBUG` level
+  - send the exception to New Relic
+
+In addition, services:
+
+- **MUST** log every request
+- **MAY** log Rails logs
+- **MUST NOT** log ActiveRecord queries
+- **MAY** log explicitly at INFO and higher, as required
+- **SHOULD** log every asynchronous job
+- Log level **MUST** be INFO in deployed apps.
+- You **SHOULD** log to `$stdout` (per [12factor
+  principles](http://12factor.net/logs)). The
+  [rails_12factor](https://github.com/heroku/rails_12factor#rails-12factor-) gem
+  sets that up for you if using Rails <5.
+- You **SHOULD** log no more than 1-2 lines per user request or job.
+
+Heroku captures logs by default but it is **REQUIRED** that you add
+[PaperTrail](https://papertrailapp.com) to make it easier to review and parse
+the logs. You also need to use [syslog
+drains](https://devcenter.heroku.com/articles/logging#syslog-drains) on Heroku
+to capture and store your logs, via Papertrail to [consolidate
+logging](http://help.papertrailapp.com/kb/hosting-services/heroku/#addon) under
+the organisation account.
 
 --------
 
 ### Monitoring
 
+To monitor the _performance_ of your application, use [New
+Relic](http://newrelic.com).
+
+To monitor the _availability_ of your application, use
+[Pingdom](https://www.pingdom.com).
+
+To monitor the _functionality_ of your application, i.e. job queues, event
+streams, cache hits, etc. use [Datadog](http://www.datadoghq.com)
+
+All three should be set up when an app/service goes live.
+
 ---------
 
 ### Backups
+
+Bad things do happen and an effective backup (and **restore**) strategy is a
+requirement for services that are storing information.
+
+Backups should be:
+- automated
+- performed daily, or more frequently as required for the business case
+- archived and stored separately to the deployment environment
+- tested regularly to ensure the restoration process actually works!
+
+Also, all environment-specific settings should be captured, i.e. backup `renv`
+files or `heroku config`.
+
 
 --------------
 
