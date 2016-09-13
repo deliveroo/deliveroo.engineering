@@ -772,7 +772,7 @@ In the rare cases where data is extremely sensitive and must never be cached any
 
 Remember that because `no-store` prevents any kind of caching that clients cannot use conditional directives to get `304 Not Modified` because they are not permitted to store the data between requests, so have no reference for the unmodified resource.
 
-All requests _may_ use the `If-None-Match` header, and all responses _should_ include a strong `ETag` header. This should always be based on a hash of the response, not on timestamp information. Do not use weak ETags because they have confusing semantics, for example they cannot legally be used in `If-Match` preconditions on `PUT`, `PATCH` or `DELETE` requests.
+All requests _may_ use the `If-None-Match` header, and all responses _should_ include a strong `ETag` header. This should always be based on a hash of the response, not on timestamp information. Do not use [weak ETags](https://tools.ietf.org/html/rfc7232#section-2.1) because they have confusing semantics, for example they cannot legally be used in `If-Match` preconditions on `PUT`, `PATCH` or `DELETE` requests.
 
 ### 5.9. Compression
 
