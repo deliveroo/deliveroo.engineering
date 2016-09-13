@@ -63,7 +63,7 @@ opposed to Remote Procedure Call.  In particular, this means that:
 
 2. The only verbs are HTTP verbs: `GET` to read, `POST` to create, `PATCH` to
    modify, `DELETE` to destroy, and `HEAD` to obtain metadata.
-   
+
 3. Read methods (`GET`, `HEAD`) have no side effects, and write methods
    (`PATCH`) are idempotent.
 
@@ -151,7 +151,7 @@ In practice, this means that:
 
 Good:
 
-    
+
     GET   /users/{id}              # single user
     GET   /users                   # user index
     GET   /hotels/{id}/guests      # hotel's user index
@@ -164,7 +164,7 @@ Bad:
 
 **Embedding entities should be avoided**
 
-If an entity's representation contains a representations of its relations, 
+If an entity's representation contains a representations of its relations,
 
 - there is no longer a simple way to get the relations' representation; and
 - the parent entity can often no longer be efficiently cached (as the cache
@@ -179,7 +179,7 @@ Good:
 #> GET /hotels
 #< HTTP/1.0 200 OK
 _links:
-  hotel: 
+  hotel:
     - href: /hotels/123
     - href: /hotels/124
 ```
@@ -248,7 +248,7 @@ anything only relevant to _how_ it persists it.
 A consequence of a well-normalised API is that many calls may be required to
 render anything significant.
 
-For instance, take a listing page for a product catalog: you'll probably need to make 
+For instance, take a listing page for a product catalog: you'll probably need to make
 
 - one "index" API call to obtain the list or page of products;
 - one call per listed product to get its name and price;
@@ -343,7 +343,7 @@ Hint towards extrinsic: is a user's avatar a property, or a separate entity?
 
 Hints towards intrinsic:
 
-- *Value object*: 
+- *Value object*:
     - A hotel's name is a simple string. The string itself is immutable.
     - A user's avatar is an image, which itself is a file with a storage
       location, a size, dimensions, and a MIME type, but is immutable.
@@ -383,7 +383,7 @@ _links:
   city:
     href: /cities/456
 ```
-  
+
 
 Bad:
 
@@ -471,7 +471,7 @@ there is only zero or one entity in the concept (singleton relations).
 
 Note that relation endpoints _must_ link to a toplevel endpoint.
 
-Example: 
+Example:
 
 ```
 # Singleton
@@ -583,7 +583,7 @@ Finally, a service's root endpoint _should_ list the available versions:
 #> GET /api
 #< HTTP/1.0 200 OK
 _links:
-  ... 
+  ...
 _versions:
   - 1
   - 2
@@ -657,9 +657,9 @@ lng:  45.678
 _links:
   self:
     href:   "/hotels/1337"
-  reviews:  
+  reviews:
     href:   "/hotels/1337/reviews"
-  manager:     
+  manager:
     href:   "/users/8008"
     type:   "user"
   photos:
@@ -854,7 +854,7 @@ If it exists, it _should_ return status:
 
 Additional 4xx response codes _may_ be used:
 
-- 412 Precondition Failed 
+- 412 Precondition Failed
 - 415 Unsupported if using versioning and the server doesn't support the
   specified version.
 
@@ -951,7 +951,7 @@ Those endpoints _may_ return 400 Bad Request if parameters are specified.
 Collection GET endpoints are the only endpoints that usually accept query
 parameters. Those _should_ accept the `page` and `per_page` parameters. They
 _may_ accept parameters that match property names of the corresponding concept;
-if they do, they _should_ 
+if they do, they _should_
 
 - use the parameter value for filtering purposes (i.e. return entities whose
   corresponding property has the specified value), and
@@ -979,14 +979,7 @@ unspecified.
 Caching efficiency is a critical aim of well-designed APIs, as it is influential
 on service performance; cache consistency is as important.
 
-Responses to single-resource GET endpoints _should_ specify a `Cache-Control`
-header.
-
-- If the entity is mutable, the value _should_ be `no-cache`.
-- If the entity is immutable, the value _should_ be
-  `public; max-age=31536000` (one year).
-
-Responses to collection GET endpoints _should not_ specify a `Cache-Control` header.
+HTTP caching is complex, so refer to the section in the [API design guidelines](/guidelines/api-design#caching) for further information.
 
 ### Mutable resources
 
