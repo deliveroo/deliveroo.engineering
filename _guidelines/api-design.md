@@ -1064,7 +1064,44 @@ maintainability of _our_ software.
 
 ## Tools of the trade
 
+We strongly recommend using Rails 5 to build API services, as per the [service guidelines](http://deliveroo.engineering/guidelines/services/).
+Rails's [API-only mode](http://edgeguides.rubyonrails.org/api_app.html) has
+solid support for API building.
+
+If the API service also has a user interface, it is suggested to make the API
+part a mounted [Rails engine](http://guides.rubyonrails.org/engines.html) using
+API mode.
+
+Using Sinatra is _not_ recommended as there is no significante performance
+benefit over Rails, it lacks a router (which means all link URLs must be
+manually built), and most non-trivial Sinatra apps end up reinventing MVC.
+
+Using Grape is _not_ recommended as it lacks a router as well.
+
 ----------
 
 ## Further reading
+
+- principles:
+    - http://restful-api-design.readthedocs.org/
+    - http://en.wikipedia.org/wiki/Representational_state_transfer
+    - http://en.wikipedia.org/wiki/HATEOAS
+
+- example of decently well-thought-out APIs and guidelines
+    - https://github.com/gocardless/http-api-design
+    - https://developer.github.com
+
+- context and debate
+    - http://www.troyhunt.com/2014/02/your-api-versioning-is-wrong-which-is.html
+    - http://devblog.reverb.com/post/47197560134/hal-siren-rabl-roar-garner-building-hypermedia
+    - http://www.foxycart.com/blog/the-hypermedia-debate
+    - http://stackoverflow.com/questions/9055197/splitting-hairs-with-rest-does-a-standard-json-rest-api-violate-hateoas
+
+- more on `application/hal+json`
+    - http://tools.ietf.org/html/draft-kelly-json-hal
+    - http://stateless.co/hal_specification.html
+    - http://alphahydrae.com/2013/06/rest-and-hypermedia-apis/
+
+- spec for json-api
+    - http://jsonapi.org
 
