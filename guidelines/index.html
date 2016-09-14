@@ -8,6 +8,7 @@ layout: default
   {% for _page in site.guidelines %}
     <div class="guideline">
       <h3><a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a></h3>
+      <p>{{ _page.subtitle }}</p>
       <p><a href="{{ _page.url }}" title="{{ _page.title }}">Read more…</a></p>
     </div>
     {% unless forloop.index == site.guidelines.size %}

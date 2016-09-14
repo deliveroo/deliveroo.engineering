@@ -17,7 +17,11 @@ body {
     padding: 50px 10px;
     font-size: font-size(medium-body);
     line-height: 1.5;
-
+    
+    code {
+      font-size: font-size(small-body);
+    } // body main code
+    
     > h1,
     > h2,
     > p,
@@ -53,6 +57,7 @@ body {
 } // body
 
 p.tagline {
+  @include auto-width(desktop_larger);
   color: color(anchovy);
   text-align: center;
   margin-bottom: 100px;
@@ -198,6 +203,71 @@ section {
       text-align: center;
     } // section#other-articles p.more
   } // section#other-articles
+  
+  &#guidelines {
+    div.guideline {
+      text-align: center;
+
+      a {
+        border: none;
+      } // section#guidelines div.guideline a
+            
+      p {
+        color: color(anchovy);
+      } // section#guidelines div.guideline p
+    } // section#guidelines div.guideline
+    
+    @include min-width(tablet_small) {
+      hr {
+        display: none;
+      } // @min-width(tablet_small) section#guidelines hr
+    } // @min-width(tablet_small) section#guidelines
+    
+    @include between-widths(tablet_small, desktop_small) {
+      hr:nth-of-type(2n) {
+        display: block;
+        width: 100%;
+      } // @between-widths(tablet_small, desktop_small) section#guidelines hr:nth-of-type(2n)
+    } // @between-widths(tablet_small, desktop_small) section#guidelines
+    
+    @include min-width(desktop_small) {
+      hr:nth-of-type(3n) {
+        display: block;
+        width: 100%;
+      } // @min-width(desktop_small) section#guidelines hr:nth-of-type(3n)
+    } // @min-width(desktop_small) section#guidelines
+    
+    @include flex-column-grid(tablet_small, desktop_small, $child-selector: 'div.guideline', $gutter-width: $post-gutter);
+  } // section#guidelines
+  
+  &#authors {
+    @include auto-width(desktop_small);
+    $row-spacing: 40px;
+
+    div.author {
+      h3 {
+        text-align: center;
+
+        a {
+          border: none;
+        } // section#authors div.author h3 a 
+      } // section#authors div.author h3
+      
+      p {
+        color: color(anchovy);
+        text-align: center;
+        margin: 0;
+      } // section#authors div.author p
+    } // section#authors div.author
+    
+    @include max-width(tablet_small) {
+      div.author + div.author {
+        margin-top: $row-spacing;
+      } // @max-width(tablet_small) section#authors div.author + div.author
+    } // @max-width(tablet_small) section#authors
+
+    @include flex-column-grid(tablet_small, desktop_small, $child-selector: 'div.author', $gutter-width: $post-gutter, $row-spacing: $row-spacing);
+  } // section#authors
 } // section
 
 article {
@@ -206,6 +276,7 @@ article {
   header {
     h1 {
       @include auto-width(desktop_larger);
+      margin-bottom: 10px;
     } // article header h1
     
     p.byline {
@@ -252,6 +323,16 @@ article {
       } // article aside h{3…6}:first-child
     } // article aside h{3…6}
     
+    a {
+      color: color(aubergine, 15%);
+      border-color: color(aubergine, 35%);
+      
+      &:hover {
+        color: color(aubergine, 5%);
+        border-color: color(aubergine, 25%);
+      } // article aside a:hover
+    } // article aside a
+    
     *:last-child {
       margin-bottom: 0;
     } // article aside *:last-child
@@ -277,6 +358,10 @@ article {
   
   ul, ol {
     @include auto-width(desktop_small, $vertical-margins: 2em);
+    
+    ul, ol {
+      margin-top: 0.2em;
+    } // article {ul, ol} {ul, ol}
   } // article {ul, ol}
   
   div.footnotes {
@@ -288,9 +373,98 @@ article {
   } // article div.footnotes
   
   &.guidelines {
-    h2, h3, h4, h5, h6 {
+    @include auto-width(desktop_larger);
+
+    > h3,
+    > h4,
+    > h5,
+    > h6,
+    > figure,
+    > p,
+    > div.footnotes {
+      @include auto-width(desktop_small);
+    } // article.guidelines > {h3…6, figure, p, div.footnotes}
+    
+    > ul {
+      @include auto-width(desktop_small, $vertical-margins: 1em);
+    } // article.guidelines > ul
+    
+    > hr {
+      @include auto-width(desktop_small, $vertical-margins: 2em);
+    } // article.guidelines > hr
+    
+    > table {
+      @include auto-width(desktop_small, $vertical-margins: 2em);
+      width: 100%;
+      table-layout: fixed;
+      border-collapse: collapse;
+      font-size: font-size(small-body);
+      
+      code {
+        font-size: font-size(smallest-body);
+      } // article.guidelines > table code
+      
+      th, td {
+        padding: 5px;
+      } // article.guidelines > table {th, td}
+      
+      thead {
+        th {
+          background-color: color(mackeral, 60%);
+          color: color(anchovy, 5%);
+          text-align: left;
+        } // article.guidelines > table thead th
+      } // article.guidelines > table thead
+      
+      tbody {
+        td {
+          overflow: auto;
+        } // article.guidelines > table tbody td
+        
+        tr:nth-child(even) td {
+          background-color: color(anchovy, 10%);
+        } // article.guidelines > table tbody tr:nth-child(even) td
+        
+        tr:nth-child(odd) td {
+          background-color: color(anchovy, 20%);
+        } // article.guidelines > table tbody tr:nth-child(odd) td
+      } // article.guidelines > table tbody
+    } // article.guidelines > table
+    
+    > aside {
+      @include auto-width(desktop_small, $vertical-margins: 2em);
+      width: 100%;
+      float: none;
+      box-sizing: border-box;
+    } // article.guidelines > aside
+
+    h2 {
       text-align: center;
-    } // article.guidelines h{2…6}
+      margin-bottom: 2em;
+    } // article.guidelines h2
+    
+    > h3,
+    > h4 {
+      margin-top: 1em;
+      margin-bottom: 0;
+      
+      & + p {
+        margin-top: 0.5em;
+      } // article.guidelines > {h3, h4} + p
+    } // article.guidelines > {h3, h4}
+    
+    * + p {
+      margin-top: 1em;
+    } // article.guidelines * + p
+    
+    div.highlighter-rouge {
+      margin-top: 1.5em;
+      margin-bottom: 3em;
+    } // article.guidelines div.highlighter-rouge
+    
+    div.footnotes {
+      margin-top: 80px;
+    } // article.guidelines div.footnotes
   } // article.guidelines
 } // article
 
@@ -335,6 +509,7 @@ ol#markdown-toc {
   
   ol {
     margin-top: 0.5em;
+    margin-bottom: 0;
   } // ol#markdown-toc ol
   
   li {
