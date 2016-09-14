@@ -976,10 +976,56 @@ unspecified.
 
 ### Caching
 
-Caching efficiency is a critical aim of well-designed APIs, as it is influential
-on service performance; cache consistency is as important.
+Caching efficiency is a critical aim of well-designed APIs, as it is influential on service performance; cache consistency is as important.
 
-HTTP caching is complex, so refer to the section in the [API design guidelines](/guidelines/api-design#caching) for further information.
+These guidelines only consider HTTP/1.1 and later. If the API is internal then you can make this a requirement. External APIs must always use TLS so only direct clients or trusted intermediaries who have our certificates (CDNs, typically) will be able to view the content; all CDNs support 1.1 or later and it's not too much of a stretch to make this assumption for direct clients.
+
+Responses with the following status codes _should_ specify a `Cache-Control` header because without one the HTTP specification allows clients to cache them according to their own cache policy which is typically more lax than desirable:
+
+- `200 OK`
+- `203 Non-Authoritative Information`
+- `206 Partial Content`
+- `300 Multiple Choices`
+- `301 Moved Permanently`
+- `308 Permanent Redirect`
+- `410 Gone`
+
+The following status codes _should_ also specify this header because many CDNs or intermediaries will choose to cache them even though they are not permitted to do so by the HTTP specification:
+
+- `302 Moved Temporarily`
+- `307 Temporary Redirect`
+- `404 Not Found`
+
+Other status codes _should not_ specify a `Cache-Control` header
+
+The HTTP `Cache-Control` header is somewhat confusing and some of the directives do not mean what you think they do. A basic summary of the confusing ones is:
+
+- `no-store` means that the response is very sensitive data which absolutely _must not_ be written to any kind of storage or to any type of cache either private or public.
+- `no-cache` means that the response may be cached (!) but _must not_ be used to satisfy any kind of request without revalidating it. Before using the cached data you _must_ check the endpoint with either the `If-None-Match` or `If-Modified-Since` and can only use it if you get `304 Not Modified`.
+- `must-revalidate` means that the response may be cached and may be used without revalidation (!) but may not be used beyond when it expires. If the cached data has passed the expiry, e.g. `max-age` was `3600` and you got the data over an hour ago, then you must check the endpoint with either the `If-None-Match` or `If-Modified-Since` and can only use it if you get `304 Not Modified`.
+- If none of the above directives are present then clients may cache the response and continue to use the data past the expiration time at their own discretion.
+
+For full details, and information about the other directives such as `public`, `private` and `max-age`, refer to [RFC 7234 § 5.2](https://tools.ietf.org/html/rfc7234#section-5.2).
+
+Most of the time it is fine for clients to cache data and it's often acceptable for the data to be at least somewhat stale (even if it's just a minute or two) but rarely fine to use them after the expiration time, so in general your `Cache-Control` header should be:
+
+    Cache-Control: private, max-age={seconds}, must-revalidate
+
+If the resource is immutable then `{seconds}` should be `31536000` which is one year, the maximum allowed. Statuses `301`, `308` and `410` should be considered immutable as they are permanent conditions.
+
+For resources that absolutely must be up-to-date when used you still normally want to allow the efficient return of `304 Not Modified` so choose `no-cache` (note that this is typically the best choice for the `302`, `307` and `404` status codes mentione above):
+
+    Cache-Control: private, no-cache
+
+In the rare cases where data is extremely sensitive and must never be cached anywhere (for example, a password reset token) then use:
+
+    Cache-Control: no-store
+
+Remember that because `no-store` prevents any kind of caching that clients cannot use conditional directives to get `304 Not Modified` because they are not permitted to store the data between requests, so have no reference for the unmodified resource.
+
+Responses _should_ include an `ETag` header with a strong ETag; if this is not practical then they _should_ include a `Last-Modified` header (ideally, include both). Strong ETags _must_ be based on a hash of the response, not on timestamp information. Do not use [weak ETags](https://tools.ietf.org/html/rfc7232#section-2.1) because they have confusing semantics, for example they cannot legally be used in preconditions on `PUT`, `PATCH` or `DELETE` requests.
+
+Any `GET` requests _may_ use either `If-None-Match` or `If-Modified-Since`, and all `PUT`/`PATCH`/`DELETE` requests _should_ use either `If-Match` or `If-Unmodified-Since`. If the request provided a strong ETag then the "match" headers are better, otherwise use the "modified" headers.
 
 ### Mutable resources
 
