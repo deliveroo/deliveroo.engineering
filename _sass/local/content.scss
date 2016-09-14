@@ -205,7 +205,7 @@ article {
   
   header {
     h1 {
-      color: color(aubergine);
+      @include auto-width(desktop_larger);
     } // article header h1
     
     p.byline {
@@ -286,6 +286,12 @@ article {
       border: none;
     } // article div.footnotes a.reversefootnote
   } // article div.footnotes
+  
+  &.guidelines {
+    h2, h3, h4, h5, h6 {
+      text-align: center;
+    } // article.guidelines h{2…6}
+  } // article.guidelines
 } // article
 
 ol#markdown-toc {
