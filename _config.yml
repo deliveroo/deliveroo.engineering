@@ -32,6 +32,9 @@ collections:
   guidelines:
     output:       true
     permalink:    /guidelines/:path/
+  authors:
+    output:       true
+    permalink:    /authors/:path/
 
 defaults:
   - scope:

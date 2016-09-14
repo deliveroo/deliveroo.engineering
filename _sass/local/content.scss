@@ -79,6 +79,11 @@ p.tagline {
   } // .byline time.published
 } // .byline
 
+img.portrait {
+  @include circle(100px);
+  margin: 0 auto 20px;
+} // img.portrait
+
 $post-gutter: 40px;
 
 section {
@@ -129,25 +134,8 @@ section {
   
     @include between-widths(tablet_small, desktop_small) {
       &.all {
-        display: -webkit-flex;
-        -webkit-flex-wrap: wrap;
-        display: flex;
-        flex-wrap: wrap;
-        
-        div.post {
-          -webkit-flex: 1;
-          flex: 1;
-          min-width: calc(100%/2 - $post-gutter);
-        
-          &:nth-of-type(2n+1) {
-            margin-left: 0;
-          } // @between-widths(tablet_small, desktop_small) section#recent-posts.all div.post:nth-nth-of-type(2n+1)
-        } // @between-widths(tablet_small, desktop_small) section#recent-posts.all div.post
-        
-        * + div.post {
-          margin-left: $post-gutter;
-        } // @between-widths(tablet_small, desktop_small) section#recent-posts.all * + div.post
-        
+        @include flex-columns($child-selector: 'div.post', $columns: 2, $gutter-width: $post-gutter);
+
         hr:nth-of-type(2n) {
           display: block;
           width: 100%;
@@ -156,24 +144,7 @@ section {
     } // @between-widths(tablet_small, desktop_small) section#recent-posts
   
     @include min-width(desktop_small) {
-      display: -webkit-flex;
-      -webkit-flex-wrap: wrap;
-      display: flex;
-      flex-wrap: wrap;
-    
-      div.post {
-        -webkit-flex: 1;
-        flex: 1;
-        min-width: calc(100%/3 - $post-gutter);
-        
-        &:nth-of-type(3n+1) {
-          margin-left: 0;
-        } // @min-width(desktop_small) section#recent-posts div.post:nth-nth-of-type(3n+1)
-      } // @min-width(desktop_small) section#recent-posts div.post
-    
-      * + div.post {
-        margin-left: $post-gutter;
-      } // @min-width(desktop_small) section#recent-posts * + div.post
+      @include flex-columns($child-selector: 'div.post', $columns: 3, $gutter-width: $post-gutter);
       
       hr:nth-of-type(3n) {
         display: block;
@@ -466,6 +437,14 @@ article {
       margin-top: 80px;
     } // article.guidelines div.footnotes
   } // article.guidelines
+  
+  &.author {
+    header {
+      img.portrait {
+        @include circle(200px);
+      } // article.author header img.portrait
+    } // article.author header
+  } // article.author
 } // article
 
 ol#markdown-toc {
