@@ -1,31 +1,23 @@
 ---
 layout:     guidelines
-title:      "Javascript"
+title:      "JavaScript Style Guide"
+subtitle:   "A mostly reasonable approach to JavaScript"
 collection: guidelines
 ---
 
-# Deliveroo JavaScript Style Guide() {
-
-*A mostly reasonable approach to JavaScript*
-
-
-Taken in part from the following sources:
- - https://github.com/airbnb/javascript
-
 ## Table of Contents
+{:.no_toc}
 
-  1. [Destructuring](#Destructuring)
-  1. [Commas](#commas)
-  1. [Types](#types)
-  1. [Naming Conventions](#naming-conventions)
-  1. [Modules](#modules)
+1. Automatic Table of Contents Here
+{:toc}
 
 ## Destructuring
 
-<a name="destructuring--object"></a>
-- [Objects](#destructuring--object): Use object destructuring when accessing and using multiple properties of an object. jscs: [`requireObjectDestructuring`](http://jscs.info/rule/requireObjectDestructuring)
+Destructuring saves you from creating temporary references for those properties.
 
-> Why? Destructuring saves you from creating temporary references for those properties.
+### Objects
+{: #destructuring-objects}
+Use object destructuring when accessing and using multiple properties of an object[^requireObjectDestructuring].
 
 ```javascript
 // bad
@@ -48,8 +40,11 @@ function getFullName({ firstName, lastName }) {
 }
 ```
 
-<a name="destructuring--array"></a><a name="5.2"></a>
-- [Arrays](#destructuring--array): Use array destructuring. jscs: [`requireArrayDestructuring`](http://jscs.info/rule/requireArrayDestructuring)
+[^requireObjectDestructuring]: [JSCS: requireObjectDestructuring](http://jscs.info/rule/requireObjectDestructuring)
+
+### Arrays
+{: #destructuring-arrays}
+Use array destructuring [^requireArrayDestructuring].
 
 ```javascript
 const arr = [1, 2, 3, 4];
@@ -62,10 +57,12 @@ const second = arr[1];
 const [first, second] = arr;
 ```
 
-<a name="destructuring--object-over-array"></a><a name="5.3"></a>
-- [Objects over arrays](#destructuring--object-over-array): Use object destructuring for multiple return values, not array destructuring. jscs: [`disallowArrayDestructuringReturn`](http://jscs.info/rule/disallowArrayDestructuringReturn)
+[^requireArrayDestructuring]: [JSCS: requireArrayDestructuring](http://jscs.info/rule/requireArrayDestructuring)
 
-> Why? You can add new properties over time or change the order of things without breaking call sites.
+### Objects over arrays
+{: #destructuring-objects-over-arrays}
+
+Use object destructuring for multiple return values, not array destructuring. This allows you to add new properties over time or change the order of things without breaking call sites [^disallowArrayDestructuringReturn].
 
 ```javascript
 // bad
@@ -87,12 +84,14 @@ function processInput(input) {
 const { left, top } = processInput(input);
 ```
 
-**[⬆ back to top](#table-of-contents)**
+[^disallowArrayDestructuringReturn]: [JSCS: disallowArrayDestructuringReturn](http://jscs.info/rule/disallowArrayDestructuringReturn)
 
 ## Types
 
-<a name="types--primitives"></a><a name="1.1"></a>
-- [Primitives](#types--primitives): When you access a primitive type you work directly on its value.
+### Primitives
+{: #types-primitives}
+
+When you access a primitive type you work directly on its value.
 
 + `string`
 + `number`
@@ -109,8 +108,10 @@ bar = 9;
 console.log(foo, bar); // => 1, 9
 ```
 
-<a name="types--complex"></a><a name="1.2"></a>
-- [Complex](#types--complex): When you access a complex type you work on a reference to its value; changes to the value (as long as it's not overwritten with a new value) will mutate the pointer value.
+### Complex Types
+{: #types-complex}
+
+When you access a complex type you work on a reference to its value; changes to the value (as long as it's not overwritten with a new value) will mutate the pointer value.
 
 + `object`
 + `array`
@@ -125,12 +126,12 @@ bar[0] = 9;
 console.log(foo[0], bar[0]); // => 9, 9
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ## Commas
 
-<a name="commas--leading-trailing"></a>
-- [Leading commas:](#commas--leading-trailing) **Nope.** eslint: [`comma-style`](http://eslint.org/docs/rules/comma-style.html) jscs: [`requireCommaBeforeLineBreak`](http://jscs.info/rule/requireCommaBeforeLineBreak)
+### Leading Commas
+{: #commas-leading}
+
+Don’t use leading commas [^comma-style], [^requireCommaBeforeLineBreak].
 
 ```javascript
 // bad
@@ -162,14 +163,15 @@ const hero = {
   birthYear: 1815,
   superPower: 'computers',
 };
-
-// etc
 ```
 
-<a name="commas--dangling"></a>
-- [Additional trailing comma:](#commas--dangling) **Yup.** eslint: [`comma-dangle`](http://eslint.org/docs/rules/comma-dangle.html) jscs: [`requireTrailingComma`](http://jscs.info/rule/requireTrailingComma)
+[^comma-style]: [ESLint: comma-style](http://eslint.org/docs/rules/comma-style.html)
+[^requireCommaBeforeLineBreak]: [JSCS: requireCommaBeforeLineBreak](http://jscs.info/rule/requireCommaBeforeLineBreak)
 
-> Why? This leads to cleaner git diffs. Also, transpilers like Babel will remove the additional trailing comma in the transpiled code which means you don't have to worry about the [trailing comma problem](https://satishchilukuri.com/blog/entry/ie-8-and-trailing-commas-in-javascript) in legacy browsers.
+### Trailing Commas
+{: #commas-trailing}
+
+*Do* use trailing commas. This leads to cleaner git diffs. Transpilers like Babel will remove the additional trailing comma in the transpiled code, which means you don't have to worry about the [trailing comma problem](https://satishchilukuri.com/blog/entry/ie-8-and-trailing-commas-in-javascript) in legacy browsers [^comma-dangle], [^requireTrailingComma].
 
 ```diff
 // bad - git diff without trailing comma
@@ -209,16 +211,17 @@ const heroes = [
   'Batman',
   'Superman',
 ];
-
-// etc
 ```
 
-**[⬆ back to top](#table-of-contents)**
+[^comma-dangle]: [ESLint: comma-dangle](http://eslint.org/docs/rules/comma-dangle.html)
+[^requireTrailingComma]: [JSCS: requireTrailingComma](http://jscs.info/rule/requireTrailingComma)
 
 ## Naming Conventions
 
-<a name="naming--descriptive"></a><a name="22.1"></a>
-- [Descriptive](#naming--descriptive): Avoid single letter names. Be descriptive with your naming. eslint: [`id-length`](http://eslint.org/docs/rules/id-length)
+### Descriptive Naming
+{: #naming-conventions-descriptive}
+
+Be descriptive with your naming. Avoid single letter names [^id-length].
 
 ```javascript
 // bad
@@ -232,8 +235,12 @@ function query() {
 }
 ```
 
-<a name="naming--camelCase"></a><a name="22.2"></a>
-- [camelCase](#naming--camelCase): Use camelCase when naming objects, functions, and instances. eslint: [`camelcase`](http://eslint.org/docs/rules/camelcase.html) jscs: [`requireCamelCaseOrUpperCaseIdentifiers`](http://jscs.info/rule/requireCamelCaseOrUpperCaseIdentifiers)
+[^id-length]: [ESLint: id-length](http://eslint.org/docs/rules/id-length)
+
+### camelCase
+{: #naming-conventions-camelcase}
+
+Use `camelCase` when naming objects, functions, and instances [^camelcase], [^requireCamelCaseOrUpperCaseIdentifiers].
 
 ```javascript
 // bad
@@ -246,8 +253,13 @@ const thisIsMyObject = {};
 function thisIsMyFunction() {}
 ```
 
-<a name="naming--PascalCase"></a><a name="22.3"></a>
-- [PascalCase](#naming--PascalCase): Use PascalCase only when naming constructors or classes. eslint: [`new-cap`](http://eslint.org/docs/rules/new-cap.html) jscs: [`requireCapitalizedConstructors`](http://jscs.info/rule/requireCapitalizedConstructors)
+[^camelcase]: [ESLint: camelcase](http://eslint.org/docs/rules/camelcase.html)
+[^requireCamelCaseOrUpperCaseIdentifiers]: [JSCS: requireCamelCaseOrUpperCaseIdentifiers](http://jscs.info/rule/requireCamelCaseOrUpperCaseIdentifiers)
+
+### PascalCase
+{: #naming-conventions-pascalcase}
+
+Use PascalCase only when naming constructors or classes [^new-cap], [^requireCapitalizedConstructors].
 
 ```javascript
 // bad
@@ -271,10 +283,13 @@ const good = new User({
 });
 ```
 
-<a name="naming--leading-underscore"></a><a name="22.4"></a>
-- [Leading underscores](#naming--leading-underscore): Do not use trailing or leading underscores. eslint: [`no-underscore-dangle`](http://eslint.org/docs/rules/no-underscore-dangle.html) jscs: [`disallowDanglingUnderscores`](http://jscs.info/rule/disallowDanglingUnderscores)
+[^new-cap]: [ESLint: new-cap](http://eslint.org/docs/rules/new-cap.html)
+[^requireCapitalizedConstructors]: [JSCS: requireCapitalizedConstructors](http://jscs.info/rule/requireCapitalizedConstructors)
 
-> Why? JavaScript does not have the concept of privacy in terms of properties or methods. Although a leading underscore is a common convention to mean “private”, in fact, these properties are fully public, and as such, are part of your public API contract. This convention might lead developers to wrongly think that a change won't count as breaking, or that tests aren't needed. tl;dr: if you want something to be “private”, it must not be observably present; a closure.
+### Leading Underscores
+{: #naming-conventions-leading-underscores}
+
+Do not use trailing or leading underscores [^no-underscore-dangle], [^disallowDanglingUnderscores]. JavaScript does not have the concept of privacy in terms of properties or methods. Although a leading underscore is a common convention to mean “private”, these properties are in fact fully public, and as such, are part of your public API contract. This convention might lead developers to wrongly think that a change won't count as breaking, or that tests aren't needed. If you want something to be “private”, it must not be observably present; i.e. a closure.
 
 ```javascript
 // bad
@@ -292,8 +307,13 @@ function closure() {
 }
 ```
 
-<a name="naming--self-this"></a><a name="22.5"></a>
-- [self this](#naming--self-this): Don't save references to `this`. Use arrow functions or [Function#bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind). jscs: [`disallowNodeTypes`](http://jscs.info/rule/disallowNodeTypes)
+[^no-underscore-dangle]: [ESLint: no-underscore-dangle](http://eslint.org/docs/rules/no-underscore-dangle.html)
+[^disallowDanglingUnderscores]: [JSCS: disallowDanglingUnderscores](http://jscs.info/rule/disallowDanglingUnderscores)
+
+### Referencing `this`
+{: #naming-conventions-this}
+
+Don't save references to `this`. Use arrow functions or [`Function#bind`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) instead [^disallowNodeTypes].
 
 ```javascript
 // bad
@@ -320,8 +340,12 @@ function foo() {
 }
 ```
 
-<a name="naming--filename-matches-export"></a><a name="22.6"></a>
-- [Exports and filenames](#naming--filename-matches-export): A base filename should exactly match the name of its default export.
+[^disallowNodeTypes]: [JSCS: disallowNodeTypes](http://jscs.info/rule/disallowNodeTypes)
+
+### Exports and filenames
+{: #naming-conventions-exports-filenames}
+
+A base filename should exactly match the name of its default export.
 
 ```javascript
 // file 1 contents
@@ -356,8 +380,10 @@ import insideDirectory from './insideDirectory'; // camelCase export/import/dire
 // ^ supports both insideDirectory.js and insideDirectory/index.js
 ```
 
-<a name="naming--camelCase-default-export"></a><a name="22.7"></a>
-- [camelCase default exports](#naming--camelCase-default-export): Use camelCase when you export-default a function. Your filename should be identical to your function's name.
+### Default exports
+{: #naming-conventions-default-exports}
+
+Use `camelCase` when you export-default a function. Your filename should be identical to your function's name.
 
 ```javascript
 function makeStyleGuide() {
@@ -366,8 +392,10 @@ function makeStyleGuide() {
 export default makeStyleGuide;
 ```
 
-<a name="naming--PascalCase-singleton"></a><a name="22.8"></a>
-- [PascalCase](#naming--PascalCase-singleton): Use PascalCase when you export a constructor / class / singleton / function library / bare object.
+### Singletons
+{: #naming-conventions-singletons}
+
+Use `PascalCase` when you export a constructor, class, singleton, function library or bare object.
 
 ```javascript
 const DeliverooStyleGuide = {
@@ -378,14 +406,12 @@ const DeliverooStyleGuide = {
 export default DeliverooStyleGuide;
 ```
 
-**[⬆ back to top](#table-of-contents)**
-
 ## Modules
 
-<a name="modules--use-them"></a><a name="10.1"></a>
-- [Imports over require](#modules--use-them): Always use modules (`import`/`export`) over a non-standard module system. You can always transpile to your preferred module system.
+### Imports over require
+{: #modules-imports}
 
-> Why? Modules are the future, let's start using the future now.
+Always use modules (`import`/`export`) over a non-standard module system. You can always transpile to your preferred module system. Modules are the future: let's start using the future now.
 
 ```javascript
 // bad
@@ -401,10 +427,10 @@ import { es6 } from './DeliverooStyleGuide';
 export default es6;
 ```
 
-<a name="modules--no-wildcard"></a><a name="10.2"></a>
-- [Wildcards](#modules--no-wildcard): Do not use wildcard imports.
+### Wildcard imports
+{: #modules-wildcard-imports}
 
-> Why? This makes sure you have a single default export.
+Do not use wildcard imports. This makes sure you have a single default export.
 
 ```javascript
 // bad
@@ -414,10 +440,10 @@ import * as DeliverooStyleGuide from './DeliverooStyleGuide';
 import DeliverooStyleGuide from './DeliverooStyleGuide';
 ```
 
-<a name="modules--no-export-from-import"></a><a name="10.3"></a>
-- [No export from import](#modules--no-export-from-import): And do not export directly from an import.
+### No export from import
+{: #modules-export-from-import}
 
-> Why? Although the one-liner is concise, having one clear way to import and one clear way to export makes things consistent.
+Do not export directly from an import. Although the one-liner is concise, having one clear way to import and one clear way to export makes things consistent.
 
 ```javascript
 // bad
@@ -430,10 +456,10 @@ import { es6 } from './DeliverooStyleGuide';
 export default es6;
 ```
 
-<a name="modules--no-duplicate-imports"></a>
-- [No dupe imports](#modules--no-duplicate-imports): Only import from a path in one place.
-eslint: [`no-duplicate-imports`](http://eslint.org/docs/rules/no-duplicate-imports)
-> Why? Having multiple lines that import from the same path can make code harder to maintain.
+### Duplicate imports
+{: #modules-duplicate-imports}
+
+Only import from a path in one place. Having multiple lines that import from the same path can make code harder to maintain [^no-duplicate-imports].
 
 ```javascript
 // bad
@@ -451,10 +477,12 @@ import foo, {
 } from 'foo';
 ```
 
-<a name="modules--no-mutable-exports"></a>
-- [Immutable exports](#modules--no-mutable-exports): Do not export mutable bindings.
-eslint: [`import/no-mutable-exports`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-mutable-exports.md)
-> Why? Mutation should be avoided in general, but in particular when exporting mutable bindings. While this technique may be needed for some special cases, in general, only constant references should be exported.
+[^no-duplicate-imports]: [ESLint: no-duplicate-imports](http://eslint.org/docs/rules/no-duplicate-imports)
+
+### Immutable exports
+{: #modules-immutable-exports}
+
+Do not export mutable bindings. Mutation should be avoided in general, but in particular when exporting mutable bindings. While this technique may be needed for some special cases, in general, only constant references should be exported [^no-mutable-exports].
 
 ```javascript
 // bad
@@ -466,9 +494,12 @@ const foo = 3;
 export { foo }
 ```
 
-<a name="modules--prefer-default-export"></a>
-- [Default exports](#modules--prefer-default-export): In modules with a single export, prefer default export over named export.
-eslint: [`import/prefer-default-export`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/prefer-default-export.md)
+[^no-mutable-exports]: [ESLint: no-mutable-exports](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-mutable-exports.md)
+
+### Default exports
+{: #modules-default-exports}
+
+In modules with a single export, prefer default export over named export ^[prefer-default-export].
 
 ```javascript
 // bad
@@ -478,10 +509,11 @@ export function foo() {}
 export default function foo() {}
 ```
 
-<a name="modules--imports-first"></a>
-- [Imports first](#modules--imports-first): Put all `import`s above non-import statements.
-eslint: [`import/imports-first`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/imports-first.md)
-> Why? Since `import`s are hoisted, keeping them all at the top prevents surprising behavior.
+[^prefer-default-export]: [ESLint: prefer-default-export](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/prefer-default-export.md)
+
+### Imports first
+
+Put all `import` statements above non-import statements. Since `import` statements are hoisted, keeping them all at the top prevents surprising behavior [^imports-first].
 
 ```javascript
 // bad
@@ -497,6 +529,10 @@ import bar from 'bar';
 foo.init();
 ```
 
-**[⬆ back to top](#table-of-contents)**
+[^imports-first]: [JSCS: imports-first](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/imports-first.md)
 
-# }
+## References
+
+This guide is taken in part from the following sources:
+
+* [https://github.com/airbnb/javascript](https://github.com/airbnb/javascript)
