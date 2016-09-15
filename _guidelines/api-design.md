@@ -63,7 +63,7 @@ opposed to Remote Procedure Call.  In particular, this means that:
 
 2. The only verbs are HTTP verbs: `GET` to read, `POST` to create, `PATCH` to
    modify, `DELETE` to destroy, and `HEAD` to obtain metadata.
-   
+
 3. Read methods (`GET`, `HEAD`) have no side effects, and write methods
    (`PATCH`) are idempotent.
 
@@ -151,7 +151,7 @@ In practice, this means that:
 
 Good:
 
-    
+
     GET   /users/{id}              # single user
     GET   /users                   # user index
     GET   /hotels/{id}/guests      # hotel's user index
@@ -164,7 +164,7 @@ Bad:
 
 **Embedding entities should be avoided**
 
-If an entity's representation contains a representations of its relations, 
+If an entity's representation contains a representations of its relations,
 
 - there is no longer a simple way to get the relations' representation; and
 - the parent entity can often no longer be efficiently cached (as the cache
@@ -179,7 +179,7 @@ Good:
 #> GET /hotels
 #< HTTP/1.0 200 OK
 _links:
-  hotel: 
+  hotel:
     - href: /hotels/123
     - href: /hotels/124
 ```
@@ -248,7 +248,7 @@ anything only relevant to _how_ it persists it.
 A consequence of a well-normalised API is that many calls may be required to
 render anything significant.
 
-For instance, take a listing page for a product catalog: you'll probably need to make 
+For instance, take a listing page for a product catalog: you'll probably need to make
 
 - one "index" API call to obtain the list or page of products;
 - one call per listed product to get its name and price;
@@ -343,7 +343,7 @@ Hint towards extrinsic: is a user's avatar a property, or a separate entity?
 
 Hints towards intrinsic:
 
-- *Value object*: 
+- *Value object*:
     - A hotel's name is a simple string. The string itself is immutable.
     - A user's avatar is an image, which itself is a file with a storage
       location, a size, dimensions, and a MIME type, but is immutable.
@@ -383,7 +383,7 @@ _links:
   city:
     href: /cities/456
 ```
-  
+
 
 Bad:
 
@@ -471,7 +471,7 @@ there is only zero or one entity in the concept (singleton relations).
 
 Note that relation endpoints _must_ link to a toplevel endpoint.
 
-Example: 
+Example:
 
 ```
 # Singleton
@@ -583,7 +583,7 @@ Finally, a service's root endpoint _should_ list the available versions:
 #> GET /api
 #< HTTP/1.0 200 OK
 _links:
-  ... 
+  ...
 _versions:
   - 1
   - 2
@@ -657,9 +657,9 @@ lng:  45.678
 _links:
   self:
     href:   "/hotels/1337"
-  reviews:  
+  reviews:
     href:   "/hotels/1337/reviews"
-  manager:     
+  manager:
     href:   "/users/8008"
     type:   "user"
   photos:
@@ -854,7 +854,7 @@ If it exists, it _should_ return status:
 
 Additional 4xx response codes _may_ be used:
 
-- 412 Precondition Failed 
+- 412 Precondition Failed
 - 415 Unsupported if using versioning and the server doesn't support the
   specified version.
 
@@ -951,7 +951,7 @@ Those endpoints _may_ return 400 Bad Request if parameters are specified.
 Collection GET endpoints are the only endpoints that usually accept query
 parameters. Those _should_ accept the `page` and `per_page` parameters. They
 _may_ accept parameters that match property names of the corresponding concept;
-if they do, they _should_ 
+if they do, they _should_
 
 - use the parameter value for filtering purposes (i.e. return entities whose
   corresponding property has the specified value), and
@@ -976,17 +976,56 @@ unspecified.
 
 ### Caching
 
-Caching efficiency is a critical aim of well-designed APIs, as it is influential
-on service performance; cache consistency is as important.
+Caching efficiency is a critical aim of well-designed APIs, as it is influential on service performance; cache consistency is as important.
 
-Responses to single-resource GET endpoints _should_ specify a `Cache-Control`
-header.
+These guidelines only consider HTTP/1.1 and later. If the API is internal then you can make this a requirement. External APIs must always use TLS so only direct clients or trusted intermediaries who have our certificates (CDNs, typically) will be able to view the content; all CDNs support 1.1 or later and it's not too much of a stretch to make this assumption for direct clients.
 
-- If the entity is mutable, the value _should_ be `no-cache`.
-- If the entity is immutable, the value _should_ be
-  `public; max-age=31536000` (one year).
+Responses with the following status codes _should_ specify a `Cache-Control` header because without one the HTTP specification allows clients to cache them according to their own cache policy which is typically more lax than desirable:
 
-Responses to collection GET endpoints _should not_ specify a `Cache-Control` header.
+- `200 OK`
+- `203 Non-Authoritative Information`
+- `206 Partial Content`
+- `300 Multiple Choices`
+- `301 Moved Permanently`
+- `308 Permanent Redirect`
+- `410 Gone`
+
+The following status codes _should_ also specify this header because many CDNs or intermediaries will choose to cache them even though they are not permitted to do so by the HTTP specification:
+
+- `302 Moved Temporarily`
+- `307 Temporary Redirect`
+- `404 Not Found`
+
+Other status codes _should not_ specify a `Cache-Control` header
+
+The HTTP `Cache-Control` header is somewhat confusing and some of the directives do not mean what you think they do. A basic summary of the confusing ones is:
+
+- `no-store` means that the response is very sensitive data which absolutely _must not_ be written to any kind of storage or to any type of cache either private or public.
+- `no-cache` means that the response may be cached (!) but _must not_ be used to satisfy any kind of request without revalidating it. Before using the cached data you _must_ check the endpoint with either the `If-None-Match` or `If-Modified-Since` and can only use it if you get `304 Not Modified`.
+- `must-revalidate` means that the response may be cached and may be used without revalidation (!) but may not be used beyond when it expires. If the cached data has passed the expiry, e.g. `max-age` was `3600` and you got the data over an hour ago, then you must check the endpoint with either the `If-None-Match` or `If-Modified-Since` and can only use it if you get `304 Not Modified`.
+- If none of the above directives are present then clients may cache the response and continue to use the data past the expiration time at their own discretion.
+
+For full details, and information about the other directives such as `public`, `private` and `max-age`, refer to [RFC 7234 § 5.2](https://tools.ietf.org/html/rfc7234#section-5.2).
+
+Most of the time it is fine for clients to cache data and it's often acceptable for the data to be at least somewhat stale (even if it's just a minute or two) but rarely fine to use them after the expiration time, so in general your `Cache-Control` header should be:
+
+    Cache-Control: private, max-age={seconds}, must-revalidate
+
+If the resource is immutable then `{seconds}` should be `31536000` which is one year, the maximum allowed. Statuses `301`, `308` and `410` should be considered immutable as they are permanent conditions.
+
+For resources that absolutely must be up-to-date when used you still normally want to allow the efficient return of `304 Not Modified` so choose `no-cache` (note that this is typically the best choice for the `302`, `307` and `404` status codes mentione above):
+
+    Cache-Control: private, no-cache
+
+In the rare cases where data is extremely sensitive and must never be cached anywhere (for example, a password reset token) then use:
+
+    Cache-Control: no-store
+
+Remember that because `no-store` prevents any kind of caching that clients cannot use conditional directives to get `304 Not Modified` because they are not permitted to store the data between requests, so have no reference for the unmodified resource.
+
+Responses _should_ include an `ETag` header with a strong ETag; if this is not practical then they _should_ include a `Last-Modified` header (ideally, include both). Strong ETags _must_ be based on a hash of the response, not on timestamp information. Do not use [weak ETags](https://tools.ietf.org/html/rfc7232#section-2.1) because they have confusing semantics, for example they cannot legally be used in preconditions on `PUT`, `PATCH` or `DELETE` requests.
+
+Any `GET` requests _may_ use either `If-None-Match` or `If-Modified-Since`, and all `PUT`/`PATCH`/`DELETE` requests _should_ use either `If-Match` or `If-Unmodified-Since`. If the request provided a strong ETag then the "match" headers are better, otherwise use the "modified" headers.
 
 ### Mutable resources
 
