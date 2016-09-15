@@ -52,6 +52,8 @@ end
 
 How much seed data you should generate is a balance between necessity and speed. The less data you generate the faster your builds will be, but if you don't have enough then you won't be able to test things like paging. The correct answer then is as little as possible, but not too little.
 
+As an example, you'll need enough restaurants to fill at least one, but perhaps two or three listing pages in a single zone. You'll also want a small number of restaurants in a handful of other cities and countries to be able to test variants of the code there and localisation.
+
 ### Performance Testing
 
 Because you won't have a dataset nearly the size of the production one, it makes it very difficult to test performance on the local system. However, if you stick to good engineering practices (particularly around [Active Record](/guidelines/active-record)) then you should rarely have a problem.
