@@ -1,0 +1,34 @@
+@function font-size($size) {
+  @if map-has-key($font-sizes, $size) {
+    @return map-get($font-sizes, $size);
+  }
+  
+  @error "Unknown font size `#{$size}` in $font-sizes.";
+  @return null;
+} // @function font-size()
+
+@mixin font-face-shim($family, $file, $weight) {
+  @font-face {
+      font-family: '#{$family}';
+      src: url('fonts/#{$file}.woff'), // Modern Browsers
+           url('fonts/#{$file}.ttf', 'font') format('truetype'); // Android pre 4.4
+      font-weight: $weight;
+      font-style: normal;
+  }
+}
+
+$font-sizes: (
+  extra-small-heading: 18px,
+  small-heading:       22px,
+  medium-heading:      28px,
+  large-heading:       40px,
+  extra-large-heading: 60px,
+  large-body:          18px,
+  medium-body:         16px,
+  small-body:          14px
+);
+
+
+$default-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$title-font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$monospace-font: 'Menlo', 'Ubuntu Mono', 'Lucida Console', 'Monaco', monospace;

@@ -1,0 +1,120 @@
+// Generates background-image declarations for a supplied image URL,
+// including retina versions @2x and @3x if applicable.
+// This mixin also accepts a @content block for additional declarations,
+// e.g. background-size etc.
+//
+// @param {string} $url  [null]
+//   path/to/file/without/extension - N.B. it’s unnecessary to wrap this in url()
+// @param {string} $type ['png']
+//   image file extension, defaults to png; used to build the full filepath
+// @param {bool} $retina [true]
+//   does the image have @2x and @3x retina versions?
+
+@mixin background-image-file($url, $type: 'png', $retina: true) {
+  @if $url == none {
+    background-image: none;
+    
+    @if ($retina) {
+      @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2), only screen and (-webkit-min-device-pixel-ratio: 3), only screen and (min-device-pixel-ratio: 3) {
+        & { background-image: none; }
+      }
+    }
+  } @else {
+    
+    @if $type == 'svg' {
+      background-image: url($url + '.' + $type);
+    } @else {
+      @if $retina {
+        background-image: url($url + '@1x.' + $type);
+      } @else {
+        background-image: url($url + '.' + $type);
+      }
+
+      @if ($retina) {
+        @media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+          & { background-image: url($url + '@2x.' + $type); }
+        }
+
+        @media only screen and (-webkit-min-device-pixel-ratio: 3), only screen and (min-device-pixel-ratio: 3) {
+          & { background-image: url($url + '@3x.' + $type); }
+        }
+      }
+    }
+
+    background-repeat: no-repeat;
+    @content;
+  }
+} // @mixin background-image-file
+
+// Generates ‘image replacement technique’ CSS for the supplied image URL,
+// replacing the existing element’s contents (typically text) with a 
+// block-level element of the appropriate dimensions.
+//
+// @param {string} $url  [null]
+//   path/to/file/without/extension - N.B. it’s unnecessary to wrap this in url()
+// @param {size} $background-width [null]
+//   background width of the source image, in CSS units (e.g. 20px)
+// @param {size} $background-height [null]
+//   background height of the source image, in CSS units (e.g. 20px)
+// @param {size} $width [$background-width]
+//   width of the replacement element in CSS units. Defaults to the background width.
+// @param {size} $height [$background-height]
+//   height of the replacement element in CSS units. Defaults to the background height.
+// @param {position} $background-position [0 0]
+//   background position of the background image. Defaults to the top left corner of the container.
+// @param {string} $type ['png']
+//   image file extension, defaults to png; used to build the full filepath
+
+@mixin image-replacement($url, $background-width, $background-height, $width: $background-width, $height: $background-height, $type: 'png') {
+  @include background-image-file($url, $type: $type) {
+    background-size: $background-width $background-height;
+  }
+  display: block;
+  text-indent: -9999px;
+  overflow: hidden;
+  width: $width;
+  height: $height;
+  @content;
+} // @mixin image-replacement
+
+@mixin unstyled-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+} // @mixin unstyled-list
+
+@function breakpoint($width) {
+  @if type-of($width) == 'number' {
+    @return $width;
+  } @elseif type-of($width) == 'string' {
+    @if map-has-key($breakpoints, $width) {
+      @return map-get($breakpoints, $width);
+    }
+    @error "No breakpoint called `#{$width}` exists in the `$breakpoints` map";
+  }
+
+  @return null;
+} // @function breakpoint()
+
+@mixin min-width($width) {
+  @media only screen and (min-width: #{breakpoint($width)}) {
+    @content;
+  }
+} // @mixin min-width
+
+@mixin max-width($width) {
+  @media only screen and (max-width: #{breakpoint($width) - 1px}) {
+    @content;
+  }
+} // @mixin max-width
+
+@mixin between-widths($min-width, $max-width) {
+  @media only screen and (min-width: #{breakpoint($min-width)}) and (max-width: #{breakpoint($max-width) - 1px}) {
+    @content;
+  }
+} // @mixin between-widths
+
+@mixin auto-width($breakpoint, $vertical-margins: 0) {
+  max-width: breakpoint($breakpoint);
+  margin: $vertical-margins auto;
+} // @mixin auto-width
