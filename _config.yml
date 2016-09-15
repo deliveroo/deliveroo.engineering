@@ -19,6 +19,7 @@ repository: "deliveroo/deliveroo.engineering"
 markdown: kramdown
 kramdown:
   parse_block_html: true
+  toc_levels: 1..4
 
 # Plugins
 gems:
