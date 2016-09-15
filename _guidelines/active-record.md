@@ -1,18 +1,23 @@
 ---
+layout:     guidelines
 title:      "Active Record"
+subtitle:   "Guidelines for fast & reusable Active Record"
+collection: guidelines
 ---
 
+## Table of Contents
+{:.no_toc}
 
-My mom told me that ActiveRecord doesn't scale!
-Fortunately, here comes the...
+1. Automatic Table of Contents Here
+{:toc}
 
-# Guidelines for fast & reusable ActiveRecord
+You may have previously heard somebody say something like this:
 
-This is a smell of bad design:
+> *I need to write a custom SQL query to do this!*
 
-> *I need to write a custom SQL query to do this !*
->
-> — No one, ever
+or:
+
+> *I’ve heard that ActiveRecord doesn't scale…*
 
 **This guide** is here to **help you** write ActiveRecord (or any ORM code,
 really) that lets your app **scale** with good performance and without
@@ -47,7 +52,6 @@ We make two exceptions to "logic in the database":
 The only case where your database will "do" something for you beyond storage is
 when counting, or otherwise aggregating persisted data. This is essentially for
 performance reasons.
-
 
 ### Controllers, views, presenters, decorators
 
