@@ -1,4 +1,5 @@
 home:        "/"
+articles:    "/articles/"
 guidelines:  "/guidelines/"
 repository:  "https://github.com/deliveroo/deliveroo.engineering"
 design_blog: "http://deliveroo.design/"
