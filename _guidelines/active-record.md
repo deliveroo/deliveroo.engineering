@@ -211,9 +211,8 @@ If applicable, remember to clear the cache[^cache] after running migrations that
 change data if the affected model is cached; or to send update events on the
 event bus[^bus] to refresh subscribers.
 
-[^cache]: [Clearing the Rails cache in the Deliveroo monolith](https://makandracards.com/deliveroo/41342-orderweb-clearing-the-rails-cache).
-
-[^bus]: [Event bus basics at Deliveroo](https://makandracards.com/deliveroo/41074-event-bus-basics-howto).
+[^cache]: [Clearing the Rails cache in the Deliveroo monolith](https://makandracards.com/deliveroo/41342-orderweb-clearing-the-rails-cache) (private)
+[^bus]: [Event bus basics at Deliveroo](https://makandracards.com/deliveroo/41074-event-bus-basics-howto) (private)
 
 #### Zero-downtime migrations
 
@@ -474,6 +473,3 @@ User.find_each { |u| puts u.id }
 # Bad:
 User.each { |u| puts u.id }
 ```
-
-----
-
