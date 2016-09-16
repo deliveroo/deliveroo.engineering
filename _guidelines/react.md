@@ -14,7 +14,7 @@ collection: guidelines
 ## Class vs `React.createClass` vs stateless
 If you have internal state and/or refs, prefer `class extends React.Component` over `React.createClass` unless you have a very good reason to use mixins. eslint: [`react/prefer-es6-class`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-es6-class.md) [`react/prefer-stateless-function`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md)
 
-```jsx
+```
 // bad
 const Listing = React.createClass({
   // ...
@@ -36,7 +36,7 @@ And if you don't have state or refs, prefer normal functions (not arrow function
 
 > Why? When debugging in the good example below the stack trace will include the function name whereas in the bad example it will say its from an anonymous function
 
-```jsx
+```
 // bad
 class Listing extends React.Component {
   render() {
