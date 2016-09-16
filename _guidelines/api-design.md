@@ -1,40 +1,29 @@
 ---
 layout:     guidelines
 title:      "API design"
+subtitle:   "Designing APIs in a resource-oriented architecture"
 collection: guidelines
 ---
 
+## Table of Contents
+{:.no_toc}
 
+1. Automatic Table of Contents Here
+{:toc}
 
-> These guidelines mostly apply to _internal_ APIs, meant to be consumed by
-> software we build and maintain.
->
-> APIs that face the public, or 3rd-party integrators, or simply our own apps
-> outside the datacenter, have very different constraints.
-> The section [external-facing APIs](#external-facing) has details on how to
-> handle those cases.
-{: .dg-sidebar.dg-warning }
-
-# Designing APIs in a resource-oriented architecture
+## Introduction
 
 This set of guidelines and conventions outline how to design APIs that are
-reusable and match with our [Service
-design](http://deliveroo.engineering/guide/services) guidelines.
+reusable and match with our [Service design](/guidelines/services) guidelines.
 
+These guidelines mostly apply to _internal_ APIs, meant to be consumed by
+software we build and maintain.
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+APIs that face the public, or 3rd-party integrators, or simply our own apps
+outside the datacenter, have very different constraints.
 
-  - [General principles](#general-principles)
-  - [API and domain modelling](#api-and-domain-modelling)
-  - [Documenting APIs](#documenting-apis)
-  - [Conventions on requests](#conventions-on-requests)
-  - [Conventions on responses](#conventions-on-responses)
-  - [External-facing APIs](#external-facing-apis)
-  - [Tools of the trade](#tools-of-the-trade)
-  - [Further reading](#further-reading)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+The section [external-facing APIs](#external-facing) has details on how to
+handle those cases.
 
 **Note to readers**: Many responses in this document will be represented as
 equivalent Yaml instead of JSON for conciseness; actual responses should still
@@ -44,13 +33,11 @@ In our examples, as a use case we'll generally assume we're building APIs for a
 hotel booking website - concepts will include hotels, rooms, bookings for
 instance.
 
-
 ## General principles
 
 We choose to adopt three general principles. Here's a shortcut to remember:
 
-> **RESTful, Hypermedia, Fine-grained**
-
+**RESTful, Hypermedia, Fine-grained**
 
 ### RESTful
 
@@ -70,20 +57,28 @@ opposed to Remote Procedure Call.  In particular, this means that:
 4. `DELETE` is _not_ idempotent and should return 404 or 410 when the resource
    does not exist (or not any longer).
 
+Example of verb vs. noun usage:
 
-Example of verb v noun usage:
+```
+# Good
+POST /bookings { hotel: { id: 1234 } }
 
-- Good: `POST /bookings { hotel: { id: 1234 } }`
-- Bad: `POST /hotel/1234/book`
+# Bad
+POST /hotel/1234/book
+````
 
 Example of proper method usage:
 
-- Good: `PATCH /bookings/432 { state: "requested", payment_id: 111 }`
-- Bad:  `POST  /bookings/432 { state: "requested", payment_id: 111 }`
+```
+# Good
+PATCH /bookings/432 { state: "requested", payment_id: 111 }
+
+# Bad
+POST  /bookings/432 { state: "requested", payment_id: 111 }
+```
 
 Note that the `PUT` verb, which is fairly ambiguous (can both create or update a
 resource) should generally not be used.
-
 
 ### Hypermedia / HATEOAS
 
@@ -129,9 +124,7 @@ HATEOAS is difficult to achieve in practice on large APIs, but is a very
 valuable target to aim for - it significantly improves maintainability and
 allows for high-level clients that can "walk" relationships transparently.
 
-
 ### Fine-grained
-
 
 A fine-grained API should provide
 
@@ -151,16 +144,18 @@ In practice, this means that:
 
 Good:
 
-
-    GET   /users/{id}              # single user
-    GET   /users                   # user index
-    GET   /hotels/{id}/guests      # hotel's user index
+```
+GET   /users/{id}              # single user
+GET   /users                   # user index
+GET   /hotels/{id}/guests      # hotel's user index
+```
 
 Bad:
 
-    GET   /users/{id}              # single user
-    GET   /hotels/{id}/guest/{id}  # duplicate!
-
+```
+GET   /users/{id}              # single user
+GET   /hotels/{id}/guest/{id}  # duplicate!
+```
 
 **Embedding entities should be avoided**
 
@@ -241,7 +236,6 @@ normalise/decouple the API.
 Also note that a service does not necessarily need
 to expose _all_ it knows about a resource; and definitely should not expose
 anything only relevant to _how_ it persists it.
-
 
 **Many calls may be required**
 
@@ -552,7 +546,9 @@ form of API versions.
 Clients _may_ specify a desired version as the `v` parameter of the `Accept`
 header, for instance:
 
-    Accept: application/json;v=2
+```
+Accept: application/json;v=2
+```
 
 The service _should_ respond with status 406, Not Acceptable if the version is
 unavailable.
@@ -560,22 +556,26 @@ unavailable.
 If a version was specified by the client, and is available, the service _must_
 respond with the same version:
 
-    # Request:
-    Accept: application/json;v=2
+```
+# Request:
+Accept: application/json;v=2
 
-    # Response:
-    Content-Type: application/json;v=2
+# Response:
+Content-Type: application/json;v=2
+```
 
 If the version was unspecified, the server _should_ use the latest available
 version, and specify the `Vary` header, as future request may yield a different
 response:
 
-    # Request:
-    Accept: application/json
+```
+# Request:
+Accept: application/json
 
-    # Response:
-    Content-Type: application/json;v=2
-    Vary: Accept
+# Response:
+Content-Type: application/json;v=2
+Vary: Accept
+```
 
 Finally, a service's root endpoint _should_ list the available versions:
 
@@ -589,13 +589,10 @@ _versions:
   - 2
 ```
 
-
 _Note_: Another Approach is to version APIs through path segments (e.g.
 `/api/v1/things/123`). We choose not to follow it. The major issue is that
 entities may have multiple URLs which risk being misinterpreted as referencing
 different entities.
-
-
 
 ### Internationalisation (i18n)
 
@@ -637,7 +634,6 @@ possible, and only introduced:
 - for excruciating performance reasons; or
 - when the (partial) representation of the embedded entity is immutable with
   respect to the parent.
-
 
 ### Single-resource representation
 
@@ -1009,17 +1005,23 @@ For full details, and information about the other directives such as `public`, `
 
 Most of the time it is fine for clients to cache data and it's often acceptable for the data to be at least somewhat stale (even if it's just a minute or two) but rarely fine to use them after the expiration time, so in general your `Cache-Control` header should be:
 
-    Cache-Control: private, max-age={seconds}, must-revalidate
+```
+Cache-Control: private, max-age={seconds}, must-revalidate
+```
 
 If the resource is immutable then `{seconds}` should be `31536000` which is one year, the maximum allowed. Statuses `301`, `308` and `410` should be considered immutable as they are permanent conditions.
 
 For resources that absolutely must be up-to-date when used you still normally want to allow the efficient return of `304 Not Modified` so choose `no-cache` (note that this is typically the best choice for the `302`, `307` and `404` status codes mentione above):
 
-    Cache-Control: private, no-cache
+```
+Cache-Control: private, no-cache
+```
 
 In the rare cases where data is extremely sensitive and must never be cached anywhere (for example, a password reset token) then use:
 
-    Cache-Control: no-store
+```
+Cache-Control: no-store
+```
 
 Remember that because `no-store` prevents any kind of caching that clients cannot use conditional directives to get `304 Not Modified` because they are not permitted to store the data between requests, so have no reference for the unmodified resource.
 

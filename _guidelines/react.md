@@ -1,20 +1,21 @@
 ---
-title:      "React"
+layout:     guidelines
+title:      "React/JSX Style Guide"
+subtitle:   "A mostly reasonable approach to React and JSX"
+collection: guidelines
 ---
 
-
-# Deliveroo React/JSX Style Guide
-
-*A mostly reasonable approach to React and JSX*
-
 ## Table of Contents
-1. Props
+{:.no_toc}
+
+1. Automatic Table of Contents Here
+{:toc}
 
 ## Props
 
-- Always use camelCase for prop names.
+Always use camelCase for prop names.
 
-```jsx
+```
 // bad
 <Foo
   UserName="hello"
@@ -28,9 +29,9 @@ title:      "React"
 />
 ```
 
-- Omit the value of the prop when it is explicitly `true`. eslint: [`react/jsx-boolean-value`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-boolean-value.md)
+Omit the value of the prop when it is explicitly `true`. [^jsx-boolean-value]
 
-```jsx
+```
 // bad
 <Foo
   hidden={true}
@@ -42,9 +43,11 @@ title:      "React"
 />
 ```
 
-- Avoid using an array index as `key` prop, prefer a unique ID. ([why?](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318))
+[^jsx-boolean-value]: [ESLint: react/jsx-boolean-value](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-boolean-value.md)
 
-```jsx
+Avoid using an array index as `key` prop, prefer a unique ID: using the index as a key is an [anti-pattern](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318).
+
+```
 // bad
 {todos.map((todo, index) =>
   <Todo

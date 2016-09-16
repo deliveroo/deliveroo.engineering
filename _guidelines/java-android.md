@@ -1,7 +1,7 @@
 ---
 layout:     guidelines
-title:      "CSS and SCSS"
-subtitle:   "Guidelines on writing CSS and SCSS"
+title:      "Java & Android"
+subtitle:   "Guidelines on developing for Android with Java"
 collection: guidelines
 ---
 
@@ -11,4 +11,4 @@ collection: guidelines
 1. Automatic Table of Contents Here
 {:toc}
 
-Empty for now
+Contents go here.
