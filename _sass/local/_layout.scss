@@ -198,3 +198,11 @@
     flex: 1 0 auto;  
   } // @flex-sticky-footer #{$contents-selector}
 } // @mixin flex-sticky-footer
+
+@mixin external-href($domain) {
+  &[href*="//"] {
+    &:not([href*="#{$domain}"]) {
+      @content;
+    } // @mixin external-href($domain) a[href*="//"]:not([href*="#{$domain}"])
+  } // @mixin external-href($domain) a[href*="//"]
+} // @mixin external-href($domain)

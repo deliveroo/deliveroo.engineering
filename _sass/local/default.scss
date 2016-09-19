@@ -10,6 +10,24 @@ a {
     transition-duration: 0.2s;
     border-color: transparentize(color(aubergine, 50%), 0.4);
   } // a:hover
+  
+  @include external-href('deliveroo.engineering') {
+    &::after {
+      @include image-replacement('/images/external_link_aubergine', 12px, 12px, $type: 'svg');
+      display: inline-block;
+      transition-property: opacity;
+      transition-duration: 0.4s;
+      opacity: 0.75;
+      content: '⬈';
+      margin-left: 5px;
+      margin-right: 1px;
+    } // @external-href('deliveroo.engineering') a::after
+    
+    &:hover::after {
+      transition-duration: 0.2s;
+      opacity: 0.5;
+    } // @external-href('deliveroo.engineering') a:hover::after
+  } // @external-href('deliveroo.engineering') a
 } // a
 
 h1, h2, h3, h4 {

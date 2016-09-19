@@ -13,6 +13,12 @@ footer {
     &:hover {
       color: white;      
     } // footer a:hover
+    
+    @include external-href('deliveroo.engineering') {
+      &::after {
+        content: none;
+      } // @external-href('deliveroo.engineering') footer a::after
+    } // @external-href('deliveroo.engineering') footer a
   } // footer a
   
   ul.links {
