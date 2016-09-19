@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Running A/B tests on our hosting infrastructure"
-date:   2016-07-13 00:00:00
+author: "Julien Letessier"
+date:   2016-09-19 00:00:00
 exerpt: >
   Split testing is a cornerstone of how we improve our products. While we
   usually run such tests for user-visible interface changes, this is an example
@@ -28,9 +29,7 @@ up by 7.2% in the best case... and down by 6.6% in the worst (with _p_ < 0.05).
 
 Read on for how we set this up and analysed the results.
 
----
-
-## Current infrastructure
+### Current infrastructure
 
 We currently use a CDN[^cdn]
 for delivery of assets (Javascript, CSS, and images) to clients (web and native
@@ -41,13 +40,14 @@ server that's closer to the end user, latency-wise.
 [^cdn]: [Content Delivery Network](https://en.wikipedia.org/wiki/Content_delivery_network)
 
 Because our hosting started with AWS, we originally used
-CloudFront — relatively easy to set up, does the job...
+CloudFront — relatively easy to set up, does the job…
 
-... until we started expanding the business in regions where CloudFront's
+…until we started expanding the business in regions where CloudFront's
 coverage seems a little more spotty, e.g. Australia, Singapore, or Hong Kong.
 
-![Cloudfront performance](/images/2016-07-13-split-testing-cdns--01.png)
-{: .dg-figure}
+<figure>
+![Cloudfront performance](/images/posts/ab-testing-cdns/01.png)
+</figure>
 
 We'll come back to the details of this chart a bit later, but it should pretty
 clearly show that for Cloudfront (or any CDN, really), actual performance from
@@ -65,7 +65,7 @@ Our current HTTP infrastructure has 3 tiers:
 Both the proxy and the Heroku app are hosted by AWS, in the `eu-west-1` (Dublin)
 datacenter.
 
-## Testable infrastructure variants
+### Testable infrastructure variants
 
 We've set up 4 variants of our infrastructure:
 `cdn0` is the existing, Cloudfront-based setup - the control.
@@ -85,8 +85,9 @@ Each of those is given a different DNS entry for each of our TLDs,
 
 [^pop]: "Point of Presence". This refers to the many caching servers a CDN places as close as possible to users, typically within ISPs' datacenters. POP placement significantly influences performance.
 
-![Infrastructure variants](/images/2016-07-13-split-testing-cdns--02.png)
-{: .dg-figure}
+<figure>
+![Infrastructure variants](/images/posts/ab-testing-cdns/02.png)
+</figure>
 
 
 
@@ -109,8 +110,9 @@ We then let the system harvest data for a while, and ran analysis queries in [NR
 Insights][nrinsights].
 
 
-![Infrastructure variants](/images/2016-07-13-split-testing-cdns--03.png)
-{: .dg-figure}
+<figure>
+![Infrastructure variants](/images/posts/ab-testing-cdns/03.png)
+</figure>
 
 At first glance, this graphs looks like Cloudfront (`cdn0`) is massively winning
 over Fastly (`cdn[1-3]`). The trick here is that Cloudfront is part of Amazon's
@@ -184,21 +186,22 @@ harvested to reach statistical significance.
 
 ### Performance for actual users
 
+<aside>
+##### Why split the analysis by country _and_ platform?
+
+CDN performance relates to how "close" the closest POP is, in terms of network
+latency. It's best if the CDN has a POP at the user's ISP, and ISP networks are
+typically per-country with a few exceptions (dense areas like Europe).
+Similarly, DSL/fibre ISPs may not share a network with mobile/GSM ISPs.
+
+As we cannot split the data on the "type" of network (landline vs. mobile),
+we're splitting on device types as a proxy. This is determined by interpreting
+the user-agent header for each HTTP request.
+</aside>
+
 For this second test, we ran a proper A/B test trying to falsify the
 hypothesis: in a given country, for a given device type, Cloudfront and Fastly
 perform the same.
-
-> ##### Why split the analysis by country _and_ platform?
->
-> CDN performance relates to how "close" the closest POP is, in terms of network
-> latency. It's best if the CDN has a POP at the user's ISP, and ISP networks are
-> typically per-country with a few exceptions (dense areas like Europe).
-> Similarly, DSL/fibre ISPs may not share a network with mobile/GSM ISPs.
->
-> As we cannot split the data on the "type" of network (landline vs. mobile),
-> we're splitting on device types as a proxy. This is determined by interpreting
-> the user-agent header for each HTTP request.
-{: .dg-sidebar}
 
 The metric we'll look at is the duration between the "time to first byte" (the
 point at which, when loading a page, a browser starts receiving the HTTP
@@ -239,8 +242,9 @@ Intermission: for proper A/B testing, have a read of [Evan Miller's Awesome
 A/B Testing Tools](http://www.evanmiller.org/ab-testing/). One of my favourite
 bookmarks.
 
-![Infrastructure variants](/images/2016-07-13-split-testing-cdns--04.png)
-{: .dg-figure}
+<figure>
+![Infrastructure variants](/images/posts/ab-testing-cdns/04.png)
+</figure>
 
 This graphs the ratio of load+render times for Fastly (`cdn1` variant, the best
 one) versus Cloudfront (`cdn0`, our pre-existing set up), split by the users'
@@ -294,29 +298,29 @@ conversion change (+0.0% ±0.8%, _p_ = 0.5), or a slight improvement (+0.9%
 
 But once split by country and platform, the results are surprising.
 
+<figure>
+![Infrastructure variants](/images/posts/ab-testing-cdns/05.png)
+</figure>
 
-![Infrastructure variants](/images/2016-07-13-split-testing-cdns--05.png)
-{: .dg-figure}
+<aside>
+##### Why ignore some AB test results?
 
-> ##### Why ignore some AB test results?
-> 
-> An AB test doesn't measure a precise change in the observed metric (here,
-> conversion) — it provides a bracket of results for a given p-value.
-> 
-> So for _p_ = 0.05, what the result actually means is that if the test was to
-> be repeated, there a 95% chance the observed metric would still fall in the
-> bracket.
-> 
-> Nothing says that distribution is uniform or not, although it's often assumed
-> to be; so when the error bars encompass zero (no change in the metric), the
-> "real" result we'd observe if we'd repeat the test an infinite number of times
-> could go either way.
->
-> This said, it's not uncommon to say the conversion "trends" in the direction
-> of the observed value (the coloured bars on our graphs) even when the error
-> bracket is wide.
-> 
-{: .dg-sidebar}
+An AB test doesn't measure a precise change in the observed metric (here,
+conversion) — it provides a bracket of results for a given p-value.
+
+So for _p_ = 0.05, what the result actually means is that if the test was to
+be repeated, there a 95% chance the observed metric would still fall in the
+bracket.
+
+Nothing says that distribution is uniform or not, although it's often assumed
+to be; so when the error bars encompass zero (no change in the metric), the
+"real" result we'd observe if we'd repeat the test an infinite number of times
+could go either way.
+
+This said, it's not uncommon to say the conversion "trends" in the direction
+of the observed value (the coloured bars on our graphs) even when the error
+bracket is wide.
+</aside>
 
 Error bars here are still for _p_ < 0.05, so any result where the error bar
 crosses zero are subject to caution; we'll ignore those here. This leaves us
@@ -343,15 +347,17 @@ when running tests.
 Digging into how conversion has evolved over time during the test reveals that,
 during the course of the test, our Australian market suffered a conversion blip:
 
-![Infrastructure variants](/images/2016-07-13-split-testing-cdns--06.png)
-{: .dg-figure}
+<figure>
+![Infrastructure variants](/images/posts/ab-testing-cdns/06.png)
+</figure>
 
 There was an unrelated product issue in Australia — which may well have skewed
 test results.  Conversely, looking at one of the cases where Fastly won over
 Cloudfront, we saw that conversion was indeed up reasonably consistenly:
 
-![Infrastructure variants](/images/2016-07-13-split-testing-cdns--07.png)
-{: .dg-figure}
+<figure>
+![Infrastructure variants](/images/posts/ab-testing-cdns/07.png)
+</figure>
 
 
 ### Conclusions
@@ -377,7 +383,7 @@ TTFB (time-to-first-byte) of our pages is unchanged.
 We expect further improvement in our TTFB for key pages (homepage, listing
 pages) to further improve performance.
 
-## Tools used
+### Tools used
 
 - [Amazon Cloudfront][cloudfront] and [Fastly][fastly]: the two CDNs we've
   pitted against eachother.
@@ -405,4 +411,4 @@ pages) to further improve performance.
 [pingdom]: https://www.pingdom.com/
 
 
----- 
+#### Footnotes
