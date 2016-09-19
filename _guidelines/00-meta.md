@@ -3,6 +3,7 @@ layout:     guidelines
 title:      "Meta-Guidelines"
 subtitle:   "Guidelines about guidelines"
 collection: guidelines
+permalink:  /guidelines/meta/
 ---
 
 ## Table of Contents

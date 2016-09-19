@@ -118,3 +118,77 @@
   max-width: breakpoint($breakpoint);
   margin: $vertical-margins auto;
 } // @mixin auto-width
+
+@mixin circle($diameter) {
+  display: block;
+  width: $diameter;
+  height: $diameter;
+  -webkit-border-radius: $diameter;
+  border-radius: $diameter;
+} // @mixin circle
+
+@mixin flex-columns($child-selector: '> *', $columns: 2, $gutter-width: 20px, $row-spacing: 0) {
+  display: -webkit-flex;
+  -webkit-flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
+  
+  #{$child-selector} {
+    -webkit-flex: 1;
+    flex: 1;
+    min-width: calc(100% / #{$columns} - #{$gutter-width});
+  
+    &:nth-of-type(#{$columns}n+1) {
+      margin-left: 0;
+    } // @mixin flex-columns $child-selector:nth-nth-of-type(#{$columns}n+1)
+  } // @mixin flex-columns $child-selector
+  
+  * + #{$child-selector} {
+    margin-left: $gutter-width;
+    margin-top: $row-spacing;
+  } // @mixin flex-columns * + $child-selector
+  
+  @for $i from 1 through $columns {
+    #{$child-selector}:nth-of-type(#{$i}) {
+      margin-top: 0;
+    } // @mixin flex-columns $child-selector:nth-of-type($i)
+  }
+} // @mixin flex-columns
+
+@mixin flex-column-grid($two-col-breakpoint, $three-col-breakpoint, $child-selector: '> *', $gutter-width: 20px, $row-spacing: 0) {
+  @include between-widths($two-col-breakpoint, $three-col-breakpoint) {
+    @include flex-columns($child-selector, 2, $gutter-width, $row-spacing);
+  } // @between-widths($two-col-breakpoint, $three-col-breakpoint)
+  
+  @include min-width($three-col-breakpoint) {
+    @include flex-columns($child-selector, 3, $gutter-width, $row-spacing);
+  } // @min-width($three-col-breakpoint)
+} // @mixin flex-column-grid
+
+@mixin flex-sticky-footer($header-selector: 'header', $contents-selector: 'main', $footer-selector: 'footer') {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100%;
+  
+  #{$header-selector},
+  #{$footer-selector} {
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+    -ms-flex: none;
+    flex: none;
+  } // @flex-sticky-footer #{$contents-selector}
+  
+  #{$contents-selector} {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 0 auto;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;  
+  } // @flex-sticky-footer #{$contents-selector}
+} // @mixin flex-sticky-footer

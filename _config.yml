@@ -19,6 +19,7 @@ repository: "deliveroo/deliveroo.engineering"
 markdown: kramdown
 kramdown:
   parse_block_html: true
+  toc_levels: 1..4
 
 # Plugins
 gems:
@@ -32,6 +33,9 @@ collections:
   guidelines:
     output:       true
     permalink:    /guidelines/:path/
+  authors:
+    output:       true
+    permalink:    /authors/:path/
 
 defaults:
   - scope:

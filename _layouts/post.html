@@ -4,10 +4,7 @@ layout: default
 <article>
   <header>
     <h1>{{ page.title }}</h1>
-    <time datetime="{{ page.date | date_to_xmlschema }}" class="published">{{ page.date | date: "%A, %B %-d, %Y" }}</time>
-    {% if page.author %}
-      <p class="author">{{ page.author }}</p>
-    {% endif %}
+    <p class="byline">{% include byline.html author=page.author date=page.date %}</p>
   </header>
 
   <div class="excerpt">

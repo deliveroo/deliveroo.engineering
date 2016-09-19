@@ -4,38 +4,57 @@ title: deliveroo.engineering
 ---
 
 <h1>The Deliveroo engineering team blog</h1>
+<p class="tagline">Turning code into food.</p>
 
-<p>Turning code into food.</p>
-
-<h2>Recent Articles</h2>
-<section id="recent-posts">
-  {% for _page in site.posts limit: 3 %}
-    <div class="post recent">
+<section id="latest-post">
+  <div class="post latest">
+    {% for _page in site.posts limit: 1 %}
       <h3><a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a></h3>
-      <time datetime="{{ _page.date | date_to_xmlschema }}" class="published">{{ _page.date | date: "%A, %B %-d, %Y" }}</time>
-      {% if _page.author %}
-        <p class="author">{{ _page.author }}</p>
-      {% endif %}
+      <p class="byline">{% include byline.html author=_page.author date=_page.date %}</p>
       <blockquote>
         {{ _page.exerpt | markdownify }}
       </blockquote>
       <p><a href="{{ _page.url }}" title="{{ _page.title }}">Read more…</a></p>
-    </div>
-    {% unless forloop.index == 3 %}
-      <hr>
-    {% endunless %}
-  {% endfor %}
+    {% endfor %}
+  </div>
 </section>
 
-<h2>Other Articles</h2>
-<section id="other-articles">
-  {% if site.posts.size > 3 %}
-    <ul class="articles">
-      {% for _page in site.posts limit: 17 offset: 3 %}
-        <li>
-          <a href="{{ site.baseurl }}{{ _page.url }}" title="{{ _page.title }}">{{ _page.title }}</a>
-        </li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-</section>
+{% if site.posts.size > 1 %}
+  <hr>
+
+  <h2>Recent Articles</h2>
+  <section id="recent-posts">
+    {% for _page in site.posts limit: 3 offset: 1 %}
+      <div class="post recent">
+        <h3><a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a></h3>
+        <p class="byline">{% include byline.html author=_page.author date=_page.date %}</p>
+        <blockquote>
+          {{ _page.exerpt | markdownify }}
+        </blockquote>
+        <p><a href="{{ _page.url }}" title="{{ _page.title }}">Read more…</a></p>
+      </div>
+      {% unless forloop.index == 3 %}
+        <hr>
+      {% endunless %}
+    {% endfor %}
+  </section>
+{% endif %}
+
+{% if site.posts.size > 4 %}
+  <hr>
+
+  <h2>Other Articles</h2>
+  <section id="other-articles">
+    {% if site.posts.size > 4 %}
+      <ul class="articles">
+        {% for _page in site.posts limit: 17 offset: 4 %}
+          <li>
+            <a href="{{ site.baseurl }}{{ _page.url }}" title="{{ _page.title }}">{{ _page.title }}</a>
+            {% include byline.html author=_page.author date=_page.date %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <p class="more"><a href="{{site.data.routes.articles}}">More articles…</a></p>
+  </section>
+{% endif %}

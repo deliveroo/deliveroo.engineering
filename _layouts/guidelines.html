@@ -1,10 +1,11 @@
 ---
 layout: default
 ---
-<h1>{{ page.title }}</h1>
+<article class="guidelines">
+  <header>
+    <h1>{{ page.title }}</h1>
+    <p class="tagline">{{ page.subtitle }}</p>
+  </header>
 
-{% if page.subtitle %}
-  {{ page.subtitle }}
-{% endif %}
-
-{{ content }}
+  {{ content }}
+</article>
