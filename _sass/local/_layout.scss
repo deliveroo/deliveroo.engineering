@@ -134,9 +134,9 @@
   flex-wrap: wrap;
   
   #{$child-selector} {
-    -webkit-flex: 1;
-    flex: 1;
-    min-width: calc(100% / #{$columns} - #{$gutter-width});
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
+    width: calc(100% / #{$columns} - #{$gutter-width});
   
     &:nth-of-type(#{$columns}n+1) {
       margin-left: 0;
@@ -166,6 +166,12 @@
 } // @mixin flex-column-grid
 
 @mixin flex-sticky-footer($header-selector: 'header', $contents-selector: 'main', $footer-selector: 'footer') {
+  @at-root {
+    html {
+      height: 100%;
+    } // @at-root html
+  } // @at-root
+  
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
