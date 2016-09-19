@@ -265,6 +265,12 @@ article {
     margin: 3em 0 1em;
   } // article h{2…6}
   
+  h2, h3, h4 {
+    a.anchorjs-link {
+      border: none;
+    } // article h{2…4} a.anchorjs-link
+  } // article h{2…4} a.anchorjs-link
+  
   pre.highlight {
     overflow: auto;
   } // article pre.highlight
