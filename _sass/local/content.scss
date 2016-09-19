@@ -338,28 +338,7 @@ article {
   } // article div.footnotes
   
   &.guidelines {
-    @include auto-width(desktop_larger);
-
-    > h3,
-    > h4,
-    > h5,
-    > h6,
-    > figure,
-    > p,
-    > div.footnotes {
-      @include auto-width(desktop_small);
-    } // article.guidelines > {h3…6, figure, p, div.footnotes}
-    
-    > ul {
-      @include auto-width(desktop_small, $vertical-margins: 1em);
-    } // article.guidelines > ul
-    
-    > hr {
-      @include auto-width(desktop_small, $vertical-margins: 2em);
-    } // article.guidelines > hr
-    
-    > table {
-      @include auto-width(desktop_small, $vertical-margins: 2em);
+    table {
       width: 100%;
       table-layout: fixed;
       border-collapse: collapse;
@@ -367,41 +346,34 @@ article {
       
       code {
         font-size: font-size(smallest-body);
-      } // article.guidelines > table code
+      } // article.guidelines table code
       
       th, td {
         padding: 5px;
-      } // article.guidelines > table {th, td}
+      } // article.guidelines table {th, td}
       
       thead {
         th {
           background-color: color(mackeral, 60%);
           color: color(anchovy, 5%);
           text-align: left;
-        } // article.guidelines > table thead th
-      } // article.guidelines > table thead
+        } // article.guidelines table thead th
+      } // article.guidelines table thead
       
       tbody {
         td {
           overflow: auto;
-        } // article.guidelines > table tbody td
+        } // article.guidelines table tbody td
         
         tr:nth-child(even) td {
           background-color: color(anchovy, 10%);
-        } // article.guidelines > table tbody tr:nth-child(even) td
+        } // article.guidelines table tbody tr:nth-child(even) td
         
         tr:nth-child(odd) td {
           background-color: color(anchovy, 20%);
-        } // article.guidelines > table tbody tr:nth-child(odd) td
-      } // article.guidelines > table tbody
-    } // article.guidelines > table
-    
-    > aside {
-      @include auto-width(desktop_small, $vertical-margins: 2em);
-      width: 100%;
-      float: none;
-      box-sizing: border-box;
-    } // article.guidelines > aside
+        } // article.guidelines table tbody tr:nth-child(odd) td
+      } // article.guidelines table tbody
+    } // article.guidelines table
 
     h2 {
       text-align: center;
