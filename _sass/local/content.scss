@@ -296,6 +296,18 @@ article {
         color: color(aubergine, 5%);
         border-color: color(aubergine, 25%);
       } // article aside a:hover
+      
+      @include external-href('deliveroo.engineering') {
+        &::after {
+          @include image-replacement('/images/external_link_white', 12px, 12px, $type: 'svg');
+          display: inline-block;
+          opacity: 0.5;
+        } // @external-href('deliveroo.engineering') article aside a::after
+    
+        &:hover::after {
+          opacity: 0.75;
+        } // @external-href('deliveroo.engineering') article aside a:hover::after
+      } // @external-href('deliveroo.engineering') article aside a
     } // article aside a
     
     *:last-child {

@@ -75,6 +75,12 @@ header#navigation {
           &:hover {
             color: color(mackeral);
           } // header#navigation nav ul li a:hover
+          
+          @include external-href('deliveroo.engineering') {
+            &::after {
+              content: none;
+            } // @external-href('deliveroo.engineering') header#navigation nav ul li a::after
+          } // @external-href('deliveroo.engineering') header#navigation nav ul li a
         } // header#navigation nav ul li a
         
         &:last-child a {
