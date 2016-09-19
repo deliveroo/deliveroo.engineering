@@ -280,8 +280,6 @@ non-internal APIs; [this article](http://dec0de.me/2014/09/resn-routemaster/)
 also has a more elaborate explanation and example.
 
 
-----------
-
 ## API and domain modelling
 
 Defining good APIs (with respect to the principles outlined above) relies on
@@ -404,8 +402,6 @@ each other as a tree (or digraph) — but depending on the use case, this might 
 cumbersome over-normalisation.
 
 
-----------
-
 ## Documenting APIs
 
 API users are both developers and machines; therefore, you should:
@@ -415,8 +411,7 @@ API users are both developers and machines; therefore, you should:
 - Documented in a human-readable format. We recommend
   [Apiary](http://apiary.io/) and the [API Blueprint](http://apiblueprint.org/)
   standard `.apib` files.
-
-----------
+  
 
 ## Conventions on requests
 
@@ -620,7 +615,6 @@ Rationale:
 - Localisation is inherently a representation concern, and HTTP mandates such
   concerns to be addressed using protocol headers.
 
-----------
 
 ## Conventions on responses
 
@@ -1049,10 +1043,8 @@ this is not mandatory.
 *Rationale*: latency is more important than bandwidth savings for most internal
 APIs; therefore the overhead of compression is seldom justified.
 
-----------
 
 {: #external-facing}
-
 ## External-facing APIs
 
 
@@ -1101,11 +1093,9 @@ maintainability of _our_ software.
    version of a set of public-facing APIS should be an entirely new domain (e.g.
    `v2.my-api.example.com`), with entirely segregated infrastructure.
 
-----------
 
 ## Tools of the trade
 
-----------
 
 ## Further reading
 
