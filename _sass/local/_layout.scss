@@ -164,3 +164,31 @@
     @include flex-columns($child-selector, 3, $gutter-width, $row-spacing);
   } // @min-width($three-col-breakpoint)
 } // @mixin flex-column-grid
+
+@mixin flex-sticky-footer($header-selector: 'header', $contents-selector: 'main', $footer-selector: 'footer') {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  height: 100%;
+  
+  #{$header-selector},
+  #{$footer-selector} {
+    -webkit-box-flex: 0;
+    -webkit-flex: none;
+    -ms-flex: none;
+    flex: none;
+  } // @flex-sticky-footer #{$contents-selector}
+  
+  #{$contents-selector} {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 0 auto;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;  
+  } // @flex-sticky-footer #{$contents-selector}
+} // @mixin flex-sticky-footer

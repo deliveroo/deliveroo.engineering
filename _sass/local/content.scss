@@ -1,9 +1,5 @@
 body {
-  display: -webkit-flex;
-  -webkit-flex-direction: column;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  @include flex-sticky-footer($header-selector: 'header#navigation', $contents-selector: 'main', $footer-selector: 'footer');
   font-family: $default-font;
   font-size: 62.5%;
   color: color(mackeral);
@@ -12,8 +8,6 @@ body {
   -webkit-font-smoothing: antialiased;
   
   main {
-    -webkit-flex: 1;
-    flex: 1;
     padding: 50px 10px;
     font-size: font-size(medium-body);
     line-height: 1.5;
