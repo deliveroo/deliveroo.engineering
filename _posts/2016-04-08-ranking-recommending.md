@@ -13,12 +13,12 @@ exerpt: >
 
 
   This talk introduces approaches and techniques for ranking and recommendation
-  in an e-commerce context, and elaborates on neural entworks and collaborative
+  in an e-commerce context, and elaborates on neural networks and collaborative
   filtering.
 
 
   Don't be afraid—the aim was to make take a bird's eye view, so you don't need
-  to be a rcoket sicentist to read through!
+  to be a rocket scientist to read through!
 
 ---
 
