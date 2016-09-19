@@ -166,6 +166,12 @@
 } // @mixin flex-column-grid
 
 @mixin flex-sticky-footer($header-selector: 'header', $contents-selector: 'main', $footer-selector: 'footer') {
+  @at-root {
+    html {
+      height: 100%;
+    } // @at-root html
+  } // @at-root
+  
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
