@@ -714,8 +714,8 @@ A collection GET endpoint _should_ be of one of the forms:
 - `/{concept-plural}`, e.g. `/hotels`
 - `/{parent}/{id}/{concept-plural}`, e.g. `/hotels/1234/photos`
 
-Such endpoints _must_ return a representation of the collection, and embed a
-list of (possibly partial) representations of some of the entities.
+Such endpoints _must_ return a representation of the collection. They _must_
+link to a (possibly empty) list of entities.
 
 _Rationale_:
 In domain terms, an index endpoint actually returns a _view_ on the _collection_
@@ -729,8 +729,33 @@ A collection representation
 - _should_ link to relations `next` and `prev` for pagination purposes;
 - _must_ include the properties `page`, `per_page`, `total`
 
-In a collection representation, embedded representations _may_ be incomplete,
-but _should_ include at least a numeric `id` and the mandatory link to `self`.
+Example:
+
+```yml
+#> GET /hotels?checkin=2016-01-02&checkout=2016-01-09
+#< HTTP/1.0 200 OK
+page:     1
+per_page: 10
+total:    153277
+_links:
+  self:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
+  prev:     null
+  next:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+  hotels:
+    - href: "/hotels/1"
+    - href: "/hotels/2"
+```
+
+
+Exceptionally, a collection representation, _may_ embedded representations of
+the linked resources, which _may_ be incomplete, but _must_ include at least a
+the mandatory link to `self`.
+
+Note that as for other use cases of `_embedded`, there should be a very robust
+reason to do so as it makes using the API more complex (partial representations,
+caching issues, etc).
 
 Example:
 
@@ -741,18 +766,25 @@ page:     1
 per_page: 10
 total:    153277
 _links:
-  self:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
-  prev:   null
-  next:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+  self:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
+  prev:     null
+  next:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+  hotels:
+    - href: "/hotels/1"
+    - href: "/hotels/2"
 _embedded:
   hotels:
     - id: 1
       _links:
-        self: "/hotels/1"
+        self: 
+          href:   "/hotels/1"
     ...
     - id: 10
       _links:
-        self: "/hotels/2"
+        self: 
+          href:   "/hotels/2"
 ```
 
 
