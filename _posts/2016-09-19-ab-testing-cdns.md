@@ -2,7 +2,6 @@
 layout: post
 title:  "Running A/B tests on our hosting infrastructure"
 author: "Julien Letessier"
-date:   2016-09-19 00:00:00
 exerpt: >
   Split testing is a cornerstone of how we improve our products. While we
   usually run such tests for user-visible interface changes, this is an example
