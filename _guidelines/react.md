@@ -64,3 +64,31 @@ Avoid using an array index as `key` prop, prefer a unique ID: using the index as
   />
 ))}
 ```
+
+## Parentheses
+
+Wrap JSX tags in parentheses when they span more than one line. eslint: [`react/wrap-multilines`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/wrap-multilines.md)
+
+```
+// bad
+render() {
+  return <MyComponent className="long body" foo="bar">
+           <MyChild />
+         </MyComponent>;
+}
+
+// good
+render() {
+  return (
+    <MyComponent className="long body" foo="bar">
+      <MyChild />
+    </MyComponent>
+  );
+}
+
+// good, when single line
+render() {
+  const body = <div>hello</div>;
+  return <MyComponent>{body}</MyComponent>;
+}
+```
