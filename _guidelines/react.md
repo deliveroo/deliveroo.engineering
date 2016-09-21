@@ -64,3 +64,19 @@ Avoid using an array index as `key` prop, prefer a unique ID: using the index as
   />
 ))}
 ```
+
+## Refs
+
+Always use ref callbacks. eslint: [`react/no-string-refs`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-string-refs.md)
+
+```
+// bad
+<Foo
+  ref="myRef"
+/>
+
+// good
+<Foo
+  ref={ref => { this.myRef = ref; }}
+/>
+```
