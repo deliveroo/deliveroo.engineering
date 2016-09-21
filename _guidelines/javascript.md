@@ -576,7 +576,7 @@ They don't transpile well to ES5.
 
 If you must use generators, or if you disregard [our advice](#dont-use-iterators), make sure their function signature is spaced properly[^generator-star-spacing]. `function` and `*` are part of the same conceptual keyword - `*` is not a modifier for `function`, `function*` is a unique construct, different from `function`.
 
-[^generator-star-spacing]: [generator-star-spacing](http://eslint.org/docs/rules/generator-star-spacing)
+[^generator-star-spacing]: [ESLint: generator-star-spacing](http://eslint.org/docs/rules/generator-star-spacing)
 
 ```js
 // bad
