@@ -72,3 +72,25 @@
 .highlight .gu { color: #75715e; } /* Generic.Subheading & Diff Unified/Comment? */
 .highlight .gd { color: #f92672; } /* Generic.Deleted & Diff Deleted */
 .highlight .gi { color: #a6e22e; } /* Generic.Inserted & Diff Inserted */
+
+// some more specific rules for SCSS
+.language-scss {
+  .highlight {
+    .nl {
+      color: #e6db74;
+    } // .language-scss .highlight .nl
+    
+    .nn {
+      color: #66d9ef;
+    } // .language-scss .highlight .nn
+    
+    .n,
+    .nb {
+      color: #ae81ff;
+    } // .language-scss .highlight {.n, .nb}
+    
+    .nv {
+      color: #a6e22e;
+    } // .language-scss .highlight .nv
+  } // .language-scss .highlight
+} // .language-scss

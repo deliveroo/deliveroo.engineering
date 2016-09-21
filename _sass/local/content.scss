@@ -14,6 +14,11 @@ body {
     
     code {
       font-size: font-size(small-body);
+      
+      &.highlighter-rouge {
+        background-color: color(anchovy, 20%);
+        padding: 2px;
+      } // body main code.highlighter-rouge
     } // body main code
     
     > h1,
@@ -255,9 +260,19 @@ article {
   
   figure {
     margin: 3em 0;
-
+    
+    &.small {
+      @include min-width(tablet_small) {
+        img {
+          max-width: breakpoint(desktop_small) / 2;
+        } // @min-width(tablet_small) article figure.small img
+      } // @min-width(tablet_small) article figure.small
+    } // article figure.small
+    
     img {
       width: 100%;
+      display: block;
+      margin: 0 auto;
     } // article figure img
   } // article figure
   
@@ -280,6 +295,14 @@ article {
       padding: 0 2px;
     } // article sup a.footnote
   } // article sup
+  
+  blockquote {
+    @include auto-width(desktop_small, $vertical-margins: 2em);
+    color: color(anchovy);
+    border-left: 4px solid color(anchovy, 40%);
+    padding-left: 10px;
+    box-sizing: border-box;
+  } // article blockquote
   
   aside {
     padding: 10px;
@@ -329,15 +352,16 @@ article {
     @include min-width(desktop_small) {
       width: 40%;
     } // @min-width(desktop_small) article aside
+    
+    blockquote {
+      color: color(aubergine, 15%);
+      border-color: color(aubergine, 40%);
+    } // article aside blockquote
+    
+    code.highlighter-rouge {
+      background: color(aubergine, 60%);
+    } // article aside code.highlighter-rouge
   } // article aside
-  
-  blockquote {
-    @include auto-width(desktop_small, $vertical-margins: 2em);
-    color: color(anchovy);
-    border-left: 4px solid color(anchovy, 40%);
-    padding-left: 10px;
-    box-sizing: border-box;
-  } // article blockquote
   
   ul, ol {
     @include auto-width(desktop_small, $vertical-margins: 2em);
@@ -346,6 +370,10 @@ article {
       margin-top: 0.2em;
     } // article {ul, ol} {ul, ol}
   } // article {ul, ol}
+  
+  ol.alpha {
+    list-style-type: lower-alpha;
+  } // article ol.alpha
   
   div.footnotes {
     color: color(mackeral, 80%);
@@ -390,6 +418,10 @@ article {
         tr:nth-child(odd) td {
           background-color: color(anchovy, 20%);
         } // article.guidelines table tbody tr:nth-child(odd) td
+        
+        code {
+          background: none;
+        } // article.guidelines table tbody code
       } // article.guidelines table tbody
     } // article.guidelines table
 
@@ -483,7 +515,10 @@ ol#markdown-toc {
     } // ol#markdown-toc li + li
     
     &:before {
-      margin-right: 0.25em;
+      float: left;
+      min-width: 1em;
+      margin-right: 0.5em;
+      text-align: right;
     } // ol#markdown-toc li:before
   } // ol#markdown-toc li
 } // ol#markdown-toc
