@@ -378,8 +378,21 @@ article {
   div.footnotes {
     color: color(mackeral, 80%);
     
+    li {
+      padding: 5px;
+            
+      &:target {
+        background-color: color(aubergine, 10%);
+      } // article div.footnotes li:target
+      
+      p {
+        margin: 0;
+      } // article div.footnotes li p
+    } // article div.footnotes li
+    
     a.reversefootnote {
       border: none;
+      margin-left: 5px;
     } // article div.footnotes a.reversefootnote
   } // article div.footnotes
   
