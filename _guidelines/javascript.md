@@ -531,6 +531,83 @@ foo.init();
 
 [^imports-first]: [JSCS: imports-first](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/imports-first.md)
 
+## Iterators and Generators
+
+[Don't use iterators.](#iterators--nope) Prefer JavaScript's higher-order functions instead of loops like `for-in` or `for-of`. eslint: [`no-iterator`](http://eslint.org/docs/rules/no-iterator.html) [`no-restricted-syntax`](http://eslint.org/docs/rules/no-restricted-syntax)
+
+> Why? This enforces our immutable rule. Dealing with pure functions that return values is easier to reason about than side effects.
+
+> Use `map()` / `every()` / `filter()` / `find()` / `findIndex()` / `reduce()` / `some()` / ... to iterate over arrays, and `Object.keys()` / `Object.values()` / `Object.entries()` to produce arrays so you can iterate over objects.
+
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+
+// bad
+let sum = 0;
+for (let num of numbers) {
+  sum += num;
+}
+
+sum === 15;
+
+// good
+let sum = 0;
+numbers.forEach(num => sum += num);
+sum === 15;
+
+// best (use the functional force)
+const sum = numbers.reduce((total, num) => total + num, 0);
+sum === 15;
+```
+
+[Don't use generators for now.](#generators--nope)
+
+> Why? They don't transpile well to ES5.
+
+- [Generators and Spacing](#generators--spacing) If you must use generators, or if you disregard [our advice](#generators--nope), make sure their function signature is spaced properly. eslint: [`generator-star-spacing`](http://eslint.org/docs/rules/generator-star-spacing)
+
+> Why? `function` and `*` are part of the same conceptual keyword - `*` is not a modifier for `function`, `function*` is a unique construct, different from `function`.
+
+```js
+// bad
+function * foo() {
+}
+
+const bar = function * () {
+}
+
+const baz = function *() {
+}
+
+const quux = function*() {
+}
+
+function*foo() {
+}
+
+function *foo() {
+}
+
+// very bad
+function
+*
+foo() {
+}
+
+const wat = function
+*
+() {
+}
+
+// good
+function* foo() {
+}
+
+const foo = function* () {
+}
+```
+
+
 ## References
 
 This guide is taken in part from the following sources:
