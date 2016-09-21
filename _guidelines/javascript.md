@@ -536,3 +536,5 @@ foo.init();
 This guide is taken in part from the following sources:
 
 * [https://github.com/airbnb/javascript](https://github.com/airbnb/javascript)
+
+## Footnotes
