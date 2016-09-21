@@ -13,8 +13,8 @@ collection: guidelines
 
 
 ## Class vs `React.createClass` vs stateless
-If you have internal state and/or refs, prefer `class extends React.Component` 
-over `React.createClass` unless you have a very good reason to use mixins 
+If you have internal state and/or refs, prefer `class extends React.Component`
+over `React.createClass` unless you have a very good reason to use mixins
 [^prefer-es6-class], [^prefer-stateless-function].
 
 ```
@@ -39,9 +39,9 @@ class Listing extends React.Component {
 [^prefer-stateless-function]: [ESLint: prefer-stateless-function](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md)
 
 
-If you don't have state or refs, prefer normal functions (not arrow functions) 
-over classes. When debugging in the good example below the stack trace will 
-include the function name whereas in the bad example it will say it’s from an 
+If you don't have state or refs, prefer normal functions (not arrow functions)
+over classes. When debugging in the good example below the stack trace will
+include the function name whereas in the bad example it will say it’s from an
 anonymous function:
 
 ```
@@ -65,10 +65,10 @@ function Listing({ hello }) {
 
 ## Quotes
 
-Always use double quotes (`"`) for JSX attributes, and single quotes for all 
-other JS [^jsx-quotes]. JSX attributes [can’t contain escaped quotes](http://eslint.org/docs/rules/jsx-quotes), so double quotes make 
-contractions like `"don't"` easier to type. Regular HTML attributes also 
-typically use double quotes instead of single, so JSX attributes mirror this 
+Always use double quotes (`"`) for JSX attributes, and single quotes for all
+other JS [^jsx-quotes]. JSX attributes [can’t contain escaped quotes](http://eslint.org/docs/rules/jsx-quotes), so double quotes make
+contractions like `"don't"` easier to type. Regular HTML attributes also
+typically use double quotes instead of single, so JSX attributes mirror this
 convention:
 
 ```
@@ -121,7 +121,7 @@ Omit the value of the prop when it is explicitly `true`. [^jsx-boolean-value]
 
 [^jsx-boolean-value]: [ESLint: react/jsx-boolean-value](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-boolean-value.md)
 
-Avoid using an array index as `key` prop, prefer a unique ID; using the index 
+Avoid using an array index as `key` prop, prefer a unique ID; using the index
 as a key is an [anti-pattern](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318).
 
 ```
@@ -189,3 +189,30 @@ render() {
 ```
 
 [^wrap-multilines]: [ESLint: wrap-multilines](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/wrap-multilines.md)
+
+## Tags
+
+Always self-close tags that have no children. eslint: [`react/self-closing-comp`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/self-closing-comp.md)
+
+```
+// bad
+<Foo className="stuff"></Foo>
+
+// good
+<Foo className="stuff" />
+```
+
+If your component has multi-line properties, close its tag on a new line. eslint: [`react/jsx-closing-bracket-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-bracket-location.md)
+
+```
+// bad
+<Foo
+  bar="bar"
+  baz="baz" />
+
+// good
+<Foo
+  bar="bar"
+  baz="baz"
+/>
+```
