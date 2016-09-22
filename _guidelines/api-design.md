@@ -1128,6 +1128,42 @@ maintainability of _our_ software.
 
 ## Tools of the trade
 
+We strongly recommend using Rails 5 to build API services, as per the [service guidelines](http://deliveroo.engineering/guidelines/services/).
+Rails's [API-only mode](http://edgeguides.rubyonrails.org/api_app.html) has
+solid support for API building.
+
+If the API service also has a user interface, it is suggested to make the API
+part a mounted [Rails engine](http://guides.rubyonrails.org/engines.html) using
+API mode.
+
+Using Sinatra is _not_ recommended as there is no significante performance
+benefit over Rails, it lacks a router (which means all link URLs must be
+manually built), and most non-trivial Sinatra apps end up reinventing MVC.
+
+Using Grape is _not_ recommended as it lacks a router as well.
 
 ## Further reading
 
+### Principles
+
+  - [RESTful API design](http://restful-api-design.readthedocs.org/)
+  - [Representation state transfer on Wikipedia](http://en.wikipedia.org/wiki/Representational_state_transfer)
+  - [HATEOAS on Wikipedia](http://en.wikipedia.org/wiki/HATEOAS)
+
+### Examples of decently well-thought-out APIs and guidelines
+
+  - [GoCardless API design](https://github.com/gocardless/http-api-design)
+  - [GitHub API design](https://developer.github.com)
+
+### Context and debate
+
+  - [Your API Versioning is Wrong](http://www.troyhunt.com/2014/02/your-api-versioning-is-wrong-which-is.html)
+  - [The Hypermedia Debate](http://www.foxycart.com/blog/the-hypermedia-debate)
+  - [Does a standard JSON REST API violate HATEOAS?](http://stackoverflow.com/questions/9055197/splitting-hairs-with-rest-does-a-standard-json-rest-api-violate-hateoas)
+  - [Building Hypermedia APIs in Ruby/Rails](https://product.reverb.com/hal-siren-rabl-roar-garner-building-hypermedia-apis-in-ruby-rails-ad73f36fbd84)
+
+### More on JSON APIs
+
+  - [JSON-HAL Draft Spec](http://tools.ietf.org/html/draft-kelly-json-hal)
+  - [Rest and Hypermedia APIs](http://alphahydrae.com/2013/06/rest-and-hypermedia-apis/)
+  - [The JSON-API spec](http://jsonapi.org)
