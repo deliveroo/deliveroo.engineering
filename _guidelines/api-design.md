@@ -1,40 +1,29 @@
 ---
 layout:     guidelines
 title:      "API design"
+subtitle:   "Designing APIs in a resource-oriented architecture"
 collection: guidelines
 ---
 
+## Table of Contents
+{:.no_toc}
 
+1. Automatic Table of Contents Here
+{:toc}
 
-> These guidelines mostly apply to _internal_ APIs, meant to be consumed by
-> software we build and maintain.
->
-> APIs that face the public, or 3rd-party integrators, or simply our own apps
-> outside the datacenter, have very different constraints.
-> The section [external-facing APIs](#external-facing) has details on how to
-> handle those cases.
-{: .dg-sidebar.dg-warning }
-
-# Designing APIs in a resource-oriented architecture
+## Introduction
 
 This set of guidelines and conventions outline how to design APIs that are
-reusable and match with our [Service
-design](http://deliveroo.engineering/guide/services) guidelines.
+reusable and match with our [Service design](/guidelines/services) guidelines.
 
+These guidelines mostly apply to _internal_ APIs, meant to be consumed by
+software we build and maintain.
 
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+APIs that face the public, or 3rd-party integrators, or simply our own apps
+outside the datacenter, have very different constraints.
 
-  - [General principles](#general-principles)
-  - [API and domain modelling](#api-and-domain-modelling)
-  - [Documenting APIs](#documenting-apis)
-  - [Conventions on requests](#conventions-on-requests)
-  - [Conventions on responses](#conventions-on-responses)
-  - [External-facing APIs](#external-facing-apis)
-  - [Tools of the trade](#tools-of-the-trade)
-  - [Further reading](#further-reading)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+The section [external-facing APIs](#external-facing) has details on how to
+handle those cases.
 
 **Note to readers**: Many responses in this document will be represented as
 equivalent Yaml instead of JSON for conciseness; actual responses should still
@@ -44,13 +33,11 @@ In our examples, as a use case we'll generally assume we're building APIs for a
 hotel booking website - concepts will include hotels, rooms, bookings for
 instance.
 
-
 ## General principles
 
 We choose to adopt three general principles. Here's a shortcut to remember:
 
-> **RESTful, Hypermedia, Fine-grained**
-
+**RESTful, Hypermedia, Fine-grained**
 
 ### RESTful
 
@@ -63,27 +50,35 @@ opposed to Remote Procedure Call.  In particular, this means that:
 
 2. The only verbs are HTTP verbs: `GET` to read, `POST` to create, `PATCH` to
    modify, `DELETE` to destroy, and `HEAD` to obtain metadata.
-   
+
 3. Read methods (`GET`, `HEAD`) have no side effects, and write methods
    (`PATCH`) are idempotent.
 
 4. `DELETE` is _not_ idempotent and should return 404 or 410 when the resource
    does not exist (or not any longer).
 
+Example of verb vs. noun usage:
 
-Example of verb v noun usage:
+```
+# Good
+POST /bookings { hotel: { id: 1234 } }
 
-- Good: `POST /bookings { hotel: { id: 1234 } }`
-- Bad: `POST /hotel/1234/book`
+# Bad
+POST /hotel/1234/book
+````
 
 Example of proper method usage:
 
-- Good: `PATCH /bookings/432 { state: "requested", payment_id: 111 }`
-- Bad:  `POST  /bookings/432 { state: "requested", payment_id: 111 }`
+```
+# Good
+PATCH /bookings/432 { state: "requested", payment_id: 111 }
+
+# Bad
+POST  /bookings/432 { state: "requested", payment_id: 111 }
+```
 
 Note that the `PUT` verb, which is fairly ambiguous (can both create or update a
 resource) should generally not be used.
-
 
 ### Hypermedia / HATEOAS
 
@@ -129,9 +124,7 @@ HATEOAS is difficult to achieve in practice on large APIs, but is a very
 valuable target to aim for - it significantly improves maintainability and
 allows for high-level clients that can "walk" relationships transparently.
 
-
 ### Fine-grained
-
 
 A fine-grained API should provide
 
@@ -151,20 +144,22 @@ In practice, this means that:
 
 Good:
 
-    
-    GET   /users/{id}              # single user
-    GET   /users                   # user index
-    GET   /hotels/{id}/guests      # hotel's user index
+```
+GET   /users/{id}              # single user
+GET   /users                   # user index
+GET   /hotels/{id}/guests      # hotel's user index
+```
 
 Bad:
 
-    GET   /users/{id}              # single user
-    GET   /hotels/{id}/guest/{id}  # duplicate!
-
+```
+GET   /users/{id}              # single user
+GET   /hotels/{id}/guest/{id}  # duplicate!
+```
 
 **Embedding entities should be avoided**
 
-If an entity's representation contains a representations of its relations, 
+If an entity's representation contains a representations of its relations,
 
 - there is no longer a simple way to get the relations' representation; and
 - the parent entity can often no longer be efficiently cached (as the cache
@@ -179,7 +174,7 @@ Good:
 #> GET /hotels
 #< HTTP/1.0 200 OK
 _links:
-  hotel: 
+  hotel:
     - href: /hotels/123
     - href: /hotels/124
 ```
@@ -242,13 +237,12 @@ Also note that a service does not necessarily need
 to expose _all_ it knows about a resource; and definitely should not expose
 anything only relevant to _how_ it persists it.
 
-
 **Many calls may be required**
 
 A consequence of a well-normalised API is that many calls may be required to
 render anything significant.
 
-For instance, take a listing page for a product catalog: you'll probably need to make 
+For instance, take a listing page for a product catalog: you'll probably need to make
 
 - one "index" API call to obtain the list or page of products;
 - one call per listed product to get its name and price;
@@ -285,8 +279,6 @@ See also the [External-facing APIs](#external-facing) for generics on
 non-internal APIs; [this article](http://dec0de.me/2014/09/resn-routemaster/)
 also has a more elaborate explanation and example.
 
-
-----------
 
 ## API and domain modelling
 
@@ -343,7 +335,7 @@ Hint towards extrinsic: is a user's avatar a property, or a separate entity?
 
 Hints towards intrinsic:
 
-- *Value object*: 
+- *Value object*:
     - A hotel's name is a simple string. The string itself is immutable.
     - A user's avatar is an image, which itself is a file with a storage
       location, a size, dimensions, and a MIME type, but is immutable.
@@ -383,7 +375,7 @@ _links:
   city:
     href: /cities/456
 ```
-  
+
 
 Bad:
 
@@ -410,8 +402,6 @@ each other as a tree (or digraph) — but depending on the use case, this might 
 cumbersome over-normalisation.
 
 
-----------
-
 ## Documenting APIs
 
 API users are both developers and machines; therefore, you should:
@@ -421,8 +411,7 @@ API users are both developers and machines; therefore, you should:
 - Documented in a human-readable format. We recommend
   [Apiary](http://apiary.io/) and the [API Blueprint](http://apiblueprint.org/)
   standard `.apib` files.
-
-----------
+  
 
 ## Conventions on requests
 
@@ -471,7 +460,7 @@ there is only zero or one entity in the concept (singleton relations).
 
 Note that relation endpoints _must_ link to a toplevel endpoint.
 
-Example: 
+Example:
 
 ```
 # Singleton
@@ -552,7 +541,9 @@ form of API versions.
 Clients _may_ specify a desired version as the `v` parameter of the `Accept`
 header, for instance:
 
-    Accept: application/json;v=2
+```
+Accept: application/json;v=2
+```
 
 The service _should_ respond with status 406, Not Acceptable if the version is
 unavailable.
@@ -560,22 +551,26 @@ unavailable.
 If a version was specified by the client, and is available, the service _must_
 respond with the same version:
 
-    # Request:
-    Accept: application/json;v=2
+```
+# Request:
+Accept: application/json;v=2
 
-    # Response:
-    Content-Type: application/json;v=2
+# Response:
+Content-Type: application/json;v=2
+```
 
 If the version was unspecified, the server _should_ use the latest available
 version, and specify the `Vary` header, as future request may yield a different
 response:
 
-    # Request:
-    Accept: application/json
+```
+# Request:
+Accept: application/json
 
-    # Response:
-    Content-Type: application/json;v=2
-    Vary: Accept
+# Response:
+Content-Type: application/json;v=2
+Vary: Accept
+```
 
 Finally, a service's root endpoint _should_ list the available versions:
 
@@ -583,19 +578,16 @@ Finally, a service's root endpoint _should_ list the available versions:
 #> GET /api
 #< HTTP/1.0 200 OK
 _links:
-  ... 
+  ...
 _versions:
   - 1
   - 2
 ```
 
-
 _Note_: Another Approach is to version APIs through path segments (e.g.
 `/api/v1/things/123`). We choose not to follow it. The major issue is that
 entities may have multiple URLs which risk being misinterpreted as referencing
 different entities.
-
-
 
 ### Internationalisation (i18n)
 
@@ -623,7 +615,6 @@ Rationale:
 - Localisation is inherently a representation concern, and HTTP mandates such
   concerns to be addressed using protocol headers.
 
-----------
 
 ## Conventions on responses
 
@@ -637,7 +628,6 @@ possible, and only introduced:
 - for excruciating performance reasons; or
 - when the (partial) representation of the embedded entity is immutable with
   respect to the parent.
-
 
 ### Single-resource representation
 
@@ -657,9 +647,9 @@ lng:  45.678
 _links:
   self:
     href:   "/hotels/1337"
-  reviews:  
+  reviews:
     href:   "/hotels/1337/reviews"
-  manager:     
+  manager:
     href:   "/users/8008"
     type:   "user"
   photos:
@@ -724,8 +714,8 @@ A collection GET endpoint _should_ be of one of the forms:
 - `/{concept-plural}`, e.g. `/hotels`
 - `/{parent}/{id}/{concept-plural}`, e.g. `/hotels/1234/photos`
 
-Such endpoints _must_ return a representation of the collection, and embed a
-list of (possibly partial) representations of some of the entities.
+Such endpoints _must_ return a representation of the collection. They _must_
+link to a (possibly empty) list of entities.
 
 _Rationale_:
 In domain terms, an index endpoint actually returns a _view_ on the _collection_
@@ -739,8 +729,33 @@ A collection representation
 - _should_ link to relations `next` and `prev` for pagination purposes;
 - _must_ include the properties `page`, `per_page`, `total`
 
-In a collection representation, embedded representations _may_ be incomplete,
-but _should_ include at least a numeric `id` and the mandatory link to `self`.
+Example:
+
+```yml
+#> GET /hotels?checkin=2016-01-02&checkout=2016-01-09
+#< HTTP/1.0 200 OK
+page:     1
+per_page: 10
+total:    153277
+_links:
+  self:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
+  prev:     null
+  next:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+  hotels:
+    - href: "/hotels/1"
+    - href: "/hotels/2"
+```
+
+
+Exceptionally, a collection representation, _may_ embedded representations of
+the linked resources, which _may_ be incomplete, but _must_ include at least a
+the mandatory link to `self`.
+
+Note that as for other use cases of `_embedded`, there should be a very robust
+reason to do so as it makes using the API more complex (partial representations,
+caching issues, etc).
 
 Example:
 
@@ -751,18 +766,25 @@ page:     1
 per_page: 10
 total:    153277
 _links:
-  self:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
-  prev:   null
-  next:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+  self:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
+  prev:     null
+  next:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+  hotels:
+    - href: "/hotels/1"
+    - href: "/hotels/2"
 _embedded:
   hotels:
     - id: 1
       _links:
-        self: "/hotels/1"
+        self: 
+          href:   "/hotels/1"
     ...
     - id: 10
       _links:
-        self: "/hotels/2"
+        self: 
+          href:   "/hotels/2"
 ```
 
 
@@ -854,7 +876,7 @@ If it exists, it _should_ return status:
 
 Additional 4xx response codes _may_ be used:
 
-- 412 Precondition Failed 
+- 412 Precondition Failed
 - 415 Unsupported if using versioning and the server doesn't support the
   specified version.
 
@@ -951,7 +973,7 @@ Those endpoints _may_ return 400 Bad Request if parameters are specified.
 Collection GET endpoints are the only endpoints that usually accept query
 parameters. Those _should_ accept the `page` and `per_page` parameters. They
 _may_ accept parameters that match property names of the corresponding concept;
-if they do, they _should_ 
+if they do, they _should_
 
 - use the parameter value for filtering purposes (i.e. return entities whose
   corresponding property has the specified value), and
@@ -976,17 +998,62 @@ unspecified.
 
 ### Caching
 
-Caching efficiency is a critical aim of well-designed APIs, as it is influential
-on service performance; cache consistency is as important.
+Caching efficiency is a critical aim of well-designed APIs, as it is influential on service performance; cache consistency is as important.
 
-Responses to single-resource GET endpoints _should_ specify a `Cache-Control`
-header.
+These guidelines only consider HTTP/1.1 and later. If the API is internal then you can make this a requirement. External APIs must always use TLS so only direct clients or trusted intermediaries who have our certificates (CDNs, typically) will be able to view the content; all CDNs support 1.1 or later and it's not too much of a stretch to make this assumption for direct clients.
 
-- If the entity is mutable, the value _should_ be `no-cache`.
-- If the entity is immutable, the value _should_ be
-  `public; max-age=31536000` (one year).
+Responses with the following status codes _should_ specify a `Cache-Control` header because without one the HTTP specification allows clients to cache them according to their own cache policy which is typically more lax than desirable:
 
-Responses to collection GET endpoints _should not_ specify a `Cache-Control` header.
+- `200 OK`
+- `203 Non-Authoritative Information`
+- `206 Partial Content`
+- `300 Multiple Choices`
+- `301 Moved Permanently`
+- `308 Permanent Redirect`
+- `410 Gone`
+
+The following status codes _should_ also specify this header because many CDNs or intermediaries will choose to cache them even though they are not permitted to do so by the HTTP specification:
+
+- `302 Moved Temporarily`
+- `307 Temporary Redirect`
+- `404 Not Found`
+
+Other status codes _should not_ specify a `Cache-Control` header
+
+The HTTP `Cache-Control` header is somewhat confusing and some of the directives do not mean what you think they do. A basic summary of the confusing ones is:
+
+- `no-store` means that the response is very sensitive data which absolutely _must not_ be written to any kind of storage or to any type of cache either private or public.
+- `no-cache` means that the response may be cached (!) but _must not_ be used to satisfy any kind of request without revalidating it. Before using the cached data you _must_ check the endpoint with either the `If-None-Match` or `If-Modified-Since` and can only use it if you get `304 Not Modified`.
+- `must-revalidate` means that the response may be cached and may be used without revalidation (!) but may not be used beyond when it expires. If the cached data has passed the expiry, e.g. `max-age` was `3600` and you got the data over an hour ago, then you must check the endpoint with either the `If-None-Match` or `If-Modified-Since` and can only use it if you get `304 Not Modified`.
+- If none of the above directives are present then clients may cache the response and continue to use the data past the expiration time at their own discretion.
+
+For full details, and information about the other directives such as `public`, `private` and `max-age`, refer to [RFC 7234 § 5.2](https://tools.ietf.org/html/rfc7234#section-5.2).
+
+Most of the time it is fine for clients to cache data and it's often acceptable for the data to be at least somewhat stale (even if it's just a minute or two) but rarely fine to use them after the expiration time, so in general your `Cache-Control` header should be:
+
+```
+Cache-Control: private, max-age={seconds}, must-revalidate
+```
+
+If the resource is immutable then `{seconds}` should be `31536000` which is one year, the maximum allowed. Statuses `301`, `308` and `410` should be considered immutable as they are permanent conditions.
+
+For resources that absolutely must be up-to-date when used you still normally want to allow the efficient return of `304 Not Modified` so choose `no-cache` (note that this is typically the best choice for the `302`, `307` and `404` status codes mentione above):
+
+```
+Cache-Control: private, no-cache
+```
+
+In the rare cases where data is extremely sensitive and must never be cached anywhere (for example, a password reset token) then use:
+
+```
+Cache-Control: no-store
+```
+
+Remember that because `no-store` prevents any kind of caching that clients cannot use conditional directives to get `304 Not Modified` because they are not permitted to store the data between requests, so have no reference for the unmodified resource.
+
+Responses _should_ include an `ETag` header with a strong ETag; if this is not practical then they _should_ include a `Last-Modified` header (ideally, include both). Strong ETags _must_ be based on a hash of the response, not on timestamp information. Do not use [weak ETags](https://tools.ietf.org/html/rfc7232#section-2.1) because they have confusing semantics, for example they cannot legally be used in preconditions on `PUT`, `PATCH` or `DELETE` requests.
+
+Any `GET` requests _may_ use either `If-None-Match` or `If-Modified-Since`, and all `PUT`/`PATCH`/`DELETE` requests _should_ use either `If-Match` or `If-Unmodified-Since`. If the request provided a strong ETag then the "match" headers are better, otherwise use the "modified" headers.
 
 ### Mutable resources
 
@@ -1008,10 +1075,8 @@ this is not mandatory.
 *Rationale*: latency is more important than bandwidth savings for most internal
 APIs; therefore the overhead of compression is seldom justified.
 
-----------
 
 {: #external-facing}
-
 ## External-facing APIs
 
 
@@ -1060,7 +1125,6 @@ maintainability of _our_ software.
    version of a set of public-facing APIS should be an entirely new domain (e.g.
    `v2.my-api.example.com`), with entirely segregated infrastructure.
 
-----------
 
 ## Tools of the trade
 

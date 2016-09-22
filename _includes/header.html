@@ -1,21 +1,16 @@
-<header class="site-header">
-  <nav class="navbar navbar-light bg-faded">
-    <div class="container">
-      <a class="navbar-brand site-title" href="{{ site.baseurl }}/">
-        {{ site.title }}
-      </a>
-      
-      <ul class="nav navbar-nav">
-        {% for _page in site.pages %}
-          {% if _page.title and _page.nav %}
-            <li class="nav-item">
-              <a class="nav-link" href="{{ _page.url | prepend: site.baseurl }}">
-                {{ _page.title }}
-              </a>
-            </li>
-          {% endif %}
-        {% endfor %}
-      </ul>
-    </div>
+<header id="navigation">
+  <nav>
+    <input type="checkbox" id="menu" title="Display the navigation menu">
+    <label for="menu" id="checkbox-menu" onclick="">Menu</label>
+    <ul>
+      <li id="logo"><a href="{{ site.baseurl }}/">{{ site.title }}</a></li>
+      {% for item in site.data.routes.navigation %}
+        {% if page.url == item.url %}
+          <li class="selected"><a href="{{item.url}}">{{item.title}}</a></li>
+        {% else %}
+          <li><a href="{{item.url}}">{{item.title}}</a></li>
+        {% endif %}
+      {% endfor %}
+    </ul>
   </nav>
 </header>

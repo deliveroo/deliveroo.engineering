@@ -1,18 +1,23 @@
 ---
+layout:     guidelines
 title:      "Active Record"
+subtitle:   "Guidelines for fast & reusable Active Record"
+collection: guidelines
 ---
 
+## Table of Contents
+{:.no_toc}
 
-My mom told me that ActiveRecord doesn't scale!
-Fortunately, here comes the...
+1. Automatic Table of Contents Here
+{:toc}
 
-# Guidelines for fast & reusable ActiveRecord
+You may have previously heard somebody say something like this:
 
-This is a smell of bad design:
+> *I need to write a custom SQL query to do this!*
 
-> *I need to write a custom SQL query to do this !*
->
-> — No one, ever
+or:
+
+> *I’ve heard that ActiveRecord doesn't scale…*
 
 **This guide** is here to **help you** write ActiveRecord (or any ORM code,
 really) that lets your app **scale** with good performance and without
@@ -47,7 +52,6 @@ We make two exceptions to "logic in the database":
 The only case where your database will "do" something for you beyond storage is
 when counting, or otherwise aggregating persisted data. This is essentially for
 performance reasons.
-
 
 ### Controllers, views, presenters, decorators
 
@@ -207,9 +211,8 @@ If applicable, remember to clear the cache[^cache] after running migrations that
 change data if the affected model is cached; or to send update events on the
 event bus[^bus] to refresh subscribers.
 
-[^cache]: [Clearing the Rails cache in the Deliveroo monolith](https://makandracards.com/deliveroo/41342-orderweb-clearing-the-rails-cache).
-
-[^bus]: [Event bus basics at Deliveroo](https://makandracards.com/deliveroo/41074-event-bus-basics-howto).
+[^cache]: [Clearing the Rails cache in the Deliveroo monolith](https://makandracards.com/deliveroo/41342-orderweb-clearing-the-rails-cache) (private)
+[^bus]: [Event bus basics at Deliveroo](https://makandracards.com/deliveroo/41074-event-bus-basics-howto) (private)
 
 #### Zero-downtime migrations
 
@@ -470,6 +473,3 @@ User.find_each { |u| puts u.id }
 # Bad:
 User.each { |u| puts u.id }
 ```
-
-----
-

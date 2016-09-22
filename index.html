@@ -1,43 +1,60 @@
 ---
-layout: page
-title: Deliveroo nerd squad
+layout: default
+title: deliveroo.engineering
 ---
 
-<div class="row m-t-2">
-  <div class="col-xs-12 col-md-5">
-    <h2 class="dg-column-title">Guidelines</h2>
-    <ul>
-      {% for _page in site.guidelines %}
-        {% if _page.title %}
-          <li>
-            <a href="{{ site.baseurl }}{{ _page.url }}">
-              {{ _page.title }}
-            </a>
-          </li>
-        {% endif %}
-      {% endfor %}
-    </ul>
-  </div>
+<h1>The Deliveroo engineering team blog</h1>
+<p class="tagline">Turning code into food.</p>
 
-  <div class="col-xs-12 col-md-7">
-    <h2 class="dg-column-title">Recent updates</h2>
-    <ul>
-      {% for _page in site.posts limit:3 %}
-        <li>
-          <a class="pull-xs-right"
-            href="{{site.github.repository_url}}/blob/gh-pages/{{_page.path}}">[edit]</a>
-          <a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a>
+<section id="latest-post">
+  <div class="post latest">
+    {% for _page in site.posts limit: 1 %}
+      <h3><a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a></h3>
+      <p class="byline">{% include byline.html author=_page.author date=_page.date %}</p>
+      <blockquote>
+        {{ _page.exerpt | markdownify }}
+      </blockquote>
+      <p><a href="{{ _page.url }}" title="{{ _page.title }}">Read more…</a></p>
+    {% endfor %}
+  </div>
+</section>
+
+{% if site.posts.size > 1 %}
+  <hr>
+
+  <h2>Recent Articles</h2>
+  <section id="recent-posts">
+    {% for _page in site.posts limit: 3 offset: 1 %}
+      <div class="post recent">
+        <h3><a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a></h3>
+        <p class="byline">{% include byline.html author=_page.author date=_page.date %}</p>
+        <blockquote>
           {{ _page.exerpt | markdownify }}
-        </li>
-      {% endfor %}
+        </blockquote>
+        <p><a href="{{ _page.url }}" title="{{ _page.title }}">Read more…</a></p>
+      </div>
+      {% unless forloop.index == 3 %}
+        <hr>
+      {% endunless %}
+    {% endfor %}
+  </section>
+{% endif %}
 
-      {% for _page in site.posts limit:17 offset:3 %}
-        <li>
-          <a href="{{ site.baseurl }}{{ _page.url }}">
-            {{ _page.title }}
-          </a>
-        </li>
-      {% endfor %}
-    </ul>
-  </div>
-</div>
+{% if site.posts.size > 4 %}
+  <hr>
+
+  <h2>Other Articles</h2>
+  <section id="other-articles">
+    {% if site.posts.size > 4 %}
+      <ul class="articles">
+        {% for _page in site.posts limit: 17 offset: 4 %}
+          <li>
+            <a href="{{ site.baseurl }}{{ _page.url }}" title="{{ _page.title }}">{{ _page.title }}</a>
+            {% include byline.html author=_page.author date=_page.date %}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <p class="more"><a href="{{site.data.routes.articles}}">More articles…</a></p>
+  </section>
+{% endif %}

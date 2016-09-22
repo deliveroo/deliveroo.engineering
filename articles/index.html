@@ -1,13 +1,21 @@
 ---
 layout: default
 ---
-<h2>Articles</h2>
-<ul>
+<h1>Articles</h1>
+<p class="tagline">Learn from our experience developing the Deliveroo product.</p>
+
+<section id="recent-posts" class="all">
   {% for _page in site.posts %}
-    {% if _page.title %}
-      <li>
-        <a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a>
-      </li>
-    {% endif %}
+    <div class="post recent">
+      <h3><a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a></h3>
+      <p class="byline">{% include byline.html author=_page.author date=_page.date %}</p>
+      <blockquote>
+        {{ _page.exerpt | markdownify }}
+      </blockquote>
+      <p><a href="{{ _page.url }}" title="{{ _page.title }}">Read more…</a></p>
+    </div>
+    {% unless forloop.index == site.posts.size %}
+      <hr>
+    {% endunless %}
   {% endfor %}
-</ul>
+</section>

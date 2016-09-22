@@ -3,9 +3,14 @@
 ---
 @charset "utf-8";
 
-@import "local/variables";
-@import "bootstrap";
-@import "local/overrides";
-@import "local/syntax-highlighting";
-@import "local/components";
-
+@import "local/normalize";
+@import "local/breakpoints";
+@import "local/color";
+@import "local/layout";
+@import "local/palette";
+@import "local/typography";
+@import "local/monokai";
+@import "local/default";
+@import "local/header";
+@import "local/footer";
+@import "local/content";

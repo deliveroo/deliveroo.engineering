@@ -1,30 +1,22 @@
 ---
-title:      "HTTP services"
+layout:     guidelines
+title:      "Building mini-services"
+subtitle:   "Designing for a service-oriented, event-driven architecture"
+collection: guidelines
 ---
-
-
-# Building mini-services
 
 We strive towards a service-oriented, event-driven architecture. This guide
 intends to pave the road and help readers make good architecture and design
 decisions when building services.
 
+## Table of Contents
+{:.no_toc}
 
-- [What's a service?](#whats-a-service)
-- [Principles / philosophy](#principles--philosophy)
-- [Preferred technology stack](#preferred-technology-stack)
-- [Configuration](#service-configuration)
-- [Continuous Deployment](#continuous-deployment)
-- [Logging](#logging)
-- [Monitoring](#monitoring)
-- [Backups](#backups)
-- [Seeding a service](#seeding-a-service)
-- [Defining a service](#defining-a-service)
-- [Extracting a feature into a service](#extracting-a-feature-into-a-service)
+1. Automatic Table of Contents Here
+{:toc}
 
-----------------------
 
-### An introductory example
+## An introductory example
 
 Before we dig into some theory and principles, here's a simplified example of a
 "federation of services" used to build a simple e-commerce application.
@@ -51,8 +43,6 @@ repository, database, monitoring, and API. The front-end application, during a
 typical checkout, would probably perform a sequence of API calls that look like
 this:
 
-{: .table.table-sm}
-
 | Step                                    | HTTP request                                      | Payload |
 |-----------------------------------------|---------------------------------------------------|---------|
 | Get details and stock level for an item | `GET inventory-srv.example.com/items/1234`        |
@@ -73,9 +63,8 @@ For instance:
   inventory, but would the order service also emit an `order updated` event for
   when it's paid?
 
------------
 
-### What's a service?
+## What's a service?
 
 
 A service is a software entity that can be defined as a function of what third
@@ -95,7 +84,7 @@ manipulation of their state.
 A service communicates with others by exchanging state information about
 entities.
 
-#### What is a **mini** service?
+### What is a _mini_ service?
 
 The **mini** in mini service applies to the number of domain concepts a service
 operates on. All services should endeavour to be small _in scope_, i.e. should
@@ -120,10 +109,7 @@ you will). One key goal of service architectures is to allow scaling not just
 the infrastructure, but the _team_ working on a set of pieces of software.
 
 
-
-----------------------
-
-### Principles / philosophy
+## Principles / philosophy
 
 The overarching principles in service design are:
 
@@ -149,7 +135,7 @@ Here are sanity check questions to check against these pillars:
 - Can I split my service in two and have an interface that's still as simple?
 
 
-#### Twelve Factor App
+### Twelve Factor App
 
 We adopt the principles outlined in the [12 Factor App](http://12factor.net/) to
 build good services. As a summary:
@@ -167,7 +153,7 @@ build good services. As a summary:
 11. Logs: Treat logs as event streams
 12. Admin processes: Run admin/management tasks as one-off processes
 
-#### REST over HTTP
+### REST over HTTP
 
 Services must only ever communicate with the rest of the world (other services
 or end users) over an HTTP interface, respecting REST principles.
@@ -183,31 +169,31 @@ In particular (but not limited to):
 - URL terms in any API should reflect domain concepts.
 - Hypermedia links should be provided in responses.
 
-#### Representational State Notification
+### Representational State Notification
 
 Or in other words, **push > poll**.
 
-{: .dg-sidebar}
+<aside>
+#### Why no payloads in events?
 
-> ###### Why no payloads in events?
->
-> Events should not include an entity representation because that places
-> enormous constraints on the bus infrastructure: in terms of data,
-> full representations are several orders of magnitude larger than events.
->
-> A typical use cases for payloads is when intermediary states of an entity
-> matter; they may be "missed" if the consumer has to query for the
-> representation.
->
-> In terms of domain modeling, this is usually a mistake: if a consumer cares
-> about state changes for a given entity (and not just about its latest
-> representation), this means the state changes are part of the domain, and
-> should themselves be entities.
->
-> Consider assigning a rider to an order: we could "just" model this as a
-> relation from order to rider; but because we care about _when_ and _where_ the
-> assignment happened (as well as about _un_assignments), we model them as a
-> top-level concept.
+Events should not include an entity representation because that places
+enormous constraints on the bus infrastructure: in terms of data,
+full representations are several orders of magnitude larger than events.
+
+A typical use cases for payloads is when intermediary states of an entity
+matter; they may be "missed" if the consumer has to query for the
+representation.
+
+In terms of domain modeling, this is usually a mistake: if a consumer cares
+about state changes for a given entity (and not just about its latest
+representation), this means the state changes are part of the domain, and
+should themselves be entities.
+
+Consider assigning a rider to an order: we could "just" model this as a
+relation from order to rider; but because we care about _when_ and _where_ the
+assignment happened (as well as about _un_-assignments), we model them as a
+top-level concept.
+</aside>
 
 When services need to coordinate or synchronise state information about domain
 entities (normally flowing out of the service that has authority on that part
@@ -236,27 +222,27 @@ via [routemaster](https://github.com/mezis/routemaster/) for the appropriate
 topic. A future "Order Search Service" could be a consumer of that event so that
 it can shove the data into ElasticSearch and offer a fast search UX.
 
-------------------------
 
-### API design basics
+## API design basics
 
 Again because of the local knowledge criterion, services should have minimal
 knowledge of any service's API they consume.  This can be achieved through good
 use of hypermedia links.
 
-{: .dg-sidebar}
+<aside>
+### Why is this important?
 
->> ##### Why is this important?
->> 
->> Imagine a service that consumes bookings to aggregate statistics. Ideally, it
->> does so by listening to the event bus for booking lifecycle events. If using
->> hypermedia links as in the above, it only ever needs to know about the bus's
->> location, as it will dynamically obtain addresses for the entities it needs to
->> know about. If not, it needs to know both (a) who is authoritative for bookings
->> and properties, (b) where the authority resides for each resource, and (c) how
->> the various authorities constructs URLs for entities of interest. This would
->> breach the local knowledge requirement and tightly couple the service
->> architecture.
+Imagine a service that consumes bookings to aggregate statistics. Ideally, it
+does so by listening to the event bus for booking lifecycle events. If using
+hypermedia links as in the above, it only ever needs to know about the bus's
+location, as it will dynamically obtain addresses for the entities it needs to
+know about. If not, it needs to know both (a) who is authoritative for bookings
+and properties, (b) where the authority resides for each resource, and (c) how
+the various authorities constructs URLs for entities of interest. This would
+breach the local knowledge requirement and tightly couple the service
+architecture.
+</aside>
+
 
 For instance, imagining a resource (the API term matching "domain concept")
 named `bookings` that references a resource named `hotel`, you'd want this
@@ -282,7 +268,7 @@ which lets you
 - not rely on IDs (which are an internal implementation detail of our service);
 - not need to know how the URL for a property entity is constructed.
 
-#### Ruby clients
+### Ruby clients
 
 It is not considered good practice to provide a dedicated Ruby client to
 consume a particular internal API, e.g a `payment-srv-client` Ruby gem. This
@@ -292,7 +278,7 @@ We may however provide (or extend) a generic library to abstract out traversal
 of hypermedia links, caching, and authentication in the future.
 
 
-#### Typical dont's
+### Typical dont's
 
 - Remote procedure call, e.g. APIs like `GET /api/bookings/123/cancel`. This
   must be replaced with state transfer (`PATCH
@@ -310,31 +296,29 @@ of hypermedia links, caching, and authentication in the future.
   _Smell_: one service connects to another service's database.
 
 
-#### Further reading
+### Further reading
 
 API design has its specific set of guidelines, outlined in the [Designing
 APIs](../guides/) document.
 
-
-----------------------
-
-### Preferred technology stack 
+## Preferred technology stack 
 
 
-{: .dg-sidebar}
-> ##### Does this feel restrictive?
->
-> Our experience tells us that, under pressure or temptation, new technologies
-> can be introduced that result in hard-to-maintain software.
->
-> If that's unconvincing, Dan McKinley of Stripe and Etsy fame sums it up well
-> in [Choose Boring Technology](http://mcfunley.com/choose-boring-technology)
-> ([slides](http://mcfunley.com/choose-boring-technology-slides)).
->
-> New technologies can still most definitely be experimented with and introduced
-> in production, though—only, with due care!
-> 
-> The next section outlines our approach to doing so.
+<aside>
+### Does this feel restrictive?
+
+Our experience tells us that, under pressure or temptation, new technologies
+can be introduced that result in hard-to-maintain software.
+
+If that's unconvincing, Dan McKinley of Stripe and Etsy fame sums it up well
+in [Choose Boring Technology](http://mcfunley.com/choose-boring-technology)
+([slides](http://mcfunley.com/choose-boring-technology-slides)).
+
+New technologies can still most definitely be experimented with and introduced
+in production, though—only, with due care!
+
+The next section outlines our approach to doing so.
+</aside>
 
 Because a zoo of technologies leads to disaster, we purposely limit the set of
 technologies we use.
@@ -348,7 +332,6 @@ exposing or consuming an internal API) also have a user interface.
 
 From top to bottom of the production stack:
 
-{: .table.table-sm}
 | Concern                 | Technology                          |
 |-------------------------|-------------------------------------|
 | Style & Layout          | SCSS + Bootstrap                    |
@@ -366,14 +349,10 @@ From top to bottom of the production stack:
 
 **NOTE:** You should aim to use the latest, stable versions of the above.
 
-[^sidekiq]:
-  Sidekiq should be used directly, not through ActiveJob. The latter hides the
-  job engine behind a simplistic abstraction, which prevents access to advanced
-  features, e.g. exclusive/loner jobs or automated retries with backoff.
+[^sidekiq]: Sidekiq should be used directly, not through ActiveJob. The latter hides the job engine behind a simplistic abstraction, which prevents access to advanced features, e.g. exclusive/loner jobs or automated retries with backoff.
 
 In development:
 
-{: .table.table-sm}
 | Concern                 | Technology                          |
 |-------------------------|-------------------------------------|
 | Unit/integration testing| RSpec                               |
@@ -387,7 +366,6 @@ These alternatives are (currently) deemed acceptable in some use cases, where
 the technology in the table above does not fit the bill (e.g. on reliability or
 performance grounds).
 
-{: .table.table-sm}
 | Concern                 | Alternative technologies            |
 |-------------------------|-------------------------------------|
 | Style & Layout          | *none*                              |
@@ -402,13 +380,9 @@ performance grounds).
 | Background processing   | Resque                  						|
 | Hosting                 | *none*                          		|
 
-[^sinatra]:
-  We do not consider Sinatra anymore. With an Rails 5 app in API mode, latency
-  is comparable to Sinatra; and this avoids having an extra brick in the stack.
-  It's also well established that Sinatra apps tend to grow to mimic Rails's
-  MVC.
+[^sinatra]: We do not consider Sinatra any more. With a Rails 5 app in API mode, latency is comparable to Sinatra; and this avoids having an extra brick in the stack. It's also well established that Sinatra apps tend to grow to mimic Rails's MVC.
 
-#### Introducing new technologies
+### Introducing new technologies
 
 Adding a technology to the lists above can only be done by a consensus (beyond
 the immediate engineers wishing to introduce it), and with a rationale.
@@ -429,9 +403,8 @@ Excellent case reflecting our thought process:
 > JRuby and some others using MRI. They prefer to pay the price of MRI "low
 > performance" rather than maintaining different stacks.
 
-----------------------
 
-### Service configuration
+## Service configuration
 
 As per the 12factor principles, configuration lives in the environment.  This
 means that while Yaml files may exist in the repo, they should be about data.
@@ -447,12 +420,13 @@ Settings should be clearly commented (in `.env`).
 
 Example:
 
-    # .env
-    # base URL for the upstream service
-    MYAPP_UPSTREAM_SERVICE=https://geonames.org/
-    # timeout for requests
-    MYAPP_TIMEOUT=10
-
+```
+# .env
+# base URL for the upstream service
+MYAPP_UPSTREAM_SERVICE=https://geonames.org/
+# timeout for requests
+MYAPP_TIMEOUT=10
+```
 
 Remarks:
 
@@ -464,9 +438,8 @@ Remarks:
 - If you are not using Heroku, you can use [renv](https://github.com/mezis/renv)
   to store configuration in a similar style.
 
-----------
 
-### Continuous Deployment
+## Continuous Deployment
 
 Services should strive to be deployed via Continuous Deployment (CD) when master
 is green. This can be done on Heroku easily enough via [deployment
@@ -477,9 +450,8 @@ Remarks:
 Apps running CD should, more than any other, have a zero-exception policy and
 excellent monitoring; otherwise it's all too easy to miss broken deploys.
 
-----------
 
-### Logging
+## Logging
 
 With any service, logging is imperative to being able to work out what is going
 on and to track and trace errors.
@@ -512,9 +484,8 @@ to capture and store your logs, via Papertrail to [consolidate
 logging](http://help.papertrailapp.com/kb/hosting-services/heroku/#addon) under
 the organisation account.
 
---------
 
-### Monitoring
+## Monitoring
 
 To monitor the _performance_ of your application, use [New
 Relic](http://newrelic.com).
@@ -527,9 +498,8 @@ streams, cache hits, etc. use [Datadog](http://www.datadoghq.com)
 
 All three should be set up when an app/service goes live.
 
----------
 
-### Backups
+## Backups
 
 Bad things do happen and an effective backup (and **restore**) strategy is a
 requirement for services that are storing information.
@@ -544,16 +514,10 @@ Also, all environment-specific settings should be captured, i.e. backup `renv`
 files or `heroku config`.
 
 
---------------
-
-### Seeding a service
-
---------
-
-### Defining a service
-
---------
-
-### Extracting a feature into a service
+## Seeding a service
 
 
+## Defining a service
+
+
+## Extracting a feature into a service
