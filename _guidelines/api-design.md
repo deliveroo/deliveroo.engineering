@@ -1160,6 +1160,7 @@ Using Grape is _not_ recommended as it lacks a router as well.
   - [Your API Versioning is Wrong](http://www.troyhunt.com/2014/02/your-api-versioning-is-wrong-which-is.html)
   - [The Hypermedia Debate](http://www.foxycart.com/blog/the-hypermedia-debate)
   - [Does a standard JSON REST API violate HATEOAS?](http://stackoverflow.com/questions/9055197/splitting-hairs-with-rest-does-a-standard-json-rest-api-violate-hateoas)
+  - [Building Hypermedia APIs in Ruby/Rails](https://product.reverb.com/hal-siren-rabl-roar-garner-building-hypermedia-apis-in-ruby-rails-ad73f36fbd84)
 
 ### More on JSON APIs
 
