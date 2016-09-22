@@ -1142,30 +1142,27 @@ manually built), and most non-trivial Sinatra apps end up reinventing MVC.
 
 Using Grape is _not_ recommended as it lacks a router as well.
 
-----------
-
 ## Further reading
 
-- principles:
-    - http://restful-api-design.readthedocs.org/
-    - http://en.wikipedia.org/wiki/Representational_state_transfer
-    - http://en.wikipedia.org/wiki/HATEOAS
+### Principles
 
-- example of decently well-thought-out APIs and guidelines
-    - https://github.com/gocardless/http-api-design
-    - https://developer.github.com
+  - [RESTful API design](http://restful-api-design.readthedocs.org/)
+  - [Representation state transfer on Wikipedia](http://en.wikipedia.org/wiki/Representational_state_transfer)
+  - [HATEOAS on Wikipedia](http://en.wikipedia.org/wiki/HATEOAS)
 
-- context and debate
-    - http://www.troyhunt.com/2014/02/your-api-versioning-is-wrong-which-is.html
-    - http://devblog.reverb.com/post/47197560134/hal-siren-rabl-roar-garner-building-hypermedia
-    - http://www.foxycart.com/blog/the-hypermedia-debate
-    - http://stackoverflow.com/questions/9055197/splitting-hairs-with-rest-does-a-standard-json-rest-api-violate-hateoas
+### Examples of decently well-thought-out APIs and guidelines
 
-- more on `application/hal+json`
-    - http://tools.ietf.org/html/draft-kelly-json-hal
-    - http://stateless.co/hal_specification.html
-    - http://alphahydrae.com/2013/06/rest-and-hypermedia-apis/
+  - [GoCardless API design](https://github.com/gocardless/http-api-design)
+  - [GitHub API design](https://developer.github.com)
 
-- spec for json-api
-    - http://jsonapi.org
+### Context and debate
 
+  - [Your API Versioning is Wrong](http://www.troyhunt.com/2014/02/your-api-versioning-is-wrong-which-is.html)
+  - [The Hypermedia Debate](http://www.foxycart.com/blog/the-hypermedia-debate)
+  - [Does a standard JSON REST API violate HATEOAS?](http://stackoverflow.com/questions/9055197/splitting-hairs-with-rest-does-a-standard-json-rest-api-violate-hateoas)
+
+### More on JSON APIs
+
+  - [JSON-HAL Draft Spec](http://tools.ietf.org/html/draft-kelly-json-hal)
+  - [Rest and Hypermedia APIs](http://alphahydrae.com/2013/06/rest-and-hypermedia-apis/)
+  - [The JSON-API spec](http://jsonapi.org)
