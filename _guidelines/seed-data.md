@@ -32,7 +32,7 @@ FactoryGirl.find_definitions
 FactoryGirl.create_list :user, 10
 ```
 
-When creating seed data it's important not to use random data as it must be the same every time; gems like [Faker](https://github.com/stympy/faker) can be great for runtime test data you shouldn't use them here. Using FactoryGirl's sequences lets you generate unique but consistent test data, for example:
+When creating seed data it's important not to use random data as it must be the same every time; gems like [Faker](https://github.com/stympy/faker) can be great for runtime test data but you shouldn't use them here. Using FactoryGirl's sequences lets you generate unique but consistent test data, for example:
 
 ```ruby
 FactoryGirl.define do
