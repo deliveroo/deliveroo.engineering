@@ -6,7 +6,7 @@ exerpt: >
   Tracking authenticated sessions can be implemented in Redis using `setex` with some serialized JSON. It works pretty well until you have to cope with millions, or even tens of millions of sessions where the memory usage and performance can suffer.
 
 
-  By using Redis data structures more effectively, we can achieve a **70% reduction** in memory usage as well as a **HOW MUCH?%** performance improvement.
+  By using Redis data structures more effectively we can achieve a **70% reduction** in memory usage, at the cost of both code and conceptual complexity. Is it worth it?
 
 ---
 
@@ -91,7 +91,7 @@ Repeating this process until we've got a million sessions stored which gives us 
 
 The memory usage is linear, as you'd expect, and we're using around 230MB to store every 1M sessions. Given you can scale RedisGreen to 30GB and we use a dedicated store for sessions, it seems we could support 100M sessions without any real problems so perhaps there's no point in trying to optimise this. But let's do it anyway.
 
-## Improvement 1: Efficient binary packing
+## Modification 1: Efficient binary packing
 
 The first change we can make is to turn the hex session ID back into binary, which almost halves the size of the Redis key:
 
@@ -131,7 +131,7 @@ These changes give us a 25% reduction in memory usage, which isn't as much as yo
 
 This is because each key in Redis has (TODO: Write about memory overhead per key)
 
-## Improvement 2: Sharded HASH + ZSET
+## Modification 2: Sharded HASH + ZSET
 
 The [Redis memory optimisation page](http://redis.io/topics/memory-optimization) suggests that by splitting the data into a set of sharded HASH structures we can avoid the per-key memory overhead. We still need to be able to expire the keys though, so we need to store the session ID in a ZSET scored by expiry date. (TODO: Write this section better)
 
@@ -183,7 +183,7 @@ Oh :-(
 ![256 shards memory usage](/images/posts/optimising-session-key-storage/256-shards.png)
 </figure>
 
-## Improvement 3: Sharded HASH + ZSET ziplists
+## Modification 3: Sharded HASH + ZSET ziplists
 
 So it turns out using multiple hashes was really bad as we didn't read the docs closely enough. It started off well enough as some of the hashes were still ziplists, but by 200k sessions the memory usage is around 20% higher than the baseline.
 
@@ -201,7 +201,7 @@ This is 68% better than our baseline:
 
  (~15 entries per hash/zset, etc.)
 
-## Improvement 5: Even more shards
+## Modification 4: Even more shards
 
 Use 16M shards, avg. one key per ziplist
 
@@ -213,10 +213,24 @@ Worse by 12% but not as bad as 256 shards.!
 
 ## Continuing the lines
 
-65k shards will jump at 6M and 24M sessions as ziplists get converted to normal ones.
+However, this isn't the whole story. We're only looking at a small number of sessions here and as we start to insert more of them things will change.
 
-16M shards will flatten out, become more efficient as we approach 100M sessions
+With 65k shards and the standard settings of 128 entries in a ZSET and 512 in a HASH before the efficient storage ziplist format is converted to 'regular' storage we'd expect to see the ZSETs being converted once we have ~8M sessions and the HASHes being converted at around ~33M sessions.
 
-Need to get shard size right so you get reasonably populated ziplists.
+Conversely with 16M shards we're wasting a lot of space with virtually empty ziplists with lower numbers of entries, using essentially the key per session model except the value is a ziplist instead of blob. However, as more sessions are added these ziplists will start to fill up more efficiently.
+
+Extending the lines out to around 60M sessions we can see the trend, and at around 18M sessions using the higher number of shards starts to become more efficient. This tallies with the earlier observations that using too small a shard size is less memory efficient than the key-per-session approach.
+
+<figure>
+![Extended memory usage](/images/posts/optimising-session-key-storage/extended.png)
+</figure>
+
+## Conclusions
+
+The basic approach of serializing a JSON blob (or, better, a msgpack blob) into an expiring key is sufficient for managing sessions for all but the very largest of sites. Unless you're dealing with tens of millions of sessions then there's very little point in doing anything more complex than this.
+
+Choosing too small a shard size is worse than not sharding at all; you use significantly more memory than the basic approach and also increase the complexity of your code.
+
+Getting the shard size right means you can make significant savings in memory usage -- almost 70% reduction from the basic approach and 55% over the approach with binary packing. However, given you could store ~40M sessions in a RedisGreen X-Large instance at $779/month using the basic approach, it's debatable whether the additional complexity is worth it.
 
 
