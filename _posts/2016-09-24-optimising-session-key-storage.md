@@ -12,12 +12,13 @@ exerpt: >
 
 ## A starting point
 
-First let's create a session class as our starting point which will use a key per session in Redis. The attributes we care about are:
+First let's create a session class as our starting point which will use an expiring key to hold each session in Redis. The attributes we care about are:
 
 - **ID**, a long random token identifying the session
 - **Identity ID**, the identity of the user who owns the session, and
 - **Expires At**, the time at which the session expires
 
+All this code is simplified and adapted from the real version, but it should be sufficient for the purposes of this post.
 
 ```ruby
 class Session
@@ -31,11 +32,11 @@ class Session
 end
 ```
 
-We'll need to add a save method which uses [`setex`](http://redis.io/commands/SETEX) to save the key with an expiry time:
+We'll need to add a save method which uses [`setex`](http://redis.io/commands/SETEX) to save the key with an expiry time, storing the session attributes as a JSON blob.
 
 ```ruby
 def save!
-  ttl = Time.current - expires_at
+  ttl = expires_at - Time.current
   data = { identity_id: identity_id, expires_at: expires_at.to_i }.to_json
   redis.setex(self.class.key(id), ttl.to_i, data)
 end
@@ -45,7 +46,7 @@ def self.key(id)
 end
 ```
 
-We also need the opposite method to find a session we've previously stored using the [`get`](http://redis.io/commands/GET) method to grab all the key data.
+We also need the opposite method to find a session we've previously stored using the [`get`](http://redis.io/commands/GET) method to fetch the key data.
 
 ```ruby
 def self.find(id)
@@ -56,7 +57,7 @@ def self.find(id)
 end
 ```
 
-This key-per-session approach could also be implemented using a Redis hash with [`hmset`](http://redis.io/commands/HMSET)/[`expire`](http://redis.io/commands/EXPIRE) and [`hgetall`](http://redis.io/commands/HGETALL) but it doesn't really make a huge difference to memory or performance.
+Hopefully there's nothing too controversial there. The implementation is short and easy to understand, and the keys and values stored in Redis are human readable which can be useful for troubleshooting. It gives us a good starting point to see what effect various optimisations have on memory usage.
 
 ## Benchmarking
 
@@ -89,9 +90,9 @@ Repeating this process until we've got a million sessions stored which gives us 
 ![Baseline memory usage](/images/posts/optimising-session-key-storage/baseline.png)
 </figure>
 
-The memory usage is linear, as you'd expect, and we're using around 230MB to store every 1M sessions. Given you can scale RedisGreen to 30GB and we use a dedicated store for sessions, it seems we could support 100M sessions without any real problems so perhaps there's no point in trying to optimise this. But let's do it anyway.
+The memory usage is linear, as you'd expect, and we're using around 230MB to store every 1M sessions. Given you can scale RedisGreen to 30GB and we use a dedicated store for sessions, it seems we could support 100M sessions without any real problems so perhaps there's no point in trying to optimise this. But let's do it anyway because otherwise it's going to be a bit of a dull post.
 
-## Modification 1: Efficient binary packing
+## Iteration 1: Binary packing
 
 The first change we can make is to turn the hex session ID back into binary, which almost halves the size of the Redis key:
 
@@ -105,7 +106,7 @@ We can also make the data much smaller by switching to the [MessagePack](http://
 
 ```ruby
 def save!
-  ttl = Time.current - expires_at
+  ttl = expires_at - Time.current
   data = { i: identity_id, x: expires_at.to_i }.to_msgpack
   redis.setex(self.class.key(id), ttl.to_i, data)
 end
@@ -131,7 +132,42 @@ These changes give us a 25% reduction in memory usage, which isn't as much as yo
 
 This is because each key in Redis has (TODO: Write about memory overhead per key)
 
-## Modification 2: Sharded HASH + ZSET
+## Iteration 2: HASH per session
+
+Just to exhaust the possibilities for a key per session, let's measure using a native Redis hash to store the session attributes using [`hmset`](http://redis.io/commands/HMSET) and [`expire`](http://redis.io/commands/EXPIRE).
+
+```ruby
+def save!
+  ttl = expires_at - Time.current
+  redis.multi do |r|
+    r.hmset(self.class.key(id), :i, identity_id, :x, expiry.to_i)
+    r.expire(self.class.key(id), ttl.to_i)
+  end
+end
+```
+
+This needs a bit of a change to the find method to use [`hgetall`](http://redis.io/commands/HGETALL).
+
+```ruby
+def self.find(id)
+  data = redis.hgetall(key(id)).with_indifferent_access
+  raise 'Not Found' if data.empty?
+  attributes[:identity_id] = Integer(attributes.delete(:i))
+  attributes[:expires_at] = Time.at(Integer(attributes.delete(:x))).utc
+  new(attributes)
+end
+```
+
+Making this change shows a small improvement over the msgpack serialized value, so if you're wondering whether to serialize data into keys then the apparent answer is "don't" as Redis can persist it more efficiently than you can.
+
+<figure>
+![Hash memory usage](/images/posts/optimising-session-key-storage/hash.png)
+</figure>
+
+With a couple of changes to convert the key back to binary and using a Redis HASH to store the values in JSON we've improved the memory usage by almost 35% which is definitely worthwhile for a couple of changed lines of code. However, if we want to do better than that we're going to have to change tactics.
+
+
+## Iteration 3: Sharded HASH + ZSET
 
 The [Redis memory optimisation page](http://redis.io/topics/memory-optimization) suggests that by splitting the data into a set of sharded HASH structures we can avoid the per-key memory overhead. We still need to be able to expire the keys though, so we need to store the session ID in a ZSET scored by expiry date. (TODO: Write this section better)
 
@@ -183,7 +219,7 @@ Oh :-(
 ![256 shards memory usage](/images/posts/optimising-session-key-storage/256-shards.png)
 </figure>
 
-## Modification 3: Sharded HASH + ZSET ziplists
+## Iteration 3: Sharded HASH + ZSET ziplists
 
 So it turns out using multiple hashes was really bad as we didn't read the docs closely enough. It started off well enough as some of the hashes were still ziplists, but by 200k sessions the memory usage is around 20% higher than the baseline.
 
@@ -201,7 +237,7 @@ This is 68% better than our baseline:
 
  (~15 entries per hash/zset, etc.)
 
-## Modification 4: Even more shards
+## Iteration 4: Even more shards
 
 Use 16M shards, avg. one key per ziplist
 
@@ -231,6 +267,6 @@ The basic approach of serializing a JSON blob (or, better, a msgpack blob) into 
 
 Choosing too small a shard size is worse than not sharding at all; you use significantly more memory than the basic approach and also increase the complexity of your code.
 
-Getting the shard size right means you can make significant savings in memory usage -- almost 70% reduction from the basic approach and 55% over the approach with binary packing. However, given you could store ~40M sessions in a RedisGreen X-Large instance at $779/month using the basic approach, it's debatable whether the additional complexity is worth it.
+Getting the shard size right means you can make significant savings in memory usage -- almost 70% reduction from the basic approach and 55% over the approach with binary packing. However, given you could store ~45M sessions in a 7GB RedisGreen X-Large instance at $779/month using the approach described in iteration 3, it's debatable whether the additional complexity is worth it.
 
 
