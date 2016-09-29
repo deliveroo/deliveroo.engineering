@@ -204,6 +204,8 @@ Always self-close tags that have no children. eslint: [`react/self-closing-comp`
 
 If your component has multi-line properties, close its tag on a new line. eslint: [`react/jsx-closing-bracket-location`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-closing-bracket-location.md)
 
+> Why? It produces nicer diffs.
+
 ```
 // bad
 <Foo
