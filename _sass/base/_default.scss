@@ -22,7 +22,7 @@ a {
       margin-left: 5px;
       margin-right: 1px;
     } // @external-href('deliveroo.engineering') a::after
-    
+
     &:hover::after {
       transition-duration: 0.2s;
       opacity: 0.5;
@@ -60,6 +60,16 @@ h4 {
 
 h5, h6 {
   font-size: font-size(extra-small-heading);
+}
+
+h2, h3, h4 {
+  a.anchorjs-link {
+    border: none;
+  }
+}
+
+p.introduction {
+  font-size: font-size(large-body);
 }
 
 hr {

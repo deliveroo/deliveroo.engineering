@@ -15,15 +15,15 @@
 @import "base/default";
 
 // components: shared components such as buttons, form fields etc.
-// ...
+@import "components/forms";
 
 // layout: global layout affecting all pages
 @import "layout/header";
 @import "layout/footer";
 @import "layout/content";
 
-// pages: page-specific layouts/overrides, e.g. careers page
-// ...
+// pages: page-specific layouts/overrides
+@import "pages/careers";
 
 // themes: global overrides to the appearance for themes, e.g. admin
 // ...
