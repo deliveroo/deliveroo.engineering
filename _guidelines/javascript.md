@@ -533,11 +533,16 @@ foo.init();
 
 ## Iterators and Generators
 
-[Don't use iterators.](#iterators--nope) Prefer JavaScript's higher-order functions instead of loops like `for-in` or `for-of`. eslint: [`no-iterator`](http://eslint.org/docs/rules/no-iterator.html) [`no-restricted-syntax`](http://eslint.org/docs/rules/no-restricted-syntax)
+### Don’t use iterators
+{: #dont-use-iterators}
 
-> Why? You should always strive to write many small pure functions. For loops are less contained and more difficult to reason about.
+Prefer JavaScript's higher-order functions instead of loops like `for-in` or `for-of`[^no-iterator] [^no-restricted-syntax].
+You should always strive to write many small pure functions. For loops are less contained and more difficult to reason about.
 
-> Use `map()` / `every()` / `filter()` / `find()` / `findIndex()` / `reduce()` / `some()` / ... to iterate over arrays, and `Object.keys()` / `Object.values()` / `Object.entries()` to produce arrays so you can iterate over objects.
+[^no-iterator]: [ESLint: no-iterator](http://eslint.org/docs/rules/no-iterator.html)
+[^no-restricted-syntax]: [ESLint: no-restricted-syntax](http://eslint.org/docs/rules/no-restricted-syntax)
+
+Use `map()` / `every()` / `filter()` / `find()` / `findIndex()` / `reduce()` / `some()` / ... to iterate over arrays, and `Object.keys()` / `Object.values()` / `Object.entries()` to produce arrays so you can iterate over objects.
 
 ```javascript
 const numbers = [1, 2, 3, 4, 5];
@@ -554,13 +559,18 @@ const sum = numbers.reduce((total, num) => total + num, 0);
 sum === 15;
 ```
 
-[Don't use generators for now.](#generators--nope)
 
-> Why? They don't transpile well to ES5.
+### Don’t use generators for now
+{: #dont-use-generators}
 
-- [Generators and Spacing](#generators--spacing) If you must use generators, or if you disregard [our advice](#generators--nope), make sure their function signature is spaced properly. eslint: [`generator-star-spacing`](http://eslint.org/docs/rules/generator-star-spacing)
+They don't transpile well to ES5.
 
-> Why? `function` and `*` are part of the same conceptual keyword - `*` is not a modifier for `function`, `function*` is a unique construct, different from `function`.
+### Generators and Spacing
+{: #generators-and-spacing}
+
+If you must use generators, or if you disregard [our advice](#dont-use-iterators), make sure their function signature is spaced properly[^generator-star-spacing]. `function` and `*` are part of the same conceptual keyword - `*` is not a modifier for `function`, `function*` is a unique construct, different from `function`.
+
+[^generator-star-spacing]: [ESLint: generator-star-spacing](http://eslint.org/docs/rules/generator-star-spacing)
 
 ```js
 // bad
