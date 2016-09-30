@@ -3,5 +3,4 @@ _site
 .jekyll-metadata
 .tm_properties
 .DS_Store
-.ruby-version
 .ruby-gemset
