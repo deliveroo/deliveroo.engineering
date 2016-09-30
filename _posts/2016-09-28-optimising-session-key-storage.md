@@ -3,7 +3,7 @@ layout: post
 title:  "Optimising session key storage in Redis"
 author: "Greg Beech"
 exerpt: >
-  Tracking authenticated sessions can be implemented in Redis using `setex` with some serialised JSON. It works pretty well until you have to cope with millions, or even tens of millions of sessions where the memory usage and performance can suffer.
+  Tracking authenticated user sessions can be implemented in Redis using `setex` with some serialised JSON. It works pretty well until you have to cope with millions, or even tens of millions of sessions where the memory usage and performance can suffer.
 
 
   By using Redis data structures more effectively we can achieve a **70% reduction** in memory usage, at the cost of both code and conceptual complexity. Is it worth it?
@@ -12,7 +12,7 @@ exerpt: >
 
 ## Baseline implementation
 
-First let's create a session class as our starting point which will use an expiring key to hold each session in Redis. The attributes we care about are:
+First let's create a `Session` class as our starting point which will use an expiring key to hold each session in Redis. The attributes we care about are:
 
 - `id`, a long random token identifying the session
 - `identity_id`, the identity of the user who owns the session, and
@@ -50,7 +50,7 @@ We also need the opposite method to find a session we've previously stored using
 
 ```ruby
 def self.find(id)
-  data = redis.get(self.class.key(id)) or raise 'Not Found'
+  data = redis.get(key(id)) or raise 'Not Found'
   attributes = JSON.parse(data).merge(id: id).with_indifferent_access
   attributes[:expires_at] = Time.at(attributes[:expires_at]).utc
   new(attributes)
@@ -136,7 +136,7 @@ However, taking into account the previous observation that there's a per-key ove
 
 ## Iteration 2: HASH per session
 
-We know that reducing our data size isn't going to get us much further as we're dealing mostly with overhead now. But just to exhaust the possibilities for a key per session, let's measure using a native Redis HASH to store the session attributes using [`hmset`](http://redis.io/commands/HMSET) and [`expire`](http://redis.io/commands/EXPIRE).
+We know that reducing our data size isn't going to get us much further as we're dealing mostly with overhead now. But just to exhaust the possibilities for a key per session, let's measure using a native Redis HASH to store the session attributes using [`hmset`](http://redis.io/commands/HMSET) and [`expire`](http://redis.io/commands/EXPIRE). These are wrapped in a transaction using [`multi`](http://redis.io/commands/MULTI) to ensure that we don't have any non-expiring sessions.
 
 ```ruby
 def save!
@@ -174,7 +174,7 @@ The [Redis memory optimisation page](http://redis.io/topics/memory-optimization)
 
 To allow us to expire they keys, we'll store the session ID in a ZSET scored by expiry date, and then have a background job that can walk through those and remove expired sessions from the HASH before deleting the expired range from the ZSET. This is clearly more work than just setting the expiry in Redis.
 
-We have a number of new keys, which by using the first two characters of the session ID as the partition identifier will give us 16**2 = 256 partitions.
+We need a number of different keys, and using the first two characters of the session ID as the partition identifier will give us 16**2 = 256 partitions.
 
 ```ruby
 PREFIX_SIZE = 2
@@ -192,16 +192,17 @@ def self.sub_key(id)
 end
 ```
 
-The save method needs to change to use [`hset`](http://redis.io/commands/HSET) and [`zadd`](http://redis.io/commands/ZADD) to add to our HASH and ZSET structures respectively. These are wrapped in a transaction using [`multi`](http://redis.io/commands/MULTI) to ensure that we don't have any non-expiring sessions.
+The save method needs to change to use [`hset`](http://redis.io/commands/HSET) and [`zadd`](http://redis.io/commands/ZADD) to add to our HASH and ZSET structures respectively, again wrapped with `multi`.
 
-As we can't store a HASH within a HASH we're going back to serialising the data in msgpack format. We could alternatively use _two_ HASH structures per session, `session:identity:*` and `session:expires:*`, and store each attribute separately, effectively using Redis as a columnar store. However, the key is fairly large here (around the same size as the serialised session data) so duplicating it across hashes would use more memory, and would also mean the find method had to do two fetches instead of one.
+As we can't store a HASH within a HASH we're going back to serialising the data in msgpack format. We could alternatively use _two_ HASH structures per session, `session:identity:*` and `session:expires:*`, and store each attribute separately, effectively using Redis as a columnar store. However, the key is fairly large here (around the same size as the serialised session data) so duplicating it across hashes would use more memory, and would also mean the find method has to do two fetches instead of one.
 
 ```ruby
 def save!
   data = { i: identity_id, x: expires_at.to_i }.to_msgpack
-  redis.multi do |redis|
-    redis.hset(self.class.data_key(id), sub_key, data)
-    redis.zadd(self.class.expiry_key(id), expires_at.to_i, sub_key)
+  sub_key = self.class.sub_key(id)
+  redis.multi do |r|
+    r.hset(self.class.data_key(id), sub_key, data)
+    r.zadd(self.class.expiry_key(id), expires_at.to_i, sub_key)
   end
 end
 ```
@@ -232,9 +233,9 @@ We'd expect to see (15 + 135) * 256 = 38,400 bytes for the HASH keys and (17 + 1
 
 Well, given we're storing 2M keys here (each key is stored twice) and we're using an additional 200MB it looks rather like we're still incurring fairly significant overhead from Redis, approximately 100 bytes per key, which is less than at the root but still very significant.
 
-At this point we have to question whether this result seems plausible, or have we got a mistake in our testing methodology? Looking again at the Redis memory optimisation page it seems that in their optimisation they did see nearly an order of magnitude reduction so clearly these kind of numbers are possible, and this [Redis memory usage](http://nosql.mypopescu.com/post/1010844204/redis-memory-usage) page does indicate that HASH and ZSET structures have much more overhead than their SET or LIST counterparts. So, the numbers do seem plausible.
+At this point we have to question whether this result seems plausible, or have we got a mistake in our testing methodology? Looking again at the Redis memory optimisation page it seems that in their optimisation they did see nearly an order of magnitude reduction so clearly there _is_ a lot of overhead in a HASH, and this [Redis memory usage](http://nosql.mypopescu.com/post/1010844204/redis-memory-usage) page indicates that HASH and ZSET structures have have similar overhead to each other, and much more overhead than SET or LIST. Given that, the numbers do look plausible.
 
-But why didn't we achieve the same optimisation as the Redis memory optimisation page?
+So why didn't we achieve the same improvements as the Redis memory optimisation page?
 
 Well, it turns out we didn't do enough maths before choosing the partition size. The memory efficiency in the optimisation approach is gained by using the [ziplist representation](https://redislabs.com/ebook/redis-in-action/part-3-next-steps-3/chapter-9-reducing-memory-use/9-1-short-structures/9-1-1-the-ziplist-representation) but these have to be fairly small. The default maximum number of entries is:
 
@@ -265,26 +266,28 @@ Looks like we have a winner, at least in terms of memory usage! However, this is
 
 With 65k partitions and the standard settings of 128 entries in a ZSET and 512 in a HASH before the efficient ziplist format is converted to the normal representation we'd expect to see the ZSETs being converted once we have ~8.5M sessions and the HASHes being converted at around ~33M sessions.
 
-Extending the lines to cover tens of millions of sessions we can see the trend, and the points where the ZSETs and then the HASHes are converted to regular storage are evident on the 65k partitions line at around 7-10M sessions and 31-35M sessions respectively. The approach becomes less memory efficient than our optimised key-per-session approach at around 9M sessions, once most of the ZSETs are converted to regular storage.
+Extending the lines to cover tens of millions of sessions we can see the trend, and the points where the ZSETs and then the HASHes are converted to their normal representation are evident on the 65k partitions line at around 7-10M sessions and 31-35M sessions respectively. The approach becomes less memory efficient than our optimised key-per-session approach at around 9M sessions, once most of the ZSETs are converted.
 
 <figure>
 ![Extended memory usage](/images/posts/optimising-session-key-storage/extended.png)
 </figure>
 
-If we used a higher number of partitions, e.g. 16**5 ≈ 1M then we'd be wasting a lot of space with low numbers because it would effectively be two keys per session until we have over 1M sessions. However, as more sessions are added these ziplists will start to fill up more efficiently and we'd expect to see the memory usage be very efficient until around ~100M sessions.
+If we used a higher number of partitions, e.g. 16**5 ≈ 1M then we'd be wasting a lot of space with low numbers because it would effectively be two keys per session until we have over 1M sessions. However, as more sessions are added these ziplists will start to fill up more efficiently and we'd expect to see the memory usage be very efficient until around 100M sessions.
 
-This is exactly what we _do_ see, with 1M partitions becoming more efficient than key-per-session a little after 2M sessions, and more efficient than 65k partitions at around 8M sessions once the former's ZSETs start to be converted to regular storage.
+This is exactly what we _do_ see, with 1M partitions becoming more efficient than key-per-session a little after 2M sessions, and more efficient than 65k partitions at around 8M sessions once the former's ZSETs start to be converted to normal representation.
 
 <figure>
 ![Extended memory usage including 1M partitions](/images/posts/optimising-session-key-storage/extended-1m-partitions.png)
 </figure>
 
-And now we really do have a winner for very large numbers of sessions. Managing 100M sessions using this approach would cost us about 6GB of memory as opposed to 23GB with our original approach or 16GB with the optimised key-per-session approach. Putting that into cold hard cash, it means we could run on a RedisGreen X-Large 7GB server at $779/month instance rather than a 30GB one at $2499, so hosting costs have been reduced by over $1700/month. More than enough for a few team lunches.
+And now we really do have a winner for very large numbers of sessions. Managing 100M sessions using this approach would cost us about 6.5GB of memory as opposed to 23GB with our original approach or 16GB with the optimised key-per-session approach. Putting that into cold hard cash, it means we could run on a RedisGreen X-Large 7GB server at $779/month instance rather than a 30GB one at $2499 so hosting costs would be reduced by two thirds, over $1700/month. More than enough for a few team lunches.
 
 ## Conclusions
 
-The basic approach of serialising a JSON blob (or, better, a msgpack blob) into an expiring key is sufficient for managing sessions for all but the very largest of sites; you can handle over ten million sessions in less than 2GB of memory. Unless you're dealing with a huge number of sessions there's probably not much point in doing anything more complex because hosting is relatively cheap and dev time is relatively expensive.
+The basic approach of serialising a JSON blob (or, better, a msgpack blob) into an expiring key is sufficient for managing sessions for all but the very largest of sites; you can handle over ten million sessions in less than 2GB of memory and [Redis can handle at least 250 million root keys](http://redis.io/topics/faq#what-is-the-maximum-number-of-keys-a-single-redis-instance-can-hold-and-what-the-max-number-of-elements-in-a-hash-list-set-sorted-set). Unless you're dealing with a huge number of sessions there's probably not much point in doing anything more complex because hosting is relatively cheap and dev time is relatively expensive.
 
 If you do choose to partition then choosing too small a partition size is worse than not partitioning at all; you use significantly more memory than the basic key-per-session approach because you're incurring significant overhead in two data structures, and it also increases the complexity of your code. However, getting the partition size right means you can make significant savings in memory usage -- almost 70% reduction from the baseline approach and 55% over the hash-per-session option.
 
 As a rough guideline the number of partitions you should choose is the number of items you expect to store (N) divided by the lowest `*-max-ziplist-entries` value for the type of data structures you're using (Z) multiplied by 1.2 to give some leeway before the ziplists start being converted.
+
+Of course, that's just a guideline. You should measure to make sure you've got it right.
