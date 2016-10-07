@@ -16,6 +16,12 @@
   }
 }
 
+@mixin text-overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 $font-sizes: (
   extra-small-heading: 18px,
   smallish-heading:    20px,
