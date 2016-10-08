@@ -28,6 +28,10 @@ gems:
    - jekyll-redirect-from
    - jekyll-sitemap
    - jekyll-feed
+   - jekyll-paginate
+
+paginate: 3
+paginate_path: "/articles/page:num/"
 
 collections:
   guidelines:
