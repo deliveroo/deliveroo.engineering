@@ -5,7 +5,7 @@ layout: default
 <p class="tagline">Learn from our experience developing the Deliveroo product.</p>
 
 <section id="recent-posts" class="all">
-  {% for _page in site.posts %}
+  {% for _page in paginator.posts %}
     <div class="post recent">
       <h3><a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a></h3>
       <p class="byline">{% include byline.html author=_page.author date=_page.date %}</p>
@@ -14,8 +14,23 @@ layout: default
       </blockquote>
       <p><a href="{{ _page.url }}" title="{{ _page.title }}">Read more…</a></p>
     </div>
-    {% unless forloop.index == site.posts.size %}
+    {% unless forloop.index == paginator.posts.size %}
       <hr>
     {% endunless %}
   {% endfor %}
 </section>
+{% if paginator.total_pages > 1 %}
+  <section class="pagination">
+    {% if paginator.previous_page %}
+      <a href="{{ paginator.previous_page_path }}" class="previous">Previous</a>
+    {% else %}
+      <span class="previous">Previous</span>
+    {% endif %}
+    <span class="page_number">Page: {{ paginator.page }} of {{ paginator.total_pages }}</span>
+    {% if paginator.next_page %}
+      <a href="{{ paginator.next_page_path }}" class="next">Next</a>
+    {% else %}
+      <span class="next">Next</span>
+    {% endif %}
+  </section>
+{% endif %}
