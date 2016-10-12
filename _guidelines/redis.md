@@ -96,7 +96,7 @@ fingerprint status. Having 256 buckets per status lets us easily shard the data
 when we need to.
 
 Note that the number of shards you need can be optimised. In this particular
-case, the primary purpose is sharding
+case, the primary purpose is sharding to allow for clustering.
 
 The class exposes `.find_by(id:)`, `#save`, and `#save!` as any Rails user would
 expect.
