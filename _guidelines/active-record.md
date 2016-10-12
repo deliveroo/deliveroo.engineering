@@ -95,6 +95,9 @@ Worse:
 
 ### Models
 
+
+#### Don't write SQL
+
 Models should not contain any SQL queries.
 
 They can, however, exceptionally contain SQL _expressions_ in the form of
@@ -121,7 +124,7 @@ scope :created_after, -> { |timestamp|
 }
 ```
 
-#### Scope chains
+##### Scope chains
 
 If a scope contains a SQL snippet (ie. if it's not pure Arel), it should be unit
 tested.
@@ -157,7 +160,7 @@ scope :created_since_last_year, -> { where('created_at > ?', 1.year.ago) }
 scope :created_since_yesterday, -> { where('created_at > ?', 1.day.ago.beginning_of_day) }
 ```
 
-#### Naming
+##### Scope Naming
 
 We choose to name scopes using the `{attribute}_{operator}` pattern when
 possible.
@@ -171,7 +174,68 @@ Bad: `User.member_of(account)`, `User.recently_created(date)`,
 `User.account_id_is(account.id)`
 
 
+#### Attribute naming
+
+
+##### No abbreviations or lingo
+
+Like anything else in a codebase, attributes should avoid abbreviations and
+never include company lingo, for the sake of readability.
+
+Good:
+
+```ruby
+add_column :cargo_container_type, :volume_cubic_centimeters, :integer
+add_column :restaurant_assignment, :restaurant_app_ack_needed, :boolean
+```
+
+Bad:
+
+```ruby
+add_column :cargo_container_type, :volume_cubic_cc, :integer
+add_column :restaurant_assignment, :rom_ack_needed, :boolean
+```
+
+Examples of tolerable exceptions include non-domain-specific / conventional
+abbreviations (`geo_lat`, `geo_long`) and SI units when unambiguous
+(`radius_m`).
+
+
+##### Suffix conventions
+
+Respect Rails conventions for column naming based on data type, plus a few of
+our own:
+
+- `{wut}_id` for references to primary keys in other tables;
+- `{wut}_at` for timestamps;
+- `{wut}_on` for dates;
+- `{wut}_time` for time-of-day;
+
+
+##### Denormalised column naming
+
+It's sometimes necessary to denormalise a relation for performance reasons.
+
+Unless the _consistency_ of the relations are guaranteed by (tested) code, the
+column name should be prefixed with `cached_` to make it obvious it's
+non-authoritative.
+
+Example:
+Neighborhoods can be reshaped, and this does not automatically trigger a
+change to the user address -> neighborhood association within the same
+transaction.
+
+The only authoritative information on user addresses (geolocation wise) is their
+latitude/longitude.
+
+- Good: `user_address.cached_neighborhood_id`
+- Bad: `user_address.neighborhood_id`
+
+
 ### Migrations
+
+
+#### Use raw SQL
 
 Migrations are one of the only places which should contain SQL queries. In fact,
 migrations should contain _only_ SQL queries, and **no code using ActiveRecord
@@ -206,6 +270,9 @@ def up
   end
 end
 ```
+
+
+#### Relation to record cache
 
 If applicable, remember to clear the cache[^cache] after running migrations that
 change data if the affected model is cached; or to send update events on the
