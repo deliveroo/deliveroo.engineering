@@ -44,18 +44,16 @@ gets updated over time.
 Coding guidelines are curated collectively.
 This is the process we choose to follow:
 
-1. Anyone can submit a pull request to change, or add to any guideline document
-   (including this one). Each document has an "edit" link at the top to help, so
-   editing is possible within Github.
+1. Anyone can submit a pull request by creating a branch named 
+   `guidelines/whatever-it-relates-to` to change or add to any existing 
+   guideline document (including this one).
 
-2. Changes are reviewed by lead engineers. Anyone can comment on the content.
+2. During a suitable grace period, feedback is collected on the pull request in 
+   the form of comments, :thumbsup: or :thumbsdown:. Anyone can comment on the
+   changes.
 
-3. During a 1 week grace period, :thumbsup: and :thumbsdown: are collected on
-   the pull request (+1 comments are ignored).
-
-4. If the change has collected enough :thumbsup:, a lead engineer merges it.
-   <br/>
-   This site is automatically updated.
+3. If the proposed changes have collected enough :thumbsup:, a lead engineer 
+   merges it. This site is automatically updated.
 
 From this point onwards, all engineers in the team should follow the updated
 guidelines for _new_ code, and strive to bring _old_ code in compliance - over
