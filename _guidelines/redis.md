@@ -15,7 +15,7 @@ collection: guidelines
 
 Make classes as Rails-y as possible:
 - Use `ActiveModel::Validations`
-- Implement `find(id)`, `find_by_foobar`, `save`, `save!`
+- Implement `find_by(id:)`, `find_by(foobar:)`, `save`, `save!`
 
 Do _not_ just "use redis" in random classes, just like you wouldn't write SQL
 queries in, say, a controller. Instead, wrap your Redis usage in a model class.
@@ -41,20 +41,50 @@ to the heaviest queries: the example below illustrates a case where each record
 has only an ID an an enumerated field, and uses sets instead.  Another typical
 approach is to store one hash per record, but also have "index" keys; for
 instance, one could speed up geographical lookup of restaurants by
+
 - storing each restaurant's data in a HASH key;
-- using a ZSET of IDs scored by geohashes fore extremely fast bounding-box
+- using a ZSET of IDs scored by geohashes for extremely fast bounding-box
   searches.
 
-It is _not_ fine to hold data for all records in a single key, as this breaks
-shardability of Redis.
+
+## Memory usage
+
+When designing storage for a Redis-backed models, it is advisable to be aware if
+how efficient Redis data structures are if you're going to store a lot of data.
+
+Key tidbits:
+
+- One-hash-per-record can be very inefficient, as the hash _keys_ are repeated
+  for each record. Columnar storage might be prefered, or (if the whole hash
+  will always be needed) packing record dat awith MessagePack and replacing long
+  keys with shoter ones.
+- While querying large sets, sorted sets, of hashes is normally faster than
+  querying the root keyspace (e.g. for membership checks), be aware that those
+  data structures have a memory overhead.
+
+  Because small data structures get [stored
+  differently](http://redis.io/topics/memory-optimization), this overhead can be
+  lower when the individual data structures are small (~100 items). We've
+  written an [article on storing session
+  data](http://deliveroo.engineering/2016/10/07/optimising-session-key-storage.html) which outlines an extreme case
+  of this.
+
+
+## Scalability and sharding
+
+It is _not_ fine to hold data for all records of a given model in a single key,
+as this breaks shardability of Redis.
 
 Sharding is the practice of scaling Redis horizontally by deterministically
 reading and writing certain keys from a given server, based on a hash of the
 key. This is built into Redis clients and has even [better
 support](http://redis.io/topics/cluster-tutorial) in Redis 3.  Splitting large
 datasets into multiple keys means they can easily be sharded across a cluster,
-when we need to, without major refactoring. This should be done as soon as the
-size of a given key is known exceed a few thousand entries (lists, sets, etc).
+when we need to, without major refactoring.
+
+Sharding should be considered afor any data structure that exceeds a few
+thousand entries (lists, sets, etc), and is likely to grow as time passes or the
+business grows.
 
 ## Example
 
@@ -65,7 +95,10 @@ The backing store for this is 2x256 Redis sets; 256 for each "good" and "bad"
 fingerprint status. Having 256 buckets per status lets us easily shard the data
 when we need to.
 
-The class exposes `.find_by_id`, `#save`, and `#save!` as any Rails user would
+Note that the number of shards you need can be optimised. In this particular
+case, the primary purpose is sharding
+
+The class exposes `.find_by(id:)`, `#save`, and `#save!` as any Rails user would
 expect.
 
 ```ruby
@@ -104,7 +137,7 @@ class PaymentFingerprint
   module ClassMethods
     include Roo::ModelSupport::RedisSupport
     
-    def find_by_id(id)
+    def find_by(id:)
       if redis.smember _key(id, :good), id
         new(id: id, status: :good)
       elsif redis.smember _key(id, :bad), id
