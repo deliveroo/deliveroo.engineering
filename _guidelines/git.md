@@ -28,6 +28,11 @@ the above ensures that commits and PRs are reported into Jira, making it
 possible for someone to traverse links to read a story's implementation instead
 of searching.
 
+Note that [git-whistles](https://github.com/mezis/git-whistles) will do most of
+this for you: naming the branch right, the PR when issuing it, and even pasting
+the ticket description into your PR for better reviewr comfort!
+
+
 ## Force Pushing
 
 Force pushing is one of the _destructive_ functions of git in that it unconditionally overwrites the remote repository with whatever you have locally, possibly overwriting any changes that a team member has pushed in the meantime.
