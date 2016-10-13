@@ -14,6 +14,8 @@ permalink:  /guidelines/meta/
 
 ### Why we do this
 
+Because we rock!
+
 In a large team, building and maintaining multiple software assets, code
 consistency and acquired good practices matter.
 
