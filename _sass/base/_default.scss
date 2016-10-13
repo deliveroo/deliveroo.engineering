@@ -1,16 +1,19 @@
-a {
+@mixin link($color: aubergine) {
   text-decoration: none;
-  color: color(aubergine, 75%);
+  color: color($color, 75%);
   transition-property: color, border;
   transition-duration: 0.4s;
-  border-bottom: 2px solid transparentize(color(aubergine, 75%), 0.8);
+  border-bottom: 2px solid transparentize(color($color, 75%), 0.8);
   
   &:hover {
-    color: color(aubergine, 50%);
+    color: color($color, 50%);
     transition-duration: 0.2s;
-    border-color: transparentize(color(aubergine, 50%), 0.4);
-  } // a:hover
-  
+    border-color: transparentize(color($color, 50%), 0.4);
+  } // @link:hover
+} // @link
+
+a {
+  @include link(aubergine);
   @include external-href('deliveroo.engineering') {
     &::after {
       @include image-replacement('/images/external_link_aubergine', 12px, 12px, $type: 'svg');
