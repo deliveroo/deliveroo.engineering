@@ -4,7 +4,10 @@ layout: default
 <article class="guidelines">
   <header>
     <h1>{{ page.title }}</h1>
-    <p class="tagline">{{ page.subtitle }}</p>
+    <p class="tagline">
+      {{ page.subtitle }}
+      <a href="{{site.github.repository_url}}/edit/gh-pages/{{page.path}}" class="edit" title="Edit these guidelines on Github" target="_blank">Edit</a>
+    </p>
   </header>
 
   {{ content }}
