@@ -8,10 +8,12 @@ exerpt: >
   maintaining a large set of fingerprints (unique visitor ID, card fingerprint,
   IDFVs depending on the use case).
 
+
   Because this usually needs to be queried very rapidly, Redis is naturally our
   store of choice.
   While using its `SET` feels obvious, what data structure to select? Are there
   memory/performance compromises?
+
 
   This shows that while plain key/value is a safe bet, there are possible
   optimisations with hashes and traps to avoid with sets and sorted sets.
@@ -169,7 +171,7 @@ items.
 
 In practice, and with the default settings, a hash containing fewer than 512
 elements will be stored as a flat list. This does mean that queries (in
-particular, our CAS query) will revert from `O(1)` to `O(n)`... but with a `n`
+particular, our CAS query) will revert from _O(1)_ to _O(n)_... but with a _n_
 that is constrained to be small.
 
 Unfortunately, this effect gets negated if the shard counts becomes too high, as
