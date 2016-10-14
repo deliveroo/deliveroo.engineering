@@ -162,7 +162,7 @@ At the right, the difference measure the memory cost of a single data structure
 - Each `SET` consumes a whopping 194 bytes.
 
 This leaves the improvement in memory usage that starts at 512 IDs per hash and
-64 IDs per sorted set.
+128 IDs per sorted set.
 
 This phenomenon is due to Redis [reverting to simpler
 structures](http://redis.io/topics/memory-optimization) (called "ziplists" or
@@ -198,9 +198,9 @@ Caveats:
   overhead is factored in and probably masks a significant portion of Redis
   performance.
 
-We did make sure that the time spent n the driver is identical for each scenario
-and for each type of data structure, so that any difference can still be
-compared.
+We did make sure that the time spent in the driver is identical for each
+scenario and for each type of data structure, so that any difference can still
+be compared.
 
 - Flat keys, as expected, provide consistent hit throughput.
 - `SET` throughput provides consistent performance, and is 5% slower than flat
