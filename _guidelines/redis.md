@@ -108,9 +108,6 @@ expect.
 ```ruby
 class PaymentFingerprint
   include ActiveModel::Validations
-  include Roo::ModelSupport::RedisSupport
-  
-  Invalid = Class.new(Exception)
   
   attr_accessor :id # the actual fingerprint
   attr_accessor :status # :good or :bad
@@ -125,24 +122,22 @@ class PaymentFingerprint
   
   def save
     return false unless valid?
-    redis.multi do
+    App.redis.multi do |r|
       other_status = status == :good ? :bad : :good
-      redis.sadd _key(id, status), id
-      redis.srem _key(id, other_status), id
+      r.sadd _key(id, status), id
+      r.srem _key(id, other_status), id
     end
     true
   end
   
   def save!
     return if save
-    raise Invalid, errors.full_messages.join(' ')
+    raise Redis::InvalidRecord.new(self)
   end
   
   module ClassMethods
-    include Roo::ModelSupport::RedisSupport
-    
     def find_by(id:)
-      if redis.smember _key(id, :good), id
+      if App.redis.smember _key(id, :good), id
         new(id: id, status: :good)
       elsif redis.smember _key(id, :bad), id
         new(id: id, status: :bad)
@@ -166,4 +161,11 @@ class PaymentFingerprint
   include SharedMethods
   extend SharedMethods
 end
+
+class Redis::InvalidRecord < StandardError
+  attr_reader :record
+  def initialize(record)
+    @record = record
+  end
+end  
 ```
