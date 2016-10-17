@@ -26,7 +26,9 @@ queries in, say, a controller. Instead, wrap your Redis usage in a model class.
 
 Key separator is `:`.
 
-The first component should be the underscored name of the model class.
+The first component should be the underscored name of the model class. 
+ 
+Example: `DriverStatus` → `driver_status:{driver_id}`
 
 High-cardinality key components should be at then end (so we can look at the
 "tree of keys” meaningfully) 
