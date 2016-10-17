@@ -29,7 +29,10 @@ Key separator is `:`.
 The first component should be the underscored name of the model class.
 
 High-cardinality key components should be at then end (so we can look at the
-"tree of keys” meaningfully)
+"tree of keys” meaningfully) 
+ 
+- Good: `users:order_ids:{user_id}` (for a set of order IDs)
+- Bad: `users:{user_id}:order_ids`
 
 ## Data modeling
 
@@ -37,7 +40,7 @@ It is acceptable, but not required to have exactly one hash key per record.
 
 The one-hash-per-record approach mimic ActiveRecord more closely, but can defeat
 the purpose of using Redis—it has faster, more advanced data structures. Like
-other "NoSQL" stores it's often best to store data in a format that's friendly
+other non-relational stores it's often best to store data in a format that's friendly
 to the heaviest queries: the example below illustrates a case where each record
 has only an ID an an enumerated field, and uses sets instead.  Another typical
 approach is to store one hash per record, but also have "index" keys; for
