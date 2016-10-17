@@ -83,10 +83,10 @@ Sharding is the practice of scaling Redis horizontally by deterministically
 reading and writing certain keys from a given server, based on a hash of the
 key. This is built into Redis clients and has even [better
 support](http://redis.io/topics/cluster-tutorial) in Redis 3.  Splitting large
-datasets into multiple keys means they can easily be sharded across a cluster,
+datasets into multiple keys (partitions) means they can easily be sharded across a cluster,
 when we need to, without major refactoring.
 
-Sharding should be considered afor any data structure that exceeds a few
+Partitioning should be considered afor any data structure that exceeds a few
 thousand entries (lists, sets, etc), and is likely to grow as time passes or the
 business grows.
 
@@ -97,10 +97,10 @@ determine whether a fingerprint is marked as fraudulent.
 
 The backing store for this is 2x256 Redis sets; 256 for each "good" and "bad"
 fingerprint status. Having 256 buckets per status lets us easily shard the data
-when we need to.
+when we need to. 
 
-Note that the number of shards you need can be optimised. In this particular
-case, the primary purpose is sharding to allow for clustering.
+Note that the number of partitions you need can be optimised. In this particular
+case, the primary purpose is to allow for clustering.
 
 The class exposes `.find_by(id:)`, `#save`, and `#save!` as any Rails user would
 expect.
