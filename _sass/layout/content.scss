@@ -2,7 +2,7 @@ body {
   @include flex-sticky-footer($header-selector: 'header#navigation', $contents-selector: 'main', $footer-selector: 'footer');
   font-family: $default-font;
   font-size: 62.5%;
-  color: color(mackeral);
+  color: color(mackerel);
   background-color: color(anchovy, 5%);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -83,7 +83,7 @@ p.tagline {
   
   span.author,
   time.published {
-    color: color(mackeral, 80%);
+    color: color(mackerel, 80%);
   } // .byline {span.author, time.published}
   
   time.published {
@@ -383,7 +383,7 @@ article {
   } // article ol.alpha
   
   div.footnotes {
-    color: color(mackeral, 80%);
+    color: color(mackerel, 80%);
     
     li {
       padding: 5px;
@@ -420,7 +420,7 @@ article {
       
       thead {
         th {
-          background-color: color(mackeral, 60%);
+          background-color: color(mackerel, 60%);
           color: color(anchovy, 5%);
           text-align: left;
         } // article.guidelines table thead th
