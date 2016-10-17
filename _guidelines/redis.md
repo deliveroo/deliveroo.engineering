@@ -14,7 +14,8 @@ collection: guidelines
 ## Model classes
 
 Make classes as Rails-y as possible:
-- Use `ActiveModel::Validations`
+- Use `ActiveModel::Validations` (in Rails 3) or `ActiveModel::Model` (in Rails
+  4+)
 - Implement `find_by(id:)`, `find_by(foobar:)`, `save`, `save!`
 
 Do _not_ just "use redis" in random classes, just like you wouldn't write SQL
