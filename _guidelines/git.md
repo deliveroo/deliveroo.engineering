@@ -30,7 +30,7 @@ of searching.
 
 Note that [git-whistles](https://github.com/mezis/git-whistles) will do most of
 this for you: naming the branch right, the PR when issuing it, and even pasting
-the ticket description into your PR for better reviewr comfort!
+the ticket description into your PR for better reviewer comfort!
 
 
 ## Force Pushing
