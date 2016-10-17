@@ -40,7 +40,7 @@ High-cardinality key components should be at then end (so we can look at the
 
 It is acceptable, but not required to have exactly one hash key per record.
 
-The one-hash-per-record approach mimic ActiveRecord more closely, but can defeat
+The one-hash-per-record approach mimics ActiveRecord more closely, but can defeat
 the purpose of using Redis—it has faster, more advanced data structures. Like
 other non-relational stores it's often best to store data in a format that's friendly
 to the heaviest queries: the example below illustrates a case where each record
