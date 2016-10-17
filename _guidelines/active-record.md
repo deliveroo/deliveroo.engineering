@@ -186,13 +186,13 @@ Good:
 
 ```ruby
 add_column :cargo_container_type, :volume_cubic_centimeters, :integer
-add_column :restaurant_assignment, :restaurant_app_ack_needed, :boolean
+add_column :restaurant_assignment, :restaurant_ack_needed, :boolean
 ```
 
 Bad:
 
 ```ruby
-add_column :cargo_container_type, :volume_cubic_cc, :integer
+add_column :cargo_container_type, :volume_cc, :integer
 add_column :restaurant_assignment, :rom_ack_needed, :boolean
 ```
 
@@ -207,8 +207,9 @@ Respect Rails conventions for column naming based on data type, plus a few of
 our own:
 
 - `{wut}_id` for references to primary keys in other tables;
-- `{wut}_at` for timestamps;
-- `{wut}_on` for dates;
+- `{wut}_at`, `{wut}_from`, `{wut}_to` for timestamps;
+- `{wut}_on`, `{wut}_date` for dates;
+- `{wut}_duration` for durations (_always_ in seconds).
 - `{wut}_time` for time-of-day;
 
 
