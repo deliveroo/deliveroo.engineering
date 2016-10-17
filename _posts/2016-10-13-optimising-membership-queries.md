@@ -21,9 +21,12 @@ exerpt: >
 ---
 
 In a [previous article](/2016/10/07/optimising-session-key-storage.html) we
-investigated how best to store a large key-value dataset (user sessions). The
-size of this set is driven by the fact session key and data are fairly large
-(~85 bytes), and that it grows with the number of monthly active users.
+investigated how best to store a large key-value dataset (user sessions). We
+showed that number of partitions can have a huge effect on memory usage, but
+didn't look at the other structures or how it affected performance.
+
+The size of this set is driven by the fact session key and data are roughly 43
+bytes, and that it grows with the number of monthly active users.
 
 For this new use cases, we're looking at identifiers that are typically smaller
 (128-bit UUIDs, or 16 bytes) with no payload (associated data); it's also a
@@ -68,18 +71,18 @@ The options we're considering are:
 For a given ID `0001aaaa0002bbbb0003cccc0004dddd`, we store the value 1 at key
 `bench:flat:xx:{id}`.
 
-The `xx` is to mimic sharding in other data structures, so that the keys in the
+The `xx` is to mimic partitioning in other data structures, so that the keys in the
 "flat" option are comparable in length (more below).
 
 Our CAS query is implemented with `SETNX`.
 
 2) Use Redis hashes
 
-A stored ID is persisted by setting a field to 1 in a hash. The data is sharded
-into _2^n_ hashes, by taking the low _n_ bits of the ID and using it as part of
-the hash's key. For example, with _n = 12_ (4,096 shards), our example ID is
-persisted by setting field `0001aaaa0002bbbb0003cccc0004d` of hash key
-`bench:flat:12:ddd` to the value 1.
+A stored ID is persisted by setting a field to 1 in a hash. The data is
+partitioned into _2^n_ hashes, by taking the low _n_ bits of the ID and using it
+as part of the hash's key. For example, with _n = 12_ (4,096 partitions), our
+example ID is persisted by setting field `0001aaaa0002bbbb0003cccc0004d` of hash
+key `bench:flat:12:ddd` to the value 1.
 
 CAS is implemented with a single `HSETNX`.
 
@@ -87,7 +90,7 @@ CAS is implemented with a single `HSETNX`.
 
 Similar to hashes, except to associated value is needed.
 
-For 4,096 shards, the example ID is persisted by adding the value
+For 4,096 partitions, the example ID is persisted by adding the value
 `0001aaaa0002bbbb0003cccc0004d` to the set named `bench:set_:12:ddd`.
 
 CAS is implemented with `SADD` (which does return the number of items added).
@@ -96,7 +99,7 @@ CAS is implemented with `SADD` (which does return the number of items added).
 
 Similar to hashes again.
 
-For 4,096 shards, the example ID is persisted by adding the value
+For 4,096 partitions, the example ID is persisted by adding the value
 `0001aaaa0002bbbb0003cccc0004d` to the sorted set named `bench:zset:12:ddd`,
 with the associated score of 1.
 
@@ -106,7 +109,7 @@ CAS is similarly implemented with `ZADD`.
 ## Benchmarking
 
 We prepared a benchmark driver that explores the possible data structures and
-number of shards — storing all IDs in a single structure at one extreme, and
+number of partitions — storing all IDs in a single structure at one extreme, and
 storing each ID in its own structure at the other.
 
 The code for the benchmark driver is
@@ -122,18 +125,18 @@ graphs) we're only plotting results for 10 million IDs here.
 ### Memory usage
 
 The "flat" storage scheme uses consistent memory, which is expected: the number
-of keys and key size are identical, and "sharding" here is really just
+of keys and key size are identical, and "partitioning" here is really just
 rearranging characters in keys.
 
-At low shard counts (ie. more IDs stored in a single structure), hashes, sets,
+At low partition counts (ie. more IDs stored in a single structure), hashes, sets,
 and flat keys use up roughly the same amount of memory (within 10% difference),
 while sorted sets use 75% extra memory.
 
-The right-hand side (many shards, few IDs per shard) exhibits 2 interesting
-behaviours: first the memory usage for hashes and zsets massively improves,
-then degrades as we converge towards a single ID per structure.
+The right-hand side (many partitionss, few IDs per partition) exhibits 2
+interesting behaviours: first the memory usage for hashes and zsets massively
+improves, then degrades as we converge towards a single ID per structure.
 
-Even more interestingly, for 128k shards, the total memory usage is within a
+Even more interestingly, for 128k partitions, the total memory usage is within a
 hair of the theoretical minimum (320MB to store 10 million 32 byte IDs).
 
 <figure>
@@ -157,7 +160,7 @@ the memory cost per data structure entry. Two interesting conclusions:
 At the right, the difference measure the memory cost of a single data structure
 (because each now hold a single ID). From which we deduce:
 
-- Each `HASH` and `ZSET` consumes roughly 37 bytes (when zipmap'd), on top of
+- Each `HASH` and `ZSET` consumes roughly 37 bytes (when ziplist'd), on top of
   the base key usage.
 - Each `SET` consumes a whopping 194 bytes.
 
@@ -174,8 +177,9 @@ elements will be stored as a flat list. This does mean that queries (in
 particular, our CAS query) will revert from _O(1)_ to _O(n)_... but with a _n_
 that is constrained to be small.
 
-Unfortunately, this effect gets negated if the shard counts becomes too high, as
-the memory cost of having more keys makes up for the efficient ziplist encoding.
+Unfortunately, this effect gets negated if the partition counts becomes too
+high, as the memory cost of having more keys makes up for the efficient ziplist
+encoding.
 
 
 <figure>
@@ -206,7 +210,7 @@ be compared.
 - `SET` throughput provides consistent performance, and is 5% slower than flat
   keys.
 - `HASH` is also consistent, and 10% slower than flat keys.
-- `ZSET` is more noisy and less consistent; from 10% slower when zipmap
+- `ZSET` is more noisy and less consistent; from 10% slower when ziplist
   encoding gets used to 20% slower otherwise.
 
 
@@ -220,7 +224,7 @@ For CAS misses (ie. writes), performance is generally 15% lower.
 - `SET` is 1 to 3% slower than flat keys on average.
 - `HASH` is exactly as fast as flat keys to large hashes, but plummets to 15%
   slower when using ziplists close to the limit (i.e. with 128 to 512 items per
-  shard).
+  partition).
 - `ZSET`'s theorectical _O(log n)_ behaviour finally rears its head, with 25%
   lower throughput on larger sets.
 
@@ -234,15 +238,15 @@ For CAS misses (ie. writes), performance is generally 15% lower.
 Our conclusion on storing large sets in Redis is twofold:
 
 1. Flat keys, sets, and hashes have very comparable performance and memory usage
-   when low sharding is used.
+   when low partitioning is used.
 
    If the purpose is to enabled partitioning/clustering without much concern for
-   overall memory usage, we recommend using `SET` with few shards (256 would
+   overall memory usage, we recommend using `SET` with few partitions (256 would
    typically be convenient): `SET` is conceptually a better match, and a lower
    number of keys is more practical for monitoring, and
    faster when restoring backups.
 
-2. Ziplists create a sweet spot for `HASH` (intlists create another for `SET`,
+2. Ziplists create a sweet spot for `HASH` ("intlists" create another for `SET`,
    which we have not explored here). It can be a technique worth exploring when
    memory usage is critical, for huge datasets when the unit datum is of a
    similar order of magnitude as the key size — and importantly, where the size
@@ -253,12 +257,12 @@ Our conclusion on storing large sets in Redis is twofold:
 
 Of course, work here is incomplete. Instead of storing our IDs as hexadecimal
 strings, we could have halved storage by using binary packing — but that'd have
-made our examples underadable.
+made our examples unreadable.
 
 Another avenue that might be worth exploring is using Redis as the storage for a
 Bloom filter, for use cases where a probabilistic data structure is sufficient.
 In theory, such a filter would only consume 80MB of memory for a set with
-1-millionth false positive rates.
+1-millionth false positive rates (a 90% reduction over our "exact" approach).
 
 While reasonably realistic, this benchmark is still a benchmark and not
 behaviour in a production system, but hopefully will help you understand Redis

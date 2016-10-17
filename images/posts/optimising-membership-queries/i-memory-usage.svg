@@ -5,12 +5,35 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    viewBox="0 0 755 521.25"
    height="521.25"
    width="755"
    xml:space="preserve"
    version="1.1"
-   id="svg2"><metadata
+   id="svg2"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="i-memory-usage.svg"><sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1225"
+     inkscape:window-height="968"
+     id="namedview329"
+     showgrid="false"
+     inkscape:zoom="1.4516556"
+     inkscape:cx="377.5"
+     inkscape:cy="260.625"
+     inkscape:window-x="239"
+     inkscape:window-y="5"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g10" /><metadata
      id="metadata8"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" /></cc:Work></rdf:RDF></metadata><defs
@@ -291,9 +314,7 @@
              id="text132"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan134"
-               y="0"
-               x="0 5.0004001 8.0028 13.0032 18.003599 23.004 28.0044 33.004799">0.00E+00</tspan></text>
+               id="tspan134" /></text>
 </g></g></g><g
        id="g136"><g
          clip-path="url(#clipPath140)"
@@ -303,9 +324,7 @@
              id="text146"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan148"
-               y="0"
-               x="0 5.0004001 8.0028 13.0032 18.003599 23.004 28.0044 33.004799">5.00E+08</tspan></text>
+               id="tspan148" /></text>
 </g></g></g><g
        id="g150"><g
          clip-path="url(#clipPath154)"
@@ -315,9 +334,7 @@
              id="text160"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan162"
-               y="0"
-               x="0 5.0004001 8.0028 13.0032 18.003599 23.004 28.0044 33.004799">1.00E+09</tspan></text>
+               id="tspan162">     1GB</tspan></text>
 </g></g></g><g
        id="g164"><g
          clip-path="url(#clipPath168)"
@@ -327,9 +344,7 @@
              id="text174"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan176"
-               y="0"
-               x="0 5.0004001 8.0028 13.0032 18.003599 23.004 28.0044 33.004799">1.50E+09</tspan></text>
+               id="tspan176" /></text>
 </g></g></g><g
        id="g178"><g
          clip-path="url(#clipPath182)"
@@ -339,9 +354,7 @@
              id="text188"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan190"
-               y="0"
-               x="0 5.0004001 8.0028 13.0032 18.003599 23.004 28.0044 33.004799">2.00E+09</tspan></text>
+               id="tspan190">     2GB</tspan></text>
 </g></g></g><g
        id="g192"><g
          clip-path="url(#clipPath196)"
@@ -351,9 +364,7 @@
              id="text202"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan204"
-               y="0"
-               x="0 5.0004001 8.0028 13.0032 18.003599 23.004 28.0044 33.004799">2.50E+09</tspan></text>
+               id="tspan204" /></text>
 </g></g></g><g
        id="g206"><g
          clip-path="url(#clipPath210)"
@@ -363,9 +374,7 @@
              id="text216"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan218"
-               y="0"
-               x="0 5.0004001 8.0028 13.0032 18.003599 23.004 28.0044 33.004799">3.00E+09</tspan></text>
+               id="tspan218">     3GB</tspan></text>
 </g></g></g><g
        id="g220"><g
          clip-path="url(#clipPath224)"
@@ -375,9 +384,7 @@
              id="text230"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan232"
-               y="0"
-               x="0 5.0004001 8.0028 13.0032 18.003599 23.004 28.0044 33.004799">3.50E+09</tspan></text>
+               id="tspan232" /></text>
 </g></g></g><g
        id="g234"><g
          clip-path="url(#clipPath238)"
@@ -495,9 +502,7 @@
              id="text370"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan372"
-               y="0"
-               x="0 5.0004001 10.0008 15.0012 20.0016 25.002001">262144</tspan></text>
+               id="tspan372">  256k</tspan></text>
 </g></g></g><g
        id="g374"><g
          clip-path="url(#clipPath378)"
@@ -507,9 +512,7 @@
              id="text384"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan386"
-               y="0"
-               x="0 5.0004001 10.0008 15.0012 20.0016 25.002001 30.002399">1048576</tspan></text>
+               id="tspan386">    1M</tspan></text>
 </g></g></g><g
        id="g388"><g
          clip-path="url(#clipPath392)"
@@ -519,9 +522,7 @@
              id="text398"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan400"
-               y="0"
-               x="0 5.0004001 10.0008 15.0012 20.0016 25.002001 30.002399">4194304</tspan></text>
+               id="tspan400">     4M</tspan></text>
 </g></g></g><g
        id="g402"><g
          clip-path="url(#clipPath406)"
@@ -531,9 +532,7 @@
              id="text412"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan414"
-               y="0"
-               x="0 5.0004001 10.0008 15.0012 20.0016 25.002001 30.002399 35.0028">16777216</tspan></text>
+               id="tspan414">     16M</tspan></text>
 </g></g></g><g
        id="g416"><g
          clip-path="url(#clipPath420)"
@@ -543,9 +542,7 @@
              id="text426"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan428"
-               y="0"
-               x="0 5.0004001 10.0008 15.0012 20.0016 25.002001 30.002399 35.0028">67108864</tspan></text>
+               id="tspan428">     64M</tspan></text>
 </g></g></g><g
        id="g430"><g
          clip-path="url(#clipPath434)"
@@ -555,9 +552,7 @@
              id="text440"
              style="font-variant:normal;font-weight:normal;font-size:9px;font-family:'Helvetica Neue';-inkscape-font-specification:HelveticaNeue;writing-mode:lr-tb;fill:#595959;fill-opacity:1;fill-rule:nonzero;stroke:none"
              transform="scale(1,-1)"><tspan
-               id="tspan442"
-               y="0"
-               x="0 5.0004001 10.0008 15.0012 20.0016 25.002001 30.002399 35.0028 40.003201">268435456</tspan></text>
+               id="tspan442">     256M</tspan></text>
 </g></g></g><g
        id="g444"><g
          clip-path="url(#clipPath448)"
@@ -730,4 +725,16 @@
            id="g654"><path
              id="path656"
              style="fill:none;stroke:#d9d9d9;stroke-width:12700;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
-             d="m 0,0 7658100,0 0,5283200 L 0,5283200 0,0 Z" /></g></g></g></g></svg>
+             d="m 0,0 7658100,0 0,5283200 L 0,5283200 0,0 Z" /></g></g></g><text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:32px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="530.70441"
+       y="-27.554737"
+       id="text3657"
+       sodipodi:linespacing="125%"
+       transform="scale(1,-1)"><tspan
+         sodipodi:role="line"
+         id="tspan3659"
+         x="530.70441"
+         y="-27.554737"> </tspan></text>
+</g></svg>
