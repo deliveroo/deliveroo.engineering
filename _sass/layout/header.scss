@@ -73,7 +73,7 @@ header#navigation {
           transition-duration: 0.2s;
           
           &:hover {
-            color: color(mackeral);
+            color: color(mackerel);
           } // header#navigation nav ul li a:hover
           
           @include external-href('deliveroo.engineering') {
@@ -87,13 +87,13 @@ header#navigation {
           color: color(aubergine);
           
           &:hover {
-            color: color(mackeral);
+            color: color(mackerel);
           } // header#navigation nav ul li:last-child a:hover
         } // header#navigation nav ul li:last-child a
         
         &.selected a {
           font-weight: bold;
-          color: color(mackeral);
+          color: color(mackerel);
         } // header#navigation nav ul li.selected a
       } // header#navigation nav ul li
     } // header#navigation nav ul
