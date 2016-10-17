@@ -96,7 +96,7 @@ I have a set of payment method fingerprints.  I want to be able to rapidly
 determine whether a fingerprint is marked as fraudulent.
 
 The backing store for this is 2x256 Redis sets; 256 for each "good" and "bad"
-fingerprint status. Having 256 buckets per status lets us easily shard the data
+fingerprint status. Having 256 buckets per status lets us easily shard the data 
 when we need to. 
 
 Note that the number of partitions you need can be optimised. In this particular
