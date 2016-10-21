@@ -11,6 +11,28 @@ collection: guidelines
 1. Automatic Table of Contents Here
 {:toc}
 
+## Naming branches, commits, and pull-requests
+
+We orchestrate most of our work using a ticketing system (Jira). Assuming a
+ticket ID'd `AB-123` and titled "Install the Mr Fusion", 
+
+- The branch should be named `AB-123/install-the-mr-fusion`. The case of the
+  ticket ID and the slash are important.
+- All commits pertaining to the ticket should include the ticket ID in the
+  commit message. The preferred format is `AB-123: Install the Mr Fusion`.
+- The pull request title should include the ticket ID. The preferred format is as
+  for commit messages.
+
+_Rationale_: having a consistent convention enables integrations. For instance,
+the above ensures that commits and PRs are reported into Jira, making it
+possible for someone to traverse links to read a story's implementation instead
+of searching.
+
+Note that [git-whistles](https://github.com/mezis/git-whistles) will do most of
+this for you: naming the branch right, the PR when issuing it, and even pasting
+the ticket description into your PR for better reviewer comfort!
+
+
 ## Force Pushing
 
 Force pushing is one of the _destructive_ functions of git in that it unconditionally overwrites the remote repository with whatever you have locally, possibly overwriting any changes that a team member has pushed in the meantime.
