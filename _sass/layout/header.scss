@@ -73,7 +73,7 @@ header#navigation {
           transition-duration: 0.2s;
           
           &:hover {
-            color: color(mackeral);
+            color: color(mackerel);
           } // header#navigation nav ul li a:hover
           
           @include external-href('deliveroo.engineering') {
@@ -82,18 +82,18 @@ header#navigation {
             } // @external-href('deliveroo.engineering') header#navigation nav ul li a::after
           } // @external-href('deliveroo.engineering') header#navigation nav ul li a
         } // header#navigation nav ul li a
-        
+
         &:last-child a {
           color: color(aubergine);
           
           &:hover {
-            color: color(mackeral);
+            color: color(mackerel);
           } // header#navigation nav ul li:last-child a:hover
         } // header#navigation nav ul li:last-child a
         
         &.selected a {
           font-weight: bold;
-          color: color(mackeral);
+          color: color(mackerel);
         } // header#navigation nav ul li.selected a
       } // header#navigation nav ul li
     } // header#navigation nav ul
@@ -215,16 +215,7 @@ header#navigation {
           
           &:last-child {
             a {
-              color: white;
-              background-color: color(aubergine);
-              border-radius: 2px;
-              padding: 10px 10px 8px;
-              box-shadow: 0 2px 0 transparentize(color(mackeral), 0.9);
-              
-              &:hover {
-                color: white;
-                background-color: color(aubergine, 80%);
-              } // @min-width(tablet_large) header#navigation nav ul li:last-child a:hover
+              @include button($background-color: aubergine, $color: white)
             } // @min-width(tablet_large) header#navigation nav ul li:last-child a
           } // @min-width(tablet_large) header#navigation nav ul li:last-child
           

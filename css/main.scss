@@ -3,14 +3,30 @@
 ---
 @charset "utf-8";
 
-@import "local/normalize";
-@import "local/breakpoints";
-@import "local/color";
-@import "local/layout";
-@import "local/palette";
-@import "local/typography";
-@import "local/monokai";
-@import "local/default";
-@import "local/header";
-@import "local/footer";
-@import "local/content";
+// abstract files: variables, functions, mixins etc.
+@import "abstract/breakpoints";
+@import "abstract/color";
+@import "abstract/layout";
+@import "abstract/palette";
+@import "abstract/typography";
+
+// base files: reset, standard typography rules etc.
+@import "base/normalize";
+@import "base/default";
+
+// components: shared components such as buttons, form fields etc.
+@import "components/forms";
+
+// layout: global layout affecting all pages
+@import "layout/header";
+@import "layout/footer";
+@import "layout/content";
+
+// pages: page-specific layouts/overrides
+@import "pages/careers";
+
+// themes: global overrides to the appearance for themes, e.g. admin
+// ...
+
+// vendor: third-party supplied SCSS
+@import "vendor/monokai";

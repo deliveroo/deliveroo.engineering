@@ -531,6 +531,87 @@ foo.init();
 
 [^imports-first]: [JSCS: imports-first](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/imports-first.md)
 
+## Iterators and Generators
+
+### Don’t use iterators
+{: #dont-use-iterators}
+
+Prefer JavaScript's higher-order functions instead of loops like `for-in` or `for-of`[^no-iterator] [^no-restricted-syntax].
+You should always strive to write many small pure functions. For loops are less contained and more difficult to reason about.
+
+[^no-iterator]: [ESLint: no-iterator](http://eslint.org/docs/rules/no-iterator.html)
+[^no-restricted-syntax]: [ESLint: no-restricted-syntax](http://eslint.org/docs/rules/no-restricted-syntax)
+
+Use `map()` / `every()` / `filter()` / `find()` / `findIndex()` / `reduce()` / `some()` / ... to iterate over arrays, and `Object.keys()` / `Object.values()` / `Object.entries()` to produce arrays so you can iterate over objects.
+
+```javascript
+const numbers = [1, 2, 3, 4, 5];
+
+// bad
+let sum = 0;
+for (let num of numbers) {
+  sum += num;
+}
+sum === 15;
+
+// good
+const sum = numbers.reduce((total, num) => total + num, 0);
+sum === 15;
+```
+
+
+### Don’t use generators for now
+{: #dont-use-generators}
+
+They don't transpile well to ES5.
+
+### Generators and Spacing
+{: #generators-and-spacing}
+
+If you must use generators, or if you disregard [our advice](#dont-use-iterators), make sure their function signature is spaced properly[^generator-star-spacing]. `function` and `*` are part of the same conceptual keyword - `*` is not a modifier for `function`, `function*` is a unique construct, different from `function`.
+
+[^generator-star-spacing]: [ESLint: generator-star-spacing](http://eslint.org/docs/rules/generator-star-spacing)
+
+```js
+// bad
+function * foo() {
+}
+
+const bar = function * () {
+}
+
+const baz = function *() {
+}
+
+const quux = function*() {
+}
+
+function*foo() {
+}
+
+function *foo() {
+}
+
+// very bad
+function
+*
+foo() {
+}
+
+const wat = function
+*
+() {
+}
+
+// good
+function* foo() {
+}
+
+const foo = function* () {
+}
+```
+
+
 ## References
 
 This guide is taken in part from the following sources:
