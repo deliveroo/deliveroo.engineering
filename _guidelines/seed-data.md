@@ -100,8 +100,7 @@ end
 ```
 
   If calling `FactoryGirl.create(:user)` multiple times causes `ActiveRecord::RecordInvalid: Validation failed: Name 'John' is taken`.
-    Please use `sequence` for the `name` field, so every record will have a unique `name`.
-
+    Please use `sequence` for the `name` field or use `faker`, so every record will have a unique `name`.
 
 ```ruby
 # Good because 2.times { FactoryGirl.create(:user) } doesn't raise an exception
@@ -112,12 +111,23 @@ FactoryGirl.define do
 end
 ```
 
+You can use `faker` to achieve the same effect.
+
+```ruby
+# Good because 2.times { FactoryGirl.create(:user) } doesn't raise an exception
+FactoryGirl.define do
+  factory :user do
+    name { Faker::Name.name }
+  end
+end
+```
+
 ### Return a record in isolation to other records.
 
 Example
 
 ```ruby
-# Bad because relying on databse to have a specific record.
+# Bad because relying on database to have a specific record.
 FactoryGirl.define do
   factory :user do
     company  { Company.find_by_name('Apple') }
@@ -172,6 +182,16 @@ Please make sure calling the `create` on the factory always returns unique recor
 FactoryGirl.define do
   factory :user do
     sequence(:email) { |n| "bob@example_{n}.com") }
+  end
+end
+```
+You can also generate unique column values using `faker`
+
+```ruby
+# Good
+FactoryGirl.define do
+  factory :user do
+    email { Faker::Internet.email }
   end
 end
 ```
