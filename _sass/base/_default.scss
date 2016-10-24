@@ -1,0 +1,100 @@
+@mixin link($color: aubergine) {
+  text-decoration: none;
+  color: color($color, 75%);
+  transition-property: color, border;
+  transition-duration: 0.4s;
+  border-bottom: 2px solid transparentize(color($color, 75%), 0.8);
+  
+  &:hover {
+    color: color($color, 50%);
+    transition-duration: 0.2s;
+    border-color: transparentize(color($color, 50%), 0.4);
+  } // @link:hover
+} // @link
+
+a {
+  @include link(aubergine);
+  @include external-href('deliveroo.engineering') {
+    &::after {
+      @include image-replacement('/images/external_link_aubergine', 12px, 12px, $type: 'svg');
+      display: inline-block;
+      transition-property: opacity;
+      transition-duration: 0.4s;
+      opacity: 0.75;
+      content: '⬈';
+      margin-left: 5px;
+      margin-right: 1px;
+    } // @external-href('deliveroo.engineering') a::after
+
+    &:hover::after {
+      transition-duration: 0.2s;
+      opacity: 0.5;
+    } // @external-href('deliveroo.engineering') a:hover::after
+  } // @external-href('deliveroo.engineering') a
+} // a
+
+h1, h2, h3, h4 {
+  font-family: $title-font;
+  font-weight: 600;
+}
+
+h1 {
+  font-family: $title-font;
+  font-weight: 600;
+  font-size: font-size(large-heading);
+  line-height: 48px;
+  margin: 0.5em 0;
+  text-align: center;
+}
+
+h2 {
+  font-family: $title-font;
+  font-weight: 600;
+  font-size: font-size(medium-heading);
+}
+
+h3 {
+  font-size: font-size(small-heading);
+}
+
+h4 {
+  font-size: font-size(smallish-heading);
+}
+
+h5, h6 {
+  font-size: font-size(extra-small-heading);
+}
+
+h2, h3, h4 {
+  a.anchorjs-link {
+    border: none;
+  }
+}
+
+p.introduction {
+  font-size: font-size(large-body);
+}
+
+hr {
+  border-width: 1px 0 0;
+  border-style: solid;
+  border-color: color(anchovy, 40%);
+  margin: 2em 0;
+}
+
+code, kbd, pre, samp {
+  font-family: $monospace-font;
+}
+
+ul, ol {
+  box-sizing: border-box;
+  padding-left: 1.5em;
+  
+  li {
+    line-height: 1.5;
+    
+    & + li {
+      margin-top: 0.2em;
+    } // {ul, ol} li + li
+  } // {ul, ol} li
+} // {ul, ol}

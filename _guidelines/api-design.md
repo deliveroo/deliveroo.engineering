@@ -280,8 +280,6 @@ non-internal APIs; [this article](http://dec0de.me/2014/09/resn-routemaster/)
 also has a more elaborate explanation and example.
 
 
-----------
-
 ## API and domain modelling
 
 Defining good APIs (with respect to the principles outlined above) relies on
@@ -404,8 +402,6 @@ each other as a tree (or digraph) — but depending on the use case, this might 
 cumbersome over-normalisation.
 
 
-----------
-
 ## Documenting APIs
 
 API users are both developers and machines; therefore, you should:
@@ -415,8 +411,7 @@ API users are both developers and machines; therefore, you should:
 - Documented in a human-readable format. We recommend
   [Apiary](http://apiary.io/) and the [API Blueprint](http://apiblueprint.org/)
   standard `.apib` files.
-
-----------
+  
 
 ## Conventions on requests
 
@@ -620,7 +615,6 @@ Rationale:
 - Localisation is inherently a representation concern, and HTTP mandates such
   concerns to be addressed using protocol headers.
 
-----------
 
 ## Conventions on responses
 
@@ -720,8 +714,8 @@ A collection GET endpoint _should_ be of one of the forms:
 - `/{concept-plural}`, e.g. `/hotels`
 - `/{parent}/{id}/{concept-plural}`, e.g. `/hotels/1234/photos`
 
-Such endpoints _must_ return a representation of the collection, and embed a
-list of (possibly partial) representations of some of the entities.
+Such endpoints _must_ return a representation of the collection. They _must_
+link to a (possibly empty) list of entities.
 
 _Rationale_:
 In domain terms, an index endpoint actually returns a _view_ on the _collection_
@@ -735,8 +729,33 @@ A collection representation
 - _should_ link to relations `next` and `prev` for pagination purposes;
 - _must_ include the properties `page`, `per_page`, `total`
 
-In a collection representation, embedded representations _may_ be incomplete,
-but _should_ include at least a numeric `id` and the mandatory link to `self`.
+Example:
+
+```yml
+#> GET /hotels?checkin=2016-01-02&checkout=2016-01-09
+#< HTTP/1.0 200 OK
+page:     1
+per_page: 10
+total:    153277
+_links:
+  self:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
+  prev:     null
+  next:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+  hotels:
+    - href: "/hotels/1"
+    - href: "/hotels/2"
+```
+
+
+Exceptionally, a collection representation, _may_ embedded representations of
+the linked resources, which _may_ be incomplete, but _must_ include at least a
+the mandatory link to `self`.
+
+Note that as for other use cases of `_embedded`, there should be a very robust
+reason to do so as it makes using the API more complex (partial representations,
+caching issues, etc).
 
 Example:
 
@@ -747,18 +766,25 @@ page:     1
 per_page: 10
 total:    153277
 _links:
-  self:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
-  prev:   null
-  next:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+  self:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=1"
+  prev:     null
+  next:   
+    href:   "/hotels?checkin=2016-01-02&checkout=2016-01-09&page=2"
+  hotels:
+    - href: "/hotels/1"
+    - href: "/hotels/2"
 _embedded:
   hotels:
     - id: 1
       _links:
-        self: "/hotels/1"
+        self: 
+          href:   "/hotels/1"
     ...
     - id: 10
       _links:
-        self: "/hotels/2"
+        self: 
+          href:   "/hotels/2"
 ```
 
 
@@ -1049,10 +1075,8 @@ this is not mandatory.
 *Rationale*: latency is more important than bandwidth savings for most internal
 APIs; therefore the overhead of compression is seldom justified.
 
-----------
 
 {: #external-facing}
-
 ## External-facing APIs
 
 
@@ -1101,11 +1125,45 @@ maintainability of _our_ software.
    version of a set of public-facing APIS should be an entirely new domain (e.g.
    `v2.my-api.example.com`), with entirely segregated infrastructure.
 
-----------
 
 ## Tools of the trade
 
-----------
+We strongly recommend using Rails 5 to build API services, as per the [service guidelines](http://deliveroo.engineering/guidelines/services/).
+Rails's [API-only mode](http://edgeguides.rubyonrails.org/api_app.html) has
+solid support for API building.
+
+If the API service also has a user interface, it is suggested to make the API
+part a mounted [Rails engine](http://guides.rubyonrails.org/engines.html) using
+API mode.
+
+Using Sinatra is _not_ recommended as there is no significante performance
+benefit over Rails, it lacks a router (which means all link URLs must be
+manually built), and most non-trivial Sinatra apps end up reinventing MVC.
+
+Using Grape is _not_ recommended as it lacks a router as well.
 
 ## Further reading
 
+### Principles
+
+  - [RESTful API design](http://restful-api-design.readthedocs.org/)
+  - [Representation state transfer on Wikipedia](http://en.wikipedia.org/wiki/Representational_state_transfer)
+  - [HATEOAS on Wikipedia](http://en.wikipedia.org/wiki/HATEOAS)
+
+### Examples of decently well-thought-out APIs and guidelines
+
+  - [GoCardless API design](https://github.com/gocardless/http-api-design)
+  - [GitHub API design](https://developer.github.com)
+
+### Context and debate
+
+  - [Your API Versioning is Wrong](http://www.troyhunt.com/2014/02/your-api-versioning-is-wrong-which-is.html)
+  - [The Hypermedia Debate](http://www.foxycart.com/blog/the-hypermedia-debate)
+  - [Does a standard JSON REST API violate HATEOAS?](http://stackoverflow.com/questions/9055197/splitting-hairs-with-rest-does-a-standard-json-rest-api-violate-hateoas)
+  - [Building Hypermedia APIs in Ruby/Rails](https://product.reverb.com/hal-siren-rabl-roar-garner-building-hypermedia-apis-in-ruby-rails-ad73f36fbd84)
+
+### More on JSON APIs
+
+  - [JSON-HAL Draft Spec](http://tools.ietf.org/html/draft-kelly-json-hal)
+  - [Rest and Hypermedia APIs](http://alphahydrae.com/2013/06/rest-and-hypermedia-apis/)
+  - [The JSON-API spec](http://jsonapi.org)

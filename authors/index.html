@@ -1,0 +1,15 @@
+---
+layout: default
+---
+<h1>Authors</h1>
+<p class="tagline">Members of Deliveroo's engineering team who’ve contributed to the site.</p>
+
+<section id="authors">
+  {% for author in site.authors %}
+    <div class="author">
+      <img src="{{ author.portrait }}" alt="A picture of {{ author.name }}" class="portrait">
+      <h3><a href="{{ site.baseurl }}{{ author.url }}">{{ author.name }}</a></h3>
+      <p>{{ author.jobtitle }}</p>
+    </div>
+  {% endfor %}
+</section>

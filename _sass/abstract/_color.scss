@@ -1,0 +1,43 @@
+@function color($key, $lighten: null, $darken: null, $transparency: null) {
+  @if map-has-key($colors, $key) {
+    // if a lighten argument was passed, mix that colour with white
+    @if $lighten != null {
+      @return mix(map-get($colors, $key), white, $lighten);
+    }
+
+    // if a darken argument was passed, mix that colour with black
+    @if $darken != null {
+      @return mix(map-get($colors, $key), black, $darken);
+    }
+    
+    // if a transparency argument was passed, transparentize;
+    // N.B. Sass uses 1.0 to mean 100% transparent, not 100% opaque
+    @if $transparency != null {
+      @return transparentize(map-get($colors, $key), 1 - $transparency);
+    }
+    
+    // otherwise just return the colour
+    @return map-get($colors, $key);
+  }
+  
+  @error "Unknown color `#{$key}` in $colors.";
+  @return null;
+} // @function color()
+
+// usage:
+// color(pumpkin)                          => #ff8100
+// color(beetroot, 75%)                    => #ea3f72
+// color(burger_sauce, $transparency: 0.2) => rgb(255, 173, 148, 0.8)
+// color(teal, $darken: 20%)               => #00988c
+//
+// or if you prefer, actual usage:
+//
+// div.foo {
+//   background-color: color(seaweed, 25%);
+// }
+//
+// =>
+//
+// div.foo {
+//   background-color: #bfdad9;
+// }

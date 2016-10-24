@@ -1,0 +1,7 @@
+<span class="byline">
+  Posted
+  {% if include.author %}
+    by <span class="author">{{ include.author }}</span>
+  {% endif %}
+  on <time datetime="{{ include.date | date_to_xmlschema }}" class="published">{{ include.date | date: "%A, %B %-d, %Y" }}</time>
+</span>

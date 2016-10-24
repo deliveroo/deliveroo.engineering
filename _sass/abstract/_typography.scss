@@ -1,0 +1,50 @@
+@function font-size($size) {
+  @if map-has-key($font-sizes, $size) {
+    @return map-get($font-sizes, $size);
+  }
+  
+  @error "Unknown font size `#{$size}` in $font-sizes.";
+  @return null;
+} // @function font-size()
+
+@mixin font-face-shim($family, $file, $weight) {
+  @font-face {
+      font-family: '#{$family}';
+      src: url('fonts/#{$file}.woff');
+      font-weight: $weight;
+      font-style: normal;
+  }
+}
+
+@mixin text-overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+$font-sizes: (
+  extra-small-heading: 18px,
+  smallish-heading:    20px,
+  small-heading:       22px,
+  medium-heading:      28px,
+  large-heading:       40px,
+  extra-large-heading: 60px,
+  large-body:          18px,
+  medium-body:         16px,
+  small-body:          14px,
+  smallest-body:       12px
+);
+
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-thin', 100);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-light', 200);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-semilight', 300);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-regular', 400);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-medium', 500);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-semibold', 600);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-bold', 700);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-extrabold', 800);
+@include font-face-shim('stratos', 'stratos/stratosdeliverooweb-black', 900);
+
+$default-font: 'adelle-sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$title-font: 'Stratos', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$monospace-font: 'Menlo', 'Ubuntu Mono', 'Lucida Console', 'Monaco', monospace;

@@ -1,13 +1,18 @@
 ---
 layout: default
 ---
-<h2>Guidelines</h2>
-<ul>
+<h1>Engineering Guidelines</h1>
+<p class="tagline">A directory of in-house styles and guidelines for how we build things at Deliveroo.</p>
+
+<section id="guidelines">
   {% for _page in site.guidelines %}
-    {% if _page.title %}
-      <li>
-        <a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a>
-      </li>
-    {% endif %}
+    <div class="guideline">
+      <h3><a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a></h3>
+      <p>{{ _page.subtitle }}</p>
+      <p><a href="{{ _page.url }}" title="{{ _page.title }}">Read more…</a></p>
+    </div>
+    {% unless forloop.index == site.guidelines.size %}
+      <hr>
+    {% endunless %}
   {% endfor %}
-</ul>
+</section>

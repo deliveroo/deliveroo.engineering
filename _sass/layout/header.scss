@@ -1,0 +1,237 @@
+// these fix an android/webkit bug with the navigation menu
+@-webkit-keyframes bugfix { 
+  from { padding: 0; } 
+  to { padding: 0; } 
+}
+
+body { 
+  -webkit-animation: bugfix infinite 1s; 
+}
+
+@-webkit-keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}  
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+      to { opacity: 1; }
+}
+
+$navigation-padding:  10px;
+$hamburger-menu-size: 17px;
+$navbar-height:       60px;
+
+header#navigation {
+  background-color: white;
+  box-shadow: 0 0 2px color(soba);
+  min-height: $navbar-height;
+  
+  nav {
+    display: -webkit-flex;
+    -webkit-align-items: center;
+    display: flex;
+    align-items: center;
+    
+    ul {
+      @include unstyled-list;
+      margin: 10px 0;
+      display: -webkit-flex;
+      display: flex;
+      
+      li {
+        &#logo {
+          border: none;
+          padding-left: 0;
+          
+          a {
+            @include image-replacement('/images/logo_engineering',
+              $background-width: 175px,
+              $background-height: 40px,
+              $type: 'svg') {
+              width: 175px;
+              height: 40px;
+              background-position: center;
+            };
+            border: none;
+            margin: 0 auto;
+          } // header#navigation nav ul li#logo a
+        } // header#navigation nav ul li#logo
+        
+        & + li {
+          margin-top: 0;
+        } // header#navigation nav ul li + li
+        
+        a {
+          border: none;
+          color: color(anchovy);
+          font-family: $default-font;
+          font-size: font-size(medium-body);
+          font-weight: normal;
+          
+          transition-property: color, background;
+          transition-duration: 0.2s;
+          
+          &:hover {
+            color: color(mackerel);
+          } // header#navigation nav ul li a:hover
+          
+          @include external-href('deliveroo.engineering') {
+            &::after {
+              content: none;
+            } // @external-href('deliveroo.engineering') header#navigation nav ul li a::after
+          } // @external-href('deliveroo.engineering') header#navigation nav ul li a
+        } // header#navigation nav ul li a
+
+        &:last-child a {
+          color: color(aubergine);
+          
+          &:hover {
+            color: color(mackerel);
+          } // header#navigation nav ul li:last-child a:hover
+        } // header#navigation nav ul li:last-child a
+        
+        &.selected a {
+          font-weight: bold;
+          color: color(mackerel);
+        } // header#navigation nav ul li.selected a
+      } // header#navigation nav ul li
+    } // header#navigation nav ul
+
+    @include min-width(tablet_small) {
+      padding: 0 20px;
+    } // @max-width(tablet_small) header#navigation nav
+  
+    @include max-width(tablet_large) {
+      -webkit-justify-content: center;
+      -webkit-align-items: flex-start;
+      justify-content: center;
+      align-items: flex-start;
+
+      input#menu {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+        
+        &:checked {
+          & ~ ul {
+            li {
+              display: block;
+              animation: fadeIn 0.5s;
+              
+              &#logo {
+                animation: none;
+              } // @max-width(tablet_large) header#navigation nav input#menu:checked ~ ul li#logo
+            } // @max-width(tablet_large) header#navigation nav input#menu:checked ~ ul li
+          } // @max-width(tablet_large) header#navigation nav input#menu:checked ~ ul
+        } // @max-width(tablet_large) header#navigation nav input#menu:checked
+      } // @max-width(tablet_large) header#navigation nav input#menu
+
+      label#checkbox-menu {
+        @include image-replacement('/images/hamburger',
+          $background-width: $hamburger-menu-size,
+          $background-height: $hamburger-menu-size,
+          $height: 40px,
+          $type: 'svg') {
+          background-position: center;
+        };
+        margin: 10px 0 10px 10px;
+        cursor: pointer;
+        user-select: none;
+      } // @max-width(tablet_large) header#navigation nav label#checkbox-menu
+      
+      ul {
+        -webkit-flex-direction: column;
+        -webkit-justify-content: space-between;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        
+        li {
+          display: none;
+          line-height: 30px;
+          margin-left: -1 * ($hamburger-menu-size + $navigation-padding);
+          padding-left: $navigation-padding;
+          border-left: 4px solid transparent;
+          
+          &.selected {
+            border-color: color(aubergine);
+          } // @max-width(tablet_large) header#navigation nav ul li.selected
+        
+          &#logo {
+            animation: none;
+            -webkit-flex: 1;
+            flex: 1;
+            display: block;
+            text-align: center;
+            padding-right: $hamburger-menu-size + $navigation-padding;
+            margin-left: 0;
+          
+            & + li {
+              margin-top: $navigation-padding * 2;
+            } // @max-width(tablet_large) header#navigation nav ul li#logo + li
+          
+            a {
+              span.wordmark {
+                display: none;
+              } // @max-width(tablet_large) header#navigation nav ul li#logo a span.wordmark
+            } // @max-width(tablet_large) header#navigation nav ul li#logo a 
+          } // @max-width(tablet_large) header#navigation nav ul li#logo
+        } // @max-width(tablet_large) header#navigation nav ul li
+      } // @max-width(tablet_large) header#navigation nav ul
+    } // @max-width(tablet_large) header#navigation nav
+    
+    @include min-width(tablet_large) {
+      input#menu,
+      label#checkbox-menu {
+        display: none;
+      } // @min-width(tablet_large) header#navigation nav {input#menu, label#checkbox-menu}
+      
+      ul {
+        @include auto-width(desktop_larger);
+        width: 100%;
+        
+        li {
+          -webkit-flex: 1;
+          flex: 1;
+          text-align: center;
+          line-height: $navbar-height;
+          height: $navbar-height;
+          
+          &#logo {
+            -webkit-flex: 2;
+            flex: 2;
+
+            a {
+              margin: 0 0 0 5px;
+              height: $navbar-height;
+              background-position: center 8px;
+            } // @min-width(tablet_large) header#navigation nav ul li#logo a
+          } // @min-width(tablet_large) header#navigation nav ul li#logo
+          
+          a {
+            border-bottom: 2px solid transparent;
+          } // @min-width(tablet_large) header#navigation nav ul li a
+          
+          &:last-child {
+            a {
+              @include button($background-color: aubergine, $color: white)
+            } // @min-width(tablet_large) header#navigation nav ul li:last-child a
+          } // @min-width(tablet_large) header#navigation nav ul li:last-child
+          
+          &.selected {
+            a {
+              display: inline-block;
+              border-color: color(aubergine);
+              height: $navbar-height - 2px;
+            } // @min-width(tablet_large) header#navigation nav ul li.selected a
+          } // @min-width(tablet_large) header#navigation nav ul li.selected
+        } // @min-width(tablet_large) header#navigation nav ul li
+      } // @min-width(tablet_large) header#navigation nav ul
+    } // @min-width(tablet_large) header#navigation nav
+    
+    @include min-width(desktop_small) {
+      padding: 0 40px;
+    } // @min-width(desktop_small) header#navigation nav
+  } // header#navigation nav
+} // header#navigation
