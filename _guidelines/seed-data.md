@@ -65,3 +65,81 @@ If there are performance problems with the code then they should be found on a s
 Testing migrations can also be tricky as sometimes the data in real databases isn't quite as clean as the idealised seed data on your machine. These problems will surface when run in a staging or pre-production environment and the problematic data can be explored there.
 
 Keeping migrations atomic or idempotent will ensure that if there are problems on the full dataset that they can be re-run once the problem is resolved.
+
+
+## Creating Factories
+
+### Return valid records. Every Time!
+
+When creating factories, set the minimum required columns to return a valid record.
+
+For Example:
+
+```ruby
+
+FactoryGirl.define do
+  factory :user do
+    name "John"
+  end
+end
+
+```
+
+`FactoryGirl.create(:user)`  => should return a valid user! Every time!
+
+  If we are getting an `ActiveRecord::RecordInvalid: Validation failed: Surname type can't be blank`.
+    Please add a reasonable default for the `surname` field.
+
+
+  If calling `FactoryGirl.create(:user)` multiple times causes `ActiveRecord::RecordInvalid: Validation failed: Name 'John' is taken`.
+    Please use `sequence` for the `name` field.
+
+### Return a record in isolation to other records.
+
+Example
+
+```ruby
+FactoryGirl.define do
+  factory :user do
+    company  { Company.find_by_name('Apple') }
+  end
+end
+
+```
+
+We are relying on the fact that a `Company` record with the name "Apple" must be created for us to use this factory,
+
+Why not this?
+
+
+```ruby
+FactoryGirl.define do
+  factory :user do
+    assication :company
+  end
+end
+
+```
+So `FactoryGirl.create(:user)` wouldn't rely on the existing data but instead will create a company record if necessary.
+
+
+### Return unique records.
+
+Make sure that calling `FactoryGirl.create` multiple times will return unique records.
+
+Example
+
+
+```ruby
+
+FactoryGirl.define do
+  factory :user do
+    initialize_with { User.find_by_email("bob@example.com") }
+  end
+end
+```
+
+Not only we are relying on the fact that our user factory needs another user to be created before but also
+everytime we call `FactoryGirl.create(:user)` we will get the same user which is not the expected behaviour for a Factory.
+
+Please make sure calling the `create` on the factory always returns unique records.
