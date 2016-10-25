@@ -14,66 +14,79 @@ collection: guidelines
 ## Model classes
 
 Make classes as Rails-y as possible:
+
 - Use `ActiveModel::Validations` (in Rails 3) or `ActiveModel::Model` (in Rails
   4+)
 - Implement `find_by(id:)`, `find_by(foobar:)`, `save`, `save!`
 
-Do _not_ just "use redis" in random classes, just like you wouldn't write SQL
+Do _not_ just "use redis" in random classes, just like you wouldn’t write SQL
 queries in, say, a controller. Instead, wrap your Redis usage in a model class.
 
 
 ## Key naming
 
-Key separator is `:`.
-
-The first component should be the underscored name of the model class. 
+- Separate keys with `:`
+- The first component should be the underscored name of the model class
  
-Example: `DriverStatus` → `driver_status:{driver_id}`
+For example:
+
+```
+# DriverStatus
+driver_status:{driver_id}
+```
 
 High-cardinality key components should be at then end (so we can look at the
-"tree of keys” meaningfully) 
+"tree of keys” meaningfully). So, for a set of order IDs…
  
-- Good: `users:order_ids:{user_id}` (for a set of order IDs)
-- Bad: `users:{user_id}:order_ids`
+Good:
+ 
+```
+users:order_ids:{user_id}
+```
+
+Bad:
+
+```
+users:{user_id}:order_ids
+```
 
 ## Data modeling
 
 It is acceptable, but not required to have exactly one hash key per record.
+The one-hash-per-record approach mimics ActiveRecord more closely, but can 
+defeat the purpose of using Redis—it has faster, more advanced data structures.
+ 
+Like other non-relational stores it’s often best to store data in a format 
+that’s friendly to the heaviest queries: the example below illustrates a case 
+where each record has only an ID an an enumerated field, and uses sets instead. 
+Another typical approach is to store one hash per record, but also have "index" 
+keys; for instance, one could speed up geographical lookup of restaurants by…
 
-The one-hash-per-record approach mimics ActiveRecord more closely, but can defeat
-the purpose of using Redis—it has faster, more advanced data structures. Like
-other non-relational stores it's often best to store data in a format that's friendly
-to the heaviest queries: the example below illustrates a case where each record
-has only an ID an an enumerated field, and uses sets instead.  Another typical
-approach is to store one hash per record, but also have "index" keys; for
-instance, one could speed up geographical lookup of restaurants by
-
-- storing each restaurant's data in a HASH key;
-- using a ZSET of IDs scored by geohashes for extremely fast bounding-box
-  searches.
+- storing each restaurant’s data in a hash key;
+- using a sorted set of IDs scored by geohashes for extremely fast bounding-box
+  searches
 
 
 ## Memory usage
 
 When designing storage for a Redis-backed models, it is advisable to be aware if
-how efficient Redis data structures are if you're going to store a lot of data.
+how efficient Redis data structures are if you’re going to store a lot of data.
 
 Key tidbits:
 
 - One-hash-per-record can be very inefficient, as the hash _keys_ are repeated
-  for each record. Columnar storage might be prefered, or (if the whole hash
-  will always be needed) packing record dat awith MessagePack and replacing long
-  keys with shoter ones.
+  for each record. Columnar storage might be preferred, or (if the whole hash
+  will always be needed) packing record data with MessagePack and replacing long
+  keys with shorter ones.
 - While querying large sets, sorted sets, of hashes is normally faster than
   querying the root keyspace (e.g. for membership checks), be aware that those
   data structures have a memory overhead.
 
-  Because small data structures get [stored
-  differently](http://redis.io/topics/memory-optimization), this overhead can be
-  lower when the individual data structures are small (~100 items). We've
-  written an [article on storing session
-  data](http://deliveroo.engineering/2016/10/07/optimising-session-key-storage.html) which outlines an extreme case
-  of this.
+Because small data structures get [stored
+differently](http://redis.io/topics/memory-optimization), this overhead can be
+lower when the individual data structures are small (~100 items). We’ve
+written an [article on storing session data](http://deliveroo.engineering/2016/10/07/optimising-session-key-storage.html) which outlines an extreme case
+of this.
 
 
 ## Scalability and sharding
@@ -88,7 +101,7 @@ support](http://redis.io/topics/cluster-tutorial) in Redis 3.  Splitting large
 datasets into multiple keys (partitions) means they can easily be sharded across a cluster,
 when we need to, without major refactoring.
 
-Partitioning should be considered afor any data structure that exceeds a few
+Partitioning should be considered for any data structure that exceeds a few
 thousand entries (lists, sets, etc), and is likely to grow as time passes or the
 business grows.
 
