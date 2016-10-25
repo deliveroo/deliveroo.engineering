@@ -33,6 +33,19 @@ a {
   } // @external-href('deliveroo.engineering') a
 } // a
 
+code, kbd, pre, samp {
+  font-family: $monospace-font;
+}
+
+code {
+  font-size: font-size(small-body);
+  
+  &.highlighter-rouge {
+    background-color: color(anchovy, 20%);
+    padding: 2px;
+  }
+}
+
 h1, h2, h3, h4 {
   font-family: $title-font;
   font-weight: 600;
@@ -51,18 +64,34 @@ h2 {
   font-family: $title-font;
   font-weight: 600;
   font-size: font-size(medium-heading);
+  
+  code {
+    font-size: font-size(small-heading);
+  }
 }
 
 h3 {
   font-size: font-size(small-heading);
+  
+  code {
+    font-size: font-size(smallish-heading);
+  }
 }
 
 h4 {
   font-size: font-size(smallish-heading);
+  
+  code {
+    font-size: font-size(extra-small-heading);
+  }
 }
 
 h5, h6 {
   font-size: font-size(extra-small-heading);
+  
+  code {
+    font-size: font-size(extra-small-heading);
+  }
 }
 
 h2, h3, h4 {
@@ -80,10 +109,6 @@ hr {
   border-style: solid;
   border-color: color(anchovy, 40%);
   margin: 2em 0;
-}
-
-code, kbd, pre, samp {
-  font-family: $monospace-font;
 }
 
 ul, ol {

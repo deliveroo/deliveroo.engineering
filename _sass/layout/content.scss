@@ -12,15 +12,6 @@ body {
     font-size: font-size(medium-body);
     line-height: 1.5;
     
-    code {
-      font-size: font-size(small-body);
-      
-      &.highlighter-rouge {
-        background-color: color(anchovy, 20%);
-        padding: 2px;
-      } // body main code.highlighter-rouge
-    } // body main code
-    
     > h1,
     > h2,
     > p,
@@ -541,4 +532,8 @@ ol#markdown-toc {
       text-align: right;
     } // ol#markdown-toc li:before
   } // ol#markdown-toc li
+  
+  code {
+    font-size: font-size(smallest-body);
+  } // ol#markdown-toc code
 } // ol#markdown-toc
