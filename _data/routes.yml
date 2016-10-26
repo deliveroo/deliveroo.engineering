@@ -3,7 +3,7 @@ articles:    "/articles/"
 guidelines:  "/guidelines/"
 repository:  "https://github.com/deliveroo/deliveroo.engineering"
 design_blog: "http://deliveroo.design/"
-food_blog:   "http://deliveroo.co.uk/blog"
+food_blog:   "http://blog.deliveroo.co.uk"
 navigation:
   - url:   '/articles/'
     title: 'Articles'
