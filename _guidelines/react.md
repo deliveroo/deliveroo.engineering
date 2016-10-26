@@ -13,7 +13,9 @@ collection: guidelines
 
 
 ## Class vs `React.createClass` vs stateless
-If you have internal state and/or refs, prefer `class extends React.Component` over `React.createClass` unless you have a very good reason to use mixins. eslint: [`react/prefer-es6-class`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-es6-class.md) [`react/prefer-stateless-function`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md)
+If you have internal state and/or refs, prefer `class extends React.Component` 
+over `React.createClass` unless you have a very good reason to use mixins 
+[^prefer-es6-class], [^prefer-stateless-function].
 
 ```
 // bad
@@ -33,9 +35,14 @@ class Listing extends React.Component {
 }
 ```
 
-And if you don't have state or refs, prefer normal functions (not arrow functions) over classes:
+[^prefer-es6-class]: [ESLint: prefer-es6-class](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-es6-class.md)
+[^prefer-stateless-function]: [ESLint: prefer-stateless-function](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/prefer-stateless-function.md)
 
-> Why? When debugging in the good example below the stack trace will include the function name whereas in the bad example it will say its from an anonymous function
+
+If you don't have state or refs, prefer normal functions (not arrow functions) 
+over classes. When debugging in the good example below the stack trace will 
+include the function name whereas in the bad example it will say it’s from an 
+anonymous function:
 
 ```
 // bad
@@ -58,10 +65,11 @@ function Listing({ hello }) {
 
 ## Quotes
 
-Always use double quotes (`"`) for JSX attributes, but single quotes for all other JS. eslint: [`jsx-quotes`](http://eslint.org/docs/rules/jsx-quotes)
-
-> Why? JSX attributes [can't contain escaped quotes](http://eslint.org/docs/rules/jsx-quotes), so double quotes make contractions like `"don't"` easier to type.
-> Regular HTML attributes also typically use double quotes instead of single, so JSX attributes mirror this convention.
+Always use double quotes (`"`) for JSX attributes, and single quotes for all 
+other JS [^jsx-quotes]. JSX attributes [can’t contain escaped quotes](http://eslint.org/docs/rules/jsx-quotes), so double quotes make 
+contractions like `"don't"` easier to type. Regular HTML attributes also 
+typically use double quotes instead of single, so JSX attributes mirror this 
+convention:
 
 ```
 // bad
@@ -75,8 +83,9 @@ Always use double quotes (`"`) for JSX attributes, but single quotes for all oth
 
 // good
 <Foo style={{ left: '20px' }} />
-
 ```
+
+[^jsx-quotes]: [ESLint: jsx-quotes](http://eslint.org/docs/rules/jsx-quotes)
 
 ## Props
 
@@ -112,7 +121,8 @@ Omit the value of the prop when it is explicitly `true`. [^jsx-boolean-value]
 
 [^jsx-boolean-value]: [ESLint: react/jsx-boolean-value](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-boolean-value.md)
 
-Avoid using an array index as `key` prop, prefer a unique ID: using the index as a key is an [anti-pattern](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318).
+Avoid using an array index as `key` prop, prefer a unique ID; using the index 
+as a key is an [anti-pattern](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318).
 
 ```
 // bad
@@ -134,7 +144,7 @@ Avoid using an array index as `key` prop, prefer a unique ID: using the index as
 
 ## Refs
 
-Always use ref callbacks. eslint: [`react/no-string-refs`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-string-refs.md)
+Always use ref callbacks [^no-string-refs].
 
 ```
 // bad
@@ -148,9 +158,11 @@ Always use ref callbacks. eslint: [`react/no-string-refs`](https://github.com/ya
 />
 ```
 
+[^no-string-refs]: [ESLint: no-string-refs](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/no-string-refs.md)
+
 ## Parentheses
 
-Wrap JSX tags in parentheses when they span more than one line. eslint: [`react/wrap-multilines`](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/wrap-multilines.md)
+Wrap JSX tags in parentheses when they span more than one line [^wrap-multilines].
 
 ```
 // bad
@@ -175,3 +187,5 @@ render() {
   return <MyComponent>{body}</MyComponent>;
 }
 ```
+
+[^wrap-multilines]: [ESLint: wrap-multilines](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/wrap-multilines.md)
