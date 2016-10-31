@@ -65,3 +65,135 @@ If there are performance problems with the code then they should be found on a s
 Testing migrations can also be tricky as sometimes the data in real databases isn't quite as clean as the idealised seed data on your machine. These problems will surface when run in a staging or pre-production environment and the problematic data can be explored there.
 
 Keeping migrations atomic or idempotent will ensure that if there are problems on the full dataset that they can be re-run once the problem is resolved.
+
+
+## Creating Factories
+
+### Return valid records. Every Time!
+
+When creating factories, set the minimum required columns to return a valid record.
+
+For Example:
+
+```ruby
+# Bad because FactoryGirl.create(:user) throws and exception!
+FactoryGirl.define do
+  factory :user do
+    name "John"
+  end
+end
+```
+
+`FactoryGirl.create(:user)` should return a valid user! Every time!
+
+  If we are getting an `ActiveRecord::RecordInvalid: Validation failed: Surname type can't be blank`.
+    Please add a reasonable default for the `surname` field.
+
+```ruby
+# Good because FactoryGirl.create(:user) returns a valid record.
+FactoryGirl.define do
+  factory :user do
+    name "John"
+    surname "Lennon"
+  end
+end
+```
+
+  If calling `FactoryGirl.create(:user)` multiple times causes `ActiveRecord::RecordInvalid: Validation failed: Name 'John' is taken`.
+    Please use `sequence` for the `name` field or use `faker`, so every record will have a unique `name`.
+
+```ruby
+# Good because 2.times { FactoryGirl.create(:user) } doesn't raise an exception
+FactoryGirl.define do
+  factory :user do
+    sequence(:name) { "John the #{n}" }
+  end
+end
+```
+
+You can use `faker` to achieve the same effect.
+
+```ruby
+# Good because 2.times { FactoryGirl.create(:user) } doesn't raise an exception
+FactoryGirl.define do
+  factory :user do
+    name { Faker::Name.name }
+  end
+end
+```
+
+### Return a record in isolation to other records.
+
+Example
+
+```ruby
+# Bad because relying on database to have a specific record.
+FactoryGirl.define do
+  factory :user do
+    company  { Company.find_by_name('Apple') }
+  end
+end
+```
+Never rely on the database being in a specific state. In the example above, we are relying on the fact that a `Company` record with the name "Apple" must be created for us to use this factory.
+
+Why not this?
+
+
+```ruby
+# Good
+FactoryGirl.define do
+  factory :user do
+    association :company
+  end
+end
+
+FactoryGirl.define do
+  factory :company do
+    name "Apple"
+  end
+end
+```
+So `FactoryGirl.create(:user)` wouldn't rely on the existing data but instead will create a company record - using company factory- if necessary.
+
+
+### Return unique records.
+
+Make sure that calling `FactoryGirl.create` multiple times will return unique records.
+
+Example
+
+
+```ruby
+# Bad - every created user will have the same id, email address etc.
+FactoryGirl.define do
+  factory :user do
+    initialize_with { User.find_by_email("bob@example.com") }
+  end
+end
+```
+
+Not only we are relying on the fact that our user factory needs another user to be created before but also
+everytime we call `FactoryGirl.create(:user)` we will get the same user which is not the expected behaviour for a Factory.
+
+Please make sure calling the `create` on the factory always returns unique records.
+
+```ruby
+# Good
+FactoryGirl.define do
+  factory :user do
+    sequence(:email) { |n| "bob@example_{n}.com") }
+  end
+end
+```
+You can also generate unique column values using `faker`
+
+```ruby
+# Good
+FactoryGirl.define do
+  factory :user do
+    email { Faker::Internet.email }
+  end
+end
+```
+
+So we will have a unique record each time we called :create.
