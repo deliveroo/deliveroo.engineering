@@ -34,6 +34,9 @@ Recommendation: favour explicit terms over lingo, and expand acronyms.
 - Good: _Minimum order value_, _Time of day_.
 - Bad: _MOV_, _TOD_.
 
+In non-code contexts (wiki pages, emails), it's fine to use abbreviations as
+long as the first use in the document is expanded.
+  
 
 #### Use transparent names
 
