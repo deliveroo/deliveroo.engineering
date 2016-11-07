@@ -439,6 +439,34 @@ Remarks:
   to store configuration in a similar style.
 
 
+### Static v dynamic configuration
+
+Note that:
+
+1. The environment is limited to 16kB on Heroku. If it fills up, and there's an
+   emergency that, say, requires we change a database URL, we can get screwed.
+2. **Changing the environment restarts all servers**. At peak traffic, this will
+   frequently result in degraded service during a warmup period. It's a risky
+   operation in any event, as risky as a deploy.
+
+The environment should be reserved for static configuration (enough for the
+service to function). Dynamic configuration is a higher-level feature and can be
+achieved in a number of ways (feature flagging; dedicated settings store in a
+database for instance).
+
+Good: using the environment for
+
+- Resource handles to the database, cache, and other backing services
+- Credentials to external services such as Amazon S3 or Twitter
+- Per-environment values such as the canonical hostname for the deploy
+
+Bad:
+
+- List of featured products on a homepage.
+- Per-country limits on vouchers.
+- Instagram handles.
+
+
 ## Continuous Deployment
 
 Services should strive to be deployed via Continuous Deployment (CD) when master

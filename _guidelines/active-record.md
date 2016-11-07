@@ -214,6 +214,7 @@ event bus[^bus] to refresh subscribers.
 [^cache]: [Clearing the Rails cache in the Deliveroo monolith](https://makandracards.com/deliveroo/41342-orderweb-clearing-the-rails-cache) (private)
 [^bus]: [Event bus basics at Deliveroo](https://makandracards.com/deliveroo/41074-event-bus-basics-howto) (private)
 
+
 #### Zero-downtime migrations
 
 Because we do rolling deploys (with Heroku's "preboot" feature), both the old
@@ -234,6 +235,25 @@ Okay:
   request. The old code must work with and without migrations.
 - This pattern makes the most sense when _adding_ tables or columns that are not
   used by old code, but it's not required.
+
+
+#### Avoiding migration issues
+
+Migrations can cause major issues when run in a production environment, and
+should always be reviewed with extreme care.
+
+In particular, be on the lookout for:
+
+- table size. Some operations on a table cause a rewrite, e.g. adding a column
+  with a default value, or changing a column type. If the table is large or has
+  many indices, this can result in downtime.
+- locking. Adding an index can lock a table for writes for a long time.
+  Indices can usually be added in the background (`algorithm: :concurrently` in
+  Rails 4+)
+- wide tables. Tables with many columns (10+) are a strong smell of poor
+  modeling/factoring. It's likely multiple domain models have been "merged" and
+  parts of the tables have different lifecycles. This can result in many issues,
+  usually performance or contention related.
 
 
 ### Query objects
