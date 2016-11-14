@@ -244,13 +244,13 @@ should always be reviewed with extreme care.
 
 In particular, be on the lookout for:
 
-- table size. Some operations on a table cause a rewrite, e.g. adding a column
-  with a default value, or changing a column type. If the table is large or has
-  many indices, this can result in downtime.
-- locking. Adding an index can lock a table for writes for a long time.
+- **Table size.** Some operations on a table cause a rewrite, e.g. adding a
+  column with a default value, or changing a column type. If the table is large
+  or has many indices, this can result in downtime.
+- **Locking.** Adding an index can lock a table for writes for a long time.
   Indices can usually be added in the background (`algorithm: :concurrently` in
   Rails 4+)
-- wide tables. Tables with many columns (10+) are a strong smell of poor
+- **Wide tables.** Tables with many columns (10+) are a strong smell of poor
   modeling/factoring. It's likely multiple domain models have been "merged" and
   parts of the tables have different lifecycles. This can result in many issues,
   usually performance or contention related.
