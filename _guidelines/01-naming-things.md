@@ -60,13 +60,14 @@ Recommendation: give names that reflect the domain and usage:
 We want it to be easy to locate the codebase for a given app, especially when
 hunting down issues.
 
-Fortunately we [honour 12factor](https://12factor.net/codebase), which means
+Fortunately we [honour 12-factor](https://12factor.net/codebase), which means
 each app is backed by exactly one repo.
 
 Recommendation: App names should be exactly `roo-{repo}-{env}`, with the `roo-`
 prefix optional if unambigous. 
 
-Examples: `restaurant-portal-staging`, `rooit-production`.
+Examples: `restaurant-portal-staging`, `rooit-production` (with the caveat that
+DNS places a 32-character limit on domain name parts).
 
 
 
