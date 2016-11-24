@@ -510,11 +510,33 @@ A service _must_ accept connections over HTTPS. It _should not_ respond over
 plain HTTP, and in particular, it _should not_ redirect from HTTP to HTTPS. It
 _should_ respond to plain HTTP requests with status 426, Upgrade Required.
 
-A service _should_ require HTTP Basic authentication. It _should_ ignore the
-username and use the password as a token. It _may_ accept unauthenticated
-requests for some endpoints.
+#### Types of supported authentication
+- For User to API Service interactions we require HTTP Basic authentication.
+- For Service to Service interactions we require HTTP Token authentication.
 
-Rationale: why not HTTP Digest?
+#### HTTP Basic authentication
+
+Use this for _User to API Service_ interactions. This type of authentication 
+implies that user credentials are present or at least there is a notion of user
+presence.
+
+When a client/user wants to interact with another service base on this type of
+authentication we should pass on the `Authorization` header the appropriate 
+encoded basic auth string. i.e `Authorization: Basic abcd123`
+
+#### HTTP Token authentication
+
+Use this for _Service to Service_ interactions. This type of authentication 
+implies that the communication between peers has agreed on a static, unique and
+rotated token.
+
+When a service wants to interact with another service base on this type of 
+authentication we should pass on the `Authorization` header the appropriate 
+token. i.e `Authorization: Token abcd123`
+
+#### Rationale
+
+Why not HTTP Digest?
 
 - Digest has 2x request overhead of the Basic for the first request
   (challenge-response);
@@ -522,16 +544,21 @@ Rationale: why not HTTP Digest?
   its own challenge-response mechanism, and (b) refusing connections over HTTP
   reduces the risk of cleartext passwords.
 
-Rationale: why not an `X-Token` header?
+Why not `X-Token` header?
 
 - Because that's functionally equivalent to HTTP Basic, which has universal
   support in clients libraries and browser-based testing tools.
 
-Rationale: why not `?token=abcd` in the query string?
+Why not `?token=abcd` in the query string?
 
 - Because that violates REST (the query string is part of the URL)
 - Because URLs can leak (at least, to logs)
 - Because it's unnecessary (see above)
+
+In general, we should require Basic authentication for the interactions between
+Users/Clients and our edge service layer. We should require service to 
+service (s2s) authentication for the interactions below the edger service layer.
+
 
 ### Versioning
 
