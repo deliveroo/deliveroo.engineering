@@ -499,7 +499,7 @@ export { foo }
 ### Default exports
 {: #modules-default-exports}
 
-In modules with a single export, prefer default export over named export ^[prefer-default-export].
+In modules with a single export, prefer default export over named export [^prefer-default-export].
 
 ```javascript
 // bad
