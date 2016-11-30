@@ -10,17 +10,17 @@ body {
   main {
     padding: 50px 10px;
     font-size: font-size(medium-body);
-    line-height: 1.5;
+    line-height: 1.8;
     
     > h1,
     > h2,
     > p,
     > section {
-      @include auto-width(desktop_larger);
+      @include auto-width(desktop_medium);
     } // body main > {h1, h2, p, section}
     
     > hr {
-      @include auto-width(desktop_larger, $vertical-margins: 2em);
+      @include auto-width(desktop_medium, $vertical-margins: 2em);
     } // body main > hr
     
     > h1 {
@@ -90,7 +90,7 @@ img.portrait {
 $post-gutter: 40px;
 
 section {
-  @include auto-width(desktop_larger);
+  @include auto-width(desktop_medium);
 
   & + h2 {
     margin-top: 50px;
