@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Unicorn Vs Puma: Rails server benchmarks"
+title: "Unicorn vs Puma: Rails server benchmarks"
 author: "Tommaso Pavese"
 exerpt: >
     As part of a post on web concurrency in Rails, I've been running benchmarks to compare the Puma and Unicorn Ruby HTTP servers. Puma performs better than Unicorn in all tests that were either heavily IO-bound or that interleaved IO and CPU work. In the CPU-bound tests where Unicorn performed better than Puma, the gap was small enough that Puma can still be considered a very good choice.
@@ -13,7 +13,7 @@ Cramming the results at the bottom of that other post doesn't seem right though,
 
 The ~~SEO friendly~~ shamelessly click-bait title of this post is quite appropriate: this is yet another benchmark of HTTP servers for Ruby on Rails. This one is a bit more specific than the ones you can find in the first page of Google results, though, because it focusses on CPU and IO--bound workloads and how they affect the performance of the two servers.
 
-Below are the details of [how the benchmarks were set up](#benchmark-setup), the [various benchmarks used](#the-target-endpoints), some [notes on garbage collection](#a-note-on-memory-usage-and-garbage-collection), the [results](#the-results) and the [limitations of these tests](benchmark-limitations) - if you like, you can skip to [my conclusions](#conclusions).
+Below are the details of [how the benchmarks were set up](#benchmark-setup), the [various benchmarks used](#the-target-endpoints), some [notes on garbage collection](#a-note-on-memory-usage-and-garbage-collection), the [results](#the-results) and the [limitations of these tests](#benchmark-limitations) - if you like, you can skip to [my conclusions](#conclusions).
 
 ## Benchmark setup
 
