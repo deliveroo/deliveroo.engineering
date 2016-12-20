@@ -3,7 +3,7 @@ layout: post
 title: "Unicorn Vs Puma: Rails server benchmarks"
 author: "Tommaso Pavese"
 exerpt: >
-    Puma performs better than Unicorn in all tests that were either heavily IO-bound or that interleaved IO and CPU work. In the CPU-bound tests where Unicorn performed better than Puma, the gap was small enough that Puma can still be considered a very good choice.
+    As part of a post on web concurrency in Rails, I've been running benchmarks to compare the Puma and Unicorn Ruby HTTP servers. Puma performs better than Unicorn in all tests that were either heavily IO-bound or that interleaved IO and CPU work. In the CPU-bound tests where Unicorn performed better than Puma, the gap was small enough that Puma can still be considered a very good choice.
 
 ---
 
