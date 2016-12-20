@@ -81,13 +81,13 @@ This is by far the most CPU intensive task of the suite.
 In the req/s chart you can see that all servers and configurations perform at the same level with one concurrent request, and then immediately align to their top capabilities as soon as we increase the number of concurrent requests.
 
 <figure>
-![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/fib_reqs.png)
+![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/fib_reqs.svg)
 </figure>
 
 The first chart clearly shows that, regardless of server implementation, concurrency model and configuration, there is a hard cap to how much processing power can be squeezed out of the CPU. This predictable horizontal trend in req/s is matched by a linear growth in average response time, below:
 
 <figure>
-![A chart plotting the average response time per request in milliseconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/fib_rt.png)
+![A chart plotting the average response time per request in milliseconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/fib_rt.svg)
 </figure>
 
 We can see that even though the machine had 4 cores, configurations running 8 processes perform better than the ones running a single worker per core.
@@ -106,13 +106,13 @@ In both cases (x4 and x8), Unicorn has a barely noticeable performance edge over
 This is the second CPU intensive test. The execution time is shorter than in the previous endpoint, and in fact we can see a higher throughput but similar performance trends.
 
 <figure>
-![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/render_reqs.png)
+![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/render_reqs.svg)
 </figure>
 
 With a stream of sequential requests (C=1), Pumas respond faster than the Unicorns. As the concurrency level increases, Unicorn takes the lead.
 
 <figure>
-![A chart plotting the average response time per request in milliseconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/render_rt.png)
+![A chart plotting the average response time per request in milliseconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/render_rt.svg)
 </figure>
 
 The distance between the Unicorns and the Pumas here is more pronounced than with the Fibonacci test. The main difference is that, because of the higher throughput, the servers are _moving to the next request_ more frequently.
@@ -130,10 +130,10 @@ Or maybe Unicorn is just better than Puma at this kind of work.
 This test simulates requests with constant time IO work and as little CPU work as possible. As expected, Puma completely outperforms Unicorn.
 
 <figure>
-![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/sleep_reqs.png)
+![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/sleep_reqs.svg)
 </figure>
 <figure>
-![A chart plotting the average response time per request in milliseconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/sleep_rt.png)
+![A chart plotting the average response time per request in milliseconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/sleep_rt.svg)
 </figure>
 
 Here each Unicorn process will move from request to request, with each taking ~2s. A Puma process with 10 threads, on the other hand, can accept 10 requests with little effort as they will all just wait idle.
@@ -154,10 +154,10 @@ The implementation for this endpoint combines the "render template" test with th
 The performance trends are almost identical to the "sleep" test, but the throughput is a bit lower:
 
 <figure>
-![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/sleep_render_reqs.png)
+![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/sleep_render_reqs.svg)
 </figure>
 <figure>
-![A chart plotting the average response time per request in milliseconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/sleep_render_rt.png)
+![A chart plotting the average response time per request in milliseconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/sleep_render_rt.svg)
 </figure>
 
 A lower throughput is to be expected, since here we're doing more CPU work. And yet, it looks like the IO component has a higher effect than the CPU one, or perhaps a 2s pause is long enough to make the time spent rendering the template irrelevant (the last benchmark will test something similar with shorter IO times).
@@ -175,10 +175,10 @@ Compared to the "sleep" test, the IO task is faster: ~600ms Vs 2000ms.
 As expected, the throughput is much higher but the trends are largely the same.   
 
 <figure>
-![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/network_reqs.png)
+![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/network_reqs.svg)
 </figure>
 <figure>
-![A chart plotting the average response time per request in milliseconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/network_rt.png)
+![A chart plotting the average response time per request in milliseconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/network_rt.svg)
 </figure>
 
 As you can see, Unicorn x4 performed very poorly in the C=10 test. This was caused by some network issues during that benchmark.
@@ -194,10 +194,10 @@ Also interesting that Puma x4:10 keeps performing better than Puma x8:5. With IO
 This is the network IO version of the "sleep + render" test. Same considerations apply.
 
 <figure>
-![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/network_render_reqs.png)
+![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/network_render_reqs.svg)
 </figure>
 <figure>
-![A chart plotting the average response time per request in milliseconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/network_render_rt.png)
+![A chart plotting the average response time per request in milliseconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/network_render_rt.svg)
 </figure>
 
 What's different in this case is that, since the network IO units of work complete faster than the constant `sleep(2)` pauses, the template rendering work (CPU) is executed more often.
