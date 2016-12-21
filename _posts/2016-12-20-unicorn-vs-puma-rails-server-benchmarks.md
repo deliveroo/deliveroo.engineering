@@ -206,6 +206,29 @@ And we can see this in action, as Puma x8:5 performs closer to Puma x4:10 than i
 
 Another thing we can observe is that the average response time growth, while still exponential, is a bit _flatter_ than in the two "sleep" benchmarks. At the same time, the req/s data for the Unicorns quickly becomes horizontal. This, too, could be an effect we’ve already seen: Unicorn quickly reaches its peak performance with CPU work, but maintains that level well.
 
+### Tuning Puma
+
+Puma has been consistenly outperforming Unicorn in all IO tests and mixed IO-CPU tests, and in the fibonacci and render tests the distance from Unicorn was quite small.
+
+Let's look at the data from a different angle, to compare how the configurations of Puma performed. For this, I am going to limit the data set to the results of the tests executing 50 concurrent requests.
+
+<figure>
+![A chart plotting the average requests per seconds (vertical axis) on the diffferent Puma configurations (horizontal axis), the different data series represent the performance on the different test endpoints.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/pumas_endpoints_reqs.svg)
+</figure>
+<figure>
+![A chart plotting the average response time per request in milliseconds (vertical axis) on the diffferent Puma configurations (horizontal axis), the different data series represent the performance on the different test endpoints.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/pumas_endpoints_rt.svg)
+</figure>
+
+These two charts plot the performance on the test endpoints for the different configurations of Puma on the horizontal axis. The difference between thw two central values (x4:10 and x8:5) is interesting because it shows what happens when the same number of threads in distributed in a different number of OS processes.
+
+It's also interesting to rotate the charts, to compare the Pumas side-by-side on each test endpoint. The output is a summary of the other charts we have already seen.
+
+<figure>
+![A chart plotting the average requests per seconds (vertical axis) on the different test endpoints (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/endpoints_pumas_reqs.svg)
+</figure>
+<figure>
+![A chart plotting the average response time per request in milliseconds (vertical axis) on the different test endpoints (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/endpoints_pumas_rt.svg)
+</figure>
 
 ## Benchmark Limitations
 
