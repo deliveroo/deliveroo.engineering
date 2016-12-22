@@ -7,11 +7,11 @@ exerpt: >
 
 ---
 
-# ![A definitely incomplete précis of… What makes a good (tech) team great.](/images/posts/what-makes-a-good-tech-team-great/slides.001.png)
+![A definitely incomplete précis of… What makes a good (tech) team great.](/images/posts/what-makes-a-good-tech-team-great/slides.001.png)
 
 There are a huge number of things that affect how well a team works. So many of those things are deeply dependent on the number, experience and diversity of its members but as our Engineering team has grown there have been some constant themes which have formed the deep-rooted and often unspoken core of our culture.
 
-## ![Communication](/images/posts/what-makes-a-good-tech-team-great/slides.002.png)
+![Communication](/images/posts/what-makes-a-good-tech-team-great/slides.002.png)
 
 The first of these, as I hope with teams of all types, is communication. Often this is the first thing to go when time is tight, but when there's a need to move fast we've found that good communication - ensuring everyone knows how to find out what's going on - is _even more_ important.
 
@@ -27,11 +27,13 @@ We work hard to make sure that we can communicate clearly and easily, but withou
 
 Calling a meeting or visiting a colleague's desk can be very useful, but as the amount of things that need to be communicated increases you eat into people's working time. Having _easily accessible_, _publicly visible_ announcements in _well-known places_ means individuals can find what they need asynchronously.
 
-We classify "communication" as more than just what we say, it's also the relevance and discoverability of what we've shared for others. Github Pull Requests are an excellent way to communicate about the style and structure of our code, as the next person to read it will have all the context they need to understand the discussion.
+We've found that communicating in "public" (company wide) is almost always the best way to do things. If these conversations are well organised you avoid missing people off email recipient lists, and the ubiquitous "Copying in Alex" emails that follow.
 
-We've found [Facebook Workplace](https://workplace.fb.com/) is great for announcements, [Slack](https://slack.com) is fantastic for direct requests and, of course, [Github](https://github.com) excels at code-centric communication.
+We classify "communication" as more than just what we say, it's also the relevance and discoverability of what we've shared for others. Github pull requests are an excellent way to communicate about the style and structure of our code, as the next person to read it will have all the context they need to understand the discussion.
 
-## ![Shared context](/images/posts/what-makes-a-good-tech-team-great/slides.004.png)
+We've found [Facebook Workplace](https://workplace.fb.com/) is great for project announcements, [Slack](https://slack.com) is fantastic for direct requests and, of course, [Github](https://github.com) excels at code-centric communication.
+
+![Shared context](/images/posts/what-makes-a-good-tech-team-great/slides.004.png)
 
 I believe that context is critical to everything in life. I'm sure there's a book's worth of advice on this alone, but we've found that it boils down to this:
 
@@ -52,7 +54,7 @@ We also structure our unit tests to demonstrate the specific cases we expect our
 
 We've found that talking face to face - especially over _video_ while remote - is important to building foundations, well-written git commits and Pull Requests on [Github](https://github.com) are worth championing, and the [Atlassian suite](https://www.atlassian.com/) has no equal for tracking work in progress.
 
-## ![Pride](/images/posts/what-makes-a-good-tech-team-great/slides.006.png)
+![Pride](/images/posts/what-makes-a-good-tech-team-great/slides.006.png)
 
 When we were smaller we often found that we didn't take enough time to congratulate ourselves and each other on jobs well done. In the worst cases, over time, this can lead to becoming unhappy at work - another thing that deserves a book in its own right, and something we want to avoid individually and as a community.
 
@@ -68,7 +70,7 @@ On the flip side, admitting that we've made mistakes can be hard, but we will _a
 - Work to understand the wider situation and, if possible, help build safety mechanisms so that others _can't_ make the same mistake again.
 
 
-## ![Responsibility](/images/posts/what-makes-a-good-tech-team-great/slides.008.png)
+![Responsibility](/images/posts/what-makes-a-good-tech-team-great/slides.008.png)
 
 It's very difficult to feel pride without a sense of responsibility. They go hand in hand, but there are more benefits to fostering a sense of responsibility in everyone, from the battle-hardened team veteran, to the first-week new starter.
 
@@ -88,4 +90,4 @@ This allows us to act independently and very quickly to react to the changing ne
 
 Metrics allow us to carefully choose which aspects of the business can be improved, then tailor what we build to suit that. How we use and refer to metrics is of critical importance to how we plan the building of our product.
 
-<big>The way we communicate our metrics, plans and goals, the context behind each of these, the pride we take in their upward trends, and the responsibility we assume in their continued improvement are the reason why Deliveroo continues to excel.</big>
+The way we communicate our metrics, plans and goals, the context behind each of these, the pride we take in their upward trends, and the responsibility we assume in their continued improvement are the reason why Deliveroo continues to excel.
