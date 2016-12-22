@@ -7,11 +7,15 @@ exerpt: >
 
 ---
 
+<figure>
 ![A definitely incomplete précis of… What makes a good (tech) team great.](/images/posts/what-makes-a-good-tech-team-great/slides.001.png)
+</figure>
 
 There are a huge number of things that affect how well a team works. So many of those things are deeply dependent on the number, experience and diversity of its members but as our Engineering team has grown there have been some constant themes which have formed the deep-rooted and often unspoken core of our culture.
 
+<figure>
 ![Communication](/images/posts/what-makes-a-good-tech-team-great/slides.002.png)
+</figure>
 
 The first of these, as I hope with teams of all types, is communication. Often this is the first thing to go when time is tight, but when there's a need to move fast we've found that good communication - ensuring everyone knows how to find out what's going on - is _even more_ important.
 
@@ -21,7 +25,9 @@ Some of these can be hard to admit, but they're important:
 * _I am not always right_. Not only do we all make mistakes but our viewpoints are based on our own experiences, which aren't necessarily those of our customers.
 * _Others see things differently_. A different perspective on a problem often highlights alternative solutions, some might be better.
 
+<figure>
 ![We aim to keep communication easy, asynchronous, non-disruptive and public](/images/posts/what-makes-a-good-tech-team-great/slides.003.png)
+</figure>
 
 We work hard to make sure that we can communicate clearly and easily, but without disrupting the time we need to be creative and focused.
 
@@ -33,14 +39,18 @@ We classify "communication" as more than just what we say, it's also the relevan
 
 We've found [Facebook Workplace](https://workplace.fb.com/) is great for project announcements, [Slack](https://slack.com) is fantastic for direct requests and, of course, [Github](https://github.com) excels at code-centric communication.
 
+<figure>
 ![Shared context](/images/posts/what-makes-a-good-tech-team-great/slides.004.png)
+</figure>
 
 I believe that context is critical to everything in life. I'm sure there's a book's worth of advice on this alone, but we've found that it boils down to this:
 
 * Two people will understand each other faster if they have a shared context.
 * If there's a mismatch in shared understanding a group is much more likely to make mistakes and false assumptions.
 
+<figure>
 ![Discussion, naming things, reference materials and self-documentation all help.](/images/posts/what-makes-a-good-tech-team-great/slides.005.png)
+</figure>
 
 The only true way to build a shared context is to discuss things, often at length and sometimes without specific direction. Putting time aside to chat to your colleagues - from all over the business - will give you an idea of what's important to them and how best to work with them.
 
@@ -54,11 +64,15 @@ We also structure our unit tests to demonstrate the specific cases we expect our
 
 We've found that talking face to face - especially over _video_ while remote - is important to building foundations, well-written git commits and Pull Requests on [Github](https://github.com) are worth championing, and the [Atlassian suite](https://www.atlassian.com/) has no equal for tracking work in progress.
 
+<figure>
 ![Pride](/images/posts/what-makes-a-good-tech-team-great/slides.006.png)
+</figure>
 
 When we were smaller we often found that we didn't take enough time to congratulate ourselves and each other on jobs well done. In the worst cases, over time, this can lead to becoming unhappy at work - another thing that deserves a book in its own right, and something we want to avoid individually and as a community.
 
+<figure>
 ![Celebrate success and learn from mistakes… publicly.](/images/posts/what-makes-a-good-tech-team-great/slides.007.png)
+</figure>
 
 Ensuring we put time aside to celebrate when we do well allow us - both consciously and subconsciously - to do the things that bring success more often and the things which don't less. We've found that the work we feel most proud of is the work that has the fewest bugs, that gets completed the fastest and frequently lands best with our customers. Being proud of what we achieve is critical to our continued success.
 
@@ -70,13 +84,17 @@ On the flip side, admitting that we've made mistakes can be hard, but we will _a
 - Work to understand the wider situation and, if possible, help build safety mechanisms so that others _can't_ make the same mistake again.
 
 
+<figure>
 ![Responsibility](/images/posts/what-makes-a-good-tech-team-great/slides.008.png)
+</figure>
 
 It's very difficult to feel pride without a sense of responsibility. They go hand in hand, but there are more benefits to fostering a sense of responsibility in everyone, from the battle-hardened team veteran, to the first-week new starter.
 
 The more that responsibility clusters to only some parts of a community, the more that group becomes a bottleneck for decisions. In a fast-moving business the ability to make quick, informed decisions autonomously is critical, so allowing responsibility to spread wide lets us keep our agility, even as we grow.
 
+<figure>
 ![Consider responsibility, not ownership; how to say "No"; know your metrics](/images/posts/what-makes-a-good-tech-team-great/slides.009.png)
+</figure>
 
 _Responsibility_ is often confused with _ownership_. A sense of ownership of a codebase, a project or process is what can lead to a bottleneck - all decisions about that thing going through one person. Responsibility is more than that; it's talking to a different team and writing a pull request to improve a codebase when there's a spare hour, it's suggesting changes to process to team leadership when we recognise inefficiencies, it's looking into the numbers & discussing when we have a gut feeling that something we're working on may not be the most leveraged use of our time.
 
