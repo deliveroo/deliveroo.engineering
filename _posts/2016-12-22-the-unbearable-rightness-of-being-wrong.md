@@ -6,7 +6,7 @@ exerpt: >
   Earlier this year, some awesome people who "read and write Ruby good" met at an event called RailsConf and delivered this poignant tweet in a bottle: **"I love looking at my old code and hating it. It means I'm growing."**
 
 
-  This simple reflection by the brilliant Sandi Metz really resonated with my own- not just surrounding code quality, but the journey of developing a wider architectural awareness as well as the communication skills & empathy needed to build good software efficiently.
+  This simple reflection by the brilliant Sandi Metz really resonated with my own - not just surrounding code quality, but the journey of developing a wider architectural awareness as well as the communication skills & empathy needed to build good software efficiently.
 
 hide-exerpt-on-post: true
 ---
@@ -20,7 +20,7 @@ Earlier this year, some awesome people who "read and write Ruby good" met at an 
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 
-This simple reflection by the brilliant [Sandi Metz](https://www.sandimetz.com) really resonated with my own- not just surrounding code quality, but the journey of developing a wider architectural awareness as well as the communication skills & empathy needed to build good software efficiently.
+This simple reflection by the brilliant [Sandi Metz](https://www.sandimetz.com) really resonated with my own - not just surrounding code quality, but the journey of developing a wider architectural awareness as well as the communication skills & empathy needed to build good software efficiently.
 
 Not long after, I joined the Engineering lot here at Deliveroo and my growth rate skyrocketed (let's ignore the fact I'm 5'1 high in physical terms!), amplifying their meaning even more.
 
@@ -72,8 +72,10 @@ By the way, I should've called this section **Understanding HTTP Caching Takes T
 
 ```Ruby
 def show
+  @sloth = Sloth.find(params[:id])
+  expires_in(5.minutes, "must-revalidate": true, public: false)
   # responds with 304 if not stale
-  @sloth = Sloth.find(params[:id])  expires_in(5.minutes, "must-revalidate": true, public: false)
+
   if stale?(@menu, public: false)
     render json: SlothSerializer.new(@sloth)
   end
