@@ -2,12 +2,12 @@
 layout: post
 title: "The Unbearable Rightness of Being Wrong (A Programmer's Guide to Sanity)"
 author: "Kriselda Rabino"
-exerpt: >
+excerpt: >
   Earlier this year, some awesome people who "read and write Ruby good" met at an event called RailsConf and delivered this poignant tweet in a bottle: ***"I love looking at my old code and hating it. It means I'm growing."***
 
 
   This simple reflection by the brilliant Sandi Metz really resonated with my own - not just surrounding code quality, but the journey of developing a wider architectural awareness as well as the communication skills & empathy needed to build good software efficiently.
-hide_exerpt_on_post: true
+hide_excerpt_on_post: true
 ---
 
 Earlier this year, some awesome people who "read and write Ruby good" met at an event called RailsConf and delivered [this poignant tweet in a bottle](https://twitter.com/saronyitbarek/status/728692957415538688):

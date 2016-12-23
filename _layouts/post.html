@@ -7,9 +7,9 @@ layout: default
     <p class="byline">{% include byline.html author=page.author date=page.date %}</p>
   </header>
 
-  {% unless page.hide_exerpt_on_post %}
+  {% unless page.hide_excerpt_on_post %}
     <div class="excerpt">
-      {{ page.exerpt | markdownify }}
+      {{ page.excerpt | markdownify }}
     </div>
   {% endunless %}
 
