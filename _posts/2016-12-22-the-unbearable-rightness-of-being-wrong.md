@@ -3,12 +3,11 @@ layout: post
 title: "The Unbearable Rightness of Being Wrong (A Programmer's Guide to Sanity)"
 author: "Kriselda Rabino"
 exerpt: >
-  Earlier this year, some awesome people who "read and write Ruby good" met at an event called RailsConf and delivered this poignant tweet in a bottle: **"I love looking at my old code and hating it. It means I'm growing."**
+  Earlier this year, some awesome people who "read and write Ruby good" met at an event called RailsConf and delivered this poignant tweet in a bottle: ***"I love looking at my old code and hating it. It means I'm growing."***
 
 
   This simple reflection by the brilliant Sandi Metz really resonated with my own - not just surrounding code quality, but the journey of developing a wider architectural awareness as well as the communication skills & empathy needed to build good software efficiently.
-
-hide-exerpt-on-post: true
+hide_exerpt_on_post: true
 ---
 
 Earlier this year, some awesome people who "read and write Ruby good" met at an event called RailsConf and delivered [this poignant tweet in a bottle](https://twitter.com/saronyitbarek/status/728692957415538688):
@@ -22,7 +21,7 @@ Earlier this year, some awesome people who "read and write Ruby good" met at an 
 
 This simple reflection by the brilliant [Sandi Metz](https://www.sandimetz.com) really resonated with my own - not just surrounding code quality, but the journey of developing a wider architectural awareness as well as the communication skills & empathy needed to build good software efficiently.
 
-Not long after, I joined the Engineering lot here at Deliveroo and my growth rate skyrocketed (let's ignore the fact I'm 5'1 high in physical terms!), amplifying their meaning even more.
+Not long after, I joined the Engineering lot here at Deliveroo and my growth rate skyrocketed (let's ignore the fact I'm 5'1 high in physical terms!), amplifying its meaning even more.
 
 **Proof -** here's a serial Post-it that keeps making its way into our retrospectives:
 
@@ -34,7 +33,7 @@ And this, in my opinion, is the most important tool any programmer needs to enjo
 
 **"I don't know anything about that... yet!"**
 
-Unfortunately, it's way too easy to fall victim to these alternative "I don't know" post-fixes:
+Unfortunately, it's way too easy to fall victim to these alternative "I don't know" suffixes:
 
 - **"... so I'm not going to ask questions about it, because I might sound stupid"**
 - **"... so I'm not going to review this pull request, there's no value in that"**
@@ -70,7 +69,7 @@ With a mix of research, constructive code reviews and team knowledge-sharing, we
 
 By the way, I should've called this section **Understanding HTTP Caching Takes Time**. Actually implementing all those crazy concepts in Rails? It took about 5 lines of code:
 
-```Ruby
+```ruby
 def show
   @sloth = Sloth.find(params[:id])
   expires_in(5.minutes, "must-revalidate": true, public: false)
