@@ -81,7 +81,7 @@ def show
 end
 ```
 
-**Bonus story:** These topics fascinated me so much I gave a spontaneous [lightning talk](https://www.youtube.com/watch?v=WnlgKWCt8wQ) at this year's [EuRuKo](http://euruko2016.org) entitled The HTTPancake Request (no name regrets!). I also prepared an extended version of it for a [Women Hack for Non-Profits](womenhackfornonprofits.com) Tech Talks event at Twitter. You can find the slides for that [here](http://slides.com/krissygoround/httpancake-5#/).
+**Bonus story:** These topics fascinated me so much I gave a spontaneous [lightning talk](https://www.youtube.com/watch?v=WnlgKWCt8wQ) at this year's [EuRuKo](http://euruko2016.org) entitled The HTTPancake Request (no name regrets!). I also prepared an extended version of it for a [Women Hack for Non-Profits](http://www.womenhackfornonprofits.com) Tech Talks event at Twitter. You can find the slides for that [here](http://slides.com/krissygoround/httpancake-5#/).
 
 
 ### Custom Buildpacks aka Does My Slug Look Big In This?
