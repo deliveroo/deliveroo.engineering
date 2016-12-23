@@ -10,7 +10,7 @@ layout: default
       <h3><a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a></h3>
       <p class="byline">{% include byline.html author=_page.author date=_page.date %}</p>
       <blockquote>
-        {{ _page.exerpt | markdownify }}
+        {{ _page.excerpt | markdownify }}
       </blockquote>
       <p><a href="{{ _page.url }}" title="{{ _page.title }}">Read more…</a></p>
     </div>

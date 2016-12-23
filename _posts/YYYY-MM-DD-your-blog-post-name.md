@@ -2,7 +2,7 @@
 layout: post
 title:  "Title of your blog post goes here"
 author: "Your Name"
-exerpt: >
+excerpt: >
   A short synopsis or excerpt of your blog post should go here. This will appear
   on the home and articles pages as a summary of your post. You should change
   the name of your blog post to start with the date you want the post to say
