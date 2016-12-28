@@ -34,7 +34,7 @@ The Android team at Deliveroo is great! Everyone is smart, driven and knowledgea
 ## Interview process
 Hopefully this post has given you an overview of what's like to be an Android dev at Deliveroo, but there's so much more to say! It's a great place to work! Our interview process is on the cool side too: just two interviews, a quick phone one, followed by a two-hour on-site, pair-programming interview, where you get to meet our team, ask questions and learn something new (or **teach us** something new)! 
 
-In short, if you're looking for a great place to work (have I mentioned free food...?), a young company with a great product and a fast-growing, fun-loving team with a knack for code quality, good processes and cutting-edge development practices, then come join us at Deliveroo!
+In short, if you're looking for a great place to work (have I mentioned free food... 🍔 &nbsp;&nbsp;?), a young company with a great product and a fast-growing, fun-loving team with a knack for code quality, good processes and cutting-edge development practices, then come join us at Deliveroo!
 
 <figure class="small">
 ![The Android Team](/images/posts/what-is-like-an-android-developer-at-deliveroo/android-team.png)
