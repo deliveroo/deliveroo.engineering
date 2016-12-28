@@ -41,6 +41,6 @@ Hopefully this post has given you an overview of what's like to be an Android de
 In short, if you're looking for a great place to work (have I mentioned free food... 🍔 &nbsp;&nbsp;?), a young company with a great product and a fast-growing, fun-loving team with a knack for code quality, good processes and cutting-edge development practices, then come join us at Deliveroo!
 
 <figure class="small">
-![The Android Team](/images/posts/what-is-like-an-android-developer-at-deliveroo/android-team.png)
+![The Android Team](/images/posts/what-its-like-to-be-an-android-developer-at-deliveroo/android-team.png)
 </figure>
 
