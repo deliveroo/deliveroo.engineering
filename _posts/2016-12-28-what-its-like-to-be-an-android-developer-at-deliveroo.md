@@ -20,7 +20,7 @@ At Deliveroo, we don't let technical debt creep up, so our teams dedicate around
 
 
 ## Coding practices
-Our teams take code quality extremely serious.  We also believe in code reviews as the best way to drive code quality and increase knowledge sharing. Each ticket we work on goes through the review and QA process: we open a pull request against our code base on Github, which gets reviewed by at least two members of the team,  goes to our QA team and after everything is given the thumbs up, the code is merged into the main branch as part of our CI process. An important thing to mention is that each PR will normally contain the implementation **plus the tests**. We write both unit and integration tests, but unit tests are *a must*.
+Our team takes code quality extremely seriously.  We also believe in code reviews as the best way to drive code quality and increase knowledge sharing. Each ticket we work on goes through the review and QA process: we open a pull request against our codebase on Github, which gets reviewed by at least two members of the team,  goes to our QA team and after everything is given the thumbs up, the code is merged into the main branch as part of our CI process. An important thing to mention is that each PR will normally contain the implementation **plus the tests**. We write both unit and integration tests, but unit tests are *a must*.
 The engineering team at Deliveroo values pair-programming and promotes cross-team work. I've had the opportunity to work with a bit of backend Ruby and frontend web and I felt warmly encouraged and supported by our team.
 
 
