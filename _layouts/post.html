@@ -1,10 +1,19 @@
 ---
 layout: default
 ---
+
+{% for author in site.authors %}
+  {% if author.name == page.author %}
+    {% assign author = author %}
+  {% endif %}
+{% endfor %}
+
 <article>
   <header>
+
     <h1>{{ page.title }}</h1>
-    <p class="byline">{% include byline.html author=page.author date=page.date %}</p>
+
+    <p class="byline">{% include byline.html author=author.name date=page.date %}</p>
   </header>
 
   {% unless page.hide_excerpt_on_post %}
@@ -14,4 +23,13 @@ layout: default
   {% endunless %}
 
   {{ content }}
+
+  <hr />
+
+  <div class="about-author">
+    <h3>About {{ author.name }}</h3>
+
+    <img src="{{ author.portrait }}" alt="A picture of {{ author.name }}" class="portrait">
+    {{ author | markdownify }}
+  </div>
 </article>
