@@ -132,7 +132,7 @@ At low partition counts (ie. more IDs stored in a single structure), hashes, set
 and flat keys use up roughly the same amount of memory (within 10% difference),
 while sorted sets use 75% extra memory.
 
-The right-hand side (many partitionss, few IDs per partition) exhibits 2
+The right-hand side (many partitions, few IDs per partition) exhibits 2
 interesting behaviours: first the memory usage for hashes and zsets massively
 improves, then degrades as we converge towards a single ID per structure.
 
