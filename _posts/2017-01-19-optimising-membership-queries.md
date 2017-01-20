@@ -2,7 +2,7 @@
 layout: post
 title:  "Optimising Redis storage, part two"
 author: "Julien Letessier"
-exerpt: >
+excerpt: >
   Counting unique users, checking if a credit card has already been used, or
   checking if this is a mobile user's first visit ever — all of these require
   maintaining a large set of fingerprints (unique visitor ID, card fingerprint,
