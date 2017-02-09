@@ -4,3 +4,4 @@ _site
 .tm_properties
 .DS_Store
 .ruby-gemset
+tmp
