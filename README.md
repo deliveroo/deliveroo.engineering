@@ -25,6 +25,19 @@ best way to test it is to run it locally:
 Jekyll will then generate the site files automatically for you, which usually 
 takes no more than a couple of seconds each time you make a change.
 
+### Installing Nokogiri on macOS Sierra
+
+If you’re running macOS Sierra, you may encounter issues with building the 
+Nokogiri gem with native extensions. The solution here is to ensure you [use
+the correct system libraries](http://stackoverflow.com/questions/40038953/installing-nokogiri-on-mac-os-sierra-10-12/40038954#40038954).
+
+First ensure you have the Xcode command line tools installed, then run:
+
+```
+bundle config build.nokogiri --use-system-libraries=true --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/usr/include/libxml2
+bundle install
+```
+
 ## Submitting a blog post
 
 We love it when our engineers are able to share the lessons of their experiences
