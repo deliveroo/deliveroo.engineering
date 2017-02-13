@@ -8,13 +8,6 @@ layout: default
   {% endif %}
 {% endfor %}
 
-{% contentfor meta %}
-  <meta property="og:type" content="article">
-  <meta property="article:published_time" content="{{ page.date | date: "%Y-%m-%d" }}">
-  <meta property="article:author" content="{{ site.url }}/authors/{{ author.name | slugify }}">
-  <meta property="article:section" content="Engineering Articles">
-{% endcontentfor %}
-
 <article>
   <header>
 
