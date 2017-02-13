@@ -459,7 +459,7 @@ your query. More than three? Things will :boom: blow up.
 In particular, multiple joins are a symptom of over-normalized data modeling.
 
 If that isn't enough: precalculate, use caching, and **do your math in Ruby** as
-described in the revious section.
+described in the previous section.
 Your app code can scale very well (possibly through scheduled jobs), the
 database cannot.
 
