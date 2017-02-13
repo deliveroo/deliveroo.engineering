@@ -36,7 +36,7 @@ Recommendation: favour explicit terms over lingo, and expand acronyms.
 
 In non-code contexts (wiki pages, emails), it's fine to use abbreviations as
 long as the first use in the document is expanded.
-  
+
 
 #### Use transparent names
 
@@ -64,9 +64,9 @@ Fortunately we [honour 12-factor](https://12factor.net/codebase), which means
 each app is backed by exactly one repo.
 
 Recommendation: App names should be exactly `roo-{repo}-{env}`, with the `roo-`
-prefix optional if unambigous. 
+prefix optional if unambigous.
 
-Examples: `restaurant-portal-staging`, `rooit-production` (with the caveat that
+Examples: `restaurant-portal-staging`, `roo-it-production` (with the caveat that
 DNS places a 32-character limit on domain name parts).
 
 
