@@ -116,8 +116,6 @@ GEM
       jekyll (~> 3.0)
     jekyll-coffeescript (1.0.1)
       coffee-script (~> 2.2)
-    jekyll-contentblocks (1.2.0)
-      jekyll
     jekyll-default-layout (0.1.4)
       jekyll (~> 3.0)
     jekyll-feed (0.8.0)
@@ -240,7 +238,6 @@ DEPENDENCIES
   github-pages (= 119)
   guard-jekyll-plus
   guard-livereload
-  jekyll-contentblocks
   json
 
 RUBY VERSION
