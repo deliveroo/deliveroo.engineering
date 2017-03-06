@@ -88,7 +88,9 @@ much harder or impossible to reconstruct, but is often of great significance.
 
 #### Example
 
-```ABC-123: Set cache headers```
+```
+ABC-123: Set cache headers
+```
 
 prefer:
 
@@ -159,3 +161,29 @@ commands like git merge and git revert.
 
 * [5 useful tips for a better commit message](http://robots.thoughtbot.com/5-useful-tips-for-a-better-commit-message)
 * [Every line of code is always documented](http://mislav.uniqpath.com/2014/02/hidden-documentation/)
+
+
+## Managing gem releases
+
+Any repository used to create a rubygem should have a `CHANGELOG.md` at is root.
+The format of this file is as follows:
+
+```
+# Unreleased
+
+- Fixes core overload bug (#36)
+
+# 1.2.3 (2017-01-04)
+
+- Adds an API for the Mr Fusion (#25)
+```
+
+One section per version, with bullet points per feature, and references to pull
+requests.
+
+The first section, "Unreleased", can be changed on feature branches. It will be
+rolled into a new version section by the maintainer when cutting a release.
+
+Feature branches should never touch version numbers as there's otherwise a risk
+of clonflicting (or inconsistent) version changes.
+
