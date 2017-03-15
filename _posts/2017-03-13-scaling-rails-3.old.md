@@ -5,10 +5,10 @@ author: "Michael Groble"
 excerpt: >
   We're not particularly proud that we are still using Rails 3.2, but we _are_ extremely
   proud of scaling our traffic over the last few years. Our new services are built in Rails 5,
-  but we still have a hefty chunk of funtionality in our original Rails 3.x monolith. A rueful
+  but we still have a hefty chunk of functionality in our original Rails 3.x monolith. A rueful
   "rails 3.old" hits our slack channels as someone stumbles across an issue as they switch back
   to the monolith. Growing our business, features and team over the last few years has left
-  little time to do a wholesale upgrade of the monolith platform.  Here are some tactial things
+  little time to do a wholesale upgrade of the monolith platform.  Here are some tactical things
   we've done to help it keep pace with our growth.
 
 ---
@@ -112,7 +112,7 @@ all the little redis-store gems means that we will likely need to fork and backp
 or add `Redis::Distributed` support to [readthis](https://github.com/sorentwo/readthis).
 
 ## Path Forward
-The good news is that we are on the lastest versions of both Postgres and Redis in production so the Rails stack itself is
+The good news is that we are on the latest versions of both Postgres and Redis in production so the Rails stack itself is
 our last sticking point.
 
 We're hiring aggressively and our general preference is to use our expanding engineering team to chip away at the
@@ -126,4 +126,4 @@ alternatives you use to keep things running.  Maintaining an old code base is al
 And if you're interested in working with us and have actually migrated a monolith off of Rails 3, don't think you need to
 hide that on your resume.  We promise we won't lock you away to work on that for your first weeks.  We spread infrastructure
 and platform work across all teams and have way too many interesting things going on to monopolize your time like that (although you
-_may_ get bounus points if your code flags invalid option usage)!
+_may_ get bonus points if your code flags invalid option usage)!
