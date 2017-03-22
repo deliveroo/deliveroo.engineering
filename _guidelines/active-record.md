@@ -32,7 +32,7 @@ defend it!
 Layering and **separation of concerns** are overarching principles here.  There
 should be a clear separation between your **database** and your **application**:
 the former is there to persist data, period. When you put something in, it
-should come out exactly as is, and pulling it out should be reasonably simple. 
+should come out exactly as is, and pulling it out should be reasonably simple.
 
 In particular your database should not have any logic: all the (business) rules
 should be in your application. This means that triggers, stored procedures
@@ -79,7 +79,7 @@ Okay:
 ```ruby
 @users = current_user.posts.where(created_at: 1.year.ago .. Time.current)
 ```
-    
+
 Bad:
 
 ```ruby
@@ -101,7 +101,7 @@ Worse:
 Models should not contain any SQL queries.
 
 They can, however, exceptionally contain SQL _expressions_ in the form of
-`where` conditions for instance. 
+`where` conditions for instance.
 
 Using [Arel](https://github.com/rails/arel) to express conditions can also be
 used; bear in mind Arel is a somewhat private API that changes between Rails
@@ -119,7 +119,7 @@ scope :created_after, -> { |timestamp| where('created_at > ?', timestamp) }
 Better (no SQL, no issue with using the scope in joins):
 
 ```ruby
-scope :created_after, -> { |timestamp| 
+scope :created_after, -> { |timestamp|
   where self.class.arel_table[:created_at].gt timestamp
 }
 ```
@@ -152,7 +152,7 @@ Good:
 ```ruby
 scope :created_after, -> { |timestamp| ... }
 ```
-    
+
 Bad:
 
 ```ruby
@@ -168,7 +168,7 @@ possible.
 Scope parameters should be records, not IDs, wherever possible and not hurtful
 for performance.
 
-Good: `User.account_is(account)`, `User.created_after(date)` 
+Good: `User.account_is(account)`, `User.created_after(date)`
 
 Bad: `User.member_of(account)`, `User.recently_created(date)`,
 `User.account_id_is(account.id)`
@@ -304,6 +304,29 @@ Okay:
 - This pattern makes the most sense when _adding_ tables or columns that are not
   used by old code, but it's not required.
 
+##### Removing columns safely
+
+In the model file, add a `columns` patch for the column being removed,
+as well as virtual getter/setter methods:
+
+```ruby
+  def self.columns
+    super.reject { |col| col.name == 'column_to_be_removed' }
+  end
+
+  def column_to_be_removed; end
+
+  def column_to_be_removed=(value)
+    value
+  end
+```
+
+This safeguards against ActiveRecord caching the column,
+and prevents errors if there happens to be code still referencing
+the column for whatever reason.
+
+Once the migration is run and all servers have restarted,
+these methods can be removed.
 
 #### Avoiding migration issues
 
@@ -347,7 +370,7 @@ class User::RecentlyCreatedFinder
     @account = account or raise ArgumentError
     @timestamp = timestamp || 1.week.ago
   end
-  
+
   def call
     ids = User.connection.select_values(sanitize([%{
       SELECT id FROM users
@@ -369,7 +392,7 @@ class User::RecentlyCreatedFinder
     @account = account or raise ArgumentError
     @timestamp = timestamp || 1.week.ago
   end
-  
+
   def call
     User.
     where(account_id: @account.id).
@@ -499,7 +522,7 @@ restaurants = Restaurant.
   joins('RIGHT JOIN orders ON orders.restaurant_id = restaurants.id').
   joins('LEFT JOIN ratings ON ratings.order_id = orders.id').
   where(
-    order: { 
+    order: {
       user_id: current_user, status: 'delivered',
     },
     ratings: {
@@ -532,7 +555,7 @@ have to.
 # Good:
 User.paginate(page:1, per_page:10)
 User.limit(10)
-    
+
 # Fine:
 User.find_in_batches { |batch| ... }
 
