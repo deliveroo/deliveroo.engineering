@@ -25,7 +25,7 @@ Source: [Oshiokuri Hato Tsusen no Zu](https://commons.wikimedia.org/wiki/File:Os
 
 
 
-## What happened
+## What happened: hot path service chaining
 
 Our APIs are calling services when responding to HTTP requests — synchronously.
 
@@ -46,7 +46,7 @@ The frustrating thing is that the services themselves worked perfectly fine
 during the outage. This was just a transient network issue.
 
 
-## Why this is bad
+## Why this is bad: runtime service coupling
 
 Because this is an architecture design problem.
 
@@ -75,7 +75,7 @@ they're all required for things to work.
 
 
 
-## How we can fix this
+## Fixing our architecture: bulkheading and event driven services
 
 Circuit-breakers and bulkheads will likely be mentioned. They help somewhat, but
 they will not fix the main issue: we're talking to other services on the “hot
