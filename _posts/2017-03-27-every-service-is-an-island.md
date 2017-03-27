@@ -17,6 +17,9 @@ _Editor's note_: the issues described here have since been fixed.
 ![Crashing wave](/images/posts/every-service-is-an-island/wave.jpg)
 <figcaption>
 You do not want this to happen when you're on call.
+<br/><small>
+Source: [Oshiokuri Hato Tsusen no Zu](https://commons.wikimedia.org/wiki/File:Oshiokuri_Hato_Tsusen_no_Zu.jpg) from Wikipemedia commons, public domain.
+</small>
 </figcaption>
 </figure>
 
