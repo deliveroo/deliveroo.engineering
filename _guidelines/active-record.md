@@ -304,6 +304,29 @@ Okay:
 - This pattern makes the most sense when _adding_ tables or columns that are not
   used by old code, but it's not required.
 
+##### Removing columns safely
+
+In the model file, add a `columns` patch for the column being removed,
+as well as virtual getter/setter methods:
+
+```ruby
+  def self.columns
+    super.reject { |col| col.name == 'column_to_be_removed' }
+  end
+
+  def column_to_be_removed; end
+
+  def column_to_be_removed=(value)
+    value
+  end
+```
+
+This safeguards against ActiveRecord caching the column,
+and prevents errors if there happens to be code still referencing
+the column for whatever reason.
+
+Once the migration is run and all servers have restarted,
+these methods can be removed.
 
 #### Avoiding migration issues
 
