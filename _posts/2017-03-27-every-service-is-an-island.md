@@ -18,7 +18,7 @@ _Editor's note_: the issues described here have since been fixed.
 <figcaption>
 You do not want this to happen when you're on call.
 <br/><small>
-Source: [Oshiokuri Hato Tsusen no Zu](https://commons.wikimedia.org/wiki/File:Oshiokuri_Hato_Tsusen_no_Zu.jpg) from Wikipemedia commons, public domain.
+Source: [Oshiokuri Hato Tsusen no Zu](https://commons.wikimedia.org/wiki/File:Oshiokuri_Hato_Tsusen_no_Zu.jpg) from Wikimedia commons, public domain.
 </small>
 </figcaption>
 </figure>
@@ -122,7 +122,7 @@ the diagram above: on the _get orders_ path, no other service than the
 
 ## Going further
 
-I've only touched the surface of the reliability benefits and design constriants
+I've only touched the surface of the reliability benefits and design constraints
 of event-driven distributed systems here. The approach above can be generalized
 for _write_ operations too, in some cases where reliability is paramount.
 
