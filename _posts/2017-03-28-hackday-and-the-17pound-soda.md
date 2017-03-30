@@ -111,7 +111,7 @@ There was also time for some hacking, and <b>this is where a £2.50 soda was pur
 
 <b> 1. Controller </b>  
 
-To fire off our dougnut order, and have our phone shout "DOUGNUTS!") we'll use a bluetooth button to trigger our 
+To fire off our dougnut order, and have our phone shout "DOUGNUTS!" we'll use a bluetooth button to trigger our 
 Travis build. Purchase your [Flic.io bluetooth button](https://flic.io/)  
   
 <b> 2. Triggering builds through Travis API </b>  
