@@ -237,6 +237,7 @@ DEPENDENCIES
   github-pages (= 134)
   guard-jekyll-plus
   guard-livereload
+  json
 
 RUBY VERSION
    ruby 2.3.1p112

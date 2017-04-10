@@ -12,6 +12,9 @@ description: > # this means to ignore newlines until "baseurl:"
   Deliveroo engineering blog
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://deliveroo.engineering" # the base hostname & protocol for your site
+logo: /images/logo_engineering.svg
+twitter:
+  username: deliveroo
 
 repository: "deliveroo/deliveroo.engineering"
 
@@ -29,6 +32,7 @@ gems:
    - jekyll-sitemap
    - jekyll-feed
    - jekyll-paginate
+   - jekyll-seo-tag
 
 paginate: 3
 paginate_path: "/articles/page:num/"
@@ -47,7 +51,14 @@ defaults:
       type:       guidelines
     values:
       layout:     guidelines
-
+  - scope:
+      path: ""
+    values:
+      image:
+        path: /images/logo_engineering.svg
+        height: 100
+        width: 735
+        type: image/svg
 exclude:
   - archive
   - Gemfile
