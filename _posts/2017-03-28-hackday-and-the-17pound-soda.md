@@ -21,7 +21,7 @@ about our Deliveroo first impressions:
 
 
 - **Pace** - Things are moving extremely fast at Deliveroo! We’re coming up to our third office move due to the growing 
-numbers of engineers.  
+number of engineers.  
 - **Culture** – our weekly company-wide lunch (lovingly named "the Hunger
 Games"), our rotating product team bakery challenge ("Bunday Monday" is a
 great start to the week), "Ride together" where our employees help the riders
