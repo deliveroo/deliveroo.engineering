@@ -90,7 +90,7 @@ It looks a little like this:
 
 ## So what’s next for Loris? 
 
-We’ve just completed another milestone which is to run across 11 out of 12 countries (UAE has an unusual payment 
+We’ve just completed another milestone which is to run across 11 out of 12 countries (UAE has a different payment 
 provider we'll be automating soon), but this has our suite running in just under 5 minutes on a slow day, which means 
 we hit our self-imposed limit for execution time.  
 
