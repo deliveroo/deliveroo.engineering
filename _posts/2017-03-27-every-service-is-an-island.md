@@ -77,8 +77,10 @@ they're all required for things to work.
 
 ## Fixing our architecture: bulkheading and event driven services
 
-Circuit-breakers and bulkheads will likely be mentioned. They help somewhat, but
-they will not fix the main issue: we're talking to other services on the “hot
+[Circuit-breakers](https://martinfowler.com/bliki/CircuitBreaker.html) and
+[bulkheads](http://stackoverflow.com/a/30685644/161487) will likely be
+mentioned. They help somewhat, but they will not fix the main issue: we're
+talking to other services on the “hot
 path” of serving users, and things *will* fail unpredictably.
 
 <figure>
