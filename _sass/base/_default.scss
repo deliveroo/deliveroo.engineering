@@ -4,7 +4,7 @@
   transition-property: color, border;
   transition-duration: 0.4s;
   border-bottom: 2px solid transparentize(color($color, 75%), 0.8);
-  
+
   &:hover {
     color: color($color, 50%);
     transition-duration: 0.2s;
@@ -34,12 +34,13 @@ a {
 } // a
 
 code, kbd, pre, samp {
-  font-family: $monospace-font;
+  @include font-family(monospace, 'SourceCodePro');
+  line-height: 1.4;
 }
 
 code {
   font-size: font-size(small-body);
-  
+
   &.highlighter-rouge {
     background-color: color(anchovy, 20%);
     padding: 2px;
@@ -47,12 +48,11 @@ code {
 }
 
 h1, h2, h3, h4 {
-  font-family: $title-font;
+  @include font-family(title, 'Stratos');
   font-weight: 600;
 }
 
 h1 {
-  font-family: $title-font;
   font-weight: 600;
   font-size: font-size(large-heading);
   line-height: 48px;
@@ -61,10 +61,9 @@ h1 {
 }
 
 h2 {
-  font-family: $title-font;
   font-weight: 600;
   font-size: font-size(medium-heading);
-  
+
   code {
     font-size: font-size(small-heading);
   }
@@ -72,7 +71,7 @@ h2 {
 
 h3 {
   font-size: font-size(small-heading);
-  
+
   code {
     font-size: font-size(smallish-heading);
   }
@@ -80,7 +79,7 @@ h3 {
 
 h4 {
   font-size: font-size(smallish-heading);
-  
+
   code {
     font-size: font-size(extra-small-heading);
   }
@@ -88,7 +87,7 @@ h4 {
 
 h5, h6 {
   font-size: font-size(extra-small-heading);
-  
+
   code {
     font-size: font-size(extra-small-heading);
   }
@@ -114,10 +113,10 @@ hr {
 ul, ol {
   box-sizing: border-box;
   padding-left: 1.5em;
-  
+
   li {
     line-height: 1.5;
-    
+
     & + li {
       margin-top: 0.2em;
     } // {ul, ol} li + li
