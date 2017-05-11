@@ -7,7 +7,7 @@ This post is a warning to the dangers of forgetting to lock your laptop in an en
 
 So yesterday I return to my workstation to see my unlocked desktop staring back at me.  🤦‍♂️
 
-I quickly scan though our company slack to assess the damage and find a 'i ❤️ Android' post (I am an iOS engineer) and a new Android Emoji on my profile.  I think I got away lightly.  I keep my new slack emoji as a reminder to keep my laptop locked.
+I quickly scan though our company slack to assess the damage and find a 'i ❤️ Android' post and a new Android Emoji on my profile (I am an iOS Developer).  However, I think I got away lightly.  I keep my new slack emoji as a reminder to lock my laptop.
 
 A few hours later a tab pops open on chrome and Rick Astley starts singing at me.  I realise I am the victim of a much more sophisticated prank.
 
@@ -51,13 +51,13 @@ I don't really expect it to work, but I get 2 hits.
 ....rubygems.org..../versions:webrickroll 0.0.1,0.0.2 127bf6111dbdf0f2a7c57c2d03b2d035
 ```
 
-Unfortunately it appears these are just caches of the master list of all gems.  Out of interest, these are gems that intercept links via a middleware and hijack them so you can fully enjoy the benefits and wonders of Rick Astley.
+Unfortunately it appears these are just caches of the master list of all gems.  Out of interest, these are gems that intercept links via a middleware and hijack them so you can 'fully enjoy the benefits and wonders of Rick Astley'.
 
 I am starting to run out of ideas. I decide I need a consistent reproduction steps.  All complex bugs are solved by finding exact steps to reproduce.
 
 I set my system time ahead 12 hours - nothing, 24 hours - nothing, 5 weeks - nothing.
 
-Perhaps the process will die if I restart my machine?  I restart and I get instantly rick-rolled. I restart one more time to be sure it was not a coincidence again it happens.  The process must restarts itself automatically on login.
+Perhaps the process will die if I restart my machine?  I restart and I get instantly rick-rolled. I restart one more time to be sure it was not a coincidence again it happens.  The process must restart itself automatically on login.
 
 I check my login items with system preferences.  They look normal - just `iTunes Helper` and our colleague Paul's excellent [`Trailer.app`](https://ptsochantaris.github.io/trailer/).  However I notice that Docker and Postgres have restarted but are not in the list.  I research how they do it and it turns out there is another way.  A folder called [`LaunchAgents`](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html).  A quick scan and I find `com.lock.yo.screen.plist`.
 
@@ -83,7 +83,7 @@ I check my login items with system preferences.  They look normal - just `iTunes
 </plist>
 ```
 
-It runs `open -a 'Google Chrome.app' https://www.youtube.com/watch?v=dQw4w9WgXcQ` every 2 hours.  I delete the file and restart.  To my delight, no Rick.
+It runs `open -a 'Google Chrome.app' https://www.youtube.com/watch?v=dQw4w9WgXcQ` every 2 hours.  I delete the file and restart.  To my delight, Rick has given up.
 
 ## Some lessons
 
