@@ -9,7 +9,7 @@ Yesterday I return to my workstation to see my unlocked desktop staring back at 
 
 I quickly scan though our company slack to assess the damage and find a 'i ❤️ Android' post and a new Android Emoji on my profile (I am an iOS Developer).  However, I think I got away lightly.  I keep my new slack emoji as a reminder to lock my laptop.
 
-A few hours later a tab pops open on chrome and Rick Astley starts singing at me.  I realise I am the victim of a much more sophisticated prank.
+A few hours later a tab pops open on chrome and [Rick Astley starts singing at me](https://www.youtube.com/watch?v=dQw4w9WgXcQ).  I realise I am the victim of a much more sophisticated prank.
 
 I had being playing around with a feature to share a link to a restaurant menu over bluetooth.  It happens without a prompt sometimes.  I'm not sure exactly how they have done it, but I am quite tired so, I just disable bluetooth and go home.
 
