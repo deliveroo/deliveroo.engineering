@@ -5,15 +5,15 @@ This post is a warning to the dangers of forgetting to lock your laptop in an en
 1. Leaving your laptop unlocked is discouraged by a culture of jovial shaming.
 2. People are smart and creative.
 
-So yesterday I return to my workstation to see my unlocked desktop staring back at me.  🤦‍♂️
+Yesterday I return to my workstation to see my unlocked desktop staring back at me.  🤦‍♂️
 
 I quickly scan though our company slack to assess the damage and find a 'i ❤️ Android' post and a new Android Emoji on my profile (I am an iOS Developer).  However, I think I got away lightly.  I keep my new slack emoji as a reminder to lock my laptop.
 
 A few hours later a tab pops open on chrome and Rick Astley starts singing at me.  I realise I am the victim of a much more sophisticated prank.
 
-I had being playing around with a feature to share a restaurant menu on iOS over bluetooth.  I had found it happens without a prompt sometimes.  I'm not sure exactly how they have done it, but I am quite tired so, I just disable bluetooth and go home.
+I had being playing around with a feature to share a link to a restaurant menu over bluetooth.  It happens without a prompt sometimes.  I'm not sure exactly how they have done it, but I am quite tired so, I just disable bluetooth and go home.
 
-The next day it happens again.  I am much more alert and up for a challenge.
+The next day I am browsing JIRA and it happens again.  I am much more alert and up for a challenge.
 
 First, I check my chrome extensions. Everything looks normal, but I check the author of each extension to make sure that the rickroll is not [masquerading as google docs](http://www.popsci.com/massive-phishing-scheme-just-hijacked-gmail-accounts-by-disguising-itself-as-shared-google-doc).
 
@@ -51,7 +51,7 @@ I don't really expect it to work, but I get 2 hits.
 ....rubygems.org..../versions:webrickroll 0.0.1,0.0.2 127bf6111dbdf0f2a7c57c2d03b2d035
 ```
 
-Unfortunately it appears these are just caches of the master list of all gems.  Out of interest, these are gems that intercept links via a middleware and hijack them so you can 'fully enjoy the benefits and wonders of Rick Astley'.
+Unfortunately it appears these are just caches of the master list of all gems.  Out of interest, [these gems](https://github.com/eadonj/rickrolling_roulette) intercept links via a middleware and hijack them so you can 'fully enjoy the benefits and wonders of Rick Astley'.
 
 I am starting to run out of ideas. I decide I need a consistent reproduction steps.  All complex bugs are solved by finding exact steps to reproduce.
 
@@ -59,7 +59,7 @@ I set my system time ahead 12 hours - nothing, 24 hours - nothing, 5 weeks - not
 
 Perhaps the process will die if I restart my machine?  I restart and I get instantly rick-rolled. I restart one more time to be sure it was not a coincidence again it happens.  The process must restart itself automatically on login.
 
-I check my login items with system preferences.  They look normal - just `iTunes Helper` and our colleague Paul's excellent [`Trailer.app`](https://ptsochantaris.github.io/trailer/).  However I notice that Docker and Postgres have restarted but are not in the list.  I research how they do it and it turns out there is another way.  A folder called [`LaunchAgents`](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html).  A quick scan and I find `com.lock.yo.screen.plist`.
+I go to system preferences to check my login items.  They look normal - just `iTunes Helper` and our colleague Paul's excellent [`Trailer.app`](https://ptsochantaris.github.io/trailer/).  However I notice that Docker and Postgres have restarted but are not in the list.  I research how they do it and it turns out there is another way.  A folder called [`LaunchAgents`](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html).  A quick scan and I find `com.lock.yo.screen.plist`.
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -88,7 +88,7 @@ It runs `open -a 'Google Chrome.app' https://www.youtube.com/watch?v=dQw4w9WgXcQ
 ## Some lessons
 
 1. Find consistent reproduction steps.
-2. Verify assumptions. Often you appear to find what you are looking for, but you should carefully test to see if it fits all the evidence.  [We have a tendency to jump on the first thing that looks right](https://en.wikipedia.org/wiki/Confirmation_bias) (e.g. `rickrolling_roulette`).
+2. Verify assumptions. Often you appear to find what you are looking for, but you should carefully test to see if it fits all the evidence.  [We have a tendency to jump on the first thing that verifies our initial assumptions right](https://en.wikipedia.org/wiki/Confirmation_bias) (e.g. `rickrolling_roulette`).
 3. Determination can yields results, but you can often save a load of time by asking for help.
 4. Lock your laptop.
 
