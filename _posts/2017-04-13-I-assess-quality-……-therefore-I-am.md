@@ -3,7 +3,7 @@ layout: post
 title:  “I assess quality……therefore I am”
 author: "Festus Ifiti jr"
 excerpt: >
-  Friends, engineers, fellow food enthusiasts…lend me your ears. Before my interview with Deliveroo in November, I read some articles from the engineering blog and I promised myself that when I did start working for this amazing company, I would participate and write an article about all things QA…. I also had a little bet with[Troy Harris](https://twitter.com/TroyHarrisOz/). He fulfilled his end of the bargain so I’m fulfilling mine.
+  Friends, engineers, fellow food enthusiasts…lend me your ears. Before my interview with Deliveroo in November, I read some articles from the engineering blog and I promised myself that when I did start working for this amazing company, I would participate and write an article about all things QA…. I also had a little bet with [Troy Harris](https://twitter.com/TroyHarrisOz/). He fulfilled his end of the bargain so I’m fulfilling mine.
   
   In this blog, I'm going to talk about my Deliveroo Interview experience, the current QA process, taking responsibility, my typical working day and Brown Bag sessions.
 
