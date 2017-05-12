@@ -14,7 +14,7 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://deliveroo.engineering" # the base hostname & protocol for your site
 logo: /images/logo_engineering.svg
 twitter:
-  username: deliveroo
+  username: deliverooeng
 
 repository: "deliveroo/deliveroo.engineering"
 
