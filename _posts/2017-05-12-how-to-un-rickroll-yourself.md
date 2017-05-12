@@ -91,3 +91,6 @@ It runs `open -a 'Google Chrome.app' https://www.youtube.com/watch?v=dQw4w9WgXcQ
 2. Verify assumptions. Often you appear to find what you are looking for, but you should carefully test to see if it fits all the evidence.  [We have a tendency to jump on the first thing that looks right](https://en.wikipedia.org/wiki/Confirmation_bias) (e.g. `rickrolling_roulette`).
 3. Determination can yields results, but you can often save a load of time by asking for help.
 4. Lock your laptop.
+
+
+![Rick](/images/posts/hackday-and-the-17pound-soda/rick-roll.jpg)
