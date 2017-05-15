@@ -119,4 +119,6 @@ Congratulations, Red Pandas! 🎉 And...
 
 ## We'll Be Back.
 
+![The Determinator](/images/posts/determinating-scavenger-hunt/determinator.jpg)
+
 We're really excited to see real-life applications for Determinator before shipping it. Once we've fully tested it and ironed out all the kinks, we'll be releasing it to the open-source community, so be sure to keep an eye on this space for updates!
