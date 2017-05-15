@@ -3,8 +3,7 @@ layout: post
 title:  "Determinating a Scavenger Hunt"
 author: "Grace Chang"
 excerpt: >
- What does a team dedicated to running experiments to grow Deliveroo as a product do when faced with the challenge of organising randomised teams for an off-site?
- Use a deterministic assignment algorithm, of course!
+ The Deliveroos rose from the ashes of the experimental fire. Their war to grow the product had raged for decades, but the final battle would not be fought in the future. It would be fought here, in our present. Tonight...
 
 ---
 
