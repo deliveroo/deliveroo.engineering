@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "How to un-rickroll yourself"
+author: "Bobby"
+excerpt: >
+  A story of how an entire morning can be lost if you forget to lock your laptop.
+---
+
 # How to un-rickroll yourself
 
 This post is a warning to the dangers of forgetting to lock your laptop in an environment where:
