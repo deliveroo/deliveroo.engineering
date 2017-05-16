@@ -3,7 +3,7 @@ layout: post
 title:  "How to un-rickroll yourself"
 author: "Robert Saunders"
 excerpt: >
-  A story of how an entire morning can be lost if you forget to lock your laptop.
+  A story of how leaving your laptop unlocked can lose the entire morning
 ---
 
 # How to un-rickroll yourself
