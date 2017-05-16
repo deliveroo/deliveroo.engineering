@@ -1,7 +1,7 @@
 ---
 layout:     authors
 collection: authors
-name:       "Bobby"
+name:       "Robert Saunders"
 jobtitle:   "iOS Developer"
 portrait:   "/images/portraits/robert-saunders.jpg"
 ---
