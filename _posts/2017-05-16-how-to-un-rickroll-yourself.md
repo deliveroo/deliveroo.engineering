@@ -6,8 +6,6 @@ excerpt: >
   A story of how leaving your laptop unlocked can lose the entire morning
 ---
 
-# How to un-rickroll yourself
-
 This post is a warning to the dangers of forgetting to lock your laptop in an environment where:
 
 1. Leaving your laptop unlocked is discouraged by a culture of jovial shaming.
