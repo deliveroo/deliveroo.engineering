@@ -99,4 +99,4 @@ It runs `open -a 'Google Chrome.app' https://www.youtube.com/watch?v=dQw4w9WgXcQ
 4. Lock your laptop.
 
 
-![Rick](/images/posts/how-to-un-rickroll-yourself/rick-roll.jpg)
+![Rick](/images/posts/how-to-un-rickroll-yourself/rick_roll.jpg)
