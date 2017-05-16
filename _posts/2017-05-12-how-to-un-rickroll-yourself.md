@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "How to un-rickroll yourself"
-author: "Bobby"
+author: "Robert Saunders"
 excerpt: >
   A story of how an entire morning can be lost if you forget to lock your laptop.
 ---
