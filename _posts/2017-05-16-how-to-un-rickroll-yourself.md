@@ -1,4 +1,10 @@
-# How to un-rickroll yourself
+---
+layout: post
+title:  "How to un-rickroll yourself"
+author: "Robert Saunders"
+excerpt: >
+  A story of how leaving your laptop unlocked can lose the entire morning.
+---
 
 This post is a warning to the dangers of forgetting to lock your laptop in an environment where:
 
@@ -93,4 +99,4 @@ It runs `open -a 'Google Chrome.app' https://www.youtube.com/watch?v=dQw4w9WgXcQ
 4. Lock your laptop.
 
 
-![Rick](/images/posts/hackday-and-the-17pound-soda/rick-roll.jpg)
+![Rick](/images/posts/how-to-un-rickroll-yourself/rick-roll.jpg)
