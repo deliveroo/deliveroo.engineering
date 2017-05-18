@@ -407,48 +407,48 @@ article {
     } // article div.footnotes a.reversefootnote
   } // article div.footnotes
 
-  &.guidelines {
-    table {
-      width: 100%;
-      table-layout: fixed;
-      border-collapse: collapse;
-      font-size: font-size(small-body);
+  table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: font-size(small-body);
+
+    code {
+      font-size: font-size(smallest-body);
+    } // article table code
+
+    th, td {
+      padding: 5px;
+    } // article table {th, td}
+
+    thead {
+      th {
+        background-color: color(mackerel, 60%);
+        color: color(anchovy, 5%);
+        text-align: left;
+      } // article table thead th
+    } // article table thead
+
+    tbody {
+      td {
+        overflow: auto;
+      } // article table tbody td
+
+      tr:nth-child(even) td {
+        background-color: color(anchovy, 10%);
+      } // article table tbody tr:nth-child(even) td
+
+      tr:nth-child(odd) td {
+        background-color: color(anchovy, 20%);
+      } // article table tbody tr:nth-child(odd) td
 
       code {
-        font-size: font-size(smallest-body);
-      } // article.guidelines table code
+        background: none;
+      } // article table tbody code
+    } // article table tbody
+  } // article table
 
-      th, td {
-        padding: 5px;
-      } // article.guidelines table {th, td}
-
-      thead {
-        th {
-          background-color: color(mackerel, 60%);
-          color: color(anchovy, 5%);
-          text-align: left;
-        } // article.guidelines table thead th
-      } // article.guidelines table thead
-
-      tbody {
-        td {
-          overflow: auto;
-        } // article.guidelines table tbody td
-
-        tr:nth-child(even) td {
-          background-color: color(anchovy, 10%);
-        } // article.guidelines table tbody tr:nth-child(even) td
-
-        tr:nth-child(odd) td {
-          background-color: color(anchovy, 20%);
-        } // article.guidelines table tbody tr:nth-child(odd) td
-
-        code {
-          background: none;
-        } // article.guidelines table tbody code
-      } // article.guidelines table tbody
-    } // article.guidelines table
-
+  &.guidelines {
     h2 {
       text-align: center;
       margin-bottom: 2em;
