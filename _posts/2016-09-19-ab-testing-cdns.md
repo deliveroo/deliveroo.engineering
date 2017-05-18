@@ -408,6 +408,8 @@ pages) to further improve performance.
 [split]: https://github.com/splitrb/split#split
 [segment]: https://segment.com/
 [pingdom]: https://www.pingdom.com/
+[nginx]: https://nginx.org/en/
+[heroku]: https://www.heroku.com/
 
 
 #### Footnotes
