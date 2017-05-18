@@ -81,13 +81,13 @@ ul.jobs-list {
 
   h3 {
     @include text-overflow-ellipsis;
-    display: block;
-    float: left;
-    margin: 0;
     font-family: $default-font;
     font-size: font-size(extra-small-heading);
     line-height: 36px;
     font-weight: 500;
+    display: block;
+    float: left;
+    margin: 0;
   } // ul.jobs-list h3
 
   ul.whr-info {
@@ -116,38 +116,38 @@ ul.jobs-list {
       } // ul.jobs-list ul.whr-info li.whr-apply a
     } // ul.jobs-list ul.whr-info li.whr-apply
   } // ul.jobs-list ul.whr-info
-  
+
   @include max-width(smartphone_small) {
     h3 {
       max-width: 220px;
     } // @max-width(smartphone_small) ul.jobs-list h3
   } // @max-width(smartphone_small) ul.jobs-list
-  
+
   @include max-width(smartphone_medium) {
     h3 {
       max-width: 250px;
     } // @max-width(smartphone_medium) ul.jobs-list h3
-    
+
     ul.whr-info {
       li.whr-location {
         clear: both;
       } // @max-width(smartphone_medium) ul.jobs-list ul.whr-info li.whr-location
     } // @max-width(smartphone_medium) ul.jobs-list ul.whr-info
   } // @max-width(smartphone_medium) ul.jobs-list
-  
+
   @include min-width(smartphone_medium) {
     ul.whr-info {
       li.whr-location {
         padding-left: 15px;
         float: right;
       } // @min-width(smartphone_medium) ul.jobs-list ul.whr-info li.whr-location
-      
+
       li.whr-apply {
-        
+
       } // @min-width(smartphone_medium) ul.jobs-list ul.whr-info li.whr-apply
     } // @min-width(smartphone_medium) ul.jobs-list ul.whr-info
   } // @min-width(smartphone_medium) ul.jobs-list
-  
+
   @include between-widths(smartphone_medium, tablet_small) {
     ul.whr-info {
       li.whr-apply {
@@ -155,20 +155,20 @@ ul.jobs-list {
       } // @between-widths(smartphone_medium, tablet_small) ul.jobs-list ul.whr-info li.whr-apply
     } // @between-widths(smartphone_medium, tablet_small) ul.jobs-list ul.whr-info
   } // @between-widths(smartphone_medium, tablet_small) ul.jobs-list
-  
+
   @include max-width(smartphone_large) {
     h3 {
       max-width: 360px;
     } // @max-width(smartphone_large) ul.jobs-list h3
   } // @max-width(smartphone_large) ul.jobs-list
-  
+
   @include max-width(tablet_small) {
     ul.whr-info {
       li.whr-apply {
         display: -webkit-flex;
         display: flex;
         clear: both;
-      
+
         a.button {
           -webkit-flex: 1;
           flex: 1;
@@ -176,7 +176,7 @@ ul.jobs-list {
       } // @max-width(tablet_small) ul.jobs-list ul.whr-info li.whr-apply
     } // @max-width(tablet_small) ul.jobs-list ul.whr-info
   } // @max-width(tablet_small) ul.jobs-list
-  
+
   @include min-width(tablet_small) {
     ul.whr-info {
       li.whr-location {
