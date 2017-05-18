@@ -242,6 +242,44 @@ section {
 
     @include flex-column-grid(tablet_small, desktop_small, $child-selector: 'div.author', $gutter-width: $post-gutter, $row-spacing: $row-spacing);
   } // section#authors
+
+  &#pagination {
+    display: flex;
+    text-align: center;
+    margin-top: 50px;
+    font-size: 14px;
+
+    a {
+      border: none;
+    }
+
+    span {
+      &.previous,
+      &.next {
+        opacity: 0.5;
+      } // section#pagination span.{previous, next}
+
+      &.page-number {
+        flex: 1;
+      } // section#pagination span.page-number
+    } // section#pagination span
+
+    span.previous,
+    a.previous {
+      &:before {
+        content: '❮';
+        margin-right: 5px;
+      } // section#pagination {span, a}.previous:before
+    } // section#pagination {span, a}.previous
+
+    span.next,
+    a.next {
+      &:after {
+        content: '❯';
+        margin-left: 5px;
+      } // section#pagination {span, a}.next:after
+    } // section#pagination {span, a}.next
+  } // section#pagination
 } // section
 
 article {
