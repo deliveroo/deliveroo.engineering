@@ -17,7 +17,7 @@ I quickly scan though our company slack to assess the damage and find a 'i ‚ù§Ô∏
 
 A few hours later a tab pops open on chrome and [Rick Astley starts singing at me](https://www.youtube.com/watch?v=dQw4w9WgXcQ).  I realise I am the victim of a much more sophisticated prank.
 
-I had being playing around with a feature to share a link to a restaurant menu over bluetooth.  It happens without a prompt sometimes.  I'm not sure exactly how they have done it, but I am quite tired so, I just disable bluetooth and go home.
+I had been playing around with a feature to share a link to a restaurant menu over bluetooth.  It happens without a prompt sometimes.  I'm not sure exactly how they have done it, but I am quite tired so, I just disable bluetooth and go home.
 
 The next day I am browsing JIRA and it happens again.  I am much more alert and up for a challenge.
 
