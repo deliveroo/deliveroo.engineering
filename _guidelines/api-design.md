@@ -749,7 +749,7 @@ _links:
 ```
 
 
-Exceptionally, a collection representation, _may_ embedded representations of
+Exceptionally, a collection representation, _may_ embed representations of
 the linked resources, which _may_ be incomplete, but _must_ include at least a link to `self`.
 
 Note that as for other use cases of `_embedded`, there should be a very robust
