@@ -115,6 +115,8 @@ Who won in the end? Team Red Pandas eked out a close win against the rest.
 | Giraffes   | 01:37:17 |
 | Sloths     | 02:06:10 |
 
+<figure>![Growth Team](/images/posts/determinating-scavenger-hunt/growth-team.jpg)</figure>
+
 Congratulations, Red Pandas! 🎉
 And...
 
