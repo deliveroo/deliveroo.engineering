@@ -71,25 +71,25 @@ friends) but instead rely on named scopes; unless the named scopes are trivial.
 Good:
 
 ```ruby
-@users = current_user.posts.created_after(1.year.ago)
+@posts = current_user.posts.created_after(1.year.ago)
 ```
 
 Okay:
 
 ```ruby
-@users = current_user.posts.where(created_at: 1.year.ago .. Time.current)
+@posts = current_user.posts.where(created_at: 1.year.ago .. Time.current)
 ```
 
 Bad:
 
 ```ruby
-@users = Posts.where('user_id = ? AND created_at > ?', current_user.id, 1.year.ago)
+@posts = Posts.where('user_id = ? AND created_at > ?', current_user.id, 1.year.ago)
 ```
 
 Worse:
 
 ```ruby
-@users = User.find_by_sql(OH_GOD_KILL_ME)
+@posts = Post.find_by_sql(OH_GOD_KILL_ME)
 ```
 
 
