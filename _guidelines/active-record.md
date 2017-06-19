@@ -150,7 +150,7 @@ necessary, avoid scope proliferation.
 Good:
 
 ```ruby
-scope :created_after, -> { |timestamp| ... }
+scope :created_after, -> { |timestamp| where('created_at > ?', timestamp) }
 ```
 
 Bad:
@@ -245,7 +245,7 @@ models**.
 This is because your migration has to work up and down even if your model no
 longer exists, has been renamed, or has had and internal API change!
 
-Migrations _maybe_ exceptionally use PORO models to facilitate complex data
+Migrations _may_ exceptionally use PORO models to facilitate complex data
 changes, though.
 
 Good (roughly):
@@ -447,7 +447,7 @@ Rules of thumb:
 
 - always create an **index on foreign keys** (every field ending with `_id`).
 - always run `EXPLAIN` on non-trivial queries (the
-  [manual](https://www.postgresql.org/docs/9.5/static/using-explain.html) helps)
+  [manual](https://www.postgresql.org/docs/9.6/static/using-explain.html) helps)
 - do not add more indices until you actually have a problem (no premature
   optimisation).
 
@@ -500,8 +500,7 @@ Order.where(created_at: 25.hours.ago .. Time.current).find_each do |order|
     created_at:     order.created_at
   )
 end
-OrderRating.where(created_at: 25.hours.ago .. Time.current).find_each do
-|rating|
+OrderRating.where(created_at: 25.hours.ago .. Time.current).find_each do |rating|
   next unless (1..3).include? rating.stars
   RecentlyOrderedFromAndNotPoorlyRatedRestaurants.where(order_id:
   rating.order_id).destroy_all
