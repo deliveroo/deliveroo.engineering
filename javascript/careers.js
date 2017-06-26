@@ -10,7 +10,7 @@
 
     $groups.each(function() {
       $group = jQuery(this);
-      if ($group.text() == "Product Team") {
+      if ($group.text() == "Engineering") {
         $list = $group.next();
         $list.removeAttr("style");
         $('#careers').append($list);
