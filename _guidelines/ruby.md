@@ -20,10 +20,10 @@ style guide that holds to an ideal that has been rejected by the people it is
 supposed to help risks not getting used at all &ndash; no matter how good it
 is.
 
-This guide is largely based upon Bozhidar Batsov’s 
-[Ruby Style Guide][ruby-style-guide], based on feedback and suggestions from 
-members of the Ruby community and various highly regarded Ruby programming 
-resources, such as Programming Ruby 1.9[^programming-ruby] and 
+This guide is largely based upon Bozhidar Batsov’s
+[Ruby Style Guide][ruby-style-guide], based on feedback and suggestions from
+members of the Ruby community and various highly regarded Ruby programming
+resources, such as Programming Ruby 1.9[^programming-ruby] and
 The Ruby Programming Language[^the-ruby-programming-language].
 
 [ruby-style-guide]: https://github.com/bbatsov/ruby-style-guide
@@ -60,9 +60,9 @@ end
 
 ### Line endings
 
-Use Unix-style line endings (BSD/Solaris/Linux/OSX users are covered by 
+Use Unix-style line endings (BSD/Solaris/Linux/OSX users are covered by
 default, Windows users have to be extra careful). You can add the following [git
-configuration][git-autocrlf] setting to protect your project from Windows line 
+configuration][git-autocrlf] setting to protect your project from Windows line
 endings creeping in:
 {: #line-endings}
 
@@ -78,7 +78,7 @@ Avoid trailing whitespace at the end of lines.
 ### Separating statements and expressions
 {: #separating-statements}
 
-Don't use `;` to separate statements and expressions. As a corollary - use one 
+Don't use `;` to separate statements and expressions. As a corollary - use one
 expression per line.
 
 ```ruby
@@ -110,7 +110,7 @@ class FooError < StandardError; end
 FooError = Class.new(StandardError)
 ```
 
-Avoid single-line methods. Although they are somewhat popular in the wild, 
+Avoid single-line methods. Although they are somewhat popular in the wild,
 there are a few peculiarities about their definition syntax that make their use
 undesirable. At any rate - there should be no more than one expression in a
 single-line method.
@@ -145,7 +145,7 @@ def no_op; end
 ### Spaces around symbols
 
 Use spaces around operators, after commas, colons and semicolons, around `{`
-and before `}`. Whitespace might be (mostly) irrelevant to the Ruby 
+and before `}`. Whitespace might be (mostly) irrelevant to the Ruby
 interpreter, but its proper use is the key to writing easily readable code.
 
 ```ruby
@@ -172,8 +172,8 @@ some(arg).other
 [1, 2, 3].length
 ```
 
-`{` and `}` deserve a bit of clarification, since they are used for block and 
-hash literals, as well as embedded expressions in strings. For hash literals 
+`{` and `}` deserve a bit of clarification, since they are used for block and
+hash literals, as well as embedded expressions in strings. For hash literals
 two styles are common:
 
 ```ruby
@@ -184,7 +184,7 @@ two styles are common:
 { one: 1, two: 2 }
 ```
 
-The second variant is slightly more readable (and arguably more popular in the 
+The second variant is slightly more readable (and arguably more popular in the
 Ruby community in general) and should be used over the first.
 
 As far as embedded expressions go, there are also two common options:
@@ -199,7 +199,7 @@ As far as embedded expressions go, there are also two common options:
 
 The second style is more popular and should be preferred.
 
-Use spaces around the `=` operator when assigning default values to method 
+Use spaces around the `=` operator when assigning default values to method
 parameters:
 
 ```ruby
@@ -214,14 +214,14 @@ def some_method(arg1 = :default, arg2 = nil, arg3 = [])
 end
 ```
 
-While several Ruby books suggest the first style, the second is much more 
+While several Ruby books suggest the first style, the second is much more
 prominent in practice (and arguably a bit more readable).
 
 
 ### Indentation levels
 
 Indent `when` as deep as `case`. Whilst many would disagree with this one, it's
-the style established in both _Programming Ruby_ [^programming-ruby] and 
+the style established in both _Programming Ruby_ [^programming-ruby] and
 _The Ruby Programming Language_ [^the-ruby-programming-language] .
 
 ```ruby
@@ -285,8 +285,8 @@ end
 
 ### Empty lines
 
-Use empty lines between `def`s and to break up a method into logical 
-paragraphs. Using two empty lines between methods is also recommended for 
+Use empty lines between `def`s and to break up a method into logical
+paragraphs. Using two empty lines between methods is also recommended for
 visually distinguishing them from individual sections of a particular method:
 
 ```ruby
@@ -304,7 +304,7 @@ def some_method
 end
 ```
 
-Avoid line continuation `\` where not required. In practice, avoid using line 
+Avoid line continuation `\` where not required. In practice, avoid using line
 continuations at all.
 
 ```ruby
@@ -361,7 +361,7 @@ another comment line
 
 ## Syntax
 
-Use `::` only to reference constants(this includes classes and modules). Never 
+Use `::` only to reference constants(this includes classes and modules). Never
 use `::` for method invocation:
 
 ```ruby
@@ -404,8 +404,8 @@ end
 {: #ruby-iterators}
 
 Never use `for`, unless you know exactly why. Most of the time iterators should
-be used instead. `for` is implemented in terms of `each` (so you're adding a 
-level of indirection), but with a twist - `for` doesn't introduce a new scope 
+be used instead. `for` is implemented in terms of `each` (so you're adding a
+level of indirection), but with a twist - `for` doesn't introduce a new scope
 (unlike `each`) and variables defined in its block will be visible outside it.
 
 ```ruby
@@ -447,8 +447,8 @@ result = if some_condition then something else something_else end
 result = some_condition ? something : something_else
 ```
 
-Use one expression per branch in a ternary operator. This also means that 
-ternary operators must not be nested. Prefer `if/else` constructs in these 
+Use one expression per branch in a ternary operator. This also means that
+ternary operators must not be nested. Prefer `if/else` constructs in these
 cases:
 
 ```ruby
@@ -463,7 +463,7 @@ else
 end
 ```
 
-Never use `if x: ...` - as of Ruby 1.9 it has been removed. Use the ternary 
+Never use `if x: ...` - as of Ruby 1.9 it has been removed. Use the ternary
 operator instead:
 
 ```ruby
@@ -621,7 +621,7 @@ end
 ```
 
 Omit parentheses around parameters for methods that are part of an internal DSL
-(e.g. Rake, Rails, RSpec), methods that have "keyword" status in Ruby (e.g. 
+(e.g. Rake, Rails, RSpec), methods that have "keyword" status in Ruby (e.g.
 `attr_reader`, `puts`) and attribute access methods. Use parentheses around the
 arguments of all other method invocations:
 
@@ -660,8 +660,8 @@ fork
 ```
 
 Prefer `{...}` over `do...end` for single-line blocks.  Avoid using `{...}` for
-multi-line blocks (multiline chaining is always ugly). Always use `do...end` 
-for "control flow" and "method definitions" (e.g. in Rakefiles and certain 
+multi-line blocks (multiline chaining is always ugly). Always use `do...end`
+for "control flow" and "method definitions" (e.g. in Rakefiles and certain
 DSLs).  Avoid `do...end` when chaining:
 
 ```ruby
@@ -685,7 +685,7 @@ names.select { |name| name.start_with?('S') }.map { |name| name.upcase }
 ```
 
 Some will argue that multiline chaining would look OK with the use of `{...}`,
-but they should ask themselves - is this code really readable and can the 
+but they should ask themselves - is this code really readable and can the
 blocks' contents be extracted into nifty methods?
 
 Avoid `return` where not required for flow of control:
@@ -800,8 +800,8 @@ enabled ||= true
 enabled = true if enabled.nil?
 ```
 
-Avoid explicit use of the case equality operator `===`. As its name implies 
-it's meant to be used implicitly by `case` expressions and outside of them it 
+Avoid explicit use of the case equality operator `===`. As its name implies
+it's meant to be used implicitly by `case` expressions and outside of them it
 yields some pretty confusing code:
 
 ```ruby
@@ -886,13 +886,13 @@ result = hash.map { |k, v| v + 1 }
 result = hash.map { |_, v| v + 1 }
 ```
 
-Use `$stdout/$stderr/$stdin` instead of `STDOUT/STDERR/STDIN`. 
-`STDOUT/STDERR/STDIN` are constants, and while you can actually reassign 
+Use `$stdout/$stderr/$stdin` instead of `STDOUT/STDERR/STDIN`.
+`STDOUT/STDERR/STDIN` are constants, and while you can actually reassign
 (possibly to redirect some stream) constants in Ruby, you'll get an interpreter
 warning if you do so.
 
 Use `warn` instead of `$stderr.puts`. Apart from being more concise and clear,
-`warn` allows you to suppress warnings if you need to (by setting the warn 
+`warn` allows you to suppress warnings if you need to (by setting the warn
 level to 0 via `-W0`).
 
 ### Favour Object-Orientism
@@ -910,7 +910,7 @@ sprintf('%{count} unicorns', { count: 11 })
 # => '11 unicorns'
 ```
 
-Favor the use of `Array#join` over the fairly cryptic `Array#*` with a string 
+Favor the use of `Array#join` over the fairly cryptic `Array#*` with a string
 argument:
 
 ```ruby
