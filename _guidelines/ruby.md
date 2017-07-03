@@ -491,29 +491,6 @@ x = (not something)
 x = !something
 ```
 
-The `and` and `or` keywords are banned. It's just not worth it. Always use `&&`
-and `||` instead:
-
-```ruby
-# bad
-# boolean expression
-if some_condition and some_other_condition
-  do_something
-end
-
-# control flow
-document.saved? or document.save!
-
-# good
-# boolean expression
-if some_condition && some_other_condition
-  do_something
-end
-
-# control flow
-document.saved? || document.save!
-```
-
 Avoid multi-line `?:` (the ternary operator); use `if/unless` instead.
 
 Favor modifier `if/unless` usage when you have a single-line body. Another good
@@ -566,7 +543,7 @@ else
 end
 ```
 
-Don't use parentheses around the condition of an `if/unless/while/until`:
+Don't use parentheses around the condition of a simple `if/unless/while/until`:
 
 ```ruby
 # bad
@@ -579,6 +556,9 @@ if x > 10
   # body omitted
 end
 ```
+
+If you’re writing a more complex Boolean condition with chained operators,
+_do_ use parentheses if it makes sense.
 
 Favor modifier `while/until` usage when you have a single-line body:
 
@@ -808,21 +788,14 @@ yields some pretty confusing code:
 # bad
 Array === something
 (1..100) === 7
-/something/ === some_string
 
 # good
 something.is_a?(Array)
 (1..100).include?(7)
-some_string =~ /something/
 ```
 
-`TODO: find a home for this`:
-Avoid using Perl-style special variables (like `$0-9`, `$`, etc.). They are 
-quite cryptic and their use in anything but one-liner scripts is discouraged:
-
-```ruby
-# TODO: example?
-```
+Avoid using Perl-style special variables (like `$0-9`, `$`, etc.). They are
+quite cryptic and their use in anything but one-liner scripts is discouraged.
 
 ### Method invocation
 
