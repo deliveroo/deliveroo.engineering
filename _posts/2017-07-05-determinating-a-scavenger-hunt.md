@@ -115,13 +115,17 @@ Who won in the end? Team Red Pandas eked out a close win against the rest.
 | Giraffes   | 01:37:17 |
 | Sloths     | 02:06:10 |
 
-<figure>![Growth Team](/images/posts/determinating-scavenger-hunt/growth-team.jpg)</figure>
+<figure>
+![Growth Team](/images/posts/determinating-scavenger-hunt/growth-team.jpg)
+</figure>
 
 Congratulations, Red Pandas! 🎉
 And...
 
 ## We'll Be Back.
 
-<figure>![The Determinator](/images/posts/determinating-scavenger-hunt/determinator.jpg)</figure>
+<figure>
+![The Determinator](/images/posts/determinating-scavenger-hunt/determinator.jpg)
+</figure>
 
 We're really excited to see real-life applications for Determinator before shipping it. Once we've fully tested it and ironed out all the kinks, we'll be releasing it to the open-source community, so be sure to keep an eye on this space for updates!
