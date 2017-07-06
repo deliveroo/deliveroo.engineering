@@ -174,7 +174,7 @@ In particular (but not limited to):
 Or in other words, **push > poll**.
 
 <aside>
-#### Why no payloads in events?
+#### Why no states in events?
 
 Events should not include an entity representation because that places
 enormous constraints on the bus infrastructure: in terms of data,
