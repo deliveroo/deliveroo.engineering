@@ -25,6 +25,9 @@ best way to test it is to run it locally:
 Jekyll will then generate the site files automatically for you, which usually 
 takes no more than a couple of seconds each time you make a change.
 
+If the article doesn't display on the frontpage try running:  
+`bundle exec jekyll serve --verbose`
+
 ### Installing Nokogiri on macOS Sierra
 
 If you’re running macOS Sierra, you may encounter issues with building the 
