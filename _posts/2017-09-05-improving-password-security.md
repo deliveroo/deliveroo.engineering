@@ -3,14 +3,16 @@ layout: post
 title:  "Improving Password Security"
 author: "Alec Muffett"
 excerpt: >
-  Password-reuse puts customer account security at risk
-  when third-party websites get popped.
+    Passwords are a pivotal tool in customer account security, however
+    they are frequently at risk from "reuse" - people choose one or
+    two passwords and then use them *everywhere*, which brings a 
+    host of security problems...
 ---
 
 We want our customers to be safe online, and we --- specifically the
 Deliveroo Infrastructure Security team --- want to better protect our
-customers' accounts.  We're starting from a good place: our passwords
-are hashed using the `bcrypt` algorithm, a robust and
+customers' accounts.  Technically, we're starting from a good place:
+our passwords are hashed using the `bcrypt` algorithm, a robust and
 industry-standard password hash. The Rails default for `bcrypt` is to
 run at strength 10, meaning 2<sup>10</sup> = 1024 rounds of hashing, a
 reasonable work factor for a modern password hash.
