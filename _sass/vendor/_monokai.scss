@@ -1,8 +1,8 @@
 .highlight {
-  white-space: pre; 
-  overflow: auto; 
+  white-space: pre;
+  overflow: auto;
   word-wrap: normal; /* horizontal scrolling */
-  padding: 20px; 
+  padding: 20px;
   background: #343642;
   color: #C1C2C3;
 }
@@ -79,18 +79,27 @@
     .nl {
       color: #e6db74;
     } // .language-scss .highlight .nl
-    
+
     .nn {
       color: #66d9ef;
     } // .language-scss .highlight .nn
-    
+
     .n,
     .nb {
       color: #ae81ff;
     } // .language-scss .highlight {.n, .nb}
-    
+
     .nv {
       color: #a6e22e;
     } // .language-scss .highlight .nv
   } // .language-scss .highlight
 } // .language-scss
+
+
+.language-shell {
+  .highlight {
+    .gp {
+      color: #a6e22e;
+    } // language-shell .highlight .gp
+  } // .language-shell .highlight
+} // .language-shell
