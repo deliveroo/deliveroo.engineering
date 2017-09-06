@@ -22,7 +22,7 @@ One of our awesome colleagues in the iOS team, Robert Saunders (aka Bobby), took
 - measure effectiveness 
 
 This was a great way to kickstart a conversation and encourage everyone to share both problems and solutions. By measuring the amount of time
-each PR would remain open, we've started getting a clearer picture of the problem: from looking at the data, 15% of iOS PRs and 20% of Andorid PRs took more than 2 days to merge (not including weekends). Some were acceptable reasons, like dependency to backend being ready for testing or finalizing design & content. But in most cases, it was just the lack of reviews that was causing the bottleneck early on.
+each PR would remain open, we've started getting a clearer picture of the problem: from looking at the data, 15% of iOS PRs and 20% of Android PRs took more than 2 days to merge (not including weekends). Some were acceptable reasons, like dependency to backend being ready for testing or finalizing design & content. But in most cases, it was just the lack of reviews that was causing the bottleneck early on.
 
 ## Ideas to make your PRs more review-friendly
 I am in awe at my team's desire to self-improve. Over the time I spent working in the Consumer Android team, a lot of great feedback and ideas have emerged from self-organised meetings like the one mentioned. And it's not just the Android team. 
@@ -33,7 +33,7 @@ I'll list some of our `DO`s and `DON'T`s that might benefit others too.
 You are definitely going to scare people if you open a PR that has 50+ files changes (excluding trivial things like renames). 
 Being 100% guilty of this myself, I can say it's very hard to find a good solution. 
 Nobody likes abandoning their work for an entire morning to check someone else's PR. 
-Not to mention that even the more disciplined developer will most likely lose focus after 20 minutes of looking at somebody else's code.
+Not to mention that even the most disciplined developer will most likely lose focus after 20 minutes of looking at somebody else's code.
 
 Instead, **DO split the PR in multiple parts**
 
@@ -54,7 +54,7 @@ These are trivial but if not done properly, they ripple through the whole projec
 Having a tiny or non-existent description of what you're doing in your PR doesn't help anybody. Yes, we link the PR with the Jira ticket, so anyone
 can click through and read a summary, but that's not the purpose of a PR description. The ticket alone doesn't provide enough context about what you're trying to achieve and your reviewers might have a different understanding, if left alone to decipher your task.  
 
-Instead, **DO provied a reasonable description, some screenshots or a video of how things work**
+Instead, **DO provide a reasonable description, some screenshots or a video of how things work**
 
 For non-UI code, a good description highlighting what you're trying to do, will work wonders for your reviewers. 
 People reviewing it will find it easier to spot inconsistencies and avoid misunderstandings if you provide an upfront understanding of the task at hand and break it down in a few bullet-points.
