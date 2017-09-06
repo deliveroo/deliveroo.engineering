@@ -15,7 +15,7 @@ We use the `+2` rule, which means every PR needs 2 `+1`s from the team before be
 So far so good...but people seemed less eager to "volunteer" to review PRs. So PRs would stale, the code would become old, conflicts with other PRs would start to appear and soon we were pretty much in "Rebase-Or-Merge-Hell". Sounds familiar? Read on.
 
 ## Bobby-to-the-rescue
-One of our awesome colleagues in the iOS team, Robert Saunders (aka Bobby), took the initiative to start a series of *PR & QA Kata* meetings with the team (totally optional) to get to the bottom of the problem, the scientific way:
+One of our awesome colleagues in the iOS team, [Robert Saunders]({{ site.baseurl }}{% link _authors/robert-saunders.md %}) (aka Bobby), took the initiative to start a series of *PR & QA Kata* meetings with the team (totally optional) to get to the bottom of the problem, the scientific way:
 
 - identify the bottlenecks
 - choose actions to improve it
@@ -47,7 +47,7 @@ Some colleagues have become very good with this technique and I'd say that it ha
 **DO keep your renames / moving files in a separate PR**
 
 It's easier for everyone if you make a PR that only contains trivial changes like renaming or moving files.
-These are trivial but if not done properly, they ripple through the whole project and you suddenly realise renaming one class caused 30+ other files to change. Keep them separate, in a PR before or after you have done your actual code changes. Same goes for Java-to-Kotlin conversions. Because the file type changes, it's nearly impossible to review them. So first, make a PR with just the conversion, and then one with the changes applied to the new file type.
+These are trivial but if not done properly, they ripple through the whole project and you suddenly realise renaming one class caused 30+ other files to change. Keep them separate, in a PR before or after you have done your actual code changes. Same goes for Java-to-[Kotlin](https://kotlinlang.org/) conversions. Because the file type changes, it's nearly impossible to review them. So first, make a PR with just the conversion, and then one with the changes applied to the new file type.
 
 **2. DON'T just use the ticket number in the PR description**
 
@@ -84,7 +84,7 @@ of a PR, for example `for-feedback`, `to-review`, `ready-for-qa`, `staged`, `blo
 As the last resort, when you've done all the improvements you can to make sure your PRs are review-friendly, and still can't get people to look at them, take the reins and be proactive. In our team, we're practicing something we called "PR Roulette". 
 In a nutshell, it's about randomly assigning reviewers. If you practice `+2`s, then assign two random people in your team to check your PR. 
 
-There are cases when those two individuals might be OOO or in meetings or on short deadlines with their own work. If someone has been assigned that doesn't have the time, it's OK to discuss with the team about a replacement. 
+There are cases when those two individuals might be in meetings or on short deadlines with their own work. If someone has been assigned that doesn't have the time, it's OK to discuss with the team about a replacement. 
 
 Nowadays GitHub offers this feature by default when you open a PR. It even suggests which reviewers you should pick, based on people who have recently interacted with the files you've changed. It's more likely they will have a better understanding of the changes while it's still fresh in their minds.
 
