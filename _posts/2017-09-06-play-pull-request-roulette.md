@@ -46,7 +46,7 @@ Some colleagues have become very good with this technique and I'd say that it ha
 
 Another similar technique, for those who prefer a single branch, is to have clean cut commits, so that you read the PR "commit by commit", rather than all at once.
 
-<figure class="small">
+<figure class="medium">
 ![PR labels example](/images/posts/play-pull-request-roulette/example-of-pr-with-clean-cut-commits.png)
 </figure>
 
@@ -67,7 +67,7 @@ People reviewing it will find it easier to spot inconsistencies and avoid misund
 
 For code involving UI changes, having a before-and-after screenshot or a link to a video will help people visualize the change better and will show that you made an effort to test your own code before submitting it for review. Depending on your platform, you could even provide an executable binary that can be immediately downloaded, installed and tested by your reviewers.
 
-<figure class="small">
+<figure class="medium">
 ![PR description example](/images/posts/play-pull-request-roulette/example-of-pr-description.png)
 </figure>
 
@@ -81,7 +81,7 @@ Second, is when we prototype things fast (for example improving the architecture
 GitHub provides a nice and simple way of labeling things. Different teams have different labels, but in general, we use them to indicate the progress
 of a PR, for example `for-feedback`, `to-review`, `ready-for-qa`, `staged`, `blocked`, `spike` etc.
 
-<figure class="small">
+<figure class="medium">
 ![PR labels example](/images/posts/play-pull-request-roulette/example-of-pr-labels.png)
 </figure>
 
