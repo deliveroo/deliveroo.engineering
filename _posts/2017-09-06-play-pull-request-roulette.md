@@ -44,6 +44,12 @@ The hard bit with this approach is that you won't have a clear picture of what g
 (and a lot of Git wizardry) to end up with clean cuts between branches and testable code in each. 
 Some colleagues have become very good with this technique and I'd say that it has helped us move faster.
 
+Another similar technique, for those who prefer a single branch, is to have clean cut commits, so that you read the PR "commit by commit", rather than all at once.
+
+<figure class="small">
+![PR labels example](/images/posts/play-pull-request-roulette/example-of-pr-with-clean-cut-commits.png)
+</figure>
+
 **DO keep your renames / moving files in a separate PR**
 
 It's easier for everyone if you make a PR that only contains trivial changes like renaming or moving files.
