@@ -1,20 +1,20 @@
 ---
 layout: post
-title:  "Tired of waiting for pull request reviews? Play Pull-Request-Roulette"
+title:  "Tired of waiting for pull request reviews? Play Pull Request Roulette"
 author: "Evelina Vrabie"
 excerpt: >
   You work in a medium or a large team and you find yourself tapping your fingers waiting for someone to review your PR. Days pass and nobody volunteers.
-  Your code gets stale, version control conflicts emerge. What to do? Convince your team to start playing Pull-Request-Roulette. 
+  Your code gets stale, version control conflicts emerge. What to do? Convince your team to start playing Pull Request Roulette. 
   It's fun and it works!
 ---
 
 ## The PR problem
-As our Consumer mobile teams began to grow, we started experiencing delays getting our Pull Requests reviewed.
+As our Consumer mobile teams began to grow, we started experiencing delays getting our pull requests reviewed.
 We'd code our task then open a PR in GitHub and find someone to review it. 
 We use the `+2` rule, which means every PR needs 2 `+1`s from the team before being merged.
 So far so good...but people seemed less eager to "volunteer" to review PRs. So PRs would stale, the code would become old, conflicts with other PRs would start to appear and soon we were pretty much in "Rebase-Or-Merge-Hell". Sounds familiar? Read on.
 
-## Bobby-to-the-rescue
+## Bobby to the rescue
 One of our awesome colleagues in the iOS team, [Robert Saunders]({{ site.baseurl }}{% link _authors/robert-saunders.md %}) (aka Bobby), took the initiative to start a series of *PR & QA Kata* meetings with the team (totally optional) to get to the bottom of the problem, the scientific way:
 
 - identify the bottlenecks
@@ -73,8 +73,8 @@ For code involving UI changes, having a before-and-after screenshot or a link to
 
 **3. DON'T wait until the last minute to open your PR**
 
-This works well in at least two situations. First, is when you're not sure if the solution you're coding is the simplest or best way. Maybe you're in an unfamiliar territory. That's fine! Opening a PR and asking for feedback asap will stop you from spending days working alone on something you might need to refactor after review. 
-Second, is when we prototype things fast (for example improving the architecture or trying out a new language) and want to check if the team is on-board with the proposal. We label these prototype PRs "spikes". 
+This works well in at least two situations. First, when you're not sure if the solution you're coding is the simplest or best way. Maybe you're in an unfamiliar territory. That's fine! Opening a PR and asking for feedback ASAP will stop you from spending days working alone on something you might need to refactor after review. 
+Second, when we prototype things fast (for example improving the architecture or trying out a new language) and want to check if the team is on-board with the proposal. We label these prototype PRs "spikes". 
 
 **DO label your PRs accordingly**
 
@@ -87,7 +87,7 @@ of a PR, for example `for-feedback`, `to-review`, `ready-for-qa`, `staged`, `blo
 
 **4. DON'T just wait for people to volunteer to review your PR**
 
-As the last resort, when you've done all the improvements you can to make sure your PRs are review-friendly, and still can't get people to look at them, take the reins and be proactive. In our team, we're practicing something we called "PR Roulette". 
+As the last resort, when you've done all the improvements you can to make sure your PRs are review-friendly, and still can't get people to look at them, take the reins and be proactive. In our team, we're practicing something we called 'PR Roulette'. 
 In a nutshell, it's about randomly assigning reviewers. If you practice `+2`s, then assign two random people in your team to check your PR. 
 
 There are cases when those two individuals might be in meetings or on short deadlines with their own work. If someone has been assigned that doesn't have the time, it's OK to discuss with the team about a replacement. 
