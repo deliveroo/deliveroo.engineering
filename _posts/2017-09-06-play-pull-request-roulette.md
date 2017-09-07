@@ -87,15 +87,10 @@ of a PR, for example `for-feedback`, `to-review`, `ready-for-qa`, `staged`, `blo
 
 **4. DON'T just wait for people to volunteer to review your PR**
 
-As the last resort, when you've done all the improvements you can to make sure your PRs are review-friendly, and still can't get people to look at them, take the reins and be proactive. In our team, we're practicing something we called 'PR Roulette'. 
-In a nutshell, it's about randomly assigning reviewers. If you practice `+2`s, then assign two random people in your team to check your PR. 
+As a last resort, when you've done all the improvements you can to make sure your PRs are review-friendly, and still can't get people to look at them, take the reins and be proactive. In our team, we're practicing something we called 'PR Roulette'. In a nutshell, it's about randomly assigning reviewers. If you practice `+2`s, then assign two random people in your team to check your PR.
 
-There are cases when those two individuals might be in meetings or on short deadlines with their own work. If someone has been assigned that doesn't have the time, it's OK to discuss with the team about a replacement. 
+Nowadays GitHub offers this feature by default when you open a PR. It even suggests which reviewers you should pick, based on people who have recently interacted with the files you've changed. It's more likely they will have a better understanding of the changes while it's still fresh in their minds. There are cases when those two individuals might be in meetings or on short deadlines with their own work. If someone has been assigned that doesn't have the time, it's OK to discuss with the team about a replacement.
 
-Nowadays GitHub offers this feature by default when you open a PR. It even suggests which reviewers you should pick, based on people who have recently interacted with the files you've changed. It's more likely they will have a better understanding of the changes while it's still fresh in their minds.
+If you're not using GitHub or you want to spice it up, you can use a [Roulette Name Generator](http://wheeldecide.com/) to pick your reviewers. There are no written rules about how to play. Start by adding all the names and spin the wheel. It's fun and you can improve your PR Roulette technique as you go.
 
-If you're not using GitHub or you want to spice it up, you can use a [Roulette Name Generator](http://wheeldecide.com/) to pick your reviewers names. 
-There are no written rules about how to play. Start by adding all the names and spin the wheel. It's fun and you can improve your PR roulette technique as you go.
-
-The advantage of playing PR Roulette is that naming people will make them feel more responsible for reviewing your code on time. 
-Randomly assigning people from your team or cross-team will, over time, increase everyone's knowledge of the whole project, rather than limiting it to a particular area. Talk about [bus-proof](http://www.reportsyouneed.com/blog/bus-proof) projects :)
+By randomly assigning people from your team (or cross-team) your developers will feel more responsible for reviewing code on time, and in the long-term it will increase everyone's knowledge of the whole project by exposing them to code they're not as familiar with (important if you want to have [bus-proof](http://www.reportsyouneed.com/blog/bus-proof) projects! 😄). We initially set out just to solve the problem of getting our code reviewed, but it turns out there are lots of other benefits to PR Roulette!
