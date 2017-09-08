@@ -3,7 +3,7 @@ layout: post
 title:  "A rebase technique to achieve clean-cut Git commits"
 author: "Evelina Vrabie"
 excerpt: >
-  In my [previous article][pr-roulette] I went through some DOs and DON'Ts for mastering Pull Requests and get them reviewed as quick as possible. I'm following that by illustrating a Git rebase technique that can help you achieve clean-cut commits which allow your reviewers to read your PR like a story with well-defined chapters.
+  In my [previous article](/2017/09/06/play-pull-request-roulette.html) I went through some DOs and DON'Ts for mastering Pull Requests and get them reviewed as quickly as possible. I'm following that by illustrating a Git rebase technique that can help you achieve clean-cut commits which allow your reviewers to read your PR like a story with well-defined chapters.
 ---
 
 ## I am a cats and Git rebase person
@@ -29,14 +29,14 @@ Before merging your branch into its parent you could take it one step further an
 
 I use both a GUI tool and the command-line to get my way around Git. To look at diffs and other routine things for which I can't instantly remember the Git command-line equivalent, like how to search for a file or a commit, I use [Tower][git-tower]. I wish I had a better memory to remember more commands but I'm only human, so, annoyingly, my brain keeps recycling things like that :)
 
-For command-line, I prefer the [Zsh][zsh-shell] shell instead of Bash because I'm a fan of [Oh-My-Zsh][oh-my-zsh ]plugins, especially the [Git one][git-aliases]. You can also define your own aliases in the profile of your shell of choice. Having these aliases has helped me save a lot of time, because I use them dozen of times per day.
+For command-line, I prefer the [Zsh][zsh-shell] shell instead of Bash because I'm a fan of [Oh-My-Zsh][oh-my-zsh] plugins, especially the [Git one][git-aliases]. You can also define your own aliases in the profile of your shell of choice. Having these aliases has helped me save a lot of time, because I use them dozen of times per day.
 
 ## Rebase workflow to achieve clean-cut commits
 
 One thing I do very often to achieve clean-cut commits is to _go back and modify existing commits_ when appropriate.
 For example, let's say I have committed A, B, C and now I realised I forgot a change that would go well commit B. 
 I could just create a new commit D, to say something like "Add a test for the change I made in B" but this will make it hard for people to follow if they use the "commit-by-commit" approach described in my [previous article][pr-roulette]. 
-Instead, what I tend to do (using [Oh-My-Zsh][oh-my-zsh] aliases) is a rebase workflow to modify commit B.
+Instead, what I tend to do (using [Oh-My-Zsh][oh-my-zsh] aliases) is rebase to modify commit B.
 
 ### Stash all current changes that you don't want in commit B
 
@@ -152,7 +152,7 @@ $ ga <files changed> # git add <files changed>
 $ gc --amend # git commit --ammend 
 ```
 
-### Verify you're happy with the commit description and save then continue the rebase.
+### Check you're happy with the commit description and save then continue the rebase.
 
 ```shell
 $ grbc # or git rebase --continue
@@ -170,8 +170,9 @@ $ ggp --force # git push --force origin $(current_branch)
 
 You have to be careful with this, because rewriting commit history **after your branch is visible to other people** might cause disruption. This technique is best used **before you publish your branch**. If you do it after, do it before you open a pull request and don't forget to notify your team, to prevent someone branching off your branch and suddenly having lots of conflicts with your new changes.
 
-I use this rebase technique dozens of times a day. Using Git aliases helped me speed up things by quite a bit.
-If you want to learn more about Git `rebase`, make sure to check my colleague Ben's detailed [article on the topic][reset-rebase-workflow].
+I use this rebase technique dozens of times a day and those Git aliases helped me speed up things by quite a bit.
+
+To learn more about Git `rebase`, make sure to check my colleague Ben's detailed [article on the topic][reset-rebase-workflow].
 
 <figure class="small">
 ![What if](/images/posts/rebase-technique-for-clean-cut-commits/what-if-the-ultimate-question-of-life-the-universe-and-everything-is-git-rebase-i-master.jpg)
