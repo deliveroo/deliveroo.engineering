@@ -29,7 +29,11 @@ Before merging your branch into its parent you could take it one step further an
 
 I use both a GUI tool and the command-line to get my way around Git. To look at diffs and other routine things for which I can't instantly remember the Git command-line equivalent, like how to search for a file or a commit, I use [Tower][git-tower]. I wish I had a better memory to remember more commands but I'm only human, so, annoyingly, my brain keeps recycling things like that :)
 
-For command-line, I prefer the [Zsh][zsh-shell] shell instead of Bash because I'm a fan of [Oh-My-Zsh][oh-my-zsh] plugins, especially the [Git one][git-aliases]. You can also define your own aliases in the profile of your shell of choice. Having these aliases has helped me save a lot of time, because I use them dozen of times per day.
+For command-line, I prefer the [Zsh][zsh-shell] shell instead of Bash because I'm a fan of [Oh-My-Zsh][oh-my-zsh] plugins, especially the [Git one][git-aliases]. _You can also manually define these aliases in the profile of your shell of choice_. Having these aliases has helped me save a lot of time, because I use them dozen of times per day.
+
+```shell
+alias gst="git status"
+```
 
 ## Rebase workflow to achieve clean-cut commits
 
@@ -41,13 +45,13 @@ Instead, what I tend to do (using [Oh-My-Zsh][oh-my-zsh] aliases) is rebase to m
 ### Stash all current changes that you don't want in commit B
 
 ```shell
-$ gsta # git stash save
+$ git stash save # or alias gsta 
 ```
 
 ### Look at the tree of commits to find the hash of the commit before the one you want to change
 
 ```shell
-$ glgg # or git log --graph --max-count = 10
+$ git log --graph --max-count = 10 # or alias glgg
 ```
 For example, I could be looking at something like this:
 
@@ -82,12 +86,12 @@ For example, I could be looking at something like this:
 :
 ```
 
-### Rebase on the commit **before the one you want to edit**
+### Rebase on the commit _before the one you want to edit_
 
 In this example, that's commit A.
 
 ```shell
-$ grbi cafbc74551945e0ece617fd4720466a80f0ea88e # git rebase -i cafbc74551945e0ece617fd4720466a80f0ea88e
+$ git rebase -i cafbc74551945e0ece617fd4720466a80f0ea88e  # or alias grbi <hash>
 ```
 
 ### Choose how you want to change commit B
@@ -145,17 +149,17 @@ Once you are satisfied with your changes, run
 	git rebase --continue
 ```
 
-### Track your changed files and **amend the commit**:
+### Track your changed files and _amend the commit_:
 
 ```shell
-$ ga <files changed> # git add <files changed>
-$ gc --amend # git commit --ammend 
+$ git add <files changed> # or alias ga <files changed> 
+$ git commit --ammend # or alias gc --amend 
 ```
 
 ### Check you're happy with the commit description and save then continue the rebase.
 
 ```shell
-$ grbc # or git rebase --continue
+$ git rebase --continue # or alias grbc
 ```
 
 ### Push your changes to rewrite the commit history
@@ -163,12 +167,12 @@ $ grbc # or git rebase --continue
 If you published your branch by the time you want to rewrite commit B, then you will have to **force push** your changes to the remote repository, in order to rewrite the commit history.
 
 ```shell
-$ ggp --force # git push --force origin $(current_branch)
+$ git push --force origin $(current_branch) # or alias ggp --force
 ```
 
-**☢️ WARNING ☢️**
+### ☢️ WARNING ☢️
 
-You have to be careful with this, because rewriting commit history **after your branch is visible to other people** might cause disruption. This technique is best used **before you publish your branch**. If you do it after, do it before you open a pull request and don't forget to notify your team, to prevent someone branching off your branch and suddenly having lots of conflicts with your new changes.
+You have to be careful with `push --force`, because rewriting commit history **after your branch is visible to other people** might cause disruption. This technique is best used **before you publish your branch**. If you do it after, do it before you open a pull request and don't forget to notify your team, to prevent someone branching off your branch and suddenly having lots of conflicts with your new changes.
 
 I use this rebase technique dozens of times a day and those Git aliases helped me speed up things by quite a bit.
 
