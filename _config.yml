@@ -25,7 +25,7 @@ kramdown:
   toc_levels: 1..4
 
 # Plugins
-gems:
+plugins:
    - jekyll-mentions
    - jemoji
    - jekyll-redirect-from
