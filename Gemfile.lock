@@ -193,7 +193,6 @@ GEM
       gemoji (~> 3.0)
       html-pipeline (~> 2.2)
       jekyll (>= 3.0)
-    json (1.8.3)
     kramdown (1.13.2)
     liquid (4.0.0)
     listen (3.0.6)
@@ -256,7 +255,6 @@ DEPENDENCIES
   github-pages (= 160)
   guard-jekyll-plus
   guard-livereload
-  json
 
 RUBY VERSION
    ruby 2.3.3p222
