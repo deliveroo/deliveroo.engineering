@@ -124,12 +124,10 @@ Markdown supports several different types of indicating code blocks, but to
 take advantage of syntax highlighting, use the following format (without any
 indentation):
 
-```markdown
-  ```ruby
-  def what?
-    42
-  end
-  ```
-```
+    ```ruby
+    def what?
+      42
+    end
+    ```
 
 [kramdown]: http://kramdown.gettalong.org/documentation.html
