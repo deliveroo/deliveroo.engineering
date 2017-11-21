@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "The Unbearable Rightness of Being Wrong (A Programmer's Guide to Sanity)"
-author: "Kriselda Rabino"
+authors:
+  - "Kriselda Rabino"
 excerpt: >
   Earlier this year, some awesome people who "read and write Ruby good" met at an event called RailsConf and delivered this poignant tweet in a bottle: ***"I love looking at my old code and hating it. It means I'm growing."***
 

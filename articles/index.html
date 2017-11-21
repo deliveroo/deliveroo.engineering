@@ -8,7 +8,7 @@ layout: default
   {% for _page in paginator.posts %}
     <div class="post recent">
       <h3><a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a></h3>
-      <p class="byline">{% include byline.html author=_page.author date=_page.date %}</p>
+      <p class="byline">{% include byline.html authors=_page.authors date=_page.date %}</p>
       <blockquote>
         {{ _page.excerpt | markdownify }}
       </blockquote>

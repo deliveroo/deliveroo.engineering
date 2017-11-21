@@ -10,7 +10,7 @@ title: deliveroo.engineering
   <div class="post latest">
     {% for _page in site.posts limit: 1 %}
       <h3><a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a></h3>
-      <p class="byline">{% include byline.html author=_page.author date=_page.date %}</p>
+      <p class="byline">{% include byline.html authors=_page.authors date=_page.date %}</p>
       <blockquote>
         {{ _page.excerpt | markdownify }}
       </blockquote>
@@ -27,7 +27,7 @@ title: deliveroo.engineering
     {% for _page in site.posts limit: 3 offset: 1 %}
       <div class="post recent">
         <h3><a href="{{ site.baseurl }}{{ _page.url }}">{{ _page.title }}</a></h3>
-        <p class="byline">{% include byline.html author=_page.author date=_page.date %}</p>
+        <p class="byline">{% include byline.html authors=_page.authors date=_page.date %}</p>
         <blockquote>
           {{ _page.excerpt | markdownify }}
         </blockquote>
@@ -50,7 +50,7 @@ title: deliveroo.engineering
         {% for _page in site.posts limit: 17 offset: 4 %}
           <li>
             <a href="{{ site.baseurl }}{{ _page.url }}" title="{{ _page.title }}">{{ _page.title }}</a>
-            {% include byline.html author=_page.author date=_page.date %}
+            {% include byline.html authors=_page.authors date=_page.date %}
           </li>
         {% endfor %}
       </ul>

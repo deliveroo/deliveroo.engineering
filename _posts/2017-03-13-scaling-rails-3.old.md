@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Scaling Rails 3.old"
-author: "Michael Groble"
+authors:
+  - "Michael Groble"
 excerpt: >
   We're not particularly proud that we are still using Rails 3.2, but we _are_ extremely
   proud of scaling our traffic over the last few years. Our new services are built in Rails 5,

@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Optimising Redis storage, part two"
-author: "Julien Letessier"
+authors:
+  - "Julien Letessier"
 excerpt: >
   Counting unique users, checking if a credit card has already been used, or
   checking if this is a mobile user's first visit ever — all of these require
@@ -251,7 +252,7 @@ Our conclusion on storing large sets in Redis is twofold:
    memory usage is critical, for huge datasets when the unit datum is of a
    similar order of magnitude as the key size — and importantly, where the size
    of the set is known to stay within 1 order of magnitude.
-   
+
    In our case, this approach would be possible to reduce storage size by 65%;
    this comes at a moderate performance cost.
 

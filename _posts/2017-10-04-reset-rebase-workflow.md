@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Reset, Rebase Workflow"
-author: "Ben Darlow"
+authors:
+  - "Ben Darlow"
 date:   2017-10-04 00:00:00
 excerpt: >
   Rebase is one of git's most powerful features. Most-commonly used to rewrite history by squashing related commits, and for keeping your branch up to date with master (without introducing unrelated merge commits), it can also facilitate some pretty clever workflow tricks which when used judiciously can let you factor out parts of your work into separate pull requests.
