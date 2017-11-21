@@ -1,0 +1,10 @@
+{% for author in include.authors %}
+  {% if author.name == include.author %}
+    <div class="about-author">
+      <h3>About {{ author.name }}</h3>
+
+      <img src="{{ author.portrait }}" alt="A picture of {{ author.name }}" class="portrait">
+      {{ author | markdownify }}
+    </div>
+  {% endif %}
+{% endfor %}

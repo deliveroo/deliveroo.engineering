@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Determinating a Scavenger Hunt"
-author: "Grace Chang"
+authors:
+  - "Grace Chang"
 excerpt: >
  The Deliveroos rose from the ashes of the experimental fire. Their war to grow the product had raged for decades, but the final battle would not be fought in the future. It would be fought here, in our present. Tonight...
 

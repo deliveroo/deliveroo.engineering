@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Every service is an island"
-author: "Julien Letessier"
+authors:
+  - "Julien Letessier"
 excerpt: >
   We had an incident yesterday.
 

@@ -1,10 +1,11 @@
 ---
 layout: post
 title:  “I assess quality……therefore I am”
-author: "Festus Ifiti jr"
+authors:
+  - "Festus Ifiti jr"
 excerpt: >
   Friends, engineers, fellow food enthusiasts…lend me your ears. Before my interview with Deliveroo in November, I read some articles from the engineering blog and I promised myself that when I did start working for this amazing company, I would participate and write an article about all things QA…. I also had a little bet with [Troy Harris](https://twitter.com/TroyHarrisOz/). He fulfilled his end of the bargain so I’m fulfilling mine.
-  
+
   In this blog, I'm going to talk about my Deliveroo Interview experience, the current QA process, taking responsibility, my typical working day and Brown Bag sessions.
 
 ---
@@ -22,13 +23,13 @@ It was pretty evident early on that Deliveroo is a forward thinking company, who
 ## “If you can keep your head when all about you are losing theirs and blaming it on you”
 
 
-It’s not easy being a QA when there’s a bug. A natural response is to say, “Why wasn’t this application tested properly?” Nobody really says, “Why wasn’t this application built properly?” The pressure is always on, but can this pressure and responsibility be shared throughout all stakeholders? 
+It’s not easy being a QA when there’s a bug. A natural response is to say, “Why wasn’t this application tested properly?” Nobody really says, “Why wasn’t this application built properly?” The pressure is always on, but can this pressure and responsibility be shared throughout all stakeholders?
 
 At Deliveroo, the QAs write detailed test scripts using BDD (Behaviour Driven Development.) We have scripts for functional components of the application as well as scripts for offline behaviour (500 server errors, bad network/Wi-Fi disconnected), background/killing the application. We’re always looking for ways to improve the application and if we can limit crashes this will improve customer satisfaction.
 
 Every time we have a new feature or if we have a new release, these scripts are shared between everybody in the team and because BDD uses natural language, stakeholders can understand the scripts.
 
-At Deliveroo, we believe in testing from the beginning of the process; I’ve been in companies where they say they do, but they don’t. As soon as we have a specification, requirements are drawn up, low level requirements are fleshed out and test cases are written. If we can find errors on paper, this is easy and very cheap to fix rather than the bug manifesting into something horrendous later in the process. 
+At Deliveroo, we believe in testing from the beginning of the process; I’ve been in companies where they say they do, but they don’t. As soon as we have a specification, requirements are drawn up, low level requirements are fleshed out and test cases are written. If we can find errors on paper, this is easy and very cheap to fix rather than the bug manifesting into something horrendous later in the process.
 
 
 ## “If you can trust yourself when all men doubt you”
@@ -49,7 +50,7 @@ Over the past few weeks I’ve been working on adding tests to Loris, Loris is t
 
 ## “If you can dream…and not make dreams your master”
 
-Every two weeks the QAs have a brown bag session. For anybody that doesn’t know what this is, a brown bag session is an informal meeting, training or presentation that happens during a lunch period. 
+Every two weeks the QAs have a brown bag session. For anybody that doesn’t know what this is, a brown bag session is an informal meeting, training or presentation that happens during a lunch period.
 
 We have at least one QA in each team (Consumer, Payments, Rider, Restaurant, Logistics… Growth and many more) and it’s our collective aim to learn from each other, improve technically, help relieve any spikes and improve communication.
 

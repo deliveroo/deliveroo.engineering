@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "How to un-rickroll yourself"
-author: "Robert Saunders"
+authors:
+  - "Robert Saunders"
 excerpt: >
   A story of how leaving your laptop unlocked can lose the entire morning.
 ---

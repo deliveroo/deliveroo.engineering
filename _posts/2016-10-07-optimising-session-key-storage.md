@@ -1,7 +1,8 @@
 ---
 layout: post
 title:  "Optimising session key storage in Redis"
-author: "Greg Beech"
+authors:
+  - "Greg Beech"
 excerpt: >
   Tracking authenticated user sessions can be implemented in Redis using `setex` with some serialised JSON. It works pretty well until you have to cope with millions, or even tens of millions of sessions where the memory usage and performance can suffer.
 

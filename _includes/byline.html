@@ -1,7 +1,12 @@
 <span class="byline">
   Posted
-  {% if include.author %}
-    by <span class="author"><a href="/authors/{{ include.author | slugify }}">{{ include.author }}</a></span>
+  {% if include.authors %}
+    by
+    {% for author in include.authors %}
+      {% if include.authors.size > 1 %}{% if author == include.authors.last %} &amp; {% endif %}{% endif %}
+      <span class="author"><a href="/authors/{{ author | slugify }}">{{ author }}</a></span>
+      {% if author != include.authors.last %}{% if author != include.authors.first %}, {% endif %}{% endif %}
+    {% endfor %}
   {% endif %}
   on <time datetime="{{ include.date | date_to_xmlschema }}" class="published">{{ include.date | date: "%A, %B %-d, %Y" }}</time>
 </span>

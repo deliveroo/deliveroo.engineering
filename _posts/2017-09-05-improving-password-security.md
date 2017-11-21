@@ -1,11 +1,12 @@
 ---
 layout: post
 title:  "Improving Password Security"
-author: "Alec Muffett"
+authors:
+  - "Alec Muffett"
 excerpt: >
     Passwords are a pivotal tool in customer account security, however
     they are frequently at risk from "reuse" - people choose one or
-    two passwords and then use them *everywhere*, which brings a 
+    two passwords and then use them *everywhere*, which brings a
     host of security problems...
 ---
 
@@ -30,7 +31,7 @@ These actions put at risk any site where the owner has reused the same
 login name and password.
 
 There are excellent free tools which our customers may use to help
-discover if they are at risk --- for instance Troy Hunt's 
+discover if they are at risk --- for instance Troy Hunt's
 [Have I Been Pwned?](https://haveibeenpwned.com/) website; and we
 recommend use of such tools as an aid to password security.
 

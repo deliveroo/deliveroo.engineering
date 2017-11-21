@@ -7,12 +7,7 @@
   <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description | strip_newlines }}{% endif %}">
 
   {% if page.layout == 'post' %}
-    {% for author in site.authors %}
-      {% if author.name == page.author %}
-        {% assign author = author %}
-      {% endif %}
-    {% endfor %}
-    <meta property="article:author" content="{{ site.url }}/authors/{{ author.name | slugify }}">
+    <meta property="article:author" content="{% for author in page.authors %}{{ author }}{% if author != page.authors.last %}, {% endif %}{% endfor %}">
     <meta property="article:section" content="Engineering Articles">
   {% else %}
     <meta property="og:type" content="website">

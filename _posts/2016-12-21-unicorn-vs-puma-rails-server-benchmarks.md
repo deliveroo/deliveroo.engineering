@@ -1,7 +1,8 @@
 ---
 layout: post
 title: "Unicorn vs Puma: Rails server benchmarks"
-author: "Tommaso Pavese"
+authors:
+  - "Tommaso Pavese"
 excerpt: >
     As part of a post on web concurrency in Rails, I've been running benchmarks to compare the Puma and Unicorn Ruby HTTP servers. Puma performs better than Unicorn in all tests that were either heavily IO-bound or that interleaved IO and CPU work. In the CPU-bound tests where Unicorn performed better than Puma, the gap was small enough that Puma can still be considered a very good choice.
 
@@ -69,7 +70,7 @@ The results are available in [ods](/attachments/posts/unicorn-vs-puma-rails-serv
 
 I benchmarked different configurations of Unicorn and Puma for a total of six  different server setups.
 
-I've run Unicorn with one worker per CPU core (x4) and then with two workers per core (x8). With or without [Hyper-threading](https://en.wikipedia.org/wiki/Hyper-threading), running extra Unicorns helps with IO-bound tasks.  
+I've run Unicorn with one worker per CPU core (x4) and then with two workers per core (x8). With or without [Hyper-threading](https://en.wikipedia.org/wiki/Hyper-threading), running extra Unicorns helps with IO-bound tasks.
 Puma was tested with four different setups, varying the number of workers and threads per worker: x4:5, x4:10, x8:5 and x8:10 (where "x4:5" means "four workers with five threads each").
 
 Well then, let's have a look.
@@ -92,7 +93,7 @@ The first chart clearly shows that, regardless of server implementation, concurr
 
 We can see that even though the machine had 4 cores, configurations running 8 processes perform better than the ones running a single worker per core.
 
-Hyper-threading is definitely a factor. In my tests, 4 processes would use 98-103% CPU each, for a total of ~50% overall system CPU usage. Running 8 processes would max the total usage to ~100%. The performance improvement is not a 2x increase because Hyper-threading is "just" about exposing to the OS each physical core as two logical ones: it's about more efficient scheduling and use of resources, not magic.  
+Hyper-threading is definitely a factor. In my tests, 4 processes would use 98-103% CPU each, for a total of ~50% overall system CPU usage. Running 8 processes would max the total usage to ~100%. The performance improvement is not a 2x increase because Hyper-threading is "just" about exposing to the OS each physical core as two logical ones: it's about more efficient scheduling and use of resources, not magic.
 
 My interpretation is that Puma x8:5 (40 threads in 8 processes) performs better than Puma x4:10 (40 threads in 4 processes) because scheduling in the OS is more efficient and has less overhead than preemptive thread scheduling and context switching in the VM.
 
@@ -172,7 +173,7 @@ This test is very similar to the "sleep for 2 seconds" one, but it executes a re
 
 Compared to the "sleep" test, the IO task is faster: ~600ms Vs 2000ms.
 
-As expected, the throughput is much higher but the trends are largely the same.   
+As expected, the throughput is much higher but the trends are largely the same.
 
 <figure>
 ![A chart plotting the average requests per seconds (vertical axis) on the number of concurrent requests (horizontal axis), the different data series represent the performance of different servers and configurations.](/images/posts/unicorn-vs-puma-rails-server-benchmarks/charts/network_reqs.svg)
@@ -232,7 +233,7 @@ It's also interesting to rotate the charts, to compare the Pumas side-by-side on
 
 ## Benchmark Limitations
 
-The data presented in this post comes from synthetic benchmarks.  
+The data presented in this post comes from synthetic benchmarks.
 
 While I tried in some tests to mix and match CPU and IO work, real world Rails applications deal with a wide spectrum of CPU and IO workload combinations.
 
