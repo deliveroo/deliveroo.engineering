@@ -153,74 +153,44 @@ build good services. As a summary:
 11. Logs: Treat logs as event streams
 12. Admin processes: Run admin/management tasks as one-off processes
 
-### REST over HTTP
+### Inter-Service Communication
 
-Services must only ever communicate with the rest of the world (other services
-or end users) over an HTTP interface, respecting REST principles.
+Services should be able to communicate with other services using the method best suited to their use case. This may be in the form of synchronous API calls or RPC, or asynchronously over a message bus. As Deliveroo moves towards a more distributed architecture there will be a need to design some services to not only be resilient to data being eventually consistent but in some cases behave specifically to suit.  For example, a customer facing application that provides data on the status of their order could have visual states that indicate part of the data has not loaded yet.
 
-In particular (but not limited to):
+Streaming architectures that send full or partial messages over a distributed message bus are supported, with an owning domain service publishing its view of the world out to multiple consumers. This de-couples the communication mechanism from the service and allows for scalable fan out to multiple consumers.
 
-- HTTP verbs should be used.
-- GET requests should have no side-effects (on any entity of this concept or
-  others) and be cacheable.
-- PUT and PATCH requests should be idempotent (submitting them more than once
-  should not change state further)
-- DELETE requests should only suceed if the resource exists.
-- URL terms in any API should reflect domain concepts.
-- Hypermedia links should be provided in responses.
+### Messaging Formats
 
-### Representational State Notification
+A service should own the schema for its domain. Domains should have their data model defined in a language agnostic schema format that supports code generation for multiple languages and provides a compact serialization format for sending data between services. One of the advantages of this includes the ability to enforce types (in statically typed languages). 
 
-Or in other words, **push > poll**.
+While any technology that supports these requirements would suffice, it will be important to maintain consistency across the organisation. Currently the format that is seeing wide adoption is [Thrift](https://thrift.apache.org/).
 
-<aside>
-#### Why no payloads in events?
 
-Events should not include an entity representation because that places
-enormous constraints on the bus infrastructure: in terms of data,
-full representations are several orders of magnitude larger than events.
-
-A typical use cases for payloads is when intermediary states of an entity
-matter; they may be "missed" if the consumer has to query for the
-representation.
-
-In terms of domain modeling, this is usually a mistake: if a consumer cares
-about state changes for a given entity (and not just about its latest
-representation), this means the state changes are part of the domain, and
-should themselves be entities.
-
-Consider assigning a rider to an order: we could "just" model this as a
-relation from order to rider; but because we care about _when_ and _where_ the
-assignment happened (as well as about _un_-assignments), we model them as a
-top-level concept.
-</aside>
+### Communication Semantics
 
 When services need to coordinate or synchronise state information about domain
 entities (normally flowing out of the service that has authority on that part
-of the domain), this should be achieved in an event-driven manner.
+of the domain), this can be achieved in an event-driven manner or by sending full representations of the data over a message bus.
 
-An event can simply be defined as:
+#### Event Bus
+An event would be defined as:
 
 - The identity of the entity whose state changed (i.e. its authoritative URL)
-- The type of state change, one of *created*, *updated*, *deleted*.
+- The type of state change, one of *created*, *updated*, *deleted*
 
-An event should generally *not* have a "payload", i.e. a representation of the
-entity; that should be queried with an explicit HTTP GET request.
+Consumer services should register with the authoritative service to receive those events from the event bus.
 
-Consumer services should register with the authoritative service to receive
-those events. This should be achieved through an event bus.
+#### Message Bus
+When sending full representation of the data, the state types can be simplified to that of *upsert*, *delete*. For consumers to make use of this, producers must use stream partition keys based on the primary key of the object.  This ensures that the order of events within a shard is maintained, and that consumers can consume successive batches and rely only on de-duplication within each batch. This ensures that a consumer won't overwrite later records with earlier ones between batches.
+
+### Other notes on Inter-Service Communication
 
 Local knowledge should be limited: authoritative services should not know about
 their consumers (they never reference consumer DNS names).
 Generally, services shouldn't know most other services unless necessary.
 
 Consumer services know about source services through configuration (i.e. through
-the environment): no server names or URLs in a service's codebase
-
-**EXAMPLE:** In the monolith, if an order changes, we should publish an event
-via [routemaster](https://github.com/mezis/routemaster/) for the appropriate
-topic. A future "Order Search Service" could be a consumer of that event so that
-it can shove the data into ElasticSearch and offer a fast search UX.
+the environment): no server names or URLs in a service's codebase.
 
 
 ## API design basics
