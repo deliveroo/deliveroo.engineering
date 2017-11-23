@@ -131,8 +131,7 @@ The process will involve collaborating with the interviewers to arrive at a
 solution. In some cases (with more experienced candidates) we will expect you
 to lead this discussion.
 
-This [blog post](https://hackernoon.com/anatomy-of-a-system-design-interview-4cb57d75a53f,
-  "Hackernoon, Anatomy of a System Design Interview")
+This [blog post](https://hackernoon.com/anatomy-of-a-system-design-interview-4cb57d75a53f "Hackernoon, Anatomy of a System Design Interview")
 does a great job of explaining how to prepare for a a distributed systems interview.
 
 ### Behavioural
