@@ -181,7 +181,7 @@ An event would be defined as:
 Consumer services should register with the authoritative service to receive those events from the event bus.
 
 #### Message Bus
-When sending full representation of the data, the state types can be simplified to that of *upsert*, *delete*. For consumers to make use of this, producers must use stream partition keys based on the primary key of the object.  This ensures that the order of events within a shard is maintained, and that consumers can consume successive batches and rely only on de-duplication within each batch. This ensures that a consumer won't overwrite later records with earlier ones between batches.
+When sending a full representation of the data over a message bus, the state types can be simplified to that of *upsert* and *delete*. For consumers to make use of this, producers must use stream partition keys based on the primary key of the object.  This ensures that the order of events within a shard is maintained, and that consumers can consume successive batches and rely only on de-duplication within each batch. This ensures that a consumer won't overwrite later records with earlier ones between batches.
 
 ### Other notes on Inter-Service Communication
 
