@@ -17,7 +17,7 @@ If you have internal state and/or refs, prefer `class extends React.Component`
 over `React.createClass` unless you have a very good reason to use mixins
 [^prefer-es6-class], [^prefer-stateless-function].
 
-```javascript
+```jsx
 // bad
 const Listing = React.createClass({
   // ...
@@ -44,7 +44,7 @@ over classes. When debugging in the good example below the stack trace will
 include the function name whereas in the bad example it will say it’s from an
 anonymous function:
 
-```javascript
+```jsx
 // bad
 class Listing extends React.Component {
   render() {
@@ -71,7 +71,7 @@ contractions like `"don't"` easier to type. Regular HTML attributes also
 typically use double quotes instead of single, so JSX attributes mirror this
 convention:
 
-```javascript
+```jsx
 // bad
 <Foo bar='bar' />
 
@@ -91,7 +91,7 @@ convention:
 
 Always use camelCase for prop names.
 
-```javascript
+```jsx
 // bad
 <Foo
   UserName="hello"
@@ -107,7 +107,7 @@ Always use camelCase for prop names.
 
 Omit the value of the prop when it is explicitly `true`. [^jsx-boolean-value]
 
-```javascript
+```jsx
 // bad
 <Foo
   hidden={true}
@@ -124,7 +124,7 @@ Omit the value of the prop when it is explicitly `true`. [^jsx-boolean-value]
 Avoid using an array index as `key` prop, prefer a unique ID; using the index
 as a key is an [anti-pattern](https://medium.com/@robinpokorny/index-as-a-key-is-an-anti-pattern-e0349aece318).
 
-```javascript
+```jsx
 // bad
 {todos.map((todo, index) =>
   <Todo
@@ -146,7 +146,7 @@ as a key is an [anti-pattern](https://medium.com/@robinpokorny/index-as-a-key-is
 
 Always use ref callbacks [^no-string-refs].
 
-```javascript
+```jsx
 // bad
 <Foo
   ref="myRef"
@@ -164,7 +164,7 @@ Always use ref callbacks [^no-string-refs].
 
 Wrap JSX tags in parentheses when they span more than one line [^wrap-multilines].
 
-```javascript
+```jsx
 // bad
 render() {
   return <MyComponent className="long body" foo="bar">
@@ -194,7 +194,7 @@ render() {
 
 Always self-close tags that have no children [^self-closing-comp].
 
-```javascript
+```jsx
 // bad
 <Foo className="stuff"></Foo>
 
@@ -206,7 +206,7 @@ Always self-close tags that have no children [^self-closing-comp].
 
 If your component has multi-line properties, close its tag on a new line [^jsx-closing-bracket-location]. This helps reduce the size of diffs.
 
-```javascript
+```jsx
 // bad
 <Foo
   bar="bar"
