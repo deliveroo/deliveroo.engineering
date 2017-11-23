@@ -364,6 +364,10 @@ article {
       } // article aside h{3…6}:first-child
     } // article aside h{3…6}
 
+    p:first-child {
+      margin-top: 0;
+    } // article aside p:first-child
+
     a {
       color: color(aubergine, 15%);
       border-color: color(aubergine, 35%);
