@@ -159,6 +159,17 @@ Services should be able to communicate with other services using the method best
 
 Streaming architectures that send full or partial messages over a distributed message bus are supported, with an owning domain service publishing its view of the world out to multiple consumers. This de-couples the communication mechanism from the service and allows for scalable fan out to multiple consumers.
 
+When services do use HTTP for communication, it is advisable to adhere to REST principles.
+
+In particular (but not limited to):
+
+- HTTP verbs should be used.
+- GET requests should have no side-effects (on any entity of this concept or others) and be cacheable.
+- PUT and PATCH requests should be idempotent (submitting them more than once should not change state further)
+- DELETE requests should only suceed if the resource exists.
+- URL terms in any API should reflect domain concepts.
+- Hypermedia links should be provided in responses.
+
 ### Messaging Formats
 
 A service should own the schema for its domain. Domains should have their data model defined in a language agnostic schema format that supports code generation for multiple languages and provides a compact serialization format for sending data between services. One of the advantages of this includes the ability to enforce types (in statically typed languages). 
@@ -180,8 +191,12 @@ An event would be defined as:
 
 Consumer services should register with the authoritative service to receive those events from the event bus.
 
-#### Message Bus
-When sending full representation of the data, the state types can be simplified to that of *upsert*, *delete*. For consumers to make use of this, producers must use stream partition keys based on the primary key of the object.  This ensures that the order of events within a shard is maintained, and that consumers can consume successive batches and rely only on de-duplication within each batch. This ensures that a consumer won't overwrite later records with earlier ones between batches.
+#### Message Bus Producers
+When sending a full representation of the data over a message bus, the state types can be simplified to that of *upsert* and *delete*. For consumers to make use of this, producers must use stream partition keys based on the primary key of the object, thus maintaining the correct order of events within a shard. Consumers can then consume successive batches and rely only on de-duplication within each batch. This ensures that a consumer won't overwrite later records with earlier ones between batches.
+
+#### Message Bus Consumers
+Consumers of message bus data should perform idempotent operations on the data, so that it is possible to restart the app at any part of the stream without causing data corruption. This is so that the consumer can have a service outage and upon restart the service can recover the state with minimal effort.
+
 
 ### Other notes on Inter-Service Communication
 
