@@ -195,7 +195,7 @@ Consumer services should register with the authoritative service to receive thos
 When sending a full representation of the data over a message bus, the state types can be simplified to that of *upsert* and *delete*. For consumers to make use of this, producers must use stream partition keys based on the primary key of the object, thus maintaining the correct order of events within a shard. Consumers can then consume successive batches and rely only on de-duplication within each batch. This ensures that a consumer won't overwrite later records with earlier ones between batches.
 
 #### Message Bus Consumers
-Consumers of message bus data should perform idempotent operations on the data, so that it is possible to restart the app at any part of the stream without causing data corruption. This is so that the consumer can have a service outage and upon restart the service can recover the state with minimal effort.
+Consumers of message bus data should perform idempotent operations on the data, so that in the event of failure it is possible to restart the consumption of data at any offset on the stream without causing data corruption. This is to ensure that consumers can recover the state with minimal effort when restarting after an outage.
 
 
 ### Other notes on Inter-Service Communication
