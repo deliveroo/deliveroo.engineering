@@ -18,7 +18,7 @@ We started using Kotlin in tests more than two years ago. This gave us a chance 
 
 Kotlin hour is a bi-weekly catchup of the Android team where we talk about anything related to Kotlin. In the beginning that meant actually learning the language by:
 
- - Going through Kotlin koans
+ - Going through [Kotlin Koans](https://kotlinlang.org/docs/tutorials/koans.html)
  - Giving presentations about the language and its features
  - Actually writing Kotlin by implementing our interview coding challenge in Kotlin
 
