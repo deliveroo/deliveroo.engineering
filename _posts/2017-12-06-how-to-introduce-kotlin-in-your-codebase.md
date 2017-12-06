@@ -38,7 +38,7 @@ As you adopt Kotlin you’ll all learn different things at different times, so s
 
 Android Studio has a great conversion tool for Java code. This will get you started, but you’ll need to clean things up a bit afterwards. After converting a file you might be prompted with this dialog:
 
-<figure>
+<figure class="small">
 ![Kotlin conversion dialog](/images/posts/how-to-introduce-kotlin-in-your-codebase/conversion-dialog.jpg)
 </figure>
 
