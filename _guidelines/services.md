@@ -170,7 +170,7 @@ In particular (but not limited to):
 - URL terms in any API should reflect domain concepts.
 - Hypermedia links should be provided in responses.
 
-### Messaging Formats
+### Message Bus Data Formats
 
 A service should own the schema for its domain. Domains should have their data model defined in a language agnostic schema format that supports code generation for multiple languages and provides a compact serialization format for sending data between services. One of the advantages of this includes the ability to enforce types (in statically typed languages). 
 
