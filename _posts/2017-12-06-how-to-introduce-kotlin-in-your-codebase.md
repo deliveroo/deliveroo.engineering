@@ -4,17 +4,17 @@ title:  "How to introduce Kotlin in your codebase"
 authors:
   - "Maria Neumayer"
 excerpt: >
-  Kotlin was the big topic of the year in the Android community. In this blog post I will share a few tips and tricks we've learned while converting our application to Kotlin.
+  Kotlin was the big topic of the year in the Android community. Many of us are talking about it or have started using it. In this blog post I will share a few tips and tricks we've learned while converting our application to Kotlin.
 
 ---
 
-Kotlin was the big topic of the year in the Android community. Many of us are talking about it or have started using it. For us at Deliveroo the journey took off in April this year when we introduced Kotlin to the production app and now (after 8 months) we hit the major milestone of having a majority Kotlin app.
+For us at Deliveroo the journey took off in April this year when we introduced Kotlin to the production app and now (after 8 months) we hit the major milestone of having a majority Kotlin app.
 
-At Droidcon UK, Amal and I talked about our journey from Java to Kotlin. You can watch the talk [here](https://skillsmatter.com/skillscasts/10533-travelling-across-asia-our-journey-from-java-to-kotlin) and see our slides [here](https://speakerdeck.com/marianeum/travelling-across-asia-our-journey-from-java-to-kotlin). But if you prefer reading then here is a summarised version of what we learned on our journey.
+At Droidcon UK, [Amal](https://twitter.com/K4KYA) and I talked about our journey from Java to Kotlin. You can [watch the talk here](https://skillsmatter.com/skillscasts/10533-travelling-across-asia-our-journey-from-java-to-kotlin) and [see our slides here](https://speakerdeck.com/marianeum/travelling-across-asia-our-journey-from-java-to-kotlin). But if you prefer reading then here is a summarised version of what we learned on our journey.
 
 ## How to get started?
 
-We started using Kotlin in tests more than two years ago. This gave us a chance to get used to the syntax, but because tests are so simple we couldn’t really learn all of Kotlin’s language features. So when we decided to use it in the production app we had to actually learn the language first. We all could have set off to learn the language individually (which we did too!), but learning the language together is much more fun and rewarding, so we set up Kotlin hour.
+We started writing tests in Kotlin more than two years ago. This gave us a chance to get used to the syntax, but because tests are so simple we couldn’t really learn all of Kotlin’s language features. So when we decided to use it in the production app we had to actually learn the language first. We all could have set off to learn the language individually (which we did too!), but learning the language together is much more fun and rewarding, so we set up Kotlin hour.
 
 Kotlin hour is a bi-weekly catchup of the Android team where we talk about anything related to Kotlin. In the beginning that meant actually learning the language by:
 
