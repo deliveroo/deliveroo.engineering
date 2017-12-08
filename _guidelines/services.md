@@ -172,9 +172,9 @@ In particular (but not limited to):
 
 ### Message Bus Data Formats
 
-A service should own the schema for its domain. Domains should have their data model defined in a language agnostic schema format that supports code generation for multiple languages and provides a compact serialization format for sending data between services. One of the advantages of this includes the ability to enforce types (in statically typed languages). 
+A service should publish a schema for communication with other services in a language agnostic format that supports code generation for multiple languages and provides a compact serialization format. One of the advantages of this includes the ability to enforce types (in statically typed languages). 
 
-While any technology that supports these requirements would suffice, it will be important to maintain consistency across the organisation. Currently the format that is seeing wide adoption is [Thrift](https://thrift.apache.org/).
+While any technology that supports these requirements would suffice, it will be important to maintain consistency across the organisation for wire protocols. Currently the format that is seeing wide adoption is [Thrift](https://thrift.apache.org/).
 
 
 ### Communication Semantics
