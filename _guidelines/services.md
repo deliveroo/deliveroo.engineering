@@ -157,7 +157,7 @@ build good services. As a summary:
 
 Services should be able to communicate with other services using the method best suited to their use case. This may be in the form of synchronous API calls or RPC, or asynchronously over a message bus. As Deliveroo moves towards a more distributed architecture there will be a need to design some services to not only be resilient to data being eventually consistent but in some cases behave specifically to suit.  For example, a customer facing application that provides data on the status of their order could have visual states that indicate part of the data has not loaded yet.
 
-Streaming architectures that send full or partial messages over a distributed message bus are supported, with an owning domain service publishing its view of the world out to multiple consumers. This de-couples the communication mechanism from the service and allows for scalable fan out to multiple consumers.
+Streaming architectures that send full or partial messages over a distributed message bus are supported. Streaming data over a log based message bus de-couples the communication mechanism from the service and allows for scalable fan out to multiple consumers.
 
 When services do use HTTP for communication, it is advisable to adhere to REST principles.
 
@@ -172,9 +172,9 @@ In particular (but not limited to):
 
 ### Message Bus Data Formats
 
-A service should publish a schema for communication with other services in a language agnostic format that supports code generation for multiple languages and provides a compact serialization format. One of the advantages of this includes the ability to enforce types (in statically typed languages). 
+A service should publish a wire protocol schema for communication with other services. The schema should be defined in a language agnostic format that supports code generation for multiple languages and provides a compact serialization format. One of the advantages of this includes the ability to enforce types (in statically typed languages). 
 
-While any technology that supports these requirements would suffice, it will be important to maintain consistency across the organisation for wire protocols. Currently the format that is seeing wide adoption is [Thrift](https://thrift.apache.org/).
+While any technology that supports these requirements would suffice, it will be important to maintain consistency across the organisation. Currently the format that is seeing wide adoption is [Thrift](https://thrift.apache.org/).
 
 
 ### Communication Semantics
