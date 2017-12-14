@@ -3,7 +3,7 @@ layout: post
 title:  "Interning at Deliveroo"
 authors:
   - "Reemma Muthal Puredath"
-date:   2017-12-06 00:00:00
+date:   2017-12-14 00:00:00
 excerpt: >
   _Reemma writes to us after her time working with Deliveroo during her internship to tell us about her impressions of the company, her team, and what she accomplished with us over the Summer._
 ---
