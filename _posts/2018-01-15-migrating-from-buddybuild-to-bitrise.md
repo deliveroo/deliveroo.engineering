@@ -62,7 +62,7 @@ Open the last tab of the workflow page called `bitrise.yml`. From here find the 
 
 ## What's missing?
 
-There are a few things missing: better output for unit tests is one, but this is being worked on. Bitrise also doesn't have an SDK (yet?), so crash reporting and feedback won't be available. This isn't a big problem for us, but if it is for you you might want to look at other tools supporting feedback or crash reporting.
+There are a few things missing: better output for unit tests is one, but this is being worked on. Bitrise also doesn't have an SDK (yet?), so crash reporting and feedback won't be available. Whilst this wasn't an issue for us, you may want to find alternative tools support feedback or crash reporting..
 
 
 So far we're very happy with our choice. We're still in early days, but so far it's looking very promising.
