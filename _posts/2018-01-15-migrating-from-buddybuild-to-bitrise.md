@@ -15,21 +15,22 @@ We use CI for various things:
 - Create an APK and deploy it to fabric and/or Google Play
 - Create nightly builds to deploy to the Google Play alpha channel for internal testing
 
-We looked at various options, including Nevercode, Visual Studio App Centre and Circle CI. Bitrise turned out to be the most flexible and feature rich option out of those that could support all the different use cases we had.
+We looked at various options, including Nevercode, Visual Studio App Centre and Circle CI. Bitrise turned out to be the most flexible and feature rich option out of those that could support all of our use cases.
 
 ## What's the difference between Buddybuild and Bitrise?
 
-Buddybuild is set up to be very user friendly - changing your build settings is often just a simple toggle away. This means it's very easy to set up and change settings, but it also comes with a disadvantage: it's not very flexible. If the UI doesn't support something you had to either find a workaround or hope they would add support for it.
+Buddybuild is set up to be very user friendly - changing your build settings is often just a simple toggle away. This means it's very easy to set up and change settings, but it also comes with a disadvantage: it's not very flexible. If the UI doesn't support something you had to either find a workaround or hope they will add support for it.
 
 Bitrise is different. It has a lot of integrations which you can chain together as individual steps to a workflow. Each integration has its own configurations. If there's an integration missing you can add a custom script step with whatever logic you want. This gives you a lot of flexibility and control, but you still get simplicity of having pre-built integrations. All integrations are versioned, so an update to an integration should not break your builds.
 
 ## How to set up your configuration?
 
 Your Bitrise configuration is a combination of triggers, workflows and steps. Steps are individual integrations that can be chained together in a workflow. Triggers (as the name suggests) define when a workflow will run. You can create triggers for pull requests, pushes and tags, or set up scheduled builds. For our setup we have triggers for pull requests, pushes on master, creating release tags and the scheduled nightly builds. Each of those triggers run different workflows to ensure the correct steps run.
-
+<aside>
 <figure class="small">
 ![Part of our master workflow](/images/posts/migrating-from-buddybuild-to-bitrise/workflow.jpg)
 </figure>
+</aside>
 
 I found a good way to set up a workflow is to create various building blocks. Workflows can be chained together, so you can create a workflow for setup, which will clone the repository, pull the cache and install missing Android SDK components. This workflow can then be reused across other workflows.
 
@@ -61,7 +62,7 @@ Open the last tab of the workflow page called `bitrise.yml`. From here find the 
 
 ## What's missing?
 
-There's a few things missing. One being a nice output for unit tests, but this is being worked on. Bitrise also doesn't have an SDK (yet?), so crash reporting and feedback won't be available. This isn't a big problem for us, but if it is for you you might want to look at other tools supporting feedback or crash reporting.
+There are a few things missing. One being a nice output for unit tests, but this is being worked on. Bitrise also doesn't have an SDK (yet?), so crash reporting and feedback won't be available. This isn't a big problem for us, but if it is for you you might want to look at other tools supporting feedback or crash reporting.
 
 
 So far we're very happy with our choice. We're still in early days, but so far it's looking very promising.
