@@ -4,7 +4,7 @@ title:  "What does an Engineering Manager do at Deliveroo?"
 authors:
    - "Victoria Puscas"
 excerpt: >
-  Do many software engineers know what an Engineering Manager(EM) actually does? As I moved through several companies through my career I saw this role in so many different colors and forms. Every time I was wondering - what is this job actually?
+  Do many software engineers know what an Engineering Manager (EM) actually does? As I moved through several companies through my career I saw this role in so many different colors and forms. Every time I was wondering - what is this job actually?
   I am not going to come with an exhaustive definition as I doubt it exists... However I've recently moved from Software Engineering role to an Engineering Manager, so hopefully my fresh memories and this post will help anyone who's interested to find out more about what it's like to be an EM at Deliveroo.
 ---
 
@@ -28,7 +28,7 @@ Because we want to empower engineers to find solutions to problems at the edge o
 Your first thought might be ‘isn’t that what recruiters do?’.
 It is, but it is EMs responsibility to be actively involved in sourcing - exploring LinkedIn profiles, searching good candidates by asking people around for recommendations, go to relevant events/meetups when appropriate, and anything that could help finding good people. It’s like a treasure hunt. It is also very, very hard work.
 
- While folks at the big 5s might have an easy job with attracting many candidates, as everyone knows them, here at Deliveroo we’re still working on spreading the word out there. It might also feel frustrating at times, after spending few hours a day finding good profiles, crafting messages for them, be waiting for a reply back. Some of the very few people that will get back might not be interested. And then we go again.
+ While folks at the biggest tech companies might have an easy job with attracting many candidates, as everyone knows them, here at Deliveroo we’re still working on spreading the word out there. It might also feel frustrating at times, after spending few hours a day finding good profiles, crafting messages for them, to be waiting for a reply back. Some of the very few people that will get back might not be interested. And then we go again.
 
 Once there are people in the pipeline, EMs are occasionally asked to talk to potential candidates over the phone, in order to get them excited about us and also answer questions candidates might have (often really tricky ones).
 
@@ -36,15 +36,15 @@ Interviewing will become part of your weekly routine. It is very important to ge
 
 And finally providing feedback to candidates and make sure people that were involved in the interview are providing good, quality feedback. That means at the end of debrief the recruitment team can hand all the feedback over to the hiring manager and they could make a decision based on what they read. So providing good feedback and giving people feedback on their feedback.
 
-**Feedback is a big thing.** It needs a separate section (below).
+**Feedback is a big thing.** I'll talk more about this below.
 
 ### Line management
 
 Line management is at the core of what an EM is doing.
-It is hugely important to be able to keep the talent. The EM’s role is to make sure everyone in the team has the skills, space and the right setup to do great things. Deliveroo will be one of the many stops an engineer might have along their career. The EM needs to work with each engineer to ensure they get the most of the time they’re with the company, they (EM’s) help engineers progressing with their professional life.
+It is hugely important to be able to keep the talent. The EM’s role is to make sure everyone in the team has the skills, space and the right setup to do great things. Deliveroo will be one of the many stops an engineer might have along their career. The EM needs to work with each engineer to ensure they get the most of the time they’re with the company, and to progress with their professional life.
 So here are some of the practices used by EMs when it comes to line management:
 
-- **1:1s** - this is engineer’s meeting, not EMs. That sounds obvious, but might need some time to become natural. People come from different companies, backgrounds, they might have had good or bad EMs in the past. Therefore it is very important to set the expectations correctly. The EM’s job is to make sure engineers understand what’s the purpose of the 1:1, and work with engineers to make them useful. These meetings need preparation from both engineer and their EM. Even if it is best to have engineer talking for mostly the whole (if not the whole) session, it is required from the EM to come prepared - know what’s going on with the project overall but also be aware of who’s working on what and have an idea of the pace, progress, blockers, etc, so that the 1:1 is not a status update, unless there’s something urgent which needs escalated with the EM in order to get moving. It is a rare opportunity to have people come and talk openly about problems, concerns or fears they have. Usually the EM will need to pick up on little clues in order to spot issues which are best to be addressed early. Being capable of reading between the lines is a very subtle skill to master in this role.  **Also being supportive rather than directive is something we require EMs do at Deliveroo.** Needless to say it isn’t a good practice to cancel 1:1s if both EM and engineer are in the office/are working.
+- **1:1s**  this is engineer’s meeting, not EMs. That sounds obvious, but might need some time to become natural. People come from different companies, backgrounds, they might have had good or bad EMs in the past. Therefore it is very important to set the expectations correctly. The EM’s job is to make sure engineers understand what’s the purpose of the 1:1, and work with engineers to make them useful. These meetings need preparation from both engineer and their EM. Even if it is best to have engineer talking for mostly the whole (if not the whole) session, it is required from the EM to come prepared - know what’s going on with the project overall but also be aware of who’s working on what and have an idea of the pace, progress, blockers, etc, so that the 1:1 is not a status update, unless there’s something urgent which needs escalated with the EM in order to get moving. It is a rare opportunity to have people come and talk openly about problems, concerns or fears they have. Usually the EM will need to pick up on little clues in order to spot issues which are best to be addressed early. Being capable of reading between the lines is a very subtle skill to master in this role.  **Also being supportive rather than directive is something we require EMs do at Deliveroo.** Needless to say it isn’t a good practice to cancel 1:1s if both EM and engineer are in the office/are working.
 **Few other meetings are more important than 1:1s - the team is the first priority.**
 
 - **Feedback** - this is a superskill of an EM. Constantly seeking and providing feedback is another daily routine which needs learning and mastering. There are many different ways to do it, but the best feedback is the one you give on the spot. There are exceptions, but generally providing short feedback on what was observed, what was the impact of the action and what was expected/what’s the alternative is a good approach. The more time after the fact the less efficient the information for the person is. Another important aspect - positive feedback is equally important as negative. It is often more difficult to provide positive feedback (try this out next time by giving props to someone!). Feedback should be given not just to engineers in your team - any opportunity to make a process/message/meeting/product/feature/company better should be taken.
@@ -64,7 +64,7 @@ Sometimes EMs along with PMs act as air traffic controllers in order to make sur
 
 ### Innovation
 
-This is ultimately what we’re seeing for in order to be able to find and solve unique problems. This is hard to achieve and it can not be scheduled as a block in a calendar. We need to let engineers innovate and think outside the box and this is only possible in a transparent, friendly and supportive environment.
+This is ultimately what we’re looking for in order to be able to find and solve unique problems. This is hard to achieve and it can not be scheduled as a block in a calendar. We need to let engineers innovate and think outside the box and this is only possible in a transparent, friendly and supportive environment.
 
 An EM should offer all the support in order to make engineers feel safe to fail. Everyone fails at some point. But we need to encourage people to do so and we need to make sure it is a good environment for it.
 
