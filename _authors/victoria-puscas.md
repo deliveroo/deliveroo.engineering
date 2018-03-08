@@ -1,9 +1,13 @@
 ---
 layout:     authors
 collection: authors
-name:       "Your Name"
-jobtitle:   "Your Job Title"
-portrait:   "/images/portraits/your-portrait.jpg"
+name:       "Victoria Puscas"
+jobtitle:   "Engineering Manager"
+portrait:   "/images/portraits/victoria-puscas.jpg"
 ---
 
-Write a bio here?
+I’m a newly appointed engineering manager at Deliveroo.
+
+Initially joined Deliveroo as a Software Engineer in Quality, part of SETI team (Software Engineering Tools and Infrastructure)  back in November 2016.
+
+Previously worked at Yammer (Microsoft) and Endava in London and Republic of Moldova.
