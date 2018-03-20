@@ -4,10 +4,10 @@ title:  "How to migrate your API and still be friends with your fellow client de
 authors:
   - "Erika Moreno Sierra"
 excerpt: >
-  One of the best things about working in Deliveroo Engineering is that we have the opportunity to work on a great ever-changing product, which means we are constantly evolving, improving and facing new challenges. And one of the main problems we have right now, which is a great problem to have, is the fact that we have grown so much that our monolithic application can’t hold everything in just one place anymore.
+  One of the best things about working in Deliveroo Engineering is that we have the opportunity to work on a great ever-changing product, which means we are constantly evolving, improving and facing new challenges. One of the main problems we have right now, which is a great problem to have, is the fact that we have grown so much that our monolithic application can’t hold everything in just one place anymore.
 ---
 
-That is why after only 5 years since Deliveroo’s inception, we’re already decomposing our monolith into several services. It is the responsibility of every team to make this migration as smooth as possible, because we believe reliability is fundamental.
+That is why only 5 years after Deliveroo’s inception, we’re already decomposing our monolith into several services. It is the responsibility of every team to make this migration as smooth as possible, because we believe reliability is fundamental.
 
 ## Smooth Migrations
 
@@ -15,7 +15,7 @@ That is why after only 5 years since Deliveroo’s inception, we’re already de
   This plan was inspired by a talk that Dan Webb ([@danwrong](https://twitter.com/danwrong/)) gave on our last Engineering Away Day, about how Twitter got away from the monolith.
 </aside>
 
-One of the responsibilities of my team is to maintain the API that helps customers and Customer Support (CS) agents to solve issues related to orders. Part of this API is still in the monolith so we have recently started to migrate the remaining endpoints into our own service. Since this migration will affect our web and mobile clients, we need to be sure that the responses from our service match exactly the ones from the monolith. We’re keen to make sure our services are always reliable, so we came up with a plan to make this migration as smooth as possible.
+One of the responsibilities of my team is to maintain the API that helps customers and Customer Support agents to solve issues related to orders. Part of this API is still in the monolith so we have recently started to migrate the remaining endpoints into our own service. Since this migration will affect our web and mobile clients, we need to be sure that the responses from our service match exactly the ones from the monolith. We’re keen to make sure our services are always reliable, so we came up with a plan to make this migration as smooth as possible.
 
 This is how we are doing it.
 
@@ -35,9 +35,17 @@ You are probably thinking: “isn’t this solution going to make the proxy very
 
 In a nutshell, it looks something like:
 
-<figure>
-![Example of code for a proxy controller](/images/posts/smooth-migrations/pseudo_code.png)
-</figure>
+```ruby
+def proxy
+  monolith_response = get_response_from_monolith
+
+  if scenario_already_implemented?
+    ComparatorWorker.perform_async(monolith_response)
+  end
+
+  reder json: monolith_response.body, status: monolith_response.status
+end
+```
 
 
 ### Step 3: observing and reiterating
