@@ -43,7 +43,7 @@ def proxy
     ComparatorWorker.perform_async(monolith_response)
   end
 
-  reder json: monolith_response.body, status: monolith_response.status
+  render json: monolith_response.body, status: monolith_response.status
 end
 ```
 
