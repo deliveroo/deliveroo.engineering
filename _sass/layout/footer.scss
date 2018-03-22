@@ -1,54 +1,59 @@
 footer {
   $base-color: mackerel;
-  
+
   color: color($base-color, 50%);
   background-color: color($base-color);
   font-size: font-size(small-body);
   line-height: 1.5;
-  
+
   a {
     color: color($base-color, 25%);
     border: none;
-    
+
     &:hover {
-      color: white;      
+      color: white;
     } // footer a:hover
-    
+
     @include external-href('deliveroo.engineering') {
       &::after {
         content: none;
       } // @external-href('deliveroo.engineering') footer a::after
     } // @external-href('deliveroo.engineering') footer a
   } // footer a
-  
+
   ul.links {
     @include unstyled-list;
     @include auto-width(desktop_larger);
+
+    // twitter widget
+    li iframe#twitter-widget-0 {
+      vertical-align: middle;
+    } // footer ul.links li iframe
   } // footer ul.links
-  
+
   p {
     @include auto-width(desktop_larger);
     padding: 10px;
-    
+
     &:last-child {
       margin-bottom: 0;
     } // footer p:last-child
   } // footer p
-  
+
   @include max-width(tablet_small) {
     ul.links {
       li {
         padding: 10px;
         line-height: 30px;
         border-bottom: 1px solid color($base-color, 75%);
-        
+
         a {
           display: block;
         } // @max-width(tablet_small) footer ul.links li a
       } // @max-width(tablet_small) footer ul.links li
     } // @max-width(tablet_small) footer ul.links
   } // @max-width(tablet_small) footer
-  
+
   @include min-width(tablet_small) {
     ul.links {
       padding: 10px;
@@ -60,7 +65,7 @@ footer {
       li {
         line-height: 30px;
         text-align: center;
-        
+
         & + li {
           margin-top: 0;
 
@@ -73,7 +78,7 @@ footer {
         } // @min-width(tablet_small) footer ul.links li + li
       } // @min-width(tablet_small) footer ul.links li
     } // @min-width(tablet_small) footer ul.links
-    
+
     p {
       margin-top: 0;
       text-align: center;
