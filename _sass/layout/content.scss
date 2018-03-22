@@ -163,6 +163,17 @@ section {
       margin-top: 20px;
       text-align: center;
 
+      @include min-width(tablet_small) {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-auto-rows: 1fr;
+        grid-gap: 10px 20px;
+      }
+
+      @include min-width(desktop_small) {
+        grid-template-columns: auto auto auto;
+      }
+
       li {
         color: color(anchovy);
         line-height: 1.8;
