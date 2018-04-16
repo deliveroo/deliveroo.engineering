@@ -24,10 +24,12 @@ body {
     } // body main > hr
 
     > h1 {
+      letter-spacing: -0.035em;
       margin-bottom: 10px;
     } // body main > h1
 
     > h2 {
+      letter-spacing: -0.035em;
       text-align: center;
     } // body main > h2
 
@@ -101,6 +103,7 @@ section {
       margin-bottom: 0.5em;
       text-align: center;
       line-height: 1.3;
+      letter-spacing: -0.02em;
 
       a {
         border: none;
@@ -300,6 +303,7 @@ article {
     h1 {
       @include auto-width(desktop_larger);
       margin-bottom: 10px;
+      letter-spacing: -0.035em;
     } // article header h1
 
     p.byline {
@@ -332,6 +336,10 @@ article {
   figcaption {
     font-style: italic;
   } // article figcaption
+
+  h2, h3 {
+    letter-spacing: -0.02em;
+  } // article {h2, h3}
 
   h2, h3, h4, h5, h6 {
     margin: 3em 0 1em;
