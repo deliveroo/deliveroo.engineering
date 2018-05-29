@@ -9,4 +9,4 @@ RUN gem install bundler && bundle install -j8
 COPY . /usr/src/app/deliveroo.engineering
 EXPOSE 4000
 ENTRYPOINT ["jekyll"]
-CMD ["serve", "-w", "-H", "0.0.0.0"]
+CMD ["serve", "-w", "-t", "-H", "0.0.0.0"]
