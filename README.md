@@ -11,35 +11,16 @@ the site is formatted with [Markdown][markdown].
 If you’re doing any work on any part of the `deliveroo.engineering` blog, the
 best way to test it is to run it locally:
 
-1. `git clone git@github.com:deliveroo/deliveroo.engineering.git`
-2. `cd /path/to/deliveroo.engineering`
-3. (optional) if you don’t already have it, install the correct version of Ruby
-   as [specified][ruby-version] in the `.ruby-version`
-4. `bundle install`
-5.
-  1. if you use `pow`: `echo 4000 > ~/.pow/deliveroo.engineering`
-  2. if you use `puma-dev`: `echo 4000 > ~/.puma-dev/deliveroo.engineering`
-6. `bundle exec jekyll serve --incremental` to run the Jekyll server
-7. Open `deliveroo.engineering.dev` in your browser
+1. [Install docker](https://docs.docker.com/install/)
+2. `$ git clone git@github.com:deliveroo/deliveroo.engineering.git`
+3. `$ cd deliveroo.engineering`
+4. `$ make build`
+5. `$ make run`
+6. Open `http://localhost:4000` in your browser
 
 Jekyll will then generate the site files automatically for you, which usually
 takes no more than a couple of seconds each time you make a change.
 
-If the article doesn't display on the frontpage try running:
-`bundle exec jekyll serve --verbose`
-
-### Installing Nokogiri on macOS Sierra
-
-If you’re running macOS Sierra, you may encounter issues with building the
-Nokogiri gem with native extensions. The solution here is to ensure you [use
-the correct system libraries](http://stackoverflow.com/questions/40038953/installing-nokogiri-on-mac-os-sierra-10-12/40038954#40038954).
-
-First ensure you have the Xcode command line tools installed, then run:
-
-```
-bundle config build.nokogiri --use-system-libraries=true --with-xml2-include=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/usr/include/libxml2
-bundle install
-```
 
 ## Submitting a blog post
 
