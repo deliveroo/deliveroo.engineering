@@ -10,7 +10,7 @@ excerpt: >
 
 ---
 
-When we started:
+# When we started:
 1. We had a monolith Rails application that we would start to  aggressively and actively decompose.
 2. That application monolith had a monolithic db, a bottleneck to our planned growth.
 3. We wanted to give all of Engineering teams control of their own infra
@@ -21,7 +21,8 @@ So we embarked on a major programme to improve the live service reliability, the
 
 Fundamentally we had two problems: technical limitations in our architecture and reliability issues hampered by process and/or culture. There are loads of things that were happening around us and supporting us so the rest of this post will lay out what we tackled from the perspective of platform engineering. But just a quick word of thanks to our Recruitment team, our commercial Legal, and Procurement teams who collaborated brilliantly every step of the way with us and made sure that those things went smoothly.
 
-From a technical perspective, we realised that we needed a new way to deploy infrastructure, manage releases and improve reliability. So we first did a lot of work on the current platform to ensure several quarters of growth by:
+# From a technical perspective, 
+we realised that we needed a new way to deploy infrastructure, manage releases and improve reliability. So we first did a lot of work on the current platform to ensure several quarters of growth by:
 We implemented a “reliability monitor” for each team and service to shine a light on reliability issues in real time. This in turn drives a culture where engineering prioritisation can make clear choices between the live service and new features. Think bug or error “budgets” via internal dashboards
 We also did a deep dive in database health and pursued a 2-part effort to shape up two of the most heavily used tables and prevent the db from bottleneck growth for a few quarters.
 We created a weekly review for all of Tech (and in future all of Deliveroo e.g. our global Customer Support team etc) to look at and understand the health of the live service for the past seven days.
@@ -32,7 +33,8 @@ Our tools and infra team researched, designed, and built the new platform for th
 We then migrated every app and service to the new platform whilst running the original platform over the course of two quarters.
 We focused relentlessly on “engineering customer support” to assist our coworkers grapple with the new Platform and evangelise it! Clinics, presentations, a dedicated Slack channel, Tech Talks, Huddle talks, internal blog posts etc.
 
-From a cultural and process point of view, we really needed to set the bar that our reliability of the live service was a product feature. My mantra is “customer first; live site first,” no would ever disagree with. So much of moving fast and scaling a startup pulls you away from focusing on reliability. But to get to the next level, you need reliability as a fundamental building block.
+# From a cultural and process point of view, 
+we really needed to set the bar that our reliability of the live service was a product feature. My mantra is “customer first; live site first,” no would ever disagree with. So much of moving fast and scaling a startup pulls you away from focusing on reliability. But to get to the next level, you need reliability as a fundamental building block.
 
 First we focused on a pain point which for us was the on-call experience, and then we solved by:
 Launching Readiness Exercises for everything already in production to ensure everything was supportable for failure cases. We also made these mandatory for the launch of new services.
