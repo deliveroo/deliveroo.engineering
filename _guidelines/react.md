@@ -78,11 +78,12 @@ convention:
 // good
 <Foo bar="bar" />
 
-// bad
+// bad {% raw %}
 <Foo style={{ left: "20px" }} />
 
 // good
 <Foo style={{ left: '20px' }} />
+{% endraw %}
 ```
 
 [^jsx-quotes]: [ESLint: jsx-quotes](http://eslint.org/docs/rules/jsx-quotes)

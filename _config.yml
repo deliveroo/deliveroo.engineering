@@ -63,7 +63,6 @@ defaults:
         width: 735
         type: image/svg
 exclude:
-  - archive
   - Gemfile
   - Gemfile.lock
   - Guardfile
