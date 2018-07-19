@@ -139,7 +139,7 @@ resource "aws_cloudwatch_event_target" "sftpsync" {
 ```
 
 ## Building the Lambda
-Thanks to our ProdEng team for already doing all the heavy lifting and creating some base terraform lambda templates that we can hook into, we can use the code snippet below to create the lambda. We created a module `sftpsync-lambda` that uses the template. We can override properties and set any environment variables that on the lambda itself using the `variables` property. 
+Thanks to our ProdEng and ReleaseEng teams for already doing all the heavy lifting and creating some base terraform lambda templates that we can hook into, we can use the code snippet below to create the lambda. We created a module `sftpsync-lambda` that uses the template. We can override properties and set any environment variables that on the lambda itself using the `variables` property. 
 
 ```python
 module "sftpsync-lambda" {
@@ -182,4 +182,4 @@ resource "aws_iam_role_policy_attachment" "sftpsync-policy-attachment" {
 ```
 
 ## Configuring Circle CI
-Our ProdEng team created some amazing helpers for making lambda CI/CD pipeline as simple as possible. These are open source and you can find them [here](https://github.com/deliveroo/circleci). This automagically wires up the deploy pipeline to push our image to a separate deployment S3 bucket and then deploys the image to our target environment.
+Our ProdEng and ReleaseEng teams created some amazing helpers for making lambda CI/CD pipeline as simple as possible. These are open source and you can find them [here](https://github.com/deliveroo/circleci). This automagically wires up the deploy pipeline to push our image to a separate deployment S3 bucket and then deploys the image to our target environment.
