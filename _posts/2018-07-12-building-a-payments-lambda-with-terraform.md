@@ -21,7 +21,7 @@ The hurdles that we overcame were:
 1. Configuring Circle CI
 
 ## Storing and Using SFTP Credentials
-One of the issues that we came up against was how to access the sensitive credentials for the SFTP server in the lambda. The solution was to use the [AWS SSM Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html). This was easy to configure since [Boto3](http://boto3.readthedocs.io/en/latest/reference/services/ssm.html) supports SSM out of the box.
+One of the issues that we came up against was how to persist and access the sensitive credentials for the SFTP server in the lambda. We opted for using [AWS Systems Manager Parameter Store with KMS](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html). We saved the credentials as [secure string parameters](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-about.html#sysman-paramstore-securestring), which are a key/value pair, where the value is encrypted.  We easily configured [Boto3](http://boto3.readthedocs.io/en/latest/reference/services/ssm.html) to fetch and decrypt the credentials in our app.
 
 ### Getting Credentials using Boto3
 Below is a python snippet on how we used Boto3 and SSM to securely get the SFTP credentials.
