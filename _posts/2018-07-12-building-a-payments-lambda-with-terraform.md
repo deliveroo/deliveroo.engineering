@@ -11,7 +11,7 @@ excerpt: >
 On the Deliveroo Payments team we encountered an interesting problem while attempting to add a new payment service provider (PSP). In order to make this new PSP work, we needed to synchronize merchant ids. Unfortunately, this was only supported through SFTP using two folders: IN and OUT. We needed to generate an XML file, upload it to the PSP, then download and parse an XML file that the PSP created. Due to the way the encryption was configured on the SFTP server, there was not a suitable Ruby SFTP client that would work out of the box. 
 
 We looked at our options. One option was to fork a Ruby SFTP client, code some low level cryptography, hope that our open source PR was accepted, and then wait for a new gem to be released. Another option was to test out a well supported SFTP client in a different language.
-[Paramiko](http://docs.paramiko.org/en/2.4/api/sftp.html), a well supported Python SFTP client, connected on the first try. We chose to build a micro service, utilizing Paramiko, that runs on an AWS [Lambda](https://aws.amazon.com/lambda/). The responsibility of this micro service is to periodically sync between an S3 Bucket and the PSP's SFTP. The Deliveroo SETI team made life easier by creating a template foundation for building lambdas using [Terraform](https://www.terraform.io/). By keeping infrastructure as code, we're able to deploy the same cookie cutter configuration to multiple environments.
+[Paramiko](http://docs.paramiko.org/en/2.4/api/sftp.html), a well supported Python SFTP client, connected on the first try. We chose to build a micro service, utilizing Paramiko, that runs on an AWS [Lambda](https://aws.amazon.com/lambda/). The responsibility of this micro service is to periodically sync between an S3 Bucket and the PSP's SFTP. The Deliveroo engineering team made life easier by creating a template foundation for building lambdas using [Terraform](https://www.terraform.io/). By keeping infrastructure as code, we're able to deploy the same cookie cutter configuration to multiple environments.
 
 The hurdles that we overcame were:
 * Storing and using SFTP Credentials
@@ -137,7 +137,7 @@ resource "aws_cloudwatch_event_target" "sftpsync" {
 ```
 
 ## Building the Lambda
-The Deliveroo SETI team already did the heavy lifting and created some base terraform lambda templates. This template allows for properties and environment variables to be overridden. We created a module `sftpsync-lambda` that hooked into this template to build the lambda. 
+The Deliveroo engineering team already did the heavy lifting and created some base terraform lambda templates. This template allows for properties and environment variables to be overridden. We created a module `sftpsync-lambda` that hooked into this template to build the lambda. 
 
 ```bash
 module "sftpsync-lambda" {
@@ -169,7 +169,7 @@ resource "aws_iam_role_policy_attachment" "sftpsync-policy-attachment" {
 ```
 
 ## Configuring Circle CI
-Our SETI team created some amazing helpers for making lambda CI/CD pipeline as simple as possible. This automagically wires up the deploy pipeline to push our image to a separate deployment S3 bucket and then deploys the image to our target environment. These are open source and you can find them [here](https://github.com/deliveroo/circleci). The corresponding docker image, while publicly available, is a little bit Deliveroo specific. However, there are some useful scripts that others can remix and adapt to their own needs.
+The Deliveroo engineering team created some amazing helpers for making lambda CI/CD pipeline as simple as possible. This automagically wires up the deploy pipeline to push our image to a separate deployment S3 bucket and then deploys the image to our target environment. These are open source and you can find them [here](https://github.com/deliveroo/circleci). The corresponding docker image, while publicly available, is a little bit Deliveroo specific. However, there are some useful scripts that others can remix and adapt to their own needs.
 
 ## Conclusion
 When building a lambda microservice, there are aways additional items that should be taken into account besides just coding the new service, such as:
