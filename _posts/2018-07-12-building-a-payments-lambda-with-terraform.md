@@ -14,16 +14,15 @@ We looked at our options. One option was to fork a Ruby SFTP client, code some l
 [Paramiko](http://docs.paramiko.org/en/2.4/api/sftp.html), a well supported Python SFTP client, connected on the first try. We chose to build a micro service, utilizing Paramiko, that runs on an AWS [Lambda](https://aws.amazon.com/lambda/). The responsibility of this micro service is to periodically sync between an S3 Bucket and the PSP's SFTP. The Deliveroo SETI team made life easier by creating a template foundation for building lambdas using [Terraform](https://www.terraform.io/). By keeping infrastructure as code, we're able to deploy the same cookie cutter configuration to multiple environments.
 
 The hurdles that we overcame were:
-1. Storing and using SFTP Credentials
-1. Configuring the S3 bucket
-1. Invoking the lambda on a schedule
-1. Building the lambda
-1. Configuring Circle CI
+* Storing and using SFTP Credentials
+* Configuring the S3 bucket
+* Invoking the lambda on a schedule
+* Building the lambda
+* Configuring Circle CI
 
 ## Storing and Using SFTP Credentials
 One of the issues that we came up against was how to persist and access the sensitive credentials for the SFTP server in the lambda. We opted for using [AWS Systems Manager Parameter Store with KMS](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html). We saved the credentials as [secure string parameters](https://docs.aws.amazon.com/systems-manager/latest/userguide/sysman-paramstore-about.html#sysman-paramstore-securestring), which are a key/value pair, where the value is encrypted.  We easily configured [Boto3](http://boto3.readthedocs.io/en/latest/reference/services/ssm.html) to fetch and decrypt the credentials in our app.
 
-### Getting Credentials using Boto3
 Below is a python snippet on how we used Boto3 and SSM to securely get the SFTP credentials.
 
 ```python
@@ -43,8 +42,7 @@ Below is a python snippet on how we used Boto3 and SSM to securely get the SFTP 
             self.__ssm_store[param['Name']] = param['Value']
 ```
 
-### Configure Terraform Permissions
-To grant the lambda access to the SSM, we needed to add the `ssm:GetParameters` action in a new `statement` to our access-policy. We specify the exact name of our app `sftpsync` in the `resources` to adhere to least privilege.
+To grant the lambda access to the SSM, we needed to add the `ssm:GetParameters` action in a new `statement` to our access-policy. We specify the exact name of our app `sftpsync` in the `resources` to adhere to least privilege. We did this in terraform using the code below:
 
 ```bash
 data "aws_iam_policy_document" "sftpsync-s3-read-write-secrets-access-policy-document" {
@@ -175,18 +173,18 @@ Our SETI team created some amazing helpers for making lambda CI/CD pipeline as s
 
 ## Conclusion
 When building a lambda microservice, there are aways additional items that should be taken into account besides just coding the new service, such as:
-1. Logging
-1. Monitoring
-1. Alerting
-1. CI/CD pipeline
-1. Provisioning infrastructure
-1. Security
+* Logging
+* Monitoring
+* Alerting
+* CI/CD pipeline
+* Provisioning infrastructure
+* Security
 
 All of these take additional time to implement, but having standardized templated solutions to these problems significantly decreases the time taken to get a new service into production. While we had the majority of these items covered, there were still a few time consuming gotchas, for example:
 
-1. Sorting out the S3 permissions and allowing access 
-1. Reconfiguring  security in our Ruby S3 adapter
-1. Configuring SSM with the lambda 
+* Sorting out the S3 permissions and allowing access 
+* Reconfiguring  security in our Ruby S3 adapter
+* Configuring SSM with the lambda 
 
 Although tackling these problems took additional time, we won't need to solve them again, which helps the wider team to easily create more lambdas in the future. 
 
