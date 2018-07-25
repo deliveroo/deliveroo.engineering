@@ -11,7 +11,9 @@ excerpt: >
 On the Deliveroo Payments team we encountered an interesting problem while attempting to add a new payment service provider (PSP). In order to make this new PSP work, we needed to synchronize merchant ids. Unfortunately, this was only supported through SFTP using two folders: IN and OUT. We needed to generate an XML file, upload it to the PSP, then download and parse an XML file that the PSP created. Due to the way the encryption was configured on the SFTP server, there was not a suitable Ruby SFTP client that would work out of the box. 
 
 We looked at our options. One option was to fork a Ruby SFTP client, code some low level cryptography, hope that our open source PR was accepted, and then wait for a new gem to be released. Another option was to test out a well supported SFTP client in a different language.
-[Paramiko](http://docs.paramiko.org/en/2.4/api/sftp.html), a well supported Python SFTP client, connected on the first try. We chose to build a micro service, utilizing Paramiko, that runs on an AWS [Lambda](https://aws.amazon.com/lambda/). The responsibility of this micro service is to periodically sync between an S3 Bucket and the PSP's SFTP. The Deliveroo engineering team made life easier by creating a template foundation for building lambdas using [Terraform](https://www.terraform.io/). By keeping infrastructure as code, we're able to deploy the same cookie cutter configuration to multiple environments.
+[Paramiko](http://docs.paramiko.org/en/2.4/api/sftp.html), a well supported Python SFTP client, connected on the first try. We chose to build a micro service, utilizing Paramiko, that runs on an AWS [Lambda](https://aws.amazon.com/lambda/). 
+
+The responsibility of this micro service is to periodically sync between an S3 Bucket and the PSP's SFTP. The Deliveroo engineering team made life easier by creating a template foundation for building lambdas using [Terraform](https://www.terraform.io/). By keeping infrastructure as code, we're able to deploy the same cookie cutter configuration to multiple environments.
 
 The hurdles that we overcame were:
 * Storing and using SFTP Credentials
@@ -63,8 +65,8 @@ Both the lambda that performs the SFTP sync and our ruby [sidekiq](https://sidek
 
 ### Accessing S3 from the Lambda
 To allow the Lambda to access the bucket using put, get, list, and delete on the objects in the bucket, we need the permissions below. These were a little time consuming to sort out. Some of the key takeaways here are: 
-1. `s3:HeadBucket` needs to access all resources.
-1. For the other actions, we need the `specific resource` and the `specific resource` with a trailing `/*`. 
+* `s3:HeadBucket` needs to access all resources.
+* For the other actions, we need the `specific resource` and the `specific resource` with a trailing `/*`. 
 
 ```bash
 data "aws_iam_policy_document" "sftpsync-s3-read-write-secrets-access-policy-document" {
