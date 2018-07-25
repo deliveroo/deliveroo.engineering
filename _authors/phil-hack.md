@@ -10,4 +10,4 @@ I've been writing code for over 20 years, a TDD fanboy, and an automation advoca
 
 Ping me about Deliveroo engineering payments related items.
 
-You can find me as [@philliphack](https://twitter.com/philliphack) on the internet
+You can find me as [@philliphack](https://twitter.com/philliphack) on the internet.
