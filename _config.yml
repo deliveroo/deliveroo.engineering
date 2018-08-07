@@ -29,13 +29,14 @@ kramdown:
 
 # Plugins
 plugins:
-   - jekyll-mentions
-   - jemoji
-   - jekyll-redirect-from
-   - jekyll-sitemap
+   - jekyll-admin
    - jekyll-feed
+   - jekyll-mentions
    - jekyll-paginate
+   - jekyll-redirect-from
    - jekyll-seo-tag
+   - jekyll-sitemap
+   - jemoji
 
 paginate: 3
 paginate_path: "/articles/page:num/"
@@ -62,6 +63,14 @@ defaults:
         height: 100
         width: 735
         type: image/svg
+
+jekyll_admin:
+  hidden_links:
+    - pages
+    - staticfiles
+    - datafiles
+    - configuration
+
 exclude:
   - Gemfile
   - Gemfile.lock

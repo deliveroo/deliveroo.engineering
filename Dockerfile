@@ -7,5 +7,6 @@ WORKDIR /usr/src/app/deliveroo.engineering
 RUN gem install bundler && bundle install -j8
 
 EXPOSE 4000
+ENV DISABLE_WHITELIST TRUE
 ENTRYPOINT ["jekyll"]
 CMD ["serve", "-w", "-t", "-H", "0.0.0.0"]

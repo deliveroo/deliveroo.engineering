@@ -11,3 +11,4 @@ gem 'github-pages', versions['github-pages'], group: :jekyll_plugins
 # Set us up to reload pages interactively
 gem 'guard-jekyll-plus'
 gem 'guard-livereload'
+gem 'jekyll-admin'
