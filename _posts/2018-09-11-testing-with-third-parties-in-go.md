@@ -91,9 +91,11 @@ In your tests you can now provide the mocked interface anywhere where you're not
 You can then put a test together using these parts as follows:
 
 ```go
+package posts_test
+
 func TestValidatePost(t *testing.T) {
   // First we must resolve our dependecies as the mocked implementations.
-  deps := deps.Resolve("test")
+  deps := deps.Resolve(deps.Test)
 
   // The deps require an implementation of the auditorclient.Client interface,
   // in this case our resolver returns the mocked implementation defined above.
@@ -109,6 +111,24 @@ func TestValidatePost(t *testing.T) {
   if valid != true {
     t.Error("Should be valid")
   }
+}
+
+...
+
+package deps
+
+var Test string = "test"
+
+func Resolve(env string) *Dependencies {
+  deps := new(Dependencies)
+  if env == Test {
+    deps.Auditor = auditor.LoadMock()
+  } else {
+    requestURL := os.Getenv("AUDITOR_URL")
+    deps.Auditor = auditor.LoadClient(requestURL)
+  }
+
+  return deps
 }
 ```
 
@@ -165,9 +185,6 @@ testServer := httptest.NewServer(
   }),
 )
 defer testServer.Close()
-
-
-os.Setenv("AUDITOR_URL", testServer.URL+"/reports")
 ```
 
 The above will create a test server, and store the testServer url in an environment variable for later. We also store whatever is posted to the `/reports` endpoint in the form of a map stored in a variable called posted. This allows you to test the behaviour of the `RealClient.Audit` method in its entirity, right up to the point it makes external requests.
@@ -177,8 +194,7 @@ By asserting against the posted variable we can test that our client has hit a p
 If you remember our RealClient struct contains a requestURL attribute, we populate it using the location of the test server as follows:
 
 ```go
-func LoadClient() *RealClient {
-  requestURL := os.Getenv("AUDITOR_URL")
+func LoadClient(requestURL string) *RealClient {
   return &RealClient{
     RequestURL: requestURL,
   }
@@ -194,11 +210,8 @@ func TestAudit(t *testing.T) {
     ... Setup test server here ...
   )
 
-  // Resolve your dependencies as production, these will all be configured to
-  // ensure we don't actually make any real requests, in our case it's only the
-  // auditorclient configured to point at the test server.
-  deps := deps.Resolve("production")
-  auditorclient := deps.Auditor
+  // Build your auditorclient configured for your test by using the testServer.
+  auditorclient := auditor.LoadClient(testServer.URL+"/reports")
 
   // Call the Audit function on the actual instance of *RealClient
   auditorclient.Audit("Validate Post", "74561")
@@ -269,10 +282,7 @@ func TestAuditAuthenticated(t *testing.T) {
     )
   defer testServer.Close()
 
-  os.Setenv("AUDITOR_URL", testServer.URL+"/reports")
-  deps := deps.Resolve("production")
-  auditorclient := deps.Auditor
-
+  auditorclient := auditor.LoadClient(testServer.URL + "/reports")
   auditorclient.AuditAuthenticated("Validate Post", "74561")
 
   if posted["event"] != "Validate Post" {
@@ -289,4 +299,3 @@ Some further information about the areas covered:
 * The Go standard library [testing package](https://golang.org/pkg/testing/)
 * The [httptest package](https://golang.org/pkg/net/http/httptest/)
 * [Testify](https://godoc.org/github.com/stretchr/testify), not used here, but a great package for mocking and testing.
-
