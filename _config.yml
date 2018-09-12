@@ -58,9 +58,9 @@ defaults:
       path: ""
     values:
       image:
-        path: /images/logo_engineering.svg
-        height: 100
-        width: 735
+        path: /images/og-deliveroo-engineering.png
+        height: 630
+        width: 1208
         type: image/svg
 exclude:
   - Gemfile
