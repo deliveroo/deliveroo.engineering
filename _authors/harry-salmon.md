@@ -6,4 +6,4 @@ jobtitle:   "Senior Data Scientist - Algorithms"
 portrait:   "/images/portraits/harry-salmon.jpg"
 ---
 
-Write a bio here?
+Harry is a data scientist at Deliveroo. When not science-ing data he can usually be found climbing rocks.
