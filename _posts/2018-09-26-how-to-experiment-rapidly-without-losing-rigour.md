@@ -172,28 +172,39 @@ Here is a worked R code example:
 # delta := how small is the difference we are trying to detect
 
 install.packages('gsDesign'); require(gsDesign)
+# past data on the variable of interest, from which to estimate the
+# mean and standard deviation of the experimental data we will collect
 data = rnorm(777, mean = 5, sd = 1)
 
 s = sd(data)
 delta = 0.1
 
+# calculate the sample size which would be required for the
+# standard design
 n_fixed = power.t.test(n = NULL, delta, s,
                        sig.level = 0.05,
                        power = 0.8,
                        alternative = "two.sided")$n
 
+# initital gsDesign object with evenly spaced checkpoints,
+# used to calculate the maximum samples we would require
 design = gsDesign(k=3, test.type = 4, alpha = 0.025, 
          sfu=sfPower, sfupar = 2, sfl=sfPower, 
          sflpar=3, n.fix = n_fixed,   beta = 0.2)
 
+# the maximum number of samples which would be required for the
+# sequential design
 n_T = tail(design$n.I, 1)
 
+# checkpoints at which we wish to check the experiment. E.g. at 10%
+# 50%, and 100% of the maximum samples
 checkpoints = c(
   ceiling(n_T / 10),
   ceiling(n_T / 2),
   ceiling(n_T)
 )
 
+# another gsDesign object which has our chosen checkpoints
 gsDesign(k=3, test.type = 4, alpha = 0.025, sfu=sfPower, 
          sfupar = 2, sfl=sfPower, sflpar=3, n.fix = n_fixed,  
          n.I = checkpoints, beta = 0.2)
