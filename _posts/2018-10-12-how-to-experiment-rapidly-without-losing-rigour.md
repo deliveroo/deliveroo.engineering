@@ -109,12 +109,12 @@ The decision of how we want to distribute our type I and type II errors througho
 [^interim-analysis]: Mark A. Weaver (2009). An Interim Analysis Example. Retrieved from [http://www.icssc.org/Documents/AdvBiosGoa/Tab%2025.00_InterimAnalysis.pdf](http://www.icssc.org/Documents/AdvBiosGoa/Tab%2025.00_InterimAnalysis.pdf)
 
 
-One method is to distribute the $$\alpha$$ according to the fraction of information gathered at the point of that analysis[^interim-monitoring]. This fraction of total statistical information gathered is referred to in the literature as the information fraction, and for normally distributed data this information fraction is equal to the proportion of data gathered, $$\frac{N_k}{N_T}$$[^interim-monitoring]. Following this, we can choose values of $$\alpha$$ according to: 
+One method is to distribute the $$\alpha$$ according to the fraction of information gathered at the point of that analysis[^interim-monitoring]. This fraction of total statistical information gathered is referred to in the literature as the information fraction, and for normally distributed data this information fraction is equal to the proportion of data gathered, $$\frac{N_k}{N_{Sequential}}$$[^interim-monitoring]. Following this, we can choose values of $$\alpha$$ according to: 
 
-$$\alpha_1=\alpha_T\frac{N_1}{N_T}^p$$,
+$$\alpha_1=\alpha_T\frac{N_1}{N_{Sequential}}^p$$,
 {: style="text-align: center"}
 
-$$\alpha_2-\alpha_1 =\alpha_T\frac{N_2}{N_T}^p$$.
+$$\alpha_2-\alpha_1 =\alpha_T\frac{N_2}{N_{Sequential}}^p$$.
 {: style="text-align: center"}
 
 [^interim-monitoring]: Interim Monitoring of Group Sequential Trials Using Spending Functions for the Type I and Type II Error Probabilities - Sandro Pampallona, Anastasios A. Tsiatis, KyungMann Kim, 2001. (2018). Retrieved from [http://journals.sagepub.com/doi/abs/10.1177/009286150103500408](http://journals.sagepub.com/doi/abs/10.1177/009286150103500408)
@@ -131,10 +131,10 @@ We can take the same approach to try to stop the test early if the value of the 
 
 From the same approach as above we can calculate a set of values for $$\beta$$:
 
-$$\beta_1=\beta_T\frac{N_1}{N_T}^p$$,
+$$\beta_1=\beta_T\frac{N_1}{N_{Sequential}}^p$$,
 {: style="text-align: center"}
 
-$$\beta_2-\beta_1 =\beta_T\frac{N_2}{N_T}^p$$.
+$$\beta_2-\beta_1 =\beta_T\frac{N_2}{N_{Sequential}}^p$$.
 {: style="text-align: center"}
 
 This allows us to calculate an additional boundary also enabling early stopping of the experiment in the detrimental case, while still maintaining the same total type II error rate. 
@@ -152,17 +152,17 @@ The following image shows a sequential design with an early stopping boundary an
 For a given test statistic $$S$$ (for example the $$Z$$ statistic used above), the upper and lower boundaries must fit the following constraints[^interim-monitoring]:
 
 1. Under the null hypothesis the probability of the test statistic $$S_1$$ being greater than or equal to the value of the upper boundary at the first checkpoint must be equal to the alpha spending function at the first checkpoint:
-$$P_{H_0}(S_1 \geq u_1) = \alpha_T\frac{N_1}{N_T}^p$$.
+$$P_{H_0}(S_1 \geq u_1) = \alpha_T\frac{N_1}{N_{Sequential}}^p$$.
 2. Under the alternative hypothesis in the case where the true difference between groups is exactly the minimum detectable difference, the probability of the test statistic being less than the lower boundary at the first checkpoint must equal the beta spending function at the first checkpoint:
-$$P_{H_1}(S_1 \leq l_1) = \beta_T\frac{N_1}{N_T}^p$$.
+$$P_{H_1}(S_1 \leq l_1) = \beta_T\frac{N_1}{N_{Sequential}}^p$$.
 3. Under the null hypothesis the probability that the test statistic falls between the two boundaries $$l_1 \leq S_1 \leq u_1$$ at all previous boundaries and then falls above the upper boundary $$u_k$$ at the $$k$$-th analysis must be equal to difference between the alpha spending function at the $$k$$-th boundary and the spending function at the previous checkpoint:
 $$P_{H_0}(l_1 \leq S_1 \leq u_1, \ldots , l_{k-1} \leq S_{k-1} \leq u_{k-1},S_k\geq u_k) =
-\alpha_T\frac{N_k}{N_T}^p - \alpha_T\frac{N_{k-1}}{N_T}^p$$.
+\alpha_T\frac{N_k}{N_{Sequential}}^p - \alpha_T\frac{N_{k-1}}{N_{Sequential}}^p$$.
 4. Under the alternative hypothesis as before, the probability that the test statistic $$S_1$$ falls between the two boundaries $$l_1 \leq S_1 \leq u_1$$ at all previous boundaries and then falls below the lower boundary at the $$k$$-th analysis must be equal to the spending function at the $$k$$-th boundary:
 $$P_{H_1}(l_1 \leq S_1 \leq u_1, \ldots , l_{k-1} \leq S_{k-1} \leq u_{k-1},S_k\leq l_k) =
-\beta_T\frac{N_k}{N_T}^p - \beta_T\frac{N_{k-1}}{N_T}^p$$.
+\beta_T\frac{N_k}{N_{Sequential}}^p - \beta_T\frac{N_{k-1}}{N_{Sequential}}^p$$.
 
-By satisfying these constraints we can find the amount by which we must increase the sample size of the experiment $$N_T$$ in order to maintain $$\alpha_T$$ and $$\beta_T$$. We are also then able to reposition the checkpoints $$N$$ and find the appropriate upper and lower boundary values for these checkpoints. These equations must be solved numerically[^interim-analysis][^interim-monitoring].
+By satisfying these constraints we can find the amount by which we must increase the sample size of the experiment $$N_{Sequential}$$ in order to maintain $$\alpha_T$$ and $$\beta_T$$. We are also then able to reposition the checkpoints $$N$$ and find the appropriate upper and lower boundary values for these checkpoints. These equations must be solved numerically[^interim-analysis][^interim-monitoring].
 
 ### Our current sequential design 
 Using the $$Z$$ test statistic we have taken the above spending function with $$p=2$$ for the upper boundary and $$p=3$$ for the lower (futility) boundary as mentioned earlier. We have decided to check the test at 10% of the samples, 50% and 100%. For a two tailed test with $$\alpha_T= 0.05$$ and $$\beta_T=0.2$$ this gives the design shown below. We need to consider the below image also mirrored around zero for the negative case. 
@@ -195,14 +195,14 @@ design = gsDesign(k=3, test.type = 4, alpha = 0.025,
 
 # the maximum number of samples which would be required for the
 # sequential design
-n_T = tail(design$n.I, 1)
+n_sequential = tail(design$n.I, 1)
 
 # checkpoints at which we wish to check the experiment. E.g. at 10%
 # 50%, and 100% of the maximum samples
 checkpoints = c(
-  ceiling(n_T / 10),
-  ceiling(n_T / 2),
-  ceiling(n_T)
+  ceiling(n_sequential / 10),
+  ceiling(n_sequential / 2),
+  ceiling(n_sequential)
 )
 
 # another gsDesign object which has our chosen checkpoints
