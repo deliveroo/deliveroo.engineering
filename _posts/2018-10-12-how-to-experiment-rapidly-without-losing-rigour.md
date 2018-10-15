@@ -37,14 +37,14 @@ For any given experiment (or indeed for all our experiments as a whole) we decid
 maximum proportion of false positives (type I errors) that we will accept $$\alpha$$ (often 0.05), 
 and a maximum rate of false negatives (type II errors) that we will accept $$\beta$$ (often 0.2). 
 Our experimental power is defined as $$1 - \beta$$ (and is therefore often 0.8). From these we are able to 
-design a fixed sample size experiment capable of detecting a minimum difference between the population means of $$\delta$$, 
+design a fixed sample size experiment capable of detecting a minimum difference between the population means of $$\delta_{detectable}$$, 
 with $$N_{Fixed}$$ samples in each group.
 
 This fixed sample size is inversely proportional to the square of the size of the effect we are trying to 
 detect (assuming we keep $$\beta$$ constant):
 
 $$
-N_{Fixed} \propto \delta^{-2}
+N_{Fixed} \propto \delta_{detectable}^{-2}
 $$,[^ref1] 
 {: style="text-align: center"}
 
@@ -54,7 +54,7 @@ therefore as we aim to have more sensitive tests (i.e. we can detect smaller val
  needed for experiments grows quickly
 
 A consequence of this is that, if we were to set a test running with an experiment design that is capable of 
-detecting a very small $$\delta$$, and in fact $$\delta$$ is much larger, we will end up running the test for
+detecting a very small $$\delta_{detectable}$$, and in fact $$\delta$$ is much larger, we will end up running the test for
  much longer than would be necessary.
 
 This will either:
@@ -62,6 +62,7 @@ This will either:
 group for longer 
 * or worsen the experience for users in the treatment group for an unnecessarily long time in order to gain confidence
  that the new experience is in fact worse.
+ 
 In either case, we are slowing the pace of innovation.
 
 We would ideally be able to check our experiment results while the experiment is still running to see if 
@@ -78,9 +79,9 @@ The sequential testing procedure takes the concept of a family-wise error rate[^
 
 [^family-wise-error]: Wikipedia contributors. (2018, August 22). Family-wise error rate. In Wikipedia, The Free Encyclopedia. Retrieved 15:43, September 25, 2018, from [https://en.wikipedia.org/w/index.php?title=Family-wise_error_rate&oldid=856111993](https://en.wikipedia.org/w/index.php?title=Family-wise_error_rate&oldid=856111993)
 
-The trade-off is that, by spreading the errors across multiple checkpoints, we need to increase the maximum sample size for the sequential test to $$N_{Sequential}$$ from $$N_{Fixed}$$ in order to maintain $$\beta$$.
+The trade-off is that, by spreading the errors across multiple checkpoints, we need to increase the maximum sample size for the sequential test from $$N_{Fixed}$$ to $$N_{Sequential} > N_{Fixed}$$ in order to maintain $$\beta$$.
 
-In the case that our detectable $$\delta$$ estimate is very close to the true value of $$\delta$$, the sequential design would increase the average length of our tests from  $$N_{Fixed}$$ to $$N_{Sequential}$$. In many cases though we don’t have a good a priori estimate of the value of $$\delta$$, so to make running the test worthwhile we err on the side of being able to detect a perhaps slightly smaller effect than it may actually have, and thus running the test a bit longer. By introducing checkpoints we are able to set our detectable value of $$\delta$$ to be quite small, but if the true value of $$\delta$$ is larger we are likely to be able to stop running our test early, i.e. with a sample size less that $$N_{Sequential}$$.
+In the case that our $$\delta_{detectable}$$ estimate is very close to the true value of $$\delta$$, the sequential design would increase the sample size required for our tests from  $$N_{Fixed}$$ to $$N_{Sequential}$$. In many cases though we don’t have a good a priori estimate of the value of $$\delta$$, so to make running the test worthwhile we often err on the side of being able to detect a slightly smaller effect than it may actually have, and thus running the test a bit longer. By introducing checkpoints we are able to set  $$\delta_{detectable}$$ to be quite small, but if the true value of $$\delta$$ is larger we are likely to be able to stop running our test early, i.e. with a sample size less than $$N_{Sequential}$$ (and likely less than $$N_{fixed}$$).
 
 
 In designing a sequential experiment we need to additionally decide the following:
@@ -101,7 +102,7 @@ This image shows a two sided sequential test design where we have found upper $$
 
 In theory we could decide on our checkpoints and how to distribute our errors after the beginning of our experiment, but in doing so we must be careful to not look at any data already gathered, so it is good practice to do this before the experiment starts.
 
-The decision of how we want to distribute our type I and type II errors throughout the experiment is up to us, contingent on not increasing their totals. However, it makes some intuitive sense to have the greatest chance of detecting the effect at the point at which we have the most information from which to make this decision. This will as a result help keep $$N_{Sequential}$$, $$N_{Fixed}$$ similar, and avoid a large increase in the maximum sample size required for the experiment. With this in mind, a number of ways to determine suitable values of $$\alpha_i$$ and $$\beta_i$$ have been proposed [^alpha-spending]. Many rely on fixed spacing of analysis (i.e. $$N_i^{Sequential}$$ is the same for all $$i$$), however, by using "error spending functions" we can generalise to any position of the checkpoints, and still maintain the desired properties of the test[^group-sequential][^interim-analysis].
+The decision of how we want to distribute our type I and type II errors throughout the experiment is up to us, contingent on not increasing their totals. However, it makes some intuitive sense to have the greatest chance of detecting the effect at the point at which we have the most information from which to make this decision. As a result this will help keep $$N_{Sequential}$$, $$N_{Fixed}$$ similar, and avoid a large increase in the maximum sample size required for the experiment. With this in mind, a number of ways to determine suitable values of $$\alpha_i$$ and $$\beta_i$$ have been proposed [^alpha-spending]. Many rely on fixed spacing of analysis (i.e. $$N_i^{Sequential}$$ is the same for all $$i$$), however, by using "error spending functions" we can generalise to any position of the checkpoints, and still maintain the desired properties of the test[^group-sequential][^interim-analysis].
 
 [^alpha-spending]: Demets, D., & Lan, K. (1994). Interim analysis: The alpha spending function approach. Statistics In Medicine, 13(13-14), 1341-1352. doi: 10.1002/sim.4780131308Accessed 5 Sep. 2017.
 [^group-sequential]: "Interim Monitoring of Group Sequential Trials Using Spending Functions for the Type I and Type II Error Probabilities" [http://journals.sagepub.com/doi/abs/10.1177/009286150103500408](http://journals.sagepub.com/doi/abs/10.1177/009286150103500408). Accessed 5 Sep. 2017.
@@ -155,10 +156,10 @@ $$P_{H_0}(S_1 \geq u_1) = \alpha_T\frac{N_1}{N_T}^p$$.
 2. Under the alternative hypothesis in the case where the true difference between groups is exactly the minimum detectable difference, the probability of the test statistic being less than the lower boundary at the first checkpoint must equal the beta spending function at the first checkpoint:
 $$P_{H_1}(S_1 \leq l_1) = \beta_T\frac{N_1}{N_T}^p$$.
 3. Under the null hypothesis the probability that the test statistic falls between the two boundaries $$l_1 \leq S_1 \leq u_1$$ at all previous boundaries and then falls above the upper boundary $$u_k$$ at the $$k$$-th analysis must be equal to difference between the alpha spending function at the $$k$$-th boundary and the spending function at the previous checkpoint:
-$$P_{H_0}(l_1 \leq S_1 \leq u_1, \ldots , l_{k-1} \leq S_{k-1} \leq u_{k-1},S_k\geq u_k =
+$$P_{H_0}(l_1 \leq S_1 \leq u_1, \ldots , l_{k-1} \leq S_{k-1} \leq u_{k-1},S_k\geq u_k) =
 \alpha_T\frac{N_k}{N_T}^p - \alpha_T\frac{N_{k-1}}{N_T}^p$$.
 4. Under the alternative hypothesis as before, the probability that the test statistic $$S_1$$ falls between the two boundaries $$l_1 \leq S_1 \leq u_1$$ at all previous boundaries and then falls below the lower boundary at the $$k$$-th analysis must be equal to the spending function at the $$k$$-th boundary:
-$$P_{H_1}(l_1 \leq S_1 \leq u_1, \ldots , l_{k-1} \leq S_{k-1} \leq u_{k-1},S_k\leq l_k =
+$$P_{H_1}(l_1 \leq S_1 \leq u_1, \ldots , l_{k-1} \leq S_{k-1} \leq u_{k-1},S_k\leq l_k) =
 \beta_T\frac{N_k}{N_T}^p - \beta_T\frac{N_{k-1}}{N_T}^p$$.
 
 By satisfying these constraints we can find the amount by which we must increase the sample size of the experiment $$N_T$$ in order to maintain $$\alpha_T$$ and $$\beta_T$$. We are also then able to reposition the checkpoints $$N$$ and find the appropriate upper and lower boundary values for these checkpoints. These equations must be solved numerically[^interim-analysis][^interim-monitoring].
