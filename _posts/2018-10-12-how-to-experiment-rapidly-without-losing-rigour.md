@@ -223,7 +223,7 @@ $$N_{Sequential}=1.064 \cdot N_{Fixed}$$.
 
 We can see that the critical value of $$Z$$ at the first upper boundary is 3.48 corresponding to a critical value of $$\alpha$$ of 0.00025. For the two tailed test consider $$\alpha_T= 0.025$$ for the upper boundary, from 
 
-$$\alpha_1=0.025 \cdot \frac{106}{1060}^2= 0.00025$$ 
+$$\alpha_1=0.025 \cdot \frac{106}{1064}^2= 0.00025$$
 {: style="text-align: center"}
 
 we can see this satisfies our first constraint. 
