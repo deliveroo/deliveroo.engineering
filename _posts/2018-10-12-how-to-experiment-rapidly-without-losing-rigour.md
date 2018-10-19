@@ -94,7 +94,7 @@ $$\sum_{i=1}^k N_i^{Sequential}=N_{Sequential}$$
 
 From these $$\alpha_i$$ and $$\beta_i$$ it is possible to create boundary values for the [test statistic](https://en.wikipedia.org/wiki/Test_statistic) $$S_k$$ at each checkpoint such that if it falls outside of a certain value, we can stop the test and declare a winner. 
 
-This image shows a two sided sequential test design where we have found upper $$u_k$$ and lower $$l_k$$ boundaries for the $$Z$$ test statistic $$Z_k$$ at each checkpoint from a set of $$\alpha_k$$, $$\beta_k$$. If the test statistic falls outside of these boundaries at any checkpoint then we can stop the test early. Derivation of these boundaries is covered below. 
+This image (generated using gsDesign) shows a two sided sequential test design where we have found upper $$u_k$$ and lower $$l_k$$ boundaries for the $$Z$$ test statistic $$Z_k$$ at each checkpoint from a set of $$\alpha_k$$, $$\beta_k$$. If the test statistic falls outside of these boundaries at any checkpoint then we can stop the test early. Derivation of these boundaries is covered below. 
 
 <figure>
 ![Example test design](/images/posts/how-to-experiment-rapidly-without-losing-rigour/image_2.png)
