@@ -79,7 +79,7 @@ The sequential testing procedure takes the concept of a family-wise error rate[^
 
 [^family-wise-error]: Wikipedia contributors. (2018, August 22). Family-wise error rate. In Wikipedia, The Free Encyclopedia. Retrieved 15:43, September 25, 2018, from [https://en.wikipedia.org/w/index.php?title=Family-wise_error_rate&oldid=856111993](https://en.wikipedia.org/w/index.php?title=Family-wise_error_rate&oldid=856111993)
 
-The trade-off is that, by spreading the errors across multiple checkpoints, we need to increase the maximum sample size for the sequential test from $$N_{Fixed}$$ to $$N_{Sequential} > N_{Fixed}$$ in order to maintain $$\beta$$.
+The trade-off is that, by spreading the errors across multiple checkpoints, we need to increase the *maximum* sample size for the sequential test to $$N_{Sequential} > N_{Fixed}$$ in order to maintain $$\beta$$.
 
 In the case that our $$\delta_{detectable}$$ estimate is very close to the true value of $$\delta$$, the sequential design would increase the sample size required for our tests from  $$N_{Fixed}$$ to $$N_{Sequential}$$. In many cases though we don’t have a good a priori estimate of the value of $$\delta$$, so to make running the test worthwhile we often err on the side of being able to detect a slightly smaller effect than it may actually have, and thus running the test a bit longer. By introducing checkpoints we are able to set  $$\delta_{detectable}$$ to be quite small, but if the true value of $$\delta$$ is larger we are likely to be able to stop running our test early, i.e. with a sample size less than $$N_{Sequential}$$ (and likely less than $$N_{fixed}$$).
 
