@@ -75,7 +75,7 @@ We want to run the same tests more rapidly, with fewer users, and be confident w
 
 ## Sequential testing
 
-The sequential testing procedure takes the concept of a family-wise error rate[^family-wise-error] and applies it to multiple hypothesis tests across the duration of the experiment. By adjusting the threshold value $$\alpha$$ at which we will reject the null hypothesis at each of the test’s checkpoints, we can maintain the total (i.e. family-wise) probability of making one or more type I errors at a desired level, $$\alpha_{Total}$$.
+The sequential testing procedure takes the concept of a family-wise error rate[^family-wise-error] and applies it to multiple hypothesis tests across the duration of the experiment. By adjusting the threshold value $$\alpha$$ at which we will reject the null hypothesis at each of the test’s checkpoints, we can maintain the total (i.e. family-wise) probability of making one or more type I errors at a desired level, $$\alpha_{T}$$.
 
 [^family-wise-error]: Wikipedia contributors. (2018, August 22). Family-wise error rate. In Wikipedia, The Free Encyclopedia. Retrieved 15:43, September 25, 2018, from [https://en.wikipedia.org/w/index.php?title=Family-wise_error_rate&oldid=856111993](https://en.wikipedia.org/w/index.php?title=Family-wise_error_rate&oldid=856111993)
 
