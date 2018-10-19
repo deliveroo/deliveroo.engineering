@@ -51,7 +51,7 @@ $$,[^ref1]
 [^ref1]: HyLown Consulting LLC, G. (2018). Compare 2 Means 2-Sample, 2-Sided Equality \| Power and Sample Size Calculators \| HyLown. Retrieved from [http://powerandsamplesize.com/Calculators/Compare-2-Means/2-Sample-Equality](http://powerandsamplesize.com/Calculators/Compare-2-Means/2-Sample-Equality)
 
 therefore as we aim to have more sensitive tests (i.e. we can detect smaller values of $$\delta$$), the sample size
- needed for experiments grows quickly
+ needed for experiments grows quickly.
 
 A consequence of this is that, if we were to set a test running with an experiment design that is capable of 
 detecting a very small $$\delta_{detectable}$$, and in fact $$\delta$$ is much larger, we will end up running the test for
@@ -90,7 +90,7 @@ $$N_{1}^{Sequential},N_2^{Sequential},...,N_k^{Sequential} $$
 with 
 $$\sum_{i=1}^k N_i^{Sequential}=N_{Sequential}$$
 	
-* How do we want to distribute (also called “spend” or “split”) the type I and type II errors throughout the experiment, i.e. select $$\alpha_1,\alpha_2,\dots,\alpha_k$$ and $$\beta_1,\beta_2,\ldots,\beta_k$$ corresponding to the above checkpoints.
+* How we want to distribute (also called “spend” or “split”) the type I and type II errors throughout the experiment, i.e. select $$\alpha_1,\alpha_2,\dots,\alpha_k$$ and $$\beta_1,\beta_2,\ldots,\beta_k$$ corresponding to the above checkpoints.
 
 From these $$\alpha_i$$ and $$\beta_i$$ it is possible to create boundary values for the [test statistic](https://en.wikipedia.org/wiki/Test_statistic) $$S_k$$ at each checkpoint such that if it falls outside of a certain value, we can stop the test and declare a winner. 
 
@@ -102,10 +102,10 @@ This image (generated using gsDesign) shows a two sided sequential test design w
 
 In theory we could decide on our checkpoints and how to distribute our errors after the beginning of our experiment, but in doing so we must be careful to not look at any data already gathered, so it is good practice to do this before the experiment starts.
 
-The decision of how we want to distribute our type I and type II errors throughout the experiment is up to us, contingent on not increasing their totals. However, it makes some intuitive sense to have the greatest chance of detecting the effect at the point at which we have the most information from which to make this decision. As a result this will help keep $$N_{Sequential}$$, $$N_{Fixed}$$ similar, and avoid a large increase in the maximum sample size required for the experiment. With this in mind, a number of ways to determine suitable values of $$\alpha_i$$ and $$\beta_i$$ have been proposed [^alpha-spending]. Many rely on fixed spacing of analysis (i.e. $$N_i^{Sequential} - N_{i-1}^{Sequential}$$ is the same for all $$i$$), however, by using "error spending functions" we can generalise to any position of the checkpoints, and still maintain the desired properties of the test[^group-sequential][^interim-analysis].
+The decision of how we want to distribute our type I and type II errors throughout the experiment is up to us, contingent on not increasing their totals. However, it makes some intuitive sense to have the greatest chance of detecting the effect at the point at which we have the most information from which to make this decision. As a result this will help keep $$N_{Sequential}$$, $$N_{Fixed}$$ similar, and avoid a large increase in the maximum sample size required for the experiment. With this in mind, a number of ways to determine suitable values of $$\alpha_i$$ and $$\beta_i$$ have been proposed [^alpha-spending]. Many rely on fixed spacing of analysis (i.e. $$N_i^{Sequential} - N_{i-1}^{Sequential}$$ is the same for all $$i$$), however, by using "error spending functions" we can generalise to any position of the checkpoints, and still maintain the desired properties of the test[^interim-monitoring][^interim-analysis].
 
-[^alpha-spending]: Demets, D., & Lan, K. (1994). Interim analysis: The alpha spending function approach. Statistics In Medicine, 13(13-14), 1341-1352. doi: 10.1002/sim.4780131308Accessed 5 Sep. 2017.
-[^group-sequential]: "Interim Monitoring of Group Sequential Trials Using Spending Functions for the Type I and Type II Error Probabilities" [http://journals.sagepub.com/doi/abs/10.1177/009286150103500408](http://journals.sagepub.com/doi/abs/10.1177/009286150103500408). Accessed 5 Sep. 2017.
+
+[^alpha-spending]: Demets, D., & Lan, K. (1994). Interim analysis: The alpha spending function approach. Statistics In Medicine, 13(13-14), 1341-1352. Retrieved from [https://eclass.uoa.gr/modules/document/file.php/MATH301/PracticalSession3/LanDeMets.pdf](https://eclass.uoa.gr/modules/document/file.php/MATH301/PracticalSession3/LanDeMets.pdf) 
 [^interim-analysis]: Mark A. Weaver (2009). An Interim Analysis Example. Retrieved from [http://www.icssc.org/Documents/AdvBiosGoa/Tab%2025.00_InterimAnalysis.pdf](http://www.icssc.org/Documents/AdvBiosGoa/Tab%2025.00_InterimAnalysis.pdf)
 
 
@@ -116,11 +116,11 @@ $$\alpha_i=\alpha_T\frac{N_i}{N_{Sequential}}^p$$
 
 where the increment $$\alpha_i - \alpha_{i-1}$$ represents the additional amount of alpha or type I error probability that can be used at the kth analysis[^alpha-spending].
 
-[^interim-monitoring]: Interim Monitoring of Group Sequential Trials Using Spending Functions for the Type I and Type II Error Probabilities - Sandro Pampallona, Anastasios A. Tsiatis, KyungMann Kim, 2001. (2018). Retrieved from [http://journals.sagepub.com/doi/abs/10.1177/009286150103500408](http://journals.sagepub.com/doi/abs/10.1177/009286150103500408)
+[^interim-monitoring]:  Sandro Pampallona, Anastasios A. Tsiatis, KyungMann Kim, 2001. (2018). Interim Monitoring of Group Sequential Trials Using Spending Functions for the Type I and Type II Error Probabilities. Retrieved from [http://journals.sagepub.com/doi/abs/10.1177/009286150103500408](http://journals.sagepub.com/doi/abs/10.1177/009286150103500408)
 
 The value of $$p$$ controls how conservative the boundaries should be at the early versus late analyses[^interim-analysis], with higher values of $$p$$ being more conservative early in the test. 
 
-In keeping with recommendation in “Efficient A/B Testing in Conversion Rate Optimization”[^efficient-ab], an upper boundary spending function as above with $$p=2$$ achieves the compromise that if we see a very large improvement early we can roll out the change immediately, but without a large increase in $$N$$ compared to the non sequential design.
+In keeping with the recommendation in “Efficient A/B Testing in Conversion Rate Optimization”[^efficient-ab], an upper boundary spending function as above with $$p=2$$ achieves the compromise that if we see a very large improvement early we can roll out the change immediately, but without a large increase in $$N$$ compared to the non sequential design.
 
 [^efficient-ab]: Georgiev, G. (2018). Efficient A/B Testing in Conversion Rate Optimization: The AGILE Statistical Method. Retrieved from [https://www.analytics-toolkit.com/pdf/Efficient_AB_Testing_in_Conversion_Rate_Optimization_-_The_AGILE_Statistical_Method_2017.pdf](https://www.analytics-toolkit.com/pdf/Efficient_AB_Testing_in_Conversion_Rate_Optimization_-_The_AGILE_Statistical_Method_2017.pdf)
 
@@ -135,7 +135,7 @@ $$\beta_i=\beta_T\frac{N_i}{N_{Sequential}}^p$$
 
 This allows us to calculate an additional boundary also enabling early stopping of the experiment in the detrimental case, while still maintaining the same total type II error rate. 
 
-Again in line with with the recommendations in “Efficient A/B Testing in Conversion Rate Optimization”[^efficient-ab] we have chosen a value of $$p = 3$$ for the lower boundary: it makes sense to be more conservative earlier on with the stopping criteria of the lower boundary for unsuccessful tests. As effort has been made in implementing the variant, if it is not having a significantly negative effect it is worth continuing the test for longer and not stopping very early on.
+Again in line with the recommendations in “Efficient A/B Testing in Conversion Rate Optimization”[^efficient-ab] we have chosen a value of $$p = 3$$ for the lower boundary: it makes sense to be more conservative earlier on with the stopping criteria of the lower boundary for unsuccessful tests. As effort has been made in implementing the variant, if it is not having a significantly negative effect it is worth continuing the test for longer and not stopping very early on.
 
 The following image shows a sequential design with an early stopping boundary and the same other design parameters as above. So as before if our test statistic $$S_k$$ falls outside of the bounds at any of the checkpoints we can stop the test, either declare a winner or no winner, and reduce the total sample size needed. 
 
@@ -151,7 +151,7 @@ For a given test statistic $$S$$ (for example the $$Z$$ statistic used above), t
 $$P_{H_0}(S_1 \geq u_1) = \alpha_T\frac{N_1}{N_{Sequential}}^p$$.
 2. Under the alternative hypothesis in the case where the true difference between groups is exactly the minimum detectable difference, the probability of the test statistic being less than the lower boundary at the first checkpoint must equal the beta spending function at the first checkpoint:
 $$P_{H_1}(S_1 \leq l_1) = \beta_T\frac{N_1}{N_{Sequential}}^p$$.
-3. Under the null hypothesis the probability that the test statistic falls between the two boundaries $$l_1 \leq S_1 \leq u_1$$ at all previous boundaries and then falls above the upper boundary $$u_k$$ at the $$k$$-th analysis must be equal to difference between the alpha spending function at the $$k$$-th boundary and the spending function at the previous checkpoint:
+3. Under the null hypothesis the probability that the test statistic falls between the two boundaries $$l_1 \leq S_1 \leq u_1$$ at all previous boundaries and then falls above the upper boundary $$u_k$$ at the $$k$$-th analysis must be equal to the difference between the alpha spending function at the $$k$$-th boundary and the spending function at the previous checkpoint:
 $$P_{H_0}(l_1 \leq S_1 \leq u_1, \ldots , l_{k-1} \leq S_{k-1} \leq u_{k-1},S_k\geq u_k) =
 \alpha_T\frac{N_k}{N_{Sequential}}^p - \alpha_T\frac{N_{k-1}}{N_{Sequential}}^p$$.
 4. Under the alternative hypothesis as before, the probability that the test statistic $$S_1$$ falls between the two boundaries $$l_1 \leq S_1 \leq u_1$$ at all previous boundaries and then falls below the lower boundary at the $$k$$-th analysis must be equal to the spending function at the $$k$$-th boundary:
