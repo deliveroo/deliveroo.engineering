@@ -79,7 +79,7 @@ The sequential testing procedure takes the concept of a family-wise error rate[^
 
 [^family-wise-error]: Wikipedia contributors. (2018, August 22). Family-wise error rate. In Wikipedia, The Free Encyclopedia. Retrieved 15:43, September 25, 2018, from [https://en.wikipedia.org/w/index.php?title=Family-wise_error_rate&oldid=856111993](https://en.wikipedia.org/w/index.php?title=Family-wise_error_rate&oldid=856111993)
 
-The trade-off is that, by spreading the errors across multiple checkpoints, we need to increase the maximum sample size for the sequential test from $$N_{Fixed}$$ to $$N_{Sequential} > N_{Fixed}$$ in order to maintain $$\beta$$.
+The trade-off is that, by spreading the errors across multiple checkpoints, we need to increase the *maximum* sample size for the sequential test to $$N_{Sequential} > N_{Fixed}$$ in order to maintain $$\beta$$.
 
 In the case that our $$\delta_{detectable}$$ estimate is very close to the true value of $$\delta$$, the sequential design would increase the sample size required for our tests from  $$N_{Fixed}$$ to $$N_{Sequential}$$. In many cases though we don’t have a good a priori estimate of the value of $$\delta$$, so to make running the test worthwhile we often err on the side of being able to detect a slightly smaller effect than it may actually have, and thus running the test a bit longer. By introducing checkpoints we are able to set  $$\delta_{detectable}$$ to be quite small, but if the true value of $$\delta$$ is larger we are likely to be able to stop running our test early, i.e. with a sample size less than $$N_{Sequential}$$ (and likely less than $$N_{fixed}$$).
 
@@ -94,7 +94,7 @@ $$\sum_{i=1}^k N_i^{Sequential}=N_{Sequential}$$
 
 From these $$\alpha_i$$ and $$\beta_i$$ it is possible to create boundary values for the [test statistic](https://en.wikipedia.org/wiki/Test_statistic) $$S_k$$ at each checkpoint such that if it falls outside of a certain value, we can stop the test and declare a winner. 
 
-This image shows a two sided sequential test design where we have found upper $$u_k$$ and lower $$l_k$$ boundaries for the $$Z$$ test statistic $$Z_k$$ at each checkpoint from a set of $$\alpha_k$$, $$\beta_k$$. If the test statistic falls outside of these boundaries at any checkpoint then we can stop the test early. Derivation of these boundaries is covered below. 
+This image (generated using gsDesign) shows a two sided sequential test design where we have found upper $$u_k$$ and lower $$l_k$$ boundaries for the $$Z$$ test statistic $$Z_k$$ at each checkpoint from a set of $$\alpha_k$$, $$\beta_k$$. If the test statistic falls outside of these boundaries at any checkpoint then we can stop the test early. Derivation of these boundaries is covered below. 
 
 <figure>
 ![Example test design](/images/posts/how-to-experiment-rapidly-without-losing-rigour/image_2.png)
