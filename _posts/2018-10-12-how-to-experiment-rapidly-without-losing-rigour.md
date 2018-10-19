@@ -102,20 +102,19 @@ This image shows a two sided sequential test design where we have found upper $$
 
 In theory we could decide on our checkpoints and how to distribute our errors after the beginning of our experiment, but in doing so we must be careful to not look at any data already gathered, so it is good practice to do this before the experiment starts.
 
-The decision of how we want to distribute our type I and type II errors throughout the experiment is up to us, contingent on not increasing their totals. However, it makes some intuitive sense to have the greatest chance of detecting the effect at the point at which we have the most information from which to make this decision. As a result this will help keep $$N_{Sequential}$$, $$N_{Fixed}$$ similar, and avoid a large increase in the maximum sample size required for the experiment. With this in mind, a number of ways to determine suitable values of $$\alpha_i$$ and $$\beta_i$$ have been proposed [^alpha-spending]. Many rely on fixed spacing of analysis (i.e. $$N_i^{Sequential}$$ is the same for all $$i$$), however, by using "error spending functions" we can generalise to any position of the checkpoints, and still maintain the desired properties of the test[^group-sequential][^interim-analysis].
+The decision of how we want to distribute our type I and type II errors throughout the experiment is up to us, contingent on not increasing their totals. However, it makes some intuitive sense to have the greatest chance of detecting the effect at the point at which we have the most information from which to make this decision. As a result this will help keep $$N_{Sequential}$$, $$N_{Fixed}$$ similar, and avoid a large increase in the maximum sample size required for the experiment. With this in mind, a number of ways to determine suitable values of $$\alpha_i$$ and $$\beta_i$$ have been proposed [^alpha-spending]. Many rely on fixed spacing of analysis (i.e. $$N_i^{Sequential} - N_{i-1}^{Sequential}$$ is the same for all $$i$$), however, by using "error spending functions" we can generalise to any position of the checkpoints, and still maintain the desired properties of the test[^group-sequential][^interim-analysis].
 
 [^alpha-spending]: Demets, D., & Lan, K. (1994). Interim analysis: The alpha spending function approach. Statistics In Medicine, 13(13-14), 1341-1352. doi: 10.1002/sim.4780131308Accessed 5 Sep. 2017.
 [^group-sequential]: "Interim Monitoring of Group Sequential Trials Using Spending Functions for the Type I and Type II Error Probabilities" [http://journals.sagepub.com/doi/abs/10.1177/009286150103500408](http://journals.sagepub.com/doi/abs/10.1177/009286150103500408). Accessed 5 Sep. 2017.
 [^interim-analysis]: Mark A. Weaver (2009). An Interim Analysis Example. Retrieved from [http://www.icssc.org/Documents/AdvBiosGoa/Tab%2025.00_InterimAnalysis.pdf](http://www.icssc.org/Documents/AdvBiosGoa/Tab%2025.00_InterimAnalysis.pdf)
 
 
-One method is to distribute the $$\alpha$$ according to the fraction of information gathered at the point of that analysis[^interim-monitoring]. This fraction of total statistical information gathered is referred to in the literature as the information fraction, and for normally distributed data this information fraction is equal to the proportion of data gathered, $$\frac{N_k}{N_{Sequential}}$$[^interim-monitoring]. Following this, we can choose values of $$\alpha$$ according to: 
+One method is to distribute the $$\alpha$$ according to the fraction of information gathered at the point of that analysis[^interim-monitoring]. This fraction of total statistical information gathered is referred to in the literature as the information fraction, and for normally distributed data this information fraction is equal to the proportion of data gathered, $$\frac{N_i}{N_{Sequential}}$$[^interim-monitoring]. Following this, we can choose values of $$\alpha$$ according to: 
 
-$$\alpha_1=\alpha_T\frac{N_1}{N_{Sequential}}^p$$,
+$$\alpha_i=\alpha_T\frac{N_i}{N_{Sequential}}^p$$
 {: style="text-align: center"}
 
-$$\alpha_2-\alpha_1 =\alpha_T\frac{N_2}{N_{Sequential}}^p$$.
-{: style="text-align: center"}
+where the increment $$\alpha_i - \alpha_{i-1}$$ represents the additional amount of alpha or type I error probability that can be used at the kth analysis[^alpha-spending].
 
 [^interim-monitoring]: Interim Monitoring of Group Sequential Trials Using Spending Functions for the Type I and Type II Error Probabilities - Sandro Pampallona, Anastasios A. Tsiatis, KyungMann Kim, 2001. (2018). Retrieved from [http://journals.sagepub.com/doi/abs/10.1177/009286150103500408](http://journals.sagepub.com/doi/abs/10.1177/009286150103500408)
 
@@ -131,10 +130,7 @@ We can take the same approach to try to stop the test early if the value of the 
 
 From the same approach as above we can calculate a set of values for $$\beta$$:
 
-$$\beta_1=\beta_T\frac{N_1}{N_{Sequential}}^p$$,
-{: style="text-align: center"}
-
-$$\beta_2-\beta_1 =\beta_T\frac{N_2}{N_{Sequential}}^p$$.
+$$\beta_i=\beta_T\frac{N_i}{N_{Sequential}}^p$$
 {: style="text-align: center"}
 
 This allows us to calculate an additional boundary also enabling early stopping of the experiment in the detrimental case, while still maintaining the same total type II error rate. 
