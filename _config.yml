@@ -41,9 +41,6 @@ paginate: 3
 paginate_path: "/articles/page:num/"
 
 collections:
-  guidelines:
-    output:       true
-    permalink:    /guidelines/:path/
   authors:
     output:       true
     permalink:    /authors/:path/
@@ -51,9 +48,9 @@ collections:
 defaults:
   - scope:
       path:       ""
-      type:       guidelines
+      type:       articles
     values:
-      layout:     guidelines
+      layout:     articles
   - scope:
       path: ""
     values:

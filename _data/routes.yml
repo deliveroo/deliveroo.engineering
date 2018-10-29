@@ -1,6 +1,5 @@
 home:             "/"
 articles:         "/articles/"
-guidelines:       "/guidelines/"
 repository:       "https://github.com/deliveroo/deliveroo.engineering"
 developer_portal: "https://developers.deliveroo.com/"
 design_blog:      "https://deliveroo.design/"
@@ -8,7 +7,5 @@ food_blog:        "https://foodscene.deliveroo.co.uk"
 navigation:
   - url:   '/articles/'
     title: 'Articles'
-  - url:   '/guidelines/'
-    title: 'Guidelines'
   - url:   '/authors/'
     title: 'Authors'
