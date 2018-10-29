@@ -48,9 +48,9 @@ collections:
 defaults:
   - scope:
       path:       ""
-      type:       articles 
+      type:       articles
     values:
-      layout:     articles 
+      layout:     articles
   - scope:
       path: ""
     values:
