@@ -194,6 +194,17 @@ The main difference is that we have to sample data from binomial distributions w
 ![proportions with multiple relative effects](/images/posts/monte-carlo-power-analysis/image_5.png)
 </figure>
 
+
+We can compare the sample sizes required to reach power using an [analytical method](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/power.prop.test.html) and the monte carlo power curve above:
+
+| Relative Effect | Analytical Method | Monte Carlo Simulation|
+| :-------------: |:-------------:| :-----:|
+| 1%      | 683K | 800K |
+| 3%      | 76K      |   92K |
+| 5% | 28K      |    37K |
+
+Generally we find Monte Carlo simulation gives more conservative estimates of the sample size required. 
+
 ## Power Analysis for Multiple Comparisons
 
 In our final example, we will show how to use Monte Carlo simulation when we are running statistical tests on multiple metrics. [Multiple comparisons](https://en.wikipedia.org/wiki/Multiple_comparisons_problem) occurs when we are running experiments with any of the following properties:
