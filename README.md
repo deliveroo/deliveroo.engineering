@@ -40,6 +40,7 @@ which has relevance to the world of engineering, create a pull request!
 5. Test your blog post locally to ensure it looks okay.
 6. Create a pull request and tag it with `ready for editor review`.
 7. Invite feedback from the Engineering team!
+8. Request review from the [Engineering Editorial team](https://github.com/orgs/deliveroo/teams/working-group-engineering-blog)!
 
 ## Submitting an engineering guideline
 
