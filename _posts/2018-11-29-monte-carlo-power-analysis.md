@@ -22,7 +22,7 @@ Obtaining an answer to the second question is called Power Analysis. Deciding th
 
 ## What is statistical power?
 
-We use frequentist hypothesis testing approaches to analyse the impact of any experiment. The statistical power of an experiment for a given alternative hypothesis is the probability we will get a statistically significant result (reject the null hypothesis) when the alternative is true for any one realisation of the experiment:
+When measuring the impact of an experiment we are deciding if the average outcome in the variant is significantly different from the average outcome in the control. We use frequentist hypothesis testing approaches to analyse the impact of any experiment. The statistical power of an experiment for a given alternative hypothesis is the probability we will get a statistically significant result (reject the null hypothesis) when the alternative is true:
 
 $$power = 1 - \beta = P(\textrm{Reject }H_0|H_1\textrm{ is true})$$
 
@@ -77,8 +77,6 @@ relative_effect = 1.03
 # effect is we are not sure what our minimum relative effect should be
 alternative = "two-sided" # Is the alternative one-sided or two-sided 
 
-significance_level = alpha / 2 if alternative == "two-sided" else alpha
-
 power_dist = np.empty((len(sample_sizes), 2))
 for i in range(0, len(sample_sizes)): 
     N = sample_sizes[i]
@@ -99,7 +97,7 @@ for i in range(0, len(sample_sizes)):
         test_result = ttest_ind(control_sample, variant_sample, 
                                 alternative=alternative, usevar='unequal') 
         # Test for significance
-        significance_results.append(test_result[1] <= significance_level) 
+        significance_results.append(test_result[1] <= alpha) 
     # The power is the number of times we have a significant result 
     # as we are assuming the alternative hypothesis is true
     power_dist[i,] = [N, np.mean(significance_results)] 
@@ -112,31 +110,31 @@ The Monte Carlo power analysis is shown visually below. Each data point represen
 ![Continuous Metric Power Curve](/images/posts/monte-carlo-power-analysis/image_2.png)
 </figure>
 
-We would call this our power curve. To make it easier to see where we reach our power target we fit a polynomial regression to the data points.
+We would call this our power curve. To make it easier to see where we reach our power target we fit a polynomial regression to the data points. In this example we see our simulation gives the same sample sizes as the analytical method.
 
-The power curve shows us that, based on our simulations, if there is a true effect size of 3%, we have 80% confidence that we will be able to detect it, when using a sample size of 16,000. A sample of 8,000 observations per variant as we are equally splitting between control and variant. We would then estimate how many days it will take to obtain the required sample size in each variant.
+The power curve shows us that, based on our simulations, if there is a true effect size of 3%, we have 80% confidence that we will be able to detect it, when using a sample size of 12,800. A sample of 6,400 observations per variant as we are equally splitting between control and variant. We would then estimate how many days it will take to obtain the required sample size in each variant.
 
 To control how long our simulation takes to run, we have two main levers:
 * **Number of simulations:** Increasing simulations increases the time for the simulation to run, but reduces the variance we see in the power curve.
 * **Step size between sample sizes:** Increasing this reduces the simulation time, but reduces our ability to granularly see when the power curve reaches our target power. In practical situations we will want to start from a much higher starting sample size in order to not waste simulation cycles.
 
-## Real data is not normal
+## Real data is not Gaussian
 
-In the example provided we sampled from a normal distribution. However real data is rarely perfectly normally distributed. The histogram below shows the distribution of an example real dataset - notice the left skew.
+In the example provided above we sampled from a normal distribution. However real data is rarely perfectly normally distributed. The histogram below shows the distribution of an example real dataset - notice the left skew.
 
-<figure class="small">
+<figure class="medium">
 ![Real data histogram](/images/posts/monte-carlo-power-analysis/image_3.png)
 </figure>
 
-This data will violate the normality assumption of the t-test - this reduces the power of the test. Applying an analytical power analysis method for a t-test would underestimate the sample size required to achieve power for this distribution of data. 
+This data will violate the normality assumption of the t-test - although there are asymptotic justifications that the t-test is still valid even when our data is non-normal. Even if the t-test is valid, it will not be optimally powerful, there will exist alternative tests of the null hypothesis which have greater power to detect alternative hypotheses.
 
-Instead, we can use the code presented before to perform a Monte Carlo power analysis. Here we are drawing our Monte Carlo samples from the empirical distribution of our previous data. Below, we show two power curves, one using the t-test and one using Mann–Whitney U test. Prior to starting our experiment we can say that based on the empirical distribution of our data, using a Mann-Whitney U test will require a smaller sample size (109k vs 139k) than a t-test to achieve 80% power.
+We can use the code presented before to perform a Monte Carlo power analysis. Here we are drawing our Monte Carlo samples from the empirical distribution of our previous data. Below, we show three power curves, one using Monte Carlo simulation with the t-test, one use the analytical power method for a t-test and one using Monte Carlo simulation with a [Mann–Whitney U test](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test). Prior to starting our experiment we can say that based on the empirical distribution of our data we need a sample size of 139k to use a t-test versus the 110k sample size the analytical method tells us. A Mann-Whitney U test will require a smaller sample size (88k) but changes the hypothesis to testing if there is a difference in the distribution between variant and control. We will need to decide prior to the experiment if this is the hypothesis we wish to test.
 
 <figure class="medium">
 ![t-test vs MWW-U test](/images/posts/monte-carlo-power-analysis/image_4.png)
 </figure>
 
-If the data had less skew we might find that a t-test requires a smaller sample size to achieve power. One of the strongest reasons we use Monte Carlo power analysis is that we can use the empirical distribution of our previous data to determine the right sample size and experimental analysis before running an experiment.
+One of the strongest reasons we use Monte Carlo power analysis is that we can use the empirical distribution of our previous data to determine the right sample size and experimental analysis before running an experiment.
 
 ## Power Analysis for Proportions
 
@@ -146,21 +144,19 @@ For proportion data, the method needs a slight adaptation. Below is an example f
 import numpy as np
 
 from scipy.stats import binom
-from statsmodels.stats.proportion import proportions_chisquare
+from statsmodels.stats.proportion import proportions_ztest
 
-# Sample data would be actual data measured over a fixed period of time prior to our
-# experiment. For illustration purposes here we have generated data from a
-# binomial distribution.
-sample_data = binom.rvs(1, 0.38, size=150000) 
+# Sample data would be actual data measured over a fixed period of time prior to our 
+# experiment. For illustration purposes here we have generated data from a normal 
+# distribution
+sample_data = binom.rvs(1, 0.31518, size=900000)
 
 base_conversion_rate = np.mean(sample_data)
-sample_sizes = list(range(2000, 150000 + 1, 2000)) # Sample sizes we will test over
+sample_sizes = list(range(2000, 200000 + 1, 2000)) # Sample sizes we will test over
 alpha = 0.05 # Our fixed alpha
 sims = 250 # The number of simulations we will run per iteration
 relative_effects = [1.01, 1.03, 1.05] # The list of relative effects we will test for
-alternative = "two-sided" # Is the alternative one-sided or two-sided 
-
-significance_level = alpha / 2 if alternative == "two-sided" else alpha
+alternative = "two-sided" # Is the alternative one-sider or two-sided 
 
 power_dist = np.empty((len(sample_sizes), len(relative_effects), 2))
 for i in range(0, len(sample_sizes)): 
@@ -171,21 +167,19 @@ for i in range(0, len(sample_sizes)):
         significance_results = []
         for k in range(0, sims):
 
-            # Randomly generate binomial data for variant and control with different
+            # # Randomly generate binomial data for variant and control with different
             # success probabilities 
             sample_per_variant = int(np.floor(N/2))
             control_sample = binom.rvs(1, base_conversion_rate, size=sample_per_variant)
             variant_sample = binom.rvs(1, base_conversion_rate * relative_effect, 
             	size=sample_per_variant)
-
-            test_result = proportions_chisquare(
-            	count=[sum(variant_sample), sum(control_sample)], 
-                nobs=[sample_per_variant, sample_per_variant])
-            # Test for significance
-            significance_results.append(test_result[1] <= significance_level) 
+            
+            test_result = proportions_ztest(count=[sum(variant_sample), sum(control_sample)], 
+            	imagenobs=[sample_per_variant, sample_per_variant], alternative=alternative)
+            significance_results.append(test_result[1] <= alpha) # Test for significance
         # The power is the number of times we have a significant result 
+        power_dist[i,j,] = [N, np.mean(significance_results)]
         # as we are assuming the alternative hypothesis is true
-        power_dist[i,j,] = [N, np.mean(significance_results)] 
 ```
 
 The main difference is that we have to sample data from binomial distributions with two different success probabilities. The visualisation below shows the results for the three different relative effects tested:
@@ -194,16 +188,7 @@ The main difference is that we have to sample data from binomial distributions w
 ![proportions with multiple relative effects](/images/posts/monte-carlo-power-analysis/image_5.png)
 </figure>
 
-
-We can compare the sample sizes required to reach power using an [analytical method](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/power.prop.test.html) and the monte carlo power curve above:
-
-| Relative Effect | Analytical Method | Monte Carlo Simulation|
-| :-------------: |:-------------:| :-----:|
-| 1%      | 683K | 800K |
-| 3%      | 76K      |   92K |
-| 5% | 28K      |    37K |
-
-Generally we find Monte Carlo simulation gives more conservative estimates of the sample size required. 
+The sample sizes will be the same as we would obtain from an analytical method. If we only need a sample size for a single proportion, it will be less computation to use an analytical method. However in the next section we discuss multiple comparison, if we need a sample size in the case of a proportion metric with multiple comparisons the previous code example will be useful. 
 
 ## Power Analysis for Multiple Comparisons
 
@@ -250,8 +235,6 @@ relative_effect_1 = 1.035
 relative_effect_2 = 0.98
 alternative = "two-sided" # Is the alternative one-sided or two-sided 
 
-significance_level = alpha / 2 if alternative == "two-sided" else alpha
-
 power_dist = np.empty((len(sample_sizes), 2, 2))
 for i in range(0, len(sample_sizes)): 
     N = sample_sizes[i]
@@ -282,15 +265,15 @@ for i in range(0, len(sample_sizes)):
                                 alternative=alternative, usevar='unequal') 
         multi_comparision_result = multipletests([test_result_1[1], test_result_2[1]], 
         	alpha=alpha,  method='h') # Use Holm correction
-        metric_1_sig = multi_comparision_result[1][0] <= significance_level 
-        metric_2_sig = multi_comparision_result[1][1] <= significance_level
+        metric_1_sig = multi_comparision_result[1][0] <= alpha 
+        metric_2_sig = multi_comparision_result[1][1] <= alpha
         significance_both.append(metric_1_sig and metric_2_sig)
         significance_either.append(metric_1_sig or metric_2_sig)
     power_dist[i,0,] = [N, np.mean(significance_both)]
     power_dist[i,1,] = [N, np.mean(significance_either)]
 ```
 
-We show the two power curves in the plot below. Unsurprisingly, we need a much larger sample size to reach 80% power of both metrics being significant. The relative effect for metric 1 was 3.5% and the relative effect for metric 2 was -2%.
+We show the two power curves in the plot below. In this case we need a much larger sample size to reach 80% power of both metrics being significant. If there was perfect positive dependence between the two metrics, the sample size needed would be the same. Using empirical data any dependence between the metrics will be taking into account. The relative effect for metric 1 was 3.5% and the relative effect for metric 2 was -2%.
 
 <figure class="medium">
 ![multiple comparisions](/images/posts/monte-carlo-power-analysis/image_6.png)
@@ -325,7 +308,7 @@ Echidna is a collaborative effort across the Data Science team here at Deliveroo
 
 ## Summary
 
-Monte Carlo simulation provides us with an extremely flexible way to run power analysis. It has become our default way to perform any power analysis for any experiment. The downsides are additional coding and time taken to run the simulation. Encapsulating our simulation methodology into a common library has allowed us to minimise any additional coding and create highly optimised implementations.
+Monte Carlo simulation provides us with an extremely flexible way to run power analysis. The downsides are additional coding and time taken to run the simulation. Encapsulating our simulation methodology into a common library has allowed us to minimise any additional coding and create highly optimised implementations. Our default for very simple experimental designs is to still use analytical methods, but will switch to Monte Carlo simulation when required.
 
 If you are interested in experimentation, power analysis or anything else in this blog post - take a look at our [careers page](https://careers.deliveroo.co.uk/?country=united-kingdom&remote=&remote=true&team=any#filter-careers) for Data Science roles. We would love to hear from you!
 
