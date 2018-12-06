@@ -73,8 +73,8 @@ sample_sizes = range(250, 20000 + 1, 250) # Sample sizes we will test over
 alpha = 0.05 # Our fixed alpha
 sims = 2000 # The number of simulations we will run per sample size
 # The minimum relative effect we will test for (3%). We could try multiple relative
-relative_effect = 1.03 
 # effect is we are not sure what our minimum relative effect should be
+relative_effect = 1.03 
 alternative = "two-sided" # Is the alternative one-sided or two-sided 
 
 power_dist = np.empty((len(sample_sizes), 2))
@@ -120,7 +120,7 @@ To control how long our simulation takes to run, we have two main levers:
 
 ## Real data is not Gaussian
 
-In the example provided above we sampled from a normal distribution. However real data is rarely perfectly normally distributed. The histogram below shows the distribution of an example real dataset - notice the left skew.
+In the example provided above we sampled from a normal distribution. However real data is rarely perfectly normally distributed. The histogram below shows the distribution of an example real dataset - notice the positive skew.
 
 <figure class="medium">
 ![Real data histogram](/images/posts/monte-carlo-power-analysis/image_3.png)
@@ -128,7 +128,7 @@ In the example provided above we sampled from a normal distribution. However rea
 
 This data will violate the normality assumption of the t-test - although there are asymptotic justifications that the t-test is still valid even when our data is non-normal. Even if the t-test is valid, it will not be optimally powerful, there will exist alternative tests of the null hypothesis which have greater power to detect alternative hypotheses.
 
-We can use the code presented before to perform a Monte Carlo power analysis. Here we are drawing our Monte Carlo samples from the empirical distribution of our previous data. Below, we show three power curves, one using Monte Carlo simulation with the t-test, one use the analytical power method for a t-test and one using Monte Carlo simulation with a [Mann–Whitney U test](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test). Prior to starting our experiment we can say that based on the empirical distribution of our data we need a sample size of 139k to use a t-test versus the 110k sample size the analytical method tells us. A Mann-Whitney U test will require a smaller sample size (88k) but changes the hypothesis to testing if there is a difference in the distribution between variant and control. We will need to decide prior to the experiment if this is the hypothesis we wish to test.
+We can use the code presented before to perform a Monte Carlo power analysis. Here we are drawing our Monte Carlo samples from the empirical distribution of our previous data. Below, we show three power curves: one using Monte Carlo simulation with the t-test, one use the analytical power method for a t-test and one using Monte Carlo simulation with a [Mann–Whitney U test](https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test). Prior to starting our experiment we can say that based on the empirical distribution of our data, our simulation says we need a sample size of 139k to use a t-test versus the 110k sample size the analytical method tells us. Here the analytical method underestimates the required sample size. A Mann-Whitney U test will require a smaller sample size (88k) but changes the hypothesis to testing if there is a difference in the distribution between variant and control. If we decide this hypothesis is the outcome we wish to test, we can use a smaller sample size.
 
 <figure class="medium">
 ![t-test vs MWW-U test](/images/posts/monte-carlo-power-analysis/image_4.png)
