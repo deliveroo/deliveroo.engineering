@@ -446,12 +446,20 @@ article {
   } // article ol.alpha
 
   div.about-author {
+    overflow: auto;
+
     img.portrait {
       @include min-width(desktop_small) {
         float: left;
         margin-right: 20px;
       } // @min-width(desktop_small) article div.about-author img.portrait
     } // article div.about-author img.portrait
+
+    &:not(:first-of-type) {
+      h3 {
+        margin-top: 0.5em;
+      } // article div.about-author:not(:first-of-type) h3
+    } // article div.about-author:not(:first-of-type)
   } // article div.about-author
 
   div.footnotes {
