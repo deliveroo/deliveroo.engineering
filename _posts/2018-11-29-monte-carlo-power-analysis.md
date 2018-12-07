@@ -22,7 +22,7 @@ Obtaining an answer to the second question is called Power Analysis. Deciding th
 
 ## What is statistical power?
 
-When measuring the impact of an experiment we are deciding if the average outcome in the variant is significantly different from the average outcome in the control. We use frequentist hypothesis testing approaches to analyse the impact of any experiment. The statistical power of an experiment for a given alternative hypothesis is the probability we will get a statistically significant result (reject the null hypothesis) when the alternative is true:
+When measuring the impact of an experiment we are deciding if the average outcome in the variant is significantly different from the average outcome in the control, and we use frequentist hypothesis testing approaches to determine that. The statistical power of an experiment for a given alternative hypothesis is the probability we will get a statistically significant result (reject the null hypothesis) when the alternative is true:
 
 $$power = 1 - \beta = P(\textrm{Reject }H_0|H_1\textrm{ is true})$$
 
