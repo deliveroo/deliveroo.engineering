@@ -4,8 +4,9 @@
     by
     {% for author in include.authors %}
       {% if include.authors.size > 1 %}{% if author == include.authors.last %} &amp; {% endif %}{% endif %}
+      {% if include.authors.size > 2 %}{% if author != include.authors.first %}{% if author != include.authors.last %}, {% endif %}{% endif %}{% endif %}
       <span class="author"><a href="/authors/{{ author | slugify }}">{{ author }}</a></span>
-      {% if author != include.authors.last %}{% if author != include.authors.first %}, {% endif %}{% endif %}
+      {% if include.authors.size < 2 %}{% if author != include.authors.last %}{% if author != include.authors.first %}, {% endif %}{% endif %}{% endif %}
     {% endfor %}
   {% endif %}
   on <time datetime="{{ include.date | date_to_xmlschema }}" class="published">{{ include.date | date: "%A, %B %-d, %Y" }}</time>
