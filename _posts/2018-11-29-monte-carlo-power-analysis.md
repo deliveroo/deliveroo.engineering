@@ -175,7 +175,7 @@ for i in range(0, len(sample_sizes)):
             	size=sample_per_variant)
             
             test_result = proportions_ztest(count=[sum(variant_sample), sum(control_sample)], 
-            	imagenobs=[sample_per_variant, sample_per_variant], alternative=alternative)
+            	nobs=[sample_per_variant, sample_per_variant], alternative=alternative)
             significance_results.append(test_result[1] <= alpha) # Test for significance
         # The power is the number of times we have a significant result 
         power_dist[i,j,] = [N, np.mean(significance_results)]
