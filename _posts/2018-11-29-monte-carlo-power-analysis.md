@@ -174,7 +174,8 @@ for i in range(0, len(sample_sizes)):
             variant_sample = binom.rvs(1, base_conversion_rate * relative_effect, 
             	size=sample_per_variant)
             
-            test_result = proportions_ztest(count=[sum(variant_sample), sum(control_sample)], 
+            test_result = proportions_ztest(
+            	count=[sum(variant_sample), sum(control_sample)], 
             	nobs=[sample_per_variant, sample_per_variant], alternative=alternative)
             significance_results.append(test_result[1] <= alpha) # Test for significance
         # The power is the number of times we have a significant result 
