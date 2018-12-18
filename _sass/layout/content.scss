@@ -2,7 +2,7 @@ body {
   @include flex-sticky-footer($header-selector: 'header#navigation', $contents-selector: 'main', $footer-selector: 'footer');
   font-family: $default-font;
   font-size: 62.5%;
-  color: color(mackerel);
+  color: color(teal);
   background-color: color(anchovy, 5%);
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
