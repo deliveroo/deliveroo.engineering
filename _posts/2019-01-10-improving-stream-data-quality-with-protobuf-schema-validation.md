@@ -51,7 +51,7 @@ These rules are enforced within our Protobuf repo, using the Protobuf FileDescri
 ## Providing Guarantees on Topic Schemas 
 The Confluent Schema Registry makes use of a centralised service so that both producers and consumers can access schemas and achieve a common understanding. The service keeps track of schema subjects and versions, as well as the actual schema details. This means that when a producer publishes data to a topic on Kafka, it registers the schema, and when that message is picked up by a consumer, it can use the attached identifier to fetch the deserialization details from the registry. 
 
-What we were after though was a way to provide even tighter guarantees around topics and schemas. Where Confluent’s schema registry provides a mechanism for knowing what this message means, we wanted a way to be sure that a consumer can trust a contract of the nature:
+What we were after though was a way to provide even tighter guarantees around topics and schemas. Where Confluent’s schema registry provides a mechanism for knowing what _this_ message means, we wanted a way to be sure that a consumer can trust a contract of the nature:
 
 <center><span style="font-size:larger;"><span style="color:darkblue">Producer X owns Topic Y with Message Format Z</span></span></center>
 
