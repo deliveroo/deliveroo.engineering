@@ -96,7 +96,7 @@ So after identifying the memory issue and potential suspects, our last task is t
 
 After changing `class Item` to `case class Item`, we can launch the application again and visualise its performance metrics with Visualvm. As you could see, the baseline of its memory footprint stays flat and the size of the map in the output stays fairly constant:
 
-![](/Users/limhoang/Projects/deliveroo.engineering/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/healthy.png)
+![Healthy Memory](/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/healthy.png)
 
 ## Final thoughts
 
