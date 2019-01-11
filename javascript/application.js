@@ -10,6 +10,7 @@
   var webfonts = {
     'Stratos':       new FontFaceObserver('Stratos'),
     'SourceCodePro': new FontFaceObserver('SourceCodePro'),
+    'PlexSans': new FontFaceObserver('Plex Sans'),
   }
 
   Object.keys(webfonts).forEach(function(font) {
