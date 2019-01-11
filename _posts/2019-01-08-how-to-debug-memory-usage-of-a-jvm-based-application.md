@@ -96,8 +96,10 @@ So after identifying the memory issue and potential suspects, our last task is t
 
 After changing `class Item` to `case class Item`, we can launch the application again and visualise its performance metrics with Visualvm. As you could see, the baseline of its memory footprint stays flat and the size of the map in the output stays fairly constant:
 
+![](/Users/limhoang/Projects/deliveroo.engineering/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/healthy.png)
+
 ## Final thoughts
 
-Going back to our service in production, after performing all of this analysis, coupled with load testing using [JMeter](https://jmeter.apache.org/), we were fairly certain that there were no memory leak in our program. This insight motivated us to go back to basic and tried to understand our runtime environment. As it turned out, the root cause of our problem was an unreasonably big `-Xms` value and an `-Xmx` exceeding the container's memory limit. Tuning these values completely resolves our issue:
+Going back to our service in production, after performing all of this analysis, coupled with load testing using [JMeter](https://jmeter.apache.org/), we were fairly certain that there was no memory leak in our program. This insight motivated us to go back to basic and tried to understand our runtime environment. As it turned out, the root cause of our problem was an unreasonably big `-Xmx` value and an `-Xms` exceeding the container's memory limit. Tuning these values completely resolves our issue:
 
 ![Tuning Results](../images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/tuning.png)
