@@ -9,13 +9,13 @@ excerpt: >
 
 ## Background
 
-My team at Deliveroo, Growth Marketing Engineering, recently launched a new service written in Scala. It is a GraphQL server built with [Sangria](https://sangria-graphql.org) on top of [Akka HTTP](https://doc.akka.io/docs/akka-http/current/), containerised with [Docker](https://www.docker.com/) and deployed on Amazon Web Services as an [ECS](https://aws.amazon.com/ecs/) Service. In other words, it follows a pretty standard setup in today cloud-based environment. However, after launch, the service exhibits an extremely unstable memory usage pattern as seen in the screenshot below:
+My team at Deliveroo, Growth Marketing Engineering, recently launched a new service written in Scala. It is a GraphQL server built with [Sangria](https://sangria-graphql.org) on top of [Akka HTTP](https://doc.akka.io/docs/akka-http/current/), containerised with [Docker](https://www.docker.com/) and deployed on Amazon Web Services as an [ECS](https://aws.amazon.com/ecs/) Service. In other words, it follows a pretty standard setup in today cloud-based environment. However, after launch, the service exhibited an extremely unstable memory usage pattern as seen in the screenshot below:
 
 ![Wild Memory Usage Pattern](../images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/wild-memory-usage-pattern.png)
 
 The blue line indicates the avarge memory utilisation across all containers, while the red one indicates the maximum memory utilisation at any given moment. After a container maxes out its memory allocation, ECS kills it with an OutOfMemory error message and replaces it with a new container, causing in-flight requests to be dropped and temporarily increasing the service's latency. Not a very ideal situation for a new service to be in!
 
-## Understanding the service's runtime environment
+## Understand the service's runtime environment
 
 Before diving into memory analysis, the first thing we need to do is understanding the service's runtime environment. Our Scala service runs on a JVM inside a Docker container, meaning that there are two level of memory constraints involved. The first level of memory constraint is specified by [a number of JVM settings](https://docs.oracle.com/javase/8/docs/technotes/tools/unix/java.html), most notably:
 
