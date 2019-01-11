@@ -113,7 +113,7 @@ After changing `class Item` to `case class Item`, we can launch the application 
 
 ## Final thoughts
 
-Going back to our service in production, after performing all of this analysis, coupled with load testing using [JMeter](https://jmeter.apache.org/), we were fairly certain that there was no memory leaks in our program. This insight motivated us to go back to basics and try to understand our runtime environment. As it turned out, the root cause of our problem was an unreasonably big `-Xmx` value and an `-Xms` exceeding the container's memory limit. Tuning these values completely resolves our issue:
+Going back to our service in production, after performing all of this analysis, coupled with load testing using [JMeter](https://jmeter.apache.org/), we were fairly certain that there was no memory leaks in our program. This insight motivated us to go back to basics and try to understand our runtime environment. As it turned out, the root cause of our problem was an unreasonably big `-Xms` value and an `-Xmx` exceeding the container's memory limit. Tuning these values completely resolves our issue:
 
 <figure>
 	<img src="/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/tuning.png" alt="Tuning Results">
