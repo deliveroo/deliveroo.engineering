@@ -11,7 +11,9 @@ excerpt: >
 
 My team at Deliveroo, Growth Marketing Engineering, recently launched a new service written in Scala. It is a GraphQL server built with [Sangria](https://sangria-graphql.org) on top of [Akka HTTP](https://doc.akka.io/docs/akka-http/current/), containerised with [Docker](https://www.docker.com/) and deployed on Amazon Web Services as an [ECS](https://aws.amazon.com/ecs/) Service. In other words, it follows a pretty standard setup in today's cloud-based environment. However, after launch, the service exhibited an extremely unstable memory usage pattern as seen in the screenshot below:
 
-<figure>![Wild Memory Usage Pattern](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/wild-memory-usage-pattern.png)</figure>
+<figure>
+	<img src="/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/wild-memory-usage-pattern.png" alt="Wild Memory Usage Pattern">
+</figure>
 
 The blue line indicates the avarge memory utilisation across all containers, while the red one indicates the maximum memory utilisation at any given moment. After a container maxes out its memory allocation, ECS kills it with an OutOfMemory error message and replaces it with a new container, causing in-flight requests to be dropped and temporarily increasing the service's latency. Not an ideal situation for a new service to be in!
 
@@ -60,7 +62,9 @@ It's a simple application that continuously adds an `Item` object as a key into 
 
 After we run our application, Visualvm will automatically detect the running JVM process and graph its performance metrics:
 
-![Memory Trend](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/memory-trend.png)
+<figure>
+	<img src="/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/memory-trend.png" alt="Memory Trend">
+</figure>
 
 Neat! As you may notice, after each Garbage Collection cycle (each tooth in the saw-tooth pattern), the baseline of the memory footprint keeps increasing until it reaches the maximum amount allocated. Furthermore, the size of the map keeps increasing, as seen in the output, even though we keep adding the key of the same "value" to the map. This indicates a potential memory problem. 
 
@@ -69,12 +73,15 @@ Neat! As you may notice, after each Garbage Collection cycle (each tooth in the 
 ## Analyse JVM memory snapshot with VisualVM
 
 After noticing a potential memory problem, what we can do next is to look at the `Sampler` tab in VisualVM to see what's using up all the memory. In our case, it should be pretty obvious that we have an ever-expanding `Hashtable` and our `Item` objects keep getting created without ever being cleaned up:
-
-<figure>![VisualVM Memory Sampler](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/sampler.png)</figure>
+<figure>
+	<img src="/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/sampler.png" alt="VisualVM Memory Sampler">
+</figure>
 
 Another interesting method we can use to identify memory problem is to compare two (or more) memory snapshots of the JVM and see if we can detect any trend:
 
-![Memory snapshot comparison](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/snapshots.png)
+<figure>
+	<img src="/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/snapshots.png" alt="Memory snapshots comparison">
+</figure>
 
 Comparing two memory snapshots for our application reveals that indeed the memory allocation for `Hashtable` and `Item` increases while other objects get garbage collected correctly (`0B` changes between 2 snapshots). We should be careful to take snapshots at the correct moment in two different GC cycles. Otherwise, it might not be a fair comparison.
 
@@ -84,11 +91,15 @@ Sometimes in more complex applications, it's not that obvious what causes the me
 
 Once you have generated a heap dump, the next step is to open and analyse it. A popular tool for this job is the [Eclipse Memory Analyzer (MAT)](https://www.eclipse.org/mat/). The tool has a built-in functionality to detect memory leak **suspects** automatically:
 
-![MAT Memory Leak Suspects](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/suspects.png)
+<figure>
+	<img src="/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/suspects.png" alt="MAT Memory Leak Suspects">
+</figure>
 
 MAT correctly identifies `java.utils.Properties` as a memory leak suspect. You can also play around with tools built into MAT like Histogram of objects to determine what objects are the most memory intensive:
 
-![Histogram](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/histogram.png)
+<figure>
+	<img src="/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/histogram.png" alt="Histogram">
+</figure>
 
 ## Fix the root cause
 
@@ -96,10 +107,14 @@ So after identifying the memory issue and potential suspects, our last task is t
 
 After changing `class Item` to `case class Item`, we can launch the application again and visualise its performance metrics with Visualvm. As you could see, the baseline of its memory footprint stays flat and the size of the map in the output stays fairly constant:
 
-![Healthy Memory](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/healthy.png)
+<figure>
+	<img src="/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/healthy.png" alt="Healthy Memory">
+</figure>
 
 ## Final thoughts
 
 Going back to our service in production, after performing all of this analysis, coupled with load testing using [JMeter](https://jmeter.apache.org/), we were fairly certain that there was no memory leaks in our program. This insight motivated us to go back to basics and try to understand our runtime environment. As it turned out, the root cause of our problem was an unreasonably big `-Xmx` value and an `-Xms` exceeding the container's memory limit. Tuning these values completely resolves our issue:
 
-![Tuning Results](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/tuning.png)
+<figure>
+	<img src="/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/tuning.png" alt="Tuning Results">
+</figure>
