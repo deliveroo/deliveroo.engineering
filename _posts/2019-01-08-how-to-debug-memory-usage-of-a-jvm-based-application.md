@@ -9,9 +9,9 @@ excerpt: >
 
 ## Background
 
-My team at Deliveroo, Growth Marketing Engineering, recently launched a new service written in Scala. It is a GraphQL server built with [Sangria](https://sangria-graphql.org) on top of [Akka HTTP](https://doc.akka.io/docs/akka-http/current/), containerised with [Docker](https://www.docker.com/) and deployed on Amazon Web Services as an [ECS](https://aws.amazon.com/ecs/) Service. In other words, it follows a pretty standard setup in today cloud-based environment. However, after launch, the service exhibited an extremely unstable memory usage pattern as seen in the screenshot below:
+My team at Deliveroo, Growth Marketing Engineering, recently launched a new service written in Scala. It is a GraphQL server built with [Sangria](https://sangria-graphql.org) on top of [Akka HTTP](https://doc.akka.io/docs/akka-http/current/), containerised with [Docker](https://www.docker.com/) and deployed on Amazon Web Services as an [ECS](https://aws.amazon.com/ecs/) Service. In other words, it follows a pretty standard setup in today's cloud-based environment. However, after launch, the service exhibited an extremely unstable memory usage pattern as seen in the screenshot below:
 
-![Wild Memory Usage Pattern](/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/wild-memory-usage-pattern.png)
+<figure>![Wild Memory Usage Pattern](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/wild-memory-usage-pattern.png)</figure>
 
 The blue line indicates the avarge memory utilisation across all containers, while the red one indicates the maximum memory utilisation at any given moment. After a container maxes out its memory allocation, ECS kills it with an OutOfMemory error message and replaces it with a new container, causing in-flight requests to be dropped and temporarily increasing the service's latency. Not an ideal situation for a new service to be in!
 
@@ -22,9 +22,9 @@ Before diving into memory analysis, the first thing we need to do is understandi
 * `-Xms`: specifies the initial memory allocation pool
 * `-Xmx`: specifies the maximum size (in bytes) of the memory allocation pool
 
-So suppose if we launch our application with `-Xmx2G`, the JVM will *think* that it has a maximum of 2 gigabytes of memory to use. Whether this is indeed the amount of memory available in reality depends on the second level of memory constraint, which is specified by our Docker configuration. Since we launch our service with ECS, this is specified as an [ECS Task Definition parameter](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html). In our example, if we specify a hard memory limit of 1G for the container to use but the JVM inside the container thinks it has 2G, we will see out of memory crashes even without any memory leak.
+So suppose if we launch our application with `-Xmx2G`, the JVM will *think* that it has a maximum of 2 gigabytes of memory to use. Whether this is indeed the amount of memory available in reality depends on the second level of memory constraint, which is specified by our Docker configuration. Since we launch our service with ECS, this is specified as an [ECS Task Definition parameter](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definition_parameters.html). In our example, if we specify a hard memory limit of 1G for the container to use but the JVM inside the container thinks it has 2G, we will see out-of-memory crashes even without any memory leak.
 
-A safe way to align these memory constraints is to set a memory limit on the Docker container and let the JVM work out how much memory is avaiable automatically. We have to not specify an `-Xmx` value and turn on a couple of settings for the JVM, namely `-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap`. These settings ensure that the JVM will use the amount of memory available to *Docker* for its automatic calculation. Otherwise, it will use the amount of memory available in the *underlying host machine*, which can  be misleading. For more information, check out this blog [post](https://developers.redhat.com/blog/2017/03/14/java-inside-docker/) by RedHat.
+A safe way to align these memory constraints is to set a memory limit on the Docker container and let the JVM work out how much memory is available automatically. We have to not specify an `-Xmx` value and turn on a couple of settings for the JVM, namely `-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap`. These settings ensure that the JVM will use the amount of memory available to *Docker* for its automatic calculation. Otherwise, it will use the amount of memory available in the *underlying host machine*, which can be misleading. For more information, check out this blog [post](https://developers.redhat.com/blog/2017/03/14/java-inside-docker/) by RedHat.
 
 After `-Xmx` is taken care of, we can tune `-Xms` by profiling our application and pick an appropriate value. More on how to do this later. Note that to determine which settings the JVM was launched with, we can use the flag `-XshowSettings:vm` when launching the application. To determine these values of an already running JVM, we can use tools like [jcmd](https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/tooldescr006.html).
 
@@ -60,7 +60,7 @@ It's a simple application that continuously adds an `Item` object as a key into 
 
 After we run our application, Visualvm will automatically detect the running JVM process and graph its performance metrics:
 
-![Memory Trend](/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/memory-trend.png)
+![Memory Trend](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/memory-trend.png)
 
 Neat! As you may notice, after each Garbage Collection cycle (each tooth in the saw-tooth pattern), the baseline of the memory footprint keeps increasing until it reaches the maximum amount allocated. Furthermore, the size of the map keeps increasing, as seen in the output, even though we keep adding the key of the same "value" to the map. This indicates a potential memory problem. 
 
@@ -70,11 +70,11 @@ Neat! As you may notice, after each Garbage Collection cycle (each tooth in the 
 
 After noticing a potential memory problem, what we can do next is to look at the `Sampler` tab in VisualVM to see what's using up all the memory. In our case, it should be pretty obvious that we have an ever-expanding `Hashtable` and our `Item` objects keep getting created without ever being cleaned up:
 
-![VisualVM Memory Sampler](/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/sampler.png)
+<figure>![VisualVM Memory Sampler](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/sampler.png)</figure>
 
 Another interesting method we can use to identify memory problem is to compare two (or more) memory snapshots of the JVM and see if we can detect any trend:
 
-![Memory snapshot comparison](/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/snapshots.png)
+![Memory snapshot comparison](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/snapshots.png)
 
 Comparing two memory snapshots for our application reveals that indeed the memory allocation for `Hashtable` and `Item` increases while other objects get garbage collected correctly (`0B` changes between 2 snapshots). We should be careful to take snapshots at the correct moment in two different GC cycles. Otherwise, it might not be a fair comparison.
 
@@ -84,11 +84,11 @@ Sometimes in more complex applications, it's not that obvious what causes the me
 
 Once you have generated a heap dump, the next step is to open and analyse it. A popular tool for this job is the [Eclipse Memory Analyzer (MAT)](https://www.eclipse.org/mat/). The tool has a built-in functionality to detect memory leak **suspects** automatically:
 
-![MAT Memory Leak Suspects](/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/suspects.png)
+![MAT Memory Leak Suspects](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/suspects.png)
 
 MAT correctly identifies `java.utils.Properties` as a memory leak suspect. You can also play around with tools built into MAT like Histogram of objects to determine what objects are the most memory intensive:
 
-![Histogram](/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/histogram.png)
+![Histogram](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/histogram.png)
 
 ## Fix the root cause
 
@@ -96,10 +96,10 @@ So after identifying the memory issue and potential suspects, our last task is t
 
 After changing `class Item` to `case class Item`, we can launch the application again and visualise its performance metrics with Visualvm. As you could see, the baseline of its memory footprint stays flat and the size of the map in the output stays fairly constant:
 
-![Healthy Memory](/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/healthy.png)
+![Healthy Memory](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/healthy.png)
 
 ## Final thoughts
 
-Going back to our service in production, after performing all of this analysis, coupled with load testing using [JMeter](https://jmeter.apache.org/), we were fairly certain that there was no memory leak in our program. This insight motivated us to go back to basic and tried to understand our runtime environment. As it turned out, the root cause of our problem was an unreasonably big `-Xmx` value and an `-Xms` exceeding the container's memory limit. Tuning these values completely resolves our issue:
+Going back to our service in production, after performing all of this analysis, coupled with load testing using [JMeter](https://jmeter.apache.org/), we were fairly certain that there was no memory leaks in our program. This insight motivated us to go back to basics and try to understand our runtime environment. As it turned out, the root cause of our problem was an unreasonably big `-Xmx` value and an `-Xms` exceeding the container's memory limit. Tuning these values completely resolves our issue:
 
-![Tuning Results](/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/tuning.png)
+![Tuning Results](/images/posts/how-to-debug-memory-usage-of-a-jvm-based-application/tuning.png)
