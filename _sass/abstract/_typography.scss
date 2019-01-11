@@ -1,4 +1,4 @@
-$default-font: 'adelle-sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$default-font: 'PlexSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
 $font-sizes: (
   extra-small-heading: 18px,
@@ -69,3 +69,8 @@ $font-families: (
 
 @include font-face-shim('SourceCodePro', 'sourcecodepro/SourceCodePro-Regular', 400);
 @include font-face-shim('SourceCodePro', 'sourcecodepro/SourceCodePro-Semibold', 600);
+
+@include font-face-shim('PlexSans', 'plexsans/IBMPlexSans-Regular', 400);
+@include font-face-shim('PlexSans', 'plexsans/IBMPlexSans-Bold', 700);
+@include font-face-shim('PlexSans', 'plexsans/IBMPlexSans-Italic', 400, italic);
+@include font-face-shim('PlexSans', 'plexsans/IBMPlexSans-BoldItalic', 700, italic);
