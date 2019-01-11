@@ -84,7 +84,7 @@ Sometimes in more complex applications, it's not that obvious what causes the me
 
 Once you have generated a heap dump, the next step is to open and analyse it. A popular tool for this job is the [Eclipse Memory Analyzer (MAT)](https://www.eclipse.org/mat/). The tool has a built-in functionality to detect memory leak **suspects** automatically:
 
-![Some alt text?](/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/suspects.png)
+![MAT Memory Leak Suspects](/images/posts/how-to-debug-memory-usage-of-a-jvm-bsaed-application/suspects.png)
 
 MAT correctly identifies `java.utils.Properties` as a memory leak suspect. You can also play around with tools built into MAT like Histogram of objects to determine what objects are the most memory intensive:
 
