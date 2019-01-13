@@ -18,7 +18,7 @@ Just some of the ways in which we make use of data at Deliveroo include computin
   microservices. 
   
 To help meet these requirements, the Data Engineering Team (which I'm part of) have developed a new inter-service 
-messaging framework that not only supports service decomposition work, but  helps quench our thirst for analytical 
+messaging framework that not only supports service decomposition work, but helps quench our thirst for analytical 
 data. Because it builds on top of Apache Kafka we decided to call it Franz.
 
 Franz was conceived as a strongly-typed, interoperable data stream for inter-service communication. By strictly 
@@ -89,8 +89,8 @@ Fields that have been deleted in the new schema will be deserialised as default 
 Backwards compatibility means that consumers using a newer version of the schema can read the data produced by a 
 client with an earlier version of the schema. In a similar but reversed fashion as described above, fields that 
 have been added in the newer version will be deserialised, but because the producer has no knowledge of the new 
-fields, messages are transmitted with no data in those fields, and are subsequently deserialised with default values in 
-the consumer. 
+fields, messages are transmitted with no data in those fields, and are subsequently deserialised with default values 
+in the consumer. 
 
 Fields that have been deleted in the new schema will naturally require that any subsequent code that was in place to 
 handle that data be refactored to cope.
@@ -166,18 +166,17 @@ publishing to Kafka is done via our Stream Producer API (topic ACLs prevent any 
 ## Managing schema artefacts and the path towards a dynamic registry
 A key requirement for implementing central management of schemas is to minimise the burden for developers. One of 
 the advantages of the Confluent Schema registry is that schema management is handled without the need to include 
-generated code within client applications. While generated code can be useful in some instances (where one wishes to
- manage the use of a particular version of the schema within an application in a highly controlled manner), in other
-  cases a client may be better off treating schema definitions more like configuration, available within the 
-  run-time environment. In the case of Deliveroo’s Kafka Producer API, requiring a library version update and 
-  re-release of the application every time the schema changed was deemed too heavyweight to suit the pace of 
-  development. To get around this, we’ve implemented a two pronged approach for the distribution of schema 
-  information for clients. The first method is in the form of generated code artefacts in relevant Deliveroo 
-  languages, held in code repositories. The schema dependencies are then included in client projects through 
-  relevant package managers. The second method, which was first implemented so that the Producer API would quickly 
-  adapt to the latest schemas, makes use of the Protobuf FileDescriptor API. This generates a master binary schema 
-  file which can be loaded dynamically from Amazon S3. The Producer API then loads this file and uses it to validate
-   all incoming messages.
+generated code within client applications. While generated code can be useful in some instances (where one wishes to 
+manage the use of a particular version of the schema within an application in a highly controlled manner), in other 
+cases a client may be better off treating schema definitions more like configuration, available within the run-time 
+environment. In the case of Deliveroo’s Kafka Producer API, requiring a library version update and re-release of the 
+application every time the schema changed was deemed too heavyweight to suit the pace of development. To get around 
+this, we’ve implemented a two pronged approach for the distribution of schema information for clients. The first 
+method is in the form of generated code artefacts in relevant Deliveroo languages, held in code repositories. The 
+schema dependencies are then included in client projects through relevant package managers. The second method, which 
+was first implemented so that the Producer API would quickly adapt to the latest schemas, makes use of the Protobuf 
+FileDescriptor API. This generates a master binary schema file which can be loaded dynamically from Amazon S3. The 
+Producer API then loads this file and uses it to validate all incoming messages.
 
 <figure>
 ![Data flow](/images/posts/proto-schema-registry/proto-layout.png)
@@ -185,12 +184,12 @@ generated code within client applications. While generated code can be useful in
 
 ## Limitations
 The setup outlined in this article does limit the enforcement of our contract only to publishers over HTTP for the 
-moment. In order to make Franz a more versatile system and to give better semantics when consumers demand a physical
- ordering according to source database activity, making use of Change Data Capture (CDC) tools like Debezium will be
-  worth considering. These also have the advantage of ensuring that every state change is captured (something that 
-  is not guaranteed with our current producer clients). While these considerations are outside the scope of this 
-  article, CDC tools are worthy of evaluation as another class of producer client. In order to accommodate these, we
-   will need a new implementation of the concepts outlined here in order to enforce the contract. 
+moment. In order to make Franz a more versatile system and to give better semantics when consumers demand a physical 
+ordering according to source database activity, making use of Change Data Capture (CDC) tools like Debezium will be 
+worth considering. These also have the advantage of ensuring that every state change is captured (something that is 
+not guaranteed with our current producer clients). While these considerations are outside the scope of this article, 
+CDC tools are worthy of evaluation as another class of producer client. In order to accommodate these, we will need a
+new implementation of the concepts outlined here in order to enforce the contract. 
 
 
 
