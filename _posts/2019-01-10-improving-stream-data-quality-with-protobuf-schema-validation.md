@@ -58,23 +58,28 @@ Thrift and Protobuf have very similar semantics, with IDLs that support the broa
 in mainstream programming languages. When conducting our evaluation, we initially chose Thrift due to familiarity, 
 but in the end discounted this due to lack of community support. Avro was an intriguing option, particularly because 
 of [Confluent’s support for this on Kafka](https://www.confluent.io/blog/avro-kafka-data/). Avro semantics are quite
- different to that of Protobuf, as it is 
-typically used with a schema definition provided in a header to a file. Confluent’s schema registry removes this 
-requirement by keeping the schema definition in an API and tagging each message with a lookup to find that schema. 
-One of the other appealing aspects of Avro is that it manages schema evolution and backwards and forwards 
-compatibility for you, by keeping track of a writers and a readers schema. 
+ different to that of Protobuf, as it is typically used with a schema definition provided in a header to a file. 
+ Confluent’s schema registry removes this requirement by keeping the schema definition in an API and tagging each 
+ message with a lookup to find that schema. One of the other appealing aspects of Avro is that it manages schema 
+ evolution and backwards and forwards compatibility for you, by keeping track of a writers and a readers schema. 
 
 In the end Avro was discounted as not ideal for Deliveroo’s setup due to lack of cross language support. The thinking
  behind this was based on a desire for support of generated schema classes in each of Deliveroo’s main supported 
- languages (Java/Scala/Kotlin, Go and Ruby). Avro only supported the JVM languages in this regard.
+ languages (Java/Scala/Kotlin, Go and Ruby). Avro only supported the JVM languages in this regard. As it turns out, 
+ the way Avro _does_ support languages outside those with code generation support (through dynamic access to a schema
+  as part of global configuration) turned out to be a feature we also wanted to support with Protobuf.
 
 ## Providing Guarantees on Graceful Schema Evolution
-Some aspects of graceful schema evolution are supported by virtue of Protobuf design. In particular, proto3 has done 
-away with the concept of required fields (the main factor in our decision not to use proto2). With every field being 
-optional, we're already a long way into achieving backwards and forwards compatibility. There were however some 
+With our decision on Protobuf confirmed, we turned out attention to creating some extra safeguards around schema 
+evolution.
+
+Some aspects of graceful schema evolution are supported by virtue of Protobuf design. In particular, proto3 has 
+done away with the concept of required fields (which made the decision not to use proto2 easier). With every field 
+being optional, we're already a long way into achieving backwards and forwards compatibility. There were however some 
 other aspects of the format that needed to be enforced in some way.
 
-The Protobuf documentation outlines the [rules for updating messages](https://developers.google.com/protocol-buffers/docs/proto3#updating). A summary of the concepts in relation to stream producers and consumers 
+The Protobuf documentation outlines the [rules for updating messages](https://developers.google
+.com/protocol-buffers/docs/proto3#updating). A summary of those concepts in relation to stream producers and consumers 
 follows.
 
 ### Protobuf Properties That Support Forwards Compatibility
