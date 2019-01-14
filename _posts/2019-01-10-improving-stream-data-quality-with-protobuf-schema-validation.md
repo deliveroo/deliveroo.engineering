@@ -43,13 +43,13 @@ lot to be desired, including a lack of well defined mechanisms for schema evolut
 sub-par encoding and decoding performance of JSON itself.
 
 ## Deciding on an Encoding Format
-The team began investigating the range of technologies available for inter-operable schema formats. We use many 
-different programming languages at Deliveroo, so it was paramount that our chosen encoding format be interoperable 
-between those languages. This led us towards choosing a format that supports defining a schema in a programming 
-language agnostic Interface Definition Language (IDL) which could then propagate the schema across to all the 
-applications that need to work on that data. In addition to this, benefits such as binary serialisation (reduced 
-payload size) and schema evolution mechanisms were aspects the team had worked with before on previous projects, and
- were keen to make use of again.
+The team began investigating the range of encoding formats that would suit Deliveroo's requirements. The organisation
+ makes use of many different programming languages, so it was paramount that our chosen encoding format be 
+ interoperable between those languages. This led us towards choosing a format that supports defining a schema in a 
+ programming language agnostic Interface Definition Language (IDL) which could then propagate the schema across to 
+ all the applications that need to work on that data. In addition to this, benefits such as binary serialisation 
+ (reduced payload size) and schema evolution mechanisms were aspects the team had worked with before on previous 
+ projects, and were keen to make use of again.
 
 We quickly narrowed the choice of serialisation formats to three: Thrift, Protobuf, and Avro. We then proceeded to 
 conduct an evaluation of these formats to determine what would work best for transmission of data over Kafka.
