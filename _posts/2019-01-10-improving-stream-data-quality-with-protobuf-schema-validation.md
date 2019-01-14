@@ -109,7 +109,7 @@ meaning, and altering it can cause havoc if a consumer processes old data with a
 belongs to a field number. 
 
 The tests we’ve implemented to cover all of these aspects are as follows:
-- Fields numbers must not be amended.
+- Field numbers must not be amended.
 - Fields must not have their type amended.
 - Fields that have been removed from a message must have an entry added to a reserved statement within the message, 
 both for the deleted field and the deleted field number. This ensures that the protoc compiler will complain if 
