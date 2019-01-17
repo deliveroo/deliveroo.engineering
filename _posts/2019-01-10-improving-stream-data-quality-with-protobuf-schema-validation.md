@@ -14,7 +14,7 @@ Just some of the ways in which we make use of data at Deliveroo include computin
   optimal rider assignments to in-flight orders, making live operational decisions, personalising restaurant 
   recommendations to users and prioritising platform fixes. Our quickly expanding business also means our platform 
   needs to keep ahead of the curve to accommodate the ever growing volumes of data and increasing complexity of 
-  systems. The Engineering organisation is in the process of decomposing a monolith application into a suite of 
+  our systems. The Engineering organisation is in the process of decomposing a monolith application into a suite of 
   microservices. 
   
 To help meet these requirements, the Data Engineering Team (which I'm part of) have developed a new inter-service 
@@ -22,7 +22,8 @@ messaging framework that not only supports service decomposition work, but helps
 data. Because it builds on top of Apache Kafka we decided to call it Franz.
 
 Franz was conceived as a strongly-typed, interoperable data stream for inter-service communication. By strictly 
-enforcing a requirement of using Protobuf messages on all Kafka topics, our chosen design guarantees reliable and 
+enforcing a requirement of using [Protobuf](https://developers.google.com/protocol-buffers/) messages on all Kafka 
+topics, our chosen design guarantees reliable and 
 consistent data on each topic, and provides a way for schemas to evolve without breaking downstream systems.
 
 This article describes how we came to implement a flexible, managed repository for the Protobuf schemas flowing on 
@@ -38,8 +39,8 @@ expectations of the format of the data and be less vulnerable to breaking due to
 
 Both of these requirements meant that a flexible data format such as JSON would not be ideal and the team invested 
 in researching transport encoding formats the would provide stronger assurances about the data being transmitted. 
-While there are some ways to give greater guarantees for JSON, using for example JSON Schema, this still leaves a 
-lot to be desired, including a lack of well defined mechanisms for schema evolution, and still leaves us with 
+While there are some ways to give greater guarantees for JSON, such as [JSON Schema](https://json-schema.org/), these 
+still leave a lot to be desired, including a lack of well defined mechanisms for schema evolution, not to mention the
 sub-par encoding and decoding performance of JSON itself.
 
 ## Deciding on an Encoding Format
@@ -66,8 +67,11 @@ of [Confluent’s support for this on Kafka](https://www.confluent.io/blog/avro-
 In the end Avro was discounted as not ideal for Deliveroo’s setup due to lack of cross language support. The thinking
  behind this was based on a desire for support of generated schema classes in each of Deliveroo’s main supported 
  languages (Java/Scala/Kotlin, Go and Ruby). Avro only supported the JVM languages in this regard. As it turns out, 
- the way Avro _does_ support languages outside those with code generation support (through dynamic access to a schema
-  as part of global configuration) turned out to be a feature we also wanted to support with Protobuf.
+ the way [Confluent Schema Registry and Avro](https://docs.confluent.io/current/schema-registry/docs/index.html) 
+ _do_ support languages outside those with code generation support (through dynamic access to a schema as part of 
+ global configuration) turned out to be a feature we also wanted to support with Protobuf. To maintain maximum 
+ flexibility though, we've implemented both code artefacts for the main languages and a centralised repository for 
+ dynamic access.
 
 ## Providing Guarantees on Graceful Schema Evolution
 With our decision on Protobuf confirmed, we turned out attention to creating some extra safeguards around schema 
@@ -168,7 +172,7 @@ mapping between an authentication key used by publishers which maps to one and o
 publishing to Kafka is done via our Stream Producer API (topic ACLs prevent any other  applications from publishing)
 , we have implemented a method to enforce the relationship between producers, topics and schemas.
 
-## Managing schema artefacts and the path towards a dynamic registry
+## Managing Schema Artefacts and the Path Towards a Dynamic Registry
 A key requirement for implementing central management of schemas is to minimise the burden for developers. One of 
 the advantages of the Confluent Schema registry is that schema management is handled without the need to include 
 generated code within client applications. While generated code can be useful in some instances (where one wishes to 
