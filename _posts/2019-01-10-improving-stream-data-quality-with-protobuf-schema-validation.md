@@ -12,7 +12,7 @@ excerpt: >
 
 Just some of the ways in which we make use of data at Deliveroo include computing 
   optimal rider assignments to in-flight orders, making live operational decisions, personalising restaurant 
-  recommendations to users and prioritising platform fixes. Our quickly expanding business also means our platform 
+  recommendations to users, and prioritising platform fixes. Our quickly expanding business also means our platform 
   needs to keep ahead of the curve to accommodate the ever growing volumes of data and increasing complexity of 
   our systems. The Engineering organisation is in the process of decomposing a monolith application into a suite of 
   microservices. 
@@ -32,16 +32,15 @@ Franz, and how we have designed a way to provide a reliable schema contract betw
 ## The Need for a Structured Message Format
 
 A key requirement of our centralised message service is resilience and one step towards achieving this is providing 
-guarantees about the structure and data types of messages. These guarantees mean consumer applications can have 
-expectations of the format of the data and be less vulnerable to breaking due to corrupt messages. Another important
- aspect for resilience is being able to update the data model without breaking consumers that are depending on the 
- previous version, which means enforcing backwards and forwards compatible schema evolution guarantees. 
+guarantees about the structure of messages and data types within those messages. These guarantees mean consumer 
+applications can have expectations of the format of the data and be less vulnerable to breaking due to corrupt 
+messages. Another important aspect for resilience is being able to update the data model without breaking clients 
+that are depending on a different schema version, which means ensuring we have backwards and forwards compatibility. 
 
-Both of these requirements meant that a flexible data format such as JSON would not be ideal and the team invested 
-in researching transport encoding formats the would provide stronger assurances about the data being transmitted. 
-While there are some ways to give greater guarantees for JSON, such as [JSON Schema](https://json-schema.org/), these 
-still leave a lot to be desired, including a lack of well defined mechanisms for schema evolution, not to mention the
-sub-par encoding and decoding performance of JSON itself.
+Our reasoning about these requirements came from previous experience of sending JSON over streams, and being bitten 
+by the different structural expectations between clients. While there are some ways to give greater guarantees for 
+JSON, such as [JSON Schema](https://json-schema.org/), these still leave a lot to be desired, including a lack of well 
+defined mechanisms for schema evolution, not to mention the sub-par encoding and decoding performance of JSON itself.
 
 ## Deciding on an Encoding Format
 The team began investigating the range of encoding formats that would suit Deliveroo's requirements. The organisation
@@ -57,24 +56,24 @@ conduct an evaluation of these formats to determine what would work best for tra
 
 Thrift and Protobuf have very similar semantics, with IDLs that support the broad types and data structures utilised 
 in mainstream programming languages. When conducting our evaluation, we initially chose Thrift due to familiarity, 
-but in the end discounted this due to lack of community support. Avro was an intriguing option, particularly because 
-of [Confluent’s support for this on Kafka](https://www.confluent.io/blog/avro-kafka-data/). Avro semantics are quite
- different to that of Protobuf, as it is typically used with a schema definition provided in a header to a file. 
- Confluent’s schema registry removes this requirement by keeping the schema definition in an API and tagging each 
- message with a lookup to find that schema. One of the other appealing aspects of Avro is that it manages schema 
- evolution and backwards and forwards compatibility for you, by keeping track of a writers and a readers schema. 
+but in the end discounted this due to lack of momentum in the open source project. Avro was an intriguing 
+option, particularly because of [Confluent’s support for this on Kafka](https://www.confluent.io/blog/avro-kafka-data/). Avro semantics are quite different to that of Protobuf, as it is typically used with a 
+schema definition provided in a header to a file. Confluent’s schema registry removes this requirement by keeping 
+the schema definition in an API and tagging each message with a lookup to find that schema. One of the other 
+appealing aspects of Avro is that it manages schema evolution and backwards and forwards compatibility for you, by 
+keeping track of a writers and a readers schema. 
 
 In the end Avro was discounted as not ideal for Deliveroo’s setup due to lack of cross language support. The thinking
  behind this was based on a desire for support of generated schema classes in each of Deliveroo’s main supported 
  languages (Java/Scala/Kotlin, Go and Ruby). Avro only supported the JVM languages in this regard. As it turns out, 
  the way [Confluent Schema Registry and Avro](https://docs.confluent.io/current/schema-registry/docs/index.html) 
- _do_ support languages outside those with code generation support (through dynamic access to a schema as part of 
- global configuration) turned out to be a feature we also wanted to support with Protobuf. To maintain maximum 
+ _do_ support languages outside those with code generation support (through dynamic access to a schema through an API) 
+ turned out to be a feature we also wanted to support with Protobuf. To maintain maximum 
  flexibility though, we've implemented both code artefacts for the main languages and a centralised repository for 
  dynamic access.
 
 ## Providing Guarantees on Graceful Schema Evolution
-With our decision on Protobuf confirmed, we turned out attention to creating some extra safeguards around schema 
+With our decision on Protobuf confirmed, we turned our attention to creating some extra safeguards around schema 
 evolution.
 
 Some aspects of graceful schema evolution are supported by virtue of Protobuf design. In particular, proto3 has 
@@ -82,12 +81,11 @@ done away with the concept of required fields (which made the decision not to us
 being optional, we're already a long way into achieving backwards and forwards compatibility. There were however some 
 other aspects of the format that needed to be enforced in some way.
 
-The Protobuf documentation outlines the [rules for updating messages](https://developers.google
-.com/protocol-buffers/docs/proto3#updating). A summary of those concepts in relation to stream producers and consumers 
+The Protobuf documentation outlines the [rules for updating messages](https://developers.google.com/protocol-buffers/docs/proto3#updating). A summary of those concepts in relation to stream producers and consumers 
 follows.
 
 ### Protobuf Properties That Support Forwards Compatibility
-Forwards compatibility means that consumers can read data produced from a client which is using a later version of 
+Forwards compatibility means that consumers can read data produced from a client using a later version of 
 the schema than that consumer. In the case where a new field is added to a Protobuf message, the message will be 
 decoded by the consumer but it will have no knowledge of that new field until it moves to the later version.
 
@@ -178,7 +176,9 @@ the advantages of the Confluent Schema registry is that schema management is han
 generated code within client applications. While generated code can be useful in some instances (where one wishes to 
 manage the use of a particular version of the schema within an application in a highly controlled manner), in other 
 cases a client may be better off treating schema definitions more like configuration, available within the run-time 
-environment. In the case of Deliveroo’s Kafka Producer API, requiring a library version update and re-release of the 
+environment.
+
+In the case of Deliveroo’s Kafka Producer API, requiring a library version update and re-release of the 
 application every time the schema changed was deemed too heavyweight to suit the pace of development. To get around 
 this, we’ve implemented a two pronged approach for the distribution of schema information for clients. The first 
 method is in the form of generated code artefacts in relevant Deliveroo languages, held in code repositories. The 
