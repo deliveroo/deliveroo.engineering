@@ -37,8 +37,8 @@ applications can have expectations of the format of the data and be less vulnera
 messages. Another important aspect for resilience is being able to update the data model without breaking clients 
 that are depending on a different schema version, which means ensuring we have backwards and forwards compatibility. 
 
-Our reasoning about these requirements came from previous experience of sending JSON over streams, and being bitten 
-by the different structural expectations between clients. While there are some ways to give greater guarantees for 
+Our reasoning about these requirements came from previous experience of sending JSON over streams, with accidental 
+or deliberate changes causing breakages. While there are some ways to give greater guarantees for 
 JSON, such as [JSON Schema](https://json-schema.org/), these still leave a lot to be desired, including a lack of well 
 defined mechanisms for schema evolution, not to mention the sub-par encoding and decoding performance of JSON itself.
 
@@ -56,8 +56,9 @@ conduct an evaluation of these formats to determine what would work best for tra
 
 Thrift and Protobuf have very similar semantics, with IDLs that support the broad types and data structures utilised 
 in mainstream programming languages. When conducting our evaluation, we initially chose Thrift due to familiarity, 
-but in the end discounted this due to lack of momentum in the open source project. Avro was an intriguing 
-option, particularly because of [Confluent’s support for this on Kafka](https://www.confluent.io/blog/avro-kafka-data/). Avro semantics are quite different to that of Protobuf, as it is typically used with a 
+but in the end discounted this due to lack of momentum in the open source project. Thrift also left a lot to be 
+desired in terms of quality, clarity and breadth of documentation in comparison to the other two formats. Avro was
+ an intriguing option, particularly because of [Confluent’s support for this on Kafka](https://www.confluent.io/blog/avro-kafka-data/). Avro semantics are quite different to that of Protobuf, as it is typically used with a 
 schema definition provided in a header to a file. Confluent’s schema registry removes this requirement by keeping 
 the schema definition in an API and tagging each message with a lookup to find that schema. One of the other 
 appealing aspects of Avro is that it manages schema evolution and backwards and forwards compatibility for you, by 
@@ -74,12 +75,16 @@ In the end Avro was discounted as not ideal for Deliveroo’s setup due to lack 
 
 ## Providing Guarantees on Graceful Schema Evolution
 With our decision on Protobuf confirmed, we turned our attention to creating some extra safeguards around schema 
-evolution.
+evolution. The repo that we maintain our Protobuf models in is used by many developers across different teams at 
+Deliveroo, with models belonging to various services. The benefit of central management of these rules is that 
+we ensure good data quality across all inter-service communication because the rules are defined once and used 
+consistently. Data Engineering developed unit tests to enforce the rules, which run on every commit, and 
+allow other developers to make changes to their models without needing to keep the rules at the front of their minds.
 
-Some aspects of graceful schema evolution are supported by virtue of Protobuf design. In particular, proto3 has 
+Before going into detail on the tests we implemented, it's important to note that some aspects of graceful schema 
+evolution are supported by virtue of Protobuf design. In particular, proto3 has 
 done away with the concept of required fields (which made the decision not to use proto2 easier). With every field 
-being optional, we're already a long way into achieving backwards and forwards compatibility. There were however some 
-other aspects of the format that needed to be enforced in some way.
+being optional, we're already a long way into achieving backwards and forwards compatibility.
 
 The Protobuf documentation outlines the [rules for updating messages](https://developers.google.com/protocol-buffers/docs/proto3#updating). A summary of those concepts in relation to stream producers and consumers 
 follows.
@@ -110,7 +115,7 @@ message (as opposed to the field name). All producers and consumers rely on this
 meaning, and altering it can cause havoc if a consumer processes old data with a new understanding of what data 
 belongs to a field number. 
 
-The tests we’ve implemented to cover all of these aspects are as follows:
+The tests we've implemented cover the following aspects:
 - Field numbers must not be amended.
 - Fields must not have their type amended.
 - Fields that have been removed from a message must have an entry added to a reserved statement within the message, 
@@ -119,10 +124,10 @@ someone attempts to add either of these back in to a subsequent version.
 - Fields must not have their name amended (this would not break Protobuf compatibility, but we have the test in 
 place to help maintain the evolvable schemas for JSON derived from Protobuf models).
 
-These rules are enforced within our Protobuf repo, using the Protobuf FileDescriptor API, which allows for a single 
-object representation of the entire message space, and can be used to track differences that arise between message 
-versions within the scope of an individual pull request. While this doesn’t provide explicit guarantees that version
- 1 and version n of a schema will be compatible, it does facilitate this implicitly by setting constraints on the 
+The tests make use of the Protobuf [FileDescriptor API](https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/Descriptors.FileDescriptor), and the [protoc-jar library](https://github.com/os72/protoc-jar),
+ to generate single object representations of the entire message space, which can be used to track differences that arise 
+between message versions within the scope of an individual pull request. While this doesn’t provide explicit guarantees that version
+ 1 and version N of a schema will be compatible, it does facilitate this implicitly by setting constraints on the 
  changes that an individual pull request would apply.
 
 ## Providing Guarantees on Topic Schemas 
@@ -163,7 +168,7 @@ message Order {
 ```
 
 If a client serialises a message with a missing topic definition or mismatched definition in relation to the topic 
-being published to, the Producer API returns a 400 Bad Request to that client.
+being published to, the Producer API returns a `400 Bad Request` to that client.
 
 The full contract is achieved through a combination of the topic metadata tying a topic to a schema and a separate 
 mapping between an authentication key used by publishers which maps to one and only one topic. By ensuring all 
@@ -191,15 +196,12 @@ Producer API then loads this file and uses it to validate all incoming messages.
 ![Data flow](/images/posts/proto-schema-registry/proto-layout.png)
 </figure>
 
-## Limitations
-The setup outlined in this article does limit the enforcement of our contract only to publishers over HTTP for the 
-moment. In order to make Franz a more versatile system and to give better semantics when consumers demand a physical 
-ordering according to source database activity, making use of Change Data Capture (CDC) tools like Debezium will be 
-worth considering. These also have the advantage of ensuring that every state change is captured (something that is 
-not guaranteed with our current producer clients). While these considerations are outside the scope of this article, 
-CDC tools are worthy of evaluation as another class of producer client. In order to accommodate these, we will need a
-new implementation of the concepts outlined here in order to enforce the contract. 
-
+## Summary
+ We have achieved our aim of strongly typed messages which various teams can own for themselves, while ensuring that 
+ when those schemas evolve they can still be safely consumed. As the system has developed we have made improvements, 
+ from distributing schema artefacts in a variety of ways to embedding the topic mapping within schemas. These 
+ improvements have increased the overall workflow efficiency, and we expect more improvements of this nature to 
+ happen in future as we address new requirements.
 
 
 
