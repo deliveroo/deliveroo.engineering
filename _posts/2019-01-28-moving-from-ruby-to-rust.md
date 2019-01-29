@@ -71,7 +71,9 @@ The second approach, using Ruby API, sounded more promising, as there were alrea
 * ruru/rutie
 * Helix
 
-We tried Helix first: it has macros which look like writing Ruby in Rust, which was a bit more magical for us than we found comfortable; and it also assumed your Ruby app was Rails (at least by looking at the Readme).
+We tried Helix first: it has macros which look like writing Ruby in Rust, which was a bit more magical for us than we found comfortable;
+The Coercion Protocol wasn't well documented and it wasn't clear how would you go about passing non-primitive ruby objects into Helix' methods;
+We were not sure about the safety - it looked like Helix didn't call ruby methods using `rb_protect`, which could lead to an undefined behavior;
 Eventually, we decided to go with ruru/rutie, but keep ruby layer thin and isolated so that we could possibly switch in the future.
 [Rutie](https://crates.io/crates/rutie) is a fork of [Ruru](https://crates.io/crates/ruru) (it looks like ruru's development had stagnated, and it wasn't accepting new PRs).
 
@@ -291,7 +293,7 @@ In the dispatcher, there are 3 main phases of the dispatch cycle:
 * running computation, calculating assignments
 * saving/sending assignments
 
-Loading data and saving data phases scale pretty much linearly depending on the dataset size, while computation phase (which we moved to Rust) has an exponential component in it.
+Loading data and saving data phases scale pretty much linearly depending on the dataset size, while computation phase (which we moved to Rust) has an higher-order polynomial component in it.
 We are less worried about the loading/saving data phases, and we didn't prioritise speeding up those phases yet.
 While still having loading data and sending data back parts of the dispatcher written in Ruby, total dispatch time was significantly reduced: for example, total dispatch time in one of our larger zones dropped from ~4 sec to 0.8 sec.
 
