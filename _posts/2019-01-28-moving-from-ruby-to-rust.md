@@ -15,8 +15,8 @@ excerpt: >
 
 ## Background
 
-In logistics algorithms team, we have a service, called dispatcher, main purpose of which is to assign orders to riders.
-For each rider we build a timeline, where we predict where riders will be at a certain point of time,
+In logistics algorithms team, we have a service, called dispatcher, the main purpose of which is to assign orders to riders.
+For each rider we build a timeline, where we predict where riders will be at a certain point of time;
 knowing this, we can more efficiently assign rider to order.
 
 Building each timeline involves a fair bit of computation: using different machine learning models to predict how long events will take,
@@ -24,9 +24,9 @@ asserting certain constraints, calculating assignment cost. The computations the
 
 First version of the dispatcher was written mainly in Ruby: this was a go-to language in the company, and it was performing adequately at that time. But as Deliveroo kept growing, increasing number of orders and riders, we saw that
 the dispatch process started taking much longer than before and we realised, that at some point it will be impossible to
-dispatch some zones within a time constraint that we put in place. We also knew that is was limiting us if we decided to implement more advanced algorithms, which would require even more computation time.
+dispatch some areas within a time constraint that we put in place. We also knew that is was limiting us if we decided to implement more advanced algorithms, which would require even more computation time.
 
-First thing we tried was to optimise the current code (cache some computations, try to find a bug in the algorithms),
+The first thing we tried was to optimise the current code (cache some computations, try to find a bug in the algorithms),
 which didn't help much. It was clear that ruby was a bottleneck here and we started looking at the alternatives.
 
 ## Why we decided to go with rust
@@ -37,7 +37,7 @@ We considered several alternatives of how we can solve the problem:
 * identify biggest bottlenecks, rewrite those parts of the code and somehow integrate them in the current code
 
 We knew that rewriting something from scratch can be risky and we didn't feel quite comfortable with this approach.
-Another option, finding bottlenecks and replacing them was something that we did already for one part of the code (we built a native extension gem for the Hungarian route matching algorithm, implemented in Rust), and that worked well.
+Another option, finding bottlenecks and replacing them, was something that we did already for one part of the code (we built a native extension gem for the Hungarian route matching algorithm, implemented in Rust), and that worked well.
 We decided to try this approach.
 
 There were several options how we could integrate parts of the code written in another language to work with ruby:
@@ -48,32 +48,32 @@ We quickly discarded an option to build an external service, because either we w
 external service hundreds thousand times per dispatch cycle and the overhead of the communication would detriment all the potential
 speed gains, or we would need to reimplement a big part of the dispatcher inside this service, which is almost the same as a complete rewrite.
 
-We decided that it has to be some sort of native extension, and for that, we decided to use rust, as it ticked most of the boxes for us:
+We decided that it has to be some sort of native extension, and for that, we decided to use Rust, as it ticked most of the boxes for us:
 
 * it has high performance (comparable to C)
 * it is memory safe
 * it can be used to build dynamic libraries, which can be loaded into Ruby (using extern "C" interface)
 
-Some of our team members had experience with rust and liked the language, also one part of the dispatcher was already using rust.
+Some of our team members had experience with Rust and liked the language, also one part of the dispatcher was already using Rust.
 Our strategy was to replace current ruby implementation gradually, by replacing parts of the algorithm one by one.
-It was possible because we could implement separate methods and classes in rust and call them from Ruby without a big overhead of cross-language interaction.
+It was possible because we could implement separate methods and classes in Rust and call them from Ruby without a big overhead of cross-language interaction.
 
-## How we made ruby talk to rust
+## How we made Ruby talk to Rust
 
-There a few different ways you can call rust from ruby:
+There a few different ways you can call Rust from Ruby:
 
-* write a dynamic library in rust with `extern "C"` interface and call it using FFI.
-* write a dynamic library, but use ruby API to register methods, so that you can call them from ruby directly, just like any other ruby code.
+* write a dynamic library in Rust with `extern "C"` interface and call it using FFI.
+* write a dynamic library, but use Ruby API to register methods, so that you can call them from Ruby directly, just like any other Ruby code.
 
-First approach, using FFI would require us to come up with some custom C like interfaces in both rust and ruby and then create wrappers for them in both languages.
-Second approach, using ruby API sounded more promising, as there were already libraries to make our lives easier:
+First approach, using FFI would require us to come up with some custom C like interfaces in both Rust and Ruby and then create wrappers for them in both languages.
+The second approach, using Ruby API, sounded more promising, as there were already libraries to make our lives easier:
 
 * ruru/rutie
 * Helix
 
-We tried Helix first, it has macros, which looks like writing Ruby in Rust (it was a bit too magical for us than we found comfortable) and it also assumed your ruby app was Rails (at least by looking at the Readme).
+We tried Helix first: it has macros which look like writing Ruby in Rust, which was a bit more magical for us than we found comfortable; and it also assumed your Ruby app was Rails (at least by looking at the Readme).
 Eventually, we decided to go with ruru/rutie, but keep ruby layer thin and isolated so that we could possibly switch in the future.
-[Rutie](https://crates.io/crates/rutie) is a fork of [Ruru](https://crates.io/crates/ruru), but it looks like ruru's development was stagnated, and it wasn't accepting new PRs.
+[Rutie](https://crates.io/crates/rutie) is a fork of [Ruru](https://crates.io/crates/ruru) (it looks like ruru's development had stagnated, and it wasn't accepting new PRs).
 
 Here's a small example of how you can create a class with one method in ruru/rutie:
 
@@ -150,7 +150,7 @@ methods!(
 
 You can see a lot of routine and repetitive code here, there's also missing proper error handling.
 After looking at this code, it reminded us that this looks a lot like some manual parsing of something like JSON or similar.
-You _could_ instead serialize objects in ruby to JSON and then parse it in Rust, and it works mostly OK, but you still need to implement JSON serializers in Ruby.
+You _could_ instead serialize objects in Ruby to JSON and then parse it in Rust, and it works mostly OK, but you still need to implement JSON serializers in Ruby.
 But then we were curious, what if we implement `serde` deserializer for `AnyObject` itself: it will take ruties's `AnyObject` and go over each field defined in the type and call the corresponding method on that ruby object to get it's value. And it worked!
 
 Here's the same method, but using our serde deserializer & serializer:
@@ -189,10 +189,10 @@ We also added a built-in error handling: if serde fails to "parse" the object, t
 
 Using [rutie-serde](https://crates.io/crates/rutie-serde/) we could quickly and painlessly implement thin interfaces between ruby and rust.
 
-## Moving from ruby to rust
+## Moving from Ruby to Rust
 
-We came up with a plan to gradually replace all parts of the ruby dispatcher with rust.
-We started by replacing with rust classes which didn't have dependencies on other parts of the dispatcher and adding feature flags,
+We came up with a plan to gradually replace all parts of the Ruby dispatcher with Rust.
+We started by replacing with Rust classes which didn't have dependencies on other parts of the dispatcher and adding feature flags,
 something similar to this:
 
 ```ruby
@@ -207,9 +207,9 @@ module TravelTime
 end
 ```
 
-There was also a **master switch** (in this case `rust_enabled?`), which allowed us to switch all the rust code off by flipping just one feature flag.
+There was also a **master switch** (in this case `rust_enabled?`), which allowed us to switch all the Rust code off by flipping just one feature flag.
 
-Since the API of both ruby and rust classes implementations remained largely the same, we were able to test both of them using the same tests, which gave us more confidence in the quality of the implementation.
+Since the API of both Ruby and Rust classes implementations remained largely the same, we were able to test both of them using the same tests, which gave us more confidence in the quality of the implementation.
 
 ```ruby
 RSpec.describe TravelTime do
@@ -241,7 +241,7 @@ RSpec.describe TravelTime do
 end
 ```
 
-When we moved all the dependencies of some larger part of the code into rust, we could then move the code which was relying on those dependencies:
+When we moved all the dependencies of some larger part of the code into Rust, we could then move the code which was relying on those dependencies:
 If your `BigModule` had dependencies on `A`, `B`, `C`, where `A` was also dependent on `D`, you would move `D`, then  `A`, and also `B`, `C`, which would be called by `BigModule` from ruby:
 
 ```ruby
@@ -276,12 +276,12 @@ impl BigModule {
 
 Obviously, each of these `call` methods would probably take some arguments and return some results, which `BigModule` would use.
 
-It was also very important that at any time, we could switch of rust integration and the dispatcher would still work (because we kept ruby implementation along with rust and kept adding feature flags).
+It was also very important that, at any time, we could switch off the Rust integration and the dispatcher would still work (because we kept the Ruby implementation along with Rust and kept adding feature flags).
 
 ## How performance was improved
 
-When moving more larger chunks of code into rust, we noticed increased performance improvements which we were carefully monitoring.
-When moving smaller modules to rust (such as travel time), we didn't expect much of the improvement, in fact, the code might have become slower because of the interaction overhead (we call travel time model hundred thousand times during the dispatch cycle). But after we moved larger modules the performance improvements were obvious.
+When moving more larger chunks of code into Rust, we noticed increased performance improvements which we were carefully monitoring.
+When moving smaller modules to Rust (such as travel time), we didn't expect much improvement: in fact, the code might have become slower because of the interaction overhead (we call travel time model hundreds of thousands of times during the dispatch cycle). But after we moved larger modules the performance improvements were obvious.
 
 ### Performance numbers
 
@@ -291,7 +291,7 @@ In the dispatcher, there are 3 main phases of the dispatch cycle:
 * running computation, calculating assignments
 * saving/sending assignments
 
-Loading data and saving data phases scale pretty much linearly depending on the dataset size, while computation phase (which we moved to rust) has an exponential component in it.
+Loading data and saving data phases scale pretty much linearly depending on the dataset size, while computation phase (which we moved to Rust) has an exponential component in it.
 We are less worried about the loading/saving data phases, and we didn't prioritise speeding up those phases yet.
 While still having loading data and sending data back parts of the dispatcher written in Ruby, total dispatch time was significantly reduced: for example, total dispatch time in one of our larger zones dropped from ~4 sec to 0.8 sec.
 
@@ -299,15 +299,15 @@ While still having loading data and sending data back parts of the dispatcher wr
 ![Total dispatch time](/images/posts/moving-from-ruby-to-rust/total_dispatch_time.png)
 </figure>
 
-Out of those 0.8 seconds, roughly 0.2 seconds were spent in rust, in the computation phase. This means 0.6 second is a ruby/DB overhead of loading data and sending assignments to riders. It looks like the dispatch cycle is only 5 times quicker now, but actually, the computation phase in this example time was reduced from ~3.4sec to 0.2sec, which is 17x speedup.
+Out of those 0.8 seconds, roughly 0.2 seconds were spent in Rust, in the computation phase. This means 0.6 second is a Ruby/DB overhead of loading data and sending assignments to riders. It looks like the dispatch cycle is only 5 times quicker now, but actually, the computation phase in this example time was reduced from ~3.4sec to 0.2sec, which is 17x speedup.
 
 <figure>
 ![Computation phase time](/images/posts/moving-from-ruby-to-rust/computation_time.png)
 </figure>
 
 
-Keep in mind, that rust code is almost a 1:1 copy of the ruby in terms of the implementation, and we didn't add any additional optimisations (like caching, avoiding copying memory in some cases), so there is still room for the improvement.
+Keep in mind, that Rust code is almost a 1:1 copy of the Ruby in terms of the implementation, and we didn't add any additional optimisations (like caching, avoiding copying memory in some cases), so there is still room for the improvement.
 
 ## Conclusion
 Our project of moving from Ruby to Rust was a success and we achieved what we have expected. Because of the gradual migration and having the ability to quickly switch between the implementations, we mitigated most of the risks and it allowed us to deliver this rewrite in smaller parts and under the feature flags, just like any other feature that we build normally in Deliveroo.
-Rust has shown a great performance and the absence of runtime made it easy to use it as a replacement of C in building ruby native extensions.
+Rust has shown a great performance and the absence of runtime made it easy to use it as a replacement of C in building Ruby native extensions.
