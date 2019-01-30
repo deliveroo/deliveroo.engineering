@@ -22,7 +22,7 @@ knowing this, we can more efficiently assign rider to order.
 Building each timeline involves a fair bit of computation: using different machine learning models to predict how long events will take,
 asserting certain constraints, calculating assignment cost. The computations themselves are quick, but the problem is that we need to do a lot of them: for each order, we need to go over all available riders to determine which assignment would be the best.
 
-First version of the dispatcher was written mainly in Ruby: this was a go-to language in the company, and it was performing adequately at that time. But as Deliveroo kept growing, increasing number of orders and riders, we saw that
+The first version of the Dispatcher was written mainly in Ruby: this was a go-to language in the company, and it was performing adequately given our size at the time. However, as Deliveroo kept growing, the number of orders and riders increaed dramatically, and we saw that
 the dispatch process started taking much longer than before and we realised, that at some point it will be impossible to
 dispatch some areas within a time constraint that we put in place. We also knew that is was limiting us if we decided to implement more advanced algorithms, which would require even more computation time.
 
@@ -31,7 +31,7 @@ which didn't help much. It was clear that ruby was a bottleneck here and we star
 
 ## Why we decided to go with rust
 
-We considered several alternatives of how we can solve the problem:
+We considered a few approaches to how to solve the problem of dispatch speed:
 
 * choose a new programming language with better performance characteristics and rewrite the dispatcher
 * identify biggest bottlenecks, rewrite those parts of the code and somehow integrate them in the current code
@@ -45,14 +45,14 @@ There were several options how we could integrate parts of the code written in a
 * build a native extension
 
 We quickly discarded an option to build an external service, because either we would need to call this
-external service hundreds thousand times per dispatch cycle and the overhead of the communication would detriment all the potential
+external service hundreds thousand times per dispatch cycle and the overhead of the communication would offset all of the potential
 speed gains, or we would need to reimplement a big part of the dispatcher inside this service, which is almost the same as a complete rewrite.
 
 We decided that it has to be some sort of native extension, and for that, we decided to use Rust, as it ticked most of the boxes for us:
 
 * it has high performance (comparable to C)
 * it is memory safe
-* it can be used to build dynamic libraries, which can be loaded into Ruby (using extern "C" interface)
+* it can be used to build dynamic libraries, which can be loaded into Ruby (using `extern "C"` interface)
 
 Some of our team members had experience with Rust and liked the language, also one part of the dispatcher was already using Rust.
 Our strategy was to replace current ruby implementation gradually, by replacing parts of the algorithm one by one.
@@ -65,16 +65,16 @@ There a few different ways you can call Rust from Ruby:
 * write a dynamic library in Rust with `extern "C"` interface and call it using FFI.
 * write a dynamic library, but use Ruby API to register methods, so that you can call them from Ruby directly, just like any other Ruby code.
 
-First approach, using FFI would require us to come up with some custom C like interfaces in both Rust and Ruby and then create wrappers for them in both languages.
+The first approach, using FFI would require us to come up with some custom C like interfaces in both Rust and Ruby and then create wrappers for them in both languages.
 The second approach, using Ruby API, sounded more promising, as there were already libraries to make our lives easier:
 
-* ruru/rutie
-* Helix
+* [ruru](https://github.com/d-unseductable/ruru) and [rutie](https://github.com/danielpclark/rutie)
+* [Helix](https://github.com/tildeio/helix)
 
 We tried Helix first: it has macros which look like writing Ruby in Rust, which was a bit more magical for us than we found comfortable;
 The Coercion Protocol wasn't well documented and it wasn't clear how would you go about passing non-primitive ruby objects into Helix' methods;
 We were not sure about the safety - it looked like Helix didn't call ruby methods using `rb_protect`, which could lead to an undefined behavior;
-Eventually, we decided to go with ruru/rutie, but keep ruby layer thin and isolated so that we could possibly switch in the future.
+Eventually, we decided to go with ruru/rutie. We tried to keep the Ruby layer thin and isolated from the rest of our application, so that we could possibly switch in the future.
 [Rutie](https://crates.io/crates/rutie) is a fork of [Ruru](https://crates.io/crates/ruru) (it looks like ruru's development had stagnated, and it wasn't accepting new PRs).
 
 Here's a small example of how you can create a class with one method in ruru/rutie:
@@ -103,7 +103,7 @@ pub extern "C" fn Init_ruby_rust_demo() {
 }
 ```
 
-It's great if all you need is to pass some basic types (like String, Fixnum, Boolean, etc.) to your methods, but not that great if you need to pass a lot of data. In that case, you can pass the whole object, say `Order` and then you would need to call each field you need on that object to move it into Rust:
+It's great if all you need is to pass some basic types (like `String`, `Fixnum`, `Boolean`, etc.) to your methods, but not that great if you need to pass a lot of data. In that case, you can pass the whole object, say `Order` and then you would need to call each field you need on that object to move it into Rust:
 
 ```rust
 pub struct RustUser {
@@ -153,7 +153,7 @@ methods!(
 You can see a lot of routine and repetitive code here, there's also missing proper error handling.
 After looking at this code, it reminded us that this looks a lot like some manual parsing of something like JSON or similar.
 You _could_ instead serialize objects in Ruby to JSON and then parse it in Rust, and it works mostly OK, but you still need to implement JSON serializers in Ruby.
-But then we were curious, what if we implement `serde` deserializer for `AnyObject` itself: it will take ruties's `AnyObject` and go over each field defined in the type and call the corresponding method on that ruby object to get it's value. And it worked!
+Then we were curious, what if we implement `serde` deserializer for `AnyObject` itself: it will take ruties's `AnyObject` and go over each field defined in the type and call the corresponding method on that ruby object to get it's value. It worked!
 
 Here's the same method, but using our serde deserializer & serializer:
 
@@ -280,10 +280,10 @@ Obviously, each of these `call` methods would probably take some arguments and r
 
 It was also very important that, at any time, we could switch off the Rust integration and the dispatcher would still work (because we kept the Ruby implementation along with Rust and kept adding feature flags).
 
-## How performance was improved
+## Performance Improvements
 
 When moving more larger chunks of code into Rust, we noticed increased performance improvements which we were carefully monitoring.
-When moving smaller modules to Rust (such as travel time), we didn't expect much improvement: in fact, the code might have become slower because of the interaction overhead (we call travel time model hundreds of thousands of times during the dispatch cycle). But after we moved larger modules the performance improvements were obvious.
+When moving smaller modules to Rust, we didn't expect much improvement: in fact, some code became slower because it was being called in tight loops, and there was a small overhead to calling Rust code from the Ruby application.
 
 ### Performance numbers
 
@@ -293,9 +293,9 @@ In the dispatcher, there are 3 main phases of the dispatch cycle:
 * running computation, calculating assignments
 * saving/sending assignments
 
-Loading data and saving data phases scale pretty much linearly depending on the dataset size, while computation phase (which we moved to Rust) has an higher-order polynomial component in it.
-We are less worried about the loading/saving data phases, and we didn't prioritise speeding up those phases yet.
-While still having loading data and sending data back parts of the dispatcher written in Ruby, total dispatch time was significantly reduced: for example, total dispatch time in one of our larger zones dropped from ~4 sec to 0.8 sec.
+Loading data and saving data phases scale pretty much linearly depending on the dataset size, while computation phase (which we moved to Rust) has a higher-order polynomial component in it.
+We are less worried about the loading/saving data phases, and we haven't prioritised speeding up those phases yet.
+While still having loading data and sending data back parts of the dispatcher written in Ruby, total dispatch time was significantly reduced: for example, total dispatch time in one of our larger geographic areas dropped from ~4 sec to 0.8 sec.
 
 <figure>
 ![Total dispatch time](/images/posts/moving-from-ruby-to-rust/total_dispatch_time.png)
