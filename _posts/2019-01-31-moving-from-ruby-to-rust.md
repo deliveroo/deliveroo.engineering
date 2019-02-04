@@ -45,7 +45,7 @@ There were several options how we could integrate parts of the code written in a
 * build a native extension
 
 We quickly discarded an option to build an external service, because either we would need to call this
-external service hundreds thousand times per dispatch cycle and the overhead of the communication would offset all of the potential
+external service hundreds of thousands of times per dispatch cycle and the overhead of the communication would offset all of the potential
 speed gains, or we would need to reimplement a big part of the dispatcher inside this service, which is almost the same as a complete rewrite.
 
 We decided that it has to be some sort of native extension, and for that, we decided to use Rust, as it ticked most of the boxes for us:
@@ -55,7 +55,7 @@ We decided that it has to be some sort of native extension, and for that, we dec
 * it can be used to build dynamic libraries, which can be loaded into Ruby (using `extern "C"` interface)
 
 Some of our team members had experience with Rust and liked the language, also one part of the Dispatcher was already using Rust.
-Our strategy was to replace current ruby implementation gradually, by replacing parts of the algorithm one by one.
+Our strategy was to replace the current ruby implementation gradually, by replacing parts of the algorithm one by one.
 It was possible because we could implement separate methods and classes in Rust and call them from Ruby without a big overhead of cross-language interaction.
 
 ## How we made Ruby talk to Rust
@@ -72,11 +72,11 @@ The second approach, using Ruby API, sounded more promising, as there were alrea
 * [Helix](https://github.com/tildeio/helix)
 
 We tried Helix first:
-* it has macros which look like writing Ruby in Rust, which was a bit more magical for us than we found comfortable
+* it has macros which look like writing Ruby in Rust, which was a bit more magical for us than we were comfortable with
 * the Coercion Protocol wasn't well documented and it wasn't clear how would you go about passing non-primitive Ruby objects into Helix methods
 * we were not sure about the safety - it looked like Helix didn't call Ruby methods using [`rb_protect`](https://silverhammermba.github.io/emberb/c/#rb_protect), which could lead to undefined behavior
 
-Eventually, we decided to go with ruru/rutie, but keep Ruby layer thin and isolated so that we could possibly switch in the future.
+Eventually, we decided to go with ruru/rutie, but keep the Ruby layer thin and isolated so that we could possibly switch in the future.
 We decided to use [Rutie](https://crates.io/crates/rutie), a recent fork of [Ruru](https://crates.io/crates/ruru) which has more active development.
 
 Here's a small example of how you can create a class with one method in ruru/rutie:
@@ -152,7 +152,7 @@ methods!(
 )
 ```
 
-You can see a lot of routine and repetitive code here, there's also missing proper error handling.
+You can see a lot of routine and repetitive code here, proper error handling is missing as well.
 After looking at this code, it reminded us that this looks a lot like some manual parsing of something like JSON or similar.
 You _could_ instead serialize objects in Ruby to JSON and then parse it in Rust, and it works mostly OK, but you still need to implement JSON serializers in Ruby.
 Then we were curious, what if we implement `serde` deserializer for `AnyObject` itself: it will take ruties's `AnyObject` and go over each field defined in the type and call the corresponding method on that ruby object to get it's value. It worked!
@@ -261,22 +261,22 @@ In the Dispatcher, there are 3 main phases of the dispatch cycle:
 * running computation, calculating assignments
 * saving/sending assignments
 
-Loading data and saving data phases scale pretty much linearly depending on the dataset size, while computation phase (which we moved to Rust) has an higher-order polynomial component in it.
+Loading data and saving data phases scale pretty much linearly depending on the dataset size, while the computation phase (which we moved to Rust) has an higher-order polynomial component in it.
 We are less worried about the loading/saving data phases, and we didn't prioritise speeding up those phases yet.
-While still having loading data and sending data back parts of the Dispatcher written in Ruby, total dispatch time was significantly reduced: for example, total dispatch time in one of our larger zones dropped from ~4 sec to 0.8 sec.
+While loading data and sending data back were still parts of the Dispatcher written in Ruby, the total dispatch time was significantly reduced: for example, in one of our larger zones it dropped from ~4 sec to 0.8 sec.
 
 <figure>
 ![Total dispatch time](/images/posts/moving-from-ruby-to-rust/total_dispatch_time.png)
 </figure>
 
-Out of those 0.8 seconds, roughly 0.2 seconds were spent in Rust, in the computation phase. This means 0.6 second is a Ruby/DB overhead of loading data and sending assignments to riders. It looks like the dispatch cycle is only 5 times quicker now, but actually, the computation phase in this example time was reduced from ~3.4sec to 0.2sec, which is 17x speedup.
+Out of those 0.8 seconds, roughly 0.2 seconds were spent in Rust, in the computation phase. This means 0.6 second is a Ruby/DB overhead of loading data and sending assignments to riders. It looks like the dispatch cycle is only 5 times quicker now, but actually, the computation phase in this example time was reduced from ~3.4sec to 0.2sec, which is a 17x speedup.
 
 <figure>
 ![Computation phase time](/images/posts/moving-from-ruby-to-rust/computation_time.png)
 </figure>
 
 
-Keep in mind, that Rust code is almost a 1:1 copy of the Ruby in terms of the implementation, and we didn't add any additional optimisations (like caching, avoiding copying memory in some cases), so there is still room for the improvement.
+Keep in mind, that Rust code is almost a 1:1 copy of the Ruby code in terms of the implementation, and we didn't add any additional optimisations (like caching, avoiding copying memory in some cases), so there is still room for improvement.
 
 ## Conclusion
 
