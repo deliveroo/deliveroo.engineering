@@ -186,10 +186,10 @@ cases a client may be better off treating schema definitions more like configura
 environment. This is where Confluent Schema Registry excels, as schema definitions can be accessed without the 
 need to include generated code within client applications. 
 
-We found our first requirement for this type of dynamic 
-schema use case came from observing how our Kafka Producer API kept up to date with a constantly evolving Protobuf 
-model repo. Initially, we had configured it so that the API required a library version update and re-release of 
-the application every time the schema changed. This was quickly deemed too heavyweight to suit the pace of development.
+We found our first requirement for this type of dynamic schema use case came from observing how awkward it was to 
+keep the Producer API up to date with a constantly evolving Protobuf model repo. Initially, we had configured it so 
+that the API required a library version update and re-release of the application every time the schema changed. This
+ was quickly deemed too heavyweight to suit the pace of development.
 
 To get around this, we implemented a method for the Producer API to quickly adapt to the latest schemas, 
 by again making use of the Protobuf FileDescriptor API. This method of schema distribution generates a master binary 
