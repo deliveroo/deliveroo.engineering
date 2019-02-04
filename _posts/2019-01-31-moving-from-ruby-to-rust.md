@@ -62,7 +62,7 @@ It was possible because we could implement separate methods and classes in Rust 
 
 There a few different ways you can call Rust from Ruby:
 
-* write a dynamic library in Rust with `extern "C"` interface and call it using FFI.
+* write a dynamic library in Rust with `extern "C"` interface and call it using [FFI](https://github.com/ffi/ffi/wiki).
 * write a dynamic library, but use the Ruby API to register methods, so that you can call them from Ruby directly, just like any other Ruby code.
 
 The first approach, using FFI would require us to come up with some custom C like interfaces in both Rust and Ruby and then create wrappers for them in both languages.
