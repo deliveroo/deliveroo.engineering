@@ -15,7 +15,7 @@ excerpt: >
 
 ## Background
 
-In Logistics Algorithms team, we have a service, called Dispatcher, the main purpose of which is to assign orders to riders.
+In the Logistics Algorithms team, we have a service, called Dispatcher, the main purpose of which is to assign orders to riders.
 For each rider we build a timeline, where we predict where riders will be at a certain point of time;
 knowing this, we can more efficiently assign rider to order.
 
