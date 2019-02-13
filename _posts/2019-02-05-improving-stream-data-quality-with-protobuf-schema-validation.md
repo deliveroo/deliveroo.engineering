@@ -114,8 +114,8 @@ handle that data be refactored to cope.
 The remaining Protobuf requirements that are mandated to ensure data consistency are met by ensuring that the 
 ordinal placeholders for each attribute are held immutable throughout a message definition's lifespan. A Protobuf 
 message definition consists of fields defined by a name, a type and an integer field number. The field number 
-in particular is sacred, as this is what is actually transmitted in a serialised message (as opposed to the field name)
-. All producers and consumers rely on this integer having a consistent meaning, and altering it can cause havoc if a
+in particular is sacred, as this is what is actually transmitted in a serialised message (as opposed to the field 
+name). All producers and consumers rely on this integer having a consistent meaning, and altering it can cause havoc if a
  consumer processes old data with a new understanding of what data belongs to a field number. 
 
 The tests we've implemented cover the following aspects:
@@ -194,10 +194,10 @@ that the API required a library version update and re-release of the application
 To get around this, we implemented a method for the Producer API to quickly adapt to the latest schemas, 
 by again making use of the Protobuf FileDescriptor API. This method of schema distribution generates a master binary 
 schema file which can be loaded dynamically from Amazon S3. When a new schema version is committed to master, the 
-latest version is copied to S3, and then a restart of the Producer API is triggered in order for it to pick up the 
-latest changes. This new method now forms part of a two pronged approach for the distribution of schema information 
-for clients, and gives developers a choice on which method suits them best. Since the Producer API use case 
-transpired, we have since introduced some consumer applications which also make use of the dynamic model.
+latest version is copied to S3, and then the Producer API picks up the new schema without any downtime. This new 
+method now forms part of a two pronged approach for the distribution of schema information for clients, and gives 
+developers a choice on which method suits them best. Since the Producer API use case transpired, we have since 
+introduced some consumer applications which also make use of the dynamic model.
 
 <figure>
 ![Data flow](/images/posts/proto-schema-registry/proto-layout.png)
