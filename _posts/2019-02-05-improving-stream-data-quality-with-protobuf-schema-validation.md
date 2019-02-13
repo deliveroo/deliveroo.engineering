@@ -194,10 +194,12 @@ that the API required a library version update and re-release of the application
 To get around this, we implemented a method for the Producer API to quickly adapt to the latest schemas, 
 by again making use of the Protobuf FileDescriptor API. This method of schema distribution generates a master binary 
 schema file which can be loaded dynamically from Amazon S3. When a new schema version is committed to master, the 
-latest version is copied to S3, and then the Producer API picks up the new schema without any downtime. This new 
-method now forms part of a two pronged approach for the distribution of schema information for clients, and gives 
-developers a choice on which method suits them best. Since the Producer API use case transpired, we have since 
-introduced some consumer applications which also make use of the dynamic model.
+latest file is copied to S3, and then the Producer API is notified through its `/refresh` endpoint. This allows the 
+API to stay up to date without any downtime.
+
+This new dynamic method now forms part of a two pronged approach for the distribution of schema information for 
+clients, and gives developers a choice on which method suits them best. Since the Producer API use case transpired, 
+we have since introduced some consumer applications which also make use of the dynamic model.
 
 <figure>
 ![Data flow](/images/posts/proto-schema-registry/proto-layout.png)
