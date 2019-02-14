@@ -4,7 +4,7 @@ title:  "Moving from Ruby to Rust"
 authors:
   - "Andrii Dmytrenko"
 excerpt: >
-  How we migrated our Tier 1 service from ruby to rust and didn't break production
+  How we migrated our Tier 1 service from ruby to rust and didn't break production.
 ---
 
 ## Table of Contents
@@ -15,9 +15,9 @@ excerpt: >
 
 ## Background
 
-In the Logistics Algorithms team, we have a service, called Dispatcher, the main purpose of which is to assign orders to riders.
+In the Logistics Algorithms team, we have a service, called Dispatcher, the main purpose of which is to offer an order to the rider, optimally.
 For each rider we build a timeline, where we predict where riders will be at a certain point of time;
-knowing this, we can more efficiently assign rider to order.
+knowing this, we can more efficiently suggest a rider for an order.
 
 Building each timeline involves a fair bit of computation: using different machine learning models to predict how long events will take,
 asserting certain constraints, calculating assignment cost. The computations themselves are quick, but the problem is that we need to do a lot of them: for each order, we need to go over all available riders to determine which assignment would be the best.
