@@ -8,4 +8,4 @@ portrait:   "/images/portraits/andrii-dmytrenko.jpg"
 
 Software Engineer from Ukraine
 
-I enjoy coding in Ru\[st|by\]
+I enjoy coding in Ru\[st\|by\]
