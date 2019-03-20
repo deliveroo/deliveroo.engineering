@@ -9,8 +9,7 @@ excerpt: >
 
 On the Payments team, we recently came up against a situation where we need to build a greenfield app, had tight deadlines, and had 7 engineers available. Amazing! there are 7 engineers available!... now how can we work effectively?
   
-Should we adhere to the [two pizza rule](http://blog.idonethis.com/two-pizza-team/), where a team should not be larger than what two pizzas can feed? This is backed by science and is an great rule to follow. However, if we followed it, our team size would be 2-3, maybe 4 if we're not very hungry that day. So we stepped back and thought about how can we meet the requirements and deliver this quickly, effectively, and have all 7 engineers contributing. 
-
+Should we adhere to the [two pizza rule](http://blog.idonethis.com/two-pizza-team/), where a team should not be larger than what two pizzas can feed? This is backed by science and is a great rule to follow. However, if we followed it, our team size would be 2-3, maybe 4 if we're not very hungry that day. So we stepped back and thought about how we can meet the requirements and deliver this quickly, effectively, and have all 7 engineers contributing. 
 
 We shipped the product on time with all 7 engineers contributing. These were some techniques we used.
 
@@ -55,7 +54,7 @@ We struggled with 2 things:
 1. How do we name these “aggregators”?
 2. How can we get 6 devs working effectively on building these?
 
-We weren’t sure what exactly to name them. We had good ideas, but they didn’t seem quite right. So we derferend the decision.
+We weren’t sure what exactly to name them. We had good ideas, but they didn’t seem quite right. So we deferred the decision.
 We deferred it by creating 3 jira tickets, JIRA-111, JIRA-222, JIRA-333 with all of the details required to implement them.
 We established a pattern and an interface in go.
 We created individual interfaces in individual files. We named each file after the ticket number.
