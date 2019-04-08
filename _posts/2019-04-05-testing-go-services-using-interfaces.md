@@ -15,7 +15,7 @@ excerpt: >
 
 For the past year at [Deliveroo](https://deliveroo.co.uk/) I've been using [Go](https://golang.org/) almost exclusively. It's pretty simple and easy to understand, yet it's fast and productive to build with.
 
-As software engineers, we need to have confidence that the solutions we put into production are of the highest quality. This not only allows us to sleep better at night, but it's important for the business to have faith in the quality of the product. One of the most effective ways to ensure a high quality is by writing software in such a way that it can be properly tested.
+As software engineers, we need to have confidence that the solutions we put into production are of the highest quality. This doesn't only allow us to sleep better at night, but it's also important for the business to have faith in the quality of the product. One of the most effective ways to ensure a high quality is by writing software in such a way that it can be properly tested.
 
 ## Defining the goal posts
 
