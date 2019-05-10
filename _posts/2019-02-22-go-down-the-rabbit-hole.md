@@ -117,7 +117,17 @@ The man in the middle proxy behaviour is similar that found in NGINX buffers:
 
 [NGINX buffers](https://docs.nginx.com/nginx/admin-guide/web-server/reverse-proxy/#configuring-buffers)
 ```
-By default NGINX buffers responses from proxied servers. A response is stored in the internal buffers and is not sent to the client until the whole response is received. Buffering helps to optimize performance with slow clients, which can waste proxied server time if the response is passed from NGINX to the client synchronously. However, when buffering is enabled NGINX allows the proxied server to process responses quickly, while NGINX stores the responses for as much time as the clients need to download them.
+By default NGINX buffers responses from proxied servers. A response is stored in
+the internal buffers and is not sent to the client until the whole response is
+received.
+
+Buffering helps to optimize performance with slow clients, which can
+waste proxied server time if the response is passed from NGINX to the client
+synchronously.
+
+However, when buffering is enabled NGINX allows the proxied server
+to process responses quickly, while NGINX stores the responses for as much time
+as the clients need to download them.
 ```
 
 So there we go, the end of our rabbit hole. In summary:
