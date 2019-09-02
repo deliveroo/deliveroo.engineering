@@ -10,4 +10,4 @@ I'm a software engineer with a background in data. I studied computer science be
 the world of analytics, and over the years found myself drawn to the engineering of data pipelines and 
 analytical systems. Using and discovering technology to make data useful is what keeps me excited.
 
-I mostly listen on [twitter](https://twitter.com/nerdlingah) but sometimes post about fast cars on [Instagram](https://www.instagram.com/nerdlingah).
+You can follow me on [twitter](https://twitter.com/nerdlingah).
