@@ -19,7 +19,7 @@ twitter:
 repository: "deliveroo/deliveroo.engineering"
 
 external_links:
-  careers: "https://careers.deliveroo.co.uk/?team=engineering"
+  careers: "https://careers.deliveroo.co.uk/?team=engineering-team"
 
 # Build settings
 markdown: kramdown
