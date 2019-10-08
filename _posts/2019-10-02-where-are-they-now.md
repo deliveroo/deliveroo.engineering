@@ -20,14 +20,14 @@ At Deliveroo we've had different forms of hack days, from teams taking the initi
 
 We're rapidly growing our teams; the organisation wide hack day helps us to get to know different people and spark new interests in what's going on in our community. It encourages us to think about different ideas we could do and an opportunity to prototype and share what we've learnt.
 
-If a hack day idea is closed to be shipped and we believe it will bring value to the user we encourage spending the time to getting it done. An example of this is we beta test our apps to employees, the Android team were able to add a prompt to encourage employees to upgrade to the latest version with the tap of a button.
+If a hack day idea is close to be shipped and we believe it will bring value to the user we encourage spending the time to getting it done. An example of this is we beta test our apps to employees, the Android team were able to add a prompt to encourage employees to upgrade to the latest version with the tap of a button.
 
 Other ideas may take more time to complete and here we encourage members of a hack day team to work with engineering managers and product managers to outline the proposal and work towards how we prioritise the idea.
 
 ### Incremental Wins
-You know how it is, we move fast and aim for the tasks that provide the most valuable results.  But along the way we realise there’s that one thing, or those many things that bug us.  
+You know how it is, we move fast and aim for the tasks that provide the most valuable results.  But along the way we realise there’s that one thing, or those many things, that bug us.  
 
-Perhaps it’s a process that has to be followed and hasn’t had any work done on simplifying it since it was implemented. Or maybe there’s a gap in our capabilities that falls lower down the priority list than other tasks.  It doesn’t have to be the long forgotten ticket at the bottom of the backlog.  It doesn’t even have to be your team’s responsibility!  In 2019 Deliveroo turned the spotlight on the small ideas, the incremental wins that add up to something much greater.
+Perhaps it’s a process that has to be followed and hasn’t been simplified. Or maybe there’s a gap in our capabilities that always seems like a lower priority compared to the main project.  It doesn’t have to be the long forgotten ticket at the bottom of the backlog.  It doesn’t even have to be your team’s responsibility!  In 2019 Deliveroo turned the spotlight on the small ideas, the incremental wins that add up to something much greater.
 
 <figure>
 ![Hack day room](/images/posts/where-are-they-now/excelroom.png)
@@ -42,14 +42,14 @@ Voting was done in five categories:
 * Valuable Little Problem
 * Happy Customers Award
 
-Winners were given a super cool 3d-printed Roo trophy with air plants in the ears.
+Troy and Joe created the trophies: 3d-printed Roo logos with air plants in the ears.
 
 <figure>
-![Trophy 3d model](/images/posts/where-are-they-now/rooward1.jpg)
+![Trophy 3d model](/images/posts/where-are-they-now/rooward2.png)
 </figure>
 
 <figure>
-![Trophy printed with airplants](/images/posts/where-are-they-now/rooward2.png)
+![Trophy printed with airplants](/images/posts/where-are-they-now/rooward1.jpg)
 </figure>
 
 There was swagger in the form of laptop stickers and popsockets.
@@ -61,28 +61,20 @@ There was swagger in the form of laptop stickers and popsockets.
 And of course, there was food.
 
 <figure>
-![Croissants and muffins](/images/posts/where-are-they-now/food4.png)
-</figure>
-
-<figure>
-![Salads](/images/posts/where-are-they-now/food1.png)
-</figure>
-
-<figure>
 ![Fruits and pastries](/images/posts/where-are-they-now/food2.png)
 </figure>
 
 <figure>
-![Sandwiches](/images/posts/where-are-they-now/food3.png)
+![Salads](/images/posts/where-are-they-now/food4.png)
 </figure>
 
-We saw Slackbots to make being on call easier, how web push notifications could help our riders during the sign up process, and were greatly amused by a team propose an IOT solution for monitoring busy toilets.  When the dust settled, winners announced and laptops packed up, it was time to go to the pub next door.
+We saw Slackbots to help on-call engineers, how web push notifications could help our riders during the sign up process, and were greatly amused by an IOT solution for monitoring busy toilets.  When the dust settled, winners announced and laptops packed up, it was time to go to the pub next door.
 
 There’s one big question remaining though...
 
 # What happened next?
 
-A hack should not go quietly into the night.  The power of focusing on an incremental win is that the target need is real and with a proof of concept, the argument for putting more work in and getting it into production grows stronger.  We’ll be catching up with some of the hacks that continued to have work done to them.
+A hack should not go quietly into the night.  The power of focusing on an incremental win is that the target need is real and, with a proof of concept, the argument for putting more work in and getting it into production grows stronger.  We’ll be catching up with some of the hacks that continued to have work done to them.
 
 ## Bot on Call - Best Overall winner
 
@@ -174,23 +166,7 @@ Dario: “[We] didn’t manage to finish that during hack day as we had issues w
 
 # You and who?
 
-Support and assistance from peers and leadership is vital to bringing an idea to production.  Let’s explore how work on the hacks has been received and contributed to.
-
-Lukas: “We've had offers of help from engineers outside of the original team, but we have declined these as we didn't think increasing the size of the team would make us go any faster, however, we have had a lot of help from Alison (Oncall manager) getting permissions and accounts set up.”
-
-Erika: “[My team] know I'm also working on this and my manager actively encouraged me to do it.”
-
-Florian: “We received support from the EMs of our teams and Alison (Oncall manager) and encouragement to ship it.”
-
-Mitchell: “My director has asked about how we’re using it and what challenges we’ve found with it. Alison (Oncall manager) has said that she is onboard for us promoting it and encouraging teams to use it before September/Q4 starts and make sure that services are able to handle the expected increase in traffic.”
-
-Alex: “There have been days where my team is okay with me working on this project. I’ve been giving the other front-end engineers in my team the reviews, so I’ve been getting help that way.”
-
-Lim: “[My product manager] was very keen on it as it solves a bunch of problems we currently face, so he has been the primary helper in terms of getting buy-ins from various stakeholders to let my entire team make it a team’s priority in Q3.”
-
-Dario: “I want to give credit to Ben for help during the hack day and Egis for help after.”
-
-Daniel: “Finance were super helpful. It involved some policy changes on our end to unlock this [food for on-call].”
+Support and assistance from peers and leadership is vital to bringing an idea to production.
 
 JP wrote an excellent article on getting support from your team (the snippets below have been cropped to paraphrase).
 
@@ -200,10 +176,26 @@ JP wrote an excellent article on getting support from your team (the snippets be
 ![There are slack channels where you can ask for help](/images/posts/where-are-they-now/jparticle3.png)
 </figure>
 
+Lukas: “We've had offers of help from engineers outside of the original team, but we have declined these as we didn't think increasing the size of the team would make us go any faster, however, we have had a lot of help from Alison (on-call manager) getting permissions and accounts set up.”
+
+Erika: “[My team] know I'm also working on this and my manager actively encouraged me to do it.”
+
+Florian: “We received support from the EMs of our teams and Alison and encouragement to ship it.”
+
+Mitchell: “My director has asked about how we’re using it and what challenges we’ve found with it. Alison has said that she is onboard for us promoting it and encouraging teams to use it before September/Q4 starts and make sure that services are able to handle the expected increase in traffic.”
+
+Alex: “There have been days where my team is okay with me working on this project. I’ve been giving the other front-end engineers in my team the reviews, so I’ve been getting help that way.”
+
+Lim: “[My product manager] was very keen on it as it solves a bunch of problems we currently face, so he has been the primary helper in terms of getting buy-ins from various stakeholders to let my entire team make it a team’s priority in Q3.”
+
+Dario: “I want to give credit to Ben for help during the hack day and Egis for help after.”
+
+Daniel: “Finance were super helpful. It involved some policy changes on our end to unlock [food for on-call engineers].”
+
 # Onto the future
 
 Deliveroo will continue to hold hackdays and we hope that each time we’re able to gain something, learn a little more and take advantage of the creativity that they bring.  Encouraging people to work with others outside of their team was one of the key pieces of feedback that we received and promoting non-engineering disciplines to join was also high up the list.  We’ll take these on board and look to the future with anticipation.
 
-Hack on, 
+Hack on,
 
 Deliveroo Engineering.

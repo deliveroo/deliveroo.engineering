@@ -8,4 +8,4 @@ portrait:   "/images/portraits/joshua-levin.jpg"
 
 I've been at Deliveroo since September 2018 as a backend engineer on the Payments team.
 
-When I'm not doing that you'll probably find me writing stories, enjoying board games or taking photos.
+In my free time you'll probably find me writing stories, enjoying board games or taking photos.
