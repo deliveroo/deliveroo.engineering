@@ -124,7 +124,7 @@ From the group: “After identifying several improvement opportunities, we kicke
 
 Daniel saw an opportunity to make it easier for on-call engineers to claim their meal allowance by integrating with our PagerDuty schedules.
 
-Daniel: “The food for the on call people project integrated Pagerduty - which is our alerting and notification system for incidents - with our DfB product. When an on call engineer is on call we allow them to claim an allowance to lighten the load in what can be stressful times.  
+Daniel: “The food for the on call people project integrated Pagerduty - which is our alerting and notification system for incidents - with our Deliveroo for Business product. When an on call engineer is on call we allow them to claim an allowance to lighten the load in what can be stressful times.  
 
 We’ve shipped a beta internally that we’re testing and are looking to expand it to a wider audience - so any tech company that uses both deliveroo and pagerduty can take advantage of this convenience.”
 
