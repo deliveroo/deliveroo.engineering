@@ -58,4 +58,4 @@ _Interested in joining Deliveroo? Head to the bottom of this post for details on
 
 ### 2020 Grad Hiring
 
-Interested in joining Deliveroo? Our 2020 grad hiring opens today! Click here for more information. 
+Interested in joining Deliveroo? Our 2020 grad hiring opens today! (Click here for more information)[https://boards.greenhouse.io/deliveroo/jobs/1911602]. 
