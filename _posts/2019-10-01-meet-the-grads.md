@@ -26,7 +26,7 @@ _Interested in joining Deliveroo? Head to the bottom of this post for details on
 
 ### Application and Interview Process
 
-> Hi, I’m Matt and I studied Computer Science at University College London and have joined Deliveroo as a Software Engineer in the Data Services team. In the team we build and operate software that can support the data intensive applications and scenartios that we have at Deliveroo. This includes using technologies such as Kafka and Kubernetes and partnering across the company to collaborate and consult on data-intensive applications. 
+> Hi, I’m Matt and I studied Computer Science at University College London and have joined Deliveroo as a Software Engineer in the Data Services team. In the team we build and operate software that can support the data intensive applications and scenarios that we have at Deliveroo. This includes using technologies such as Kafka and Kubernetes and partnering across the company to collaborate and consult on data-intensive applications. 
 >
 > Having known a few people already working at Deliveroo I was really keen to apply for a graduate role and so kept an eye out for any openings on the Deliveroo careers site. As soon as I saw an advertisement for the 2019 Graduate role I was quick to send off my application, looking forward to any next steps. I soon received an email from one of the recruiters inviting me for a phone screen which was just a short conversation in which I could highlight any areas of interest and allowed the recruiter to get to know me a little better.  
 >
