@@ -6,7 +6,7 @@ authors:
   - "Jenny Sivapalan"
   - "Troy Harris"
 excerpt: >
-  How Deliveroo does Hack days and then takes it to production
+  How Deliveroo does Hack days and then takes projects to production
 
 ---
 
@@ -68,7 +68,7 @@ And of course, there was food.
 ![Salads](/images/posts/where-are-they-now/food4.png)
 </figure>
 
-We saw Slackbots to help on-call engineers, how web push notifications could help our riders during the sign up process, and were greatly amused by an IOT solution for monitoring busy toilets.  When the dust settled, winners announced and laptops packed up, it was time to go to the pub next door.
+We saw Slackbots to help on-call engineers, how web push notifications could help our riders during the sign up process, and were greatly amused by an IOT solution for monitoring busy toilets.  When the dust settled, after winners were announced and laptops packed up, it was time to go to the pub next door.
 
 There’s one big question remaining though...
 
