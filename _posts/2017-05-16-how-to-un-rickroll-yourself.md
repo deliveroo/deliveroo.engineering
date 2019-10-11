@@ -69,8 +69,6 @@ Perhaps the process will die if I restart my machine?  I restart and I get insta
 I go to system preferences to check my login items.  They look normal - just `iTunes Helper` and our colleague Paul's excellent [`Trailer.app`](https://ptsochantaris.github.io/trailer/).  However I notice that Docker and Postgres have restarted but are not in the list.  I research how they do it and it turns out there is another way.  A folder called [`LaunchAgents`](https://developer.apple.com/library/content/documentation/MacOSX/Conceptual/BPSystemStartup/Chapters/CreatingLaunchdJobs.html).  A quick scan and I find `com.lock.yo.screen.plist`.
 
 ```
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
  <key>Label</key>
