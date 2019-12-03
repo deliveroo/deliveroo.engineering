@@ -50,7 +50,7 @@ The lambda takes around 2 seconds to run, most of this time is spent waiting for
 3. Download the key and save it securely, you will not be able to download it again
 4. Place the file in a folder
 5. Copy the script below in a file named `testflight.rb` for example and place it in the same folder as your private key. Set the values for `ISSUER_ID`, `KEY_ID` and `APP_ID`.
-6. Run the script: `$ ruby testflight.rb`. This should print something like `Latest TestFlight beta version: 21650`
+6. Run the script: `$ ruby testflight.rb`. This should print something like `Latest TestFlight beta version: 21566`
 
 ```ruby
 require 'net/https'
