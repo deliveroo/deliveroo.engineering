@@ -8,7 +8,7 @@ excerpt: >
 
 ---
 
-At Deliveroo, we rely on TestFlight to ensure that the app ships to the App Store with as few issues as possible. We don’t have manual testers and since we operate in 13 countries and support a number of country specific features and payment options, it is important to get as many people as possible to install the latest beta to cover most use cases. To do this we prompt employees in app with a modal screen to invite them to install the latest beta.
+At Deliveroo, we rely on TestFlight to ensure our iOS app ships to the App Store with as few issues as possible. We don’t have manual testers and since we operate in 13 countries and support a number of country specific features and payment options, it is important to get as many people as possible to install the latest beta to cover most use cases. To do this we prompt employees in app with a modal screen to invite them to install the latest beta.
 
 <figure class="small">
 ![Deliveroo TestFlight prompt](/images/posts/testflight-app-store-connect-api/testflight-prompt.png)
@@ -29,13 +29,13 @@ $ curl -g “https://api.appstoreconnect.apple.com/v1/builds?limit=10&sort=-vers
 In the query above, replace `<apple_app_id>` with your own app ID.
 The JWT token can be generated with the script below, taken from the [WWDC video presentation](https://developer.apple.com/videos/play/wwdc2018-303/?time=2019) about the App Store Connect API.
 
-The curl request above returns some JSON that contains amongst other things, the build number of the latest ten betas. It is then simple enough to look for the highest version number that has the following state: `“externalBuildState”: “IN_BETA_TESTING”`. You’ll have to do a bit of processing: The response contains a “data” object which contains the version number and an “included” object which contains the build state. You can map the version number to a build state by joining on the opaque IDs.
+The curl request above returns some JSON that contains amongst other things, the build number of the latest ten betas. It is then simple enough to look for the highest version number that has the following state: `“externalBuildState”: “IN_BETA_TESTING”`. You’ll have to do a bit of processing: the response follows the [JSON:API](https://jsonapi.org/) format and contains a `data` object which contains the version number and an `included` object which contains the build state. You can map the version number to a build state by joining on the opaque IDs.
 
 ## Authenticating with App Store Connect API
 
 Authentication is done with JSON Web Token which can be created with a private key created on App Store Connect, in the Users and Keys section. The key only needs Developer access, not Admin.
 
-As you must not embed a private key within an app we built a service to query the API. At the last [company hack day](/2019/10/02/where-are-they-now.html) we set out to build an AWS lambda (to avoid adding more code to our monolith backend) to fetch the version information.
+As you must not embed a private key within an app we built a service to query the API. At the last [company hack day](/2019/10/02/where-are-they-now.html) we set out to build an AWS lambda (to avoid adding more code to our backend service) to fetch the version information.
 
 The lambda takes around 2 seconds to run, most of this time is spent waiting for a response from the App Store Connect API. This is a long delay and means the configuration endpoint can’t query the lambda directly, even occasionally or it would increase latency for some requests. A simple solution has been to have a background worker query the lambda periodically and cache the result in Redis. Here is an overview of how the final system is set up:
 
@@ -109,4 +109,4 @@ puts "Latest TestFlight beta version: #{fetch_latest_version}"
 
 With the App Store Connect API we’ve been able to facilitate TestFlight onboarding for all employees. The number of food delivery orders placed from a TestFlight build has more than doubled and our confidence to release a new version has increased.
 
-From my perspective this has been an interesting project which introduced me to AWS lambdas, Golang, and our Ruby on Rails stack. We’re always hiring and if you’re interested in both iOS and backend development, you should consider joining [our team](https://careers.deliveroo.co.uk).
+From my perspective this has been an interesting project which introduced me to AWS lambdas and our Ruby on Rails stack. We’re always hiring and if you’re interested in both iOS and backend development, you should consider joining [our team](https://careers.deliveroo.co.uk).
