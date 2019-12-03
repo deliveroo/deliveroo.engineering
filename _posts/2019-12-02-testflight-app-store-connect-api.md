@@ -35,7 +35,7 @@ The curl request above returns some JSON that contains amongst other things, the
 
 Authentication is done with JSON Web Token which can be created with a private key created on App Store Connect, in the Users and Keys section. The key only needs Developer access, not Admin.
 
-As you must not embed a private key within an app we built a service to query the API. At the last company hack day we set out to build an AWS lambda (to avoid adding more code to our monolith backend) to fetch the version information.
+As you must not embed a private key within an app we built a service to query the API. At the last [company hack day](/2019/10/02/where-are-they-now.html) we set out to build an AWS lambda (to avoid adding more code to our monolith backend) to fetch the version information.
 
 The lambda takes around 2 seconds to run, most of this time is spent waiting for a response from the App Store Connect API. This is a long delay and means the configuration endpoint can’t query the lambda directly, even occasionally or it would increase latency for some requests. A simple solution has been to have a background worker query the lambda periodically and cache the result in Redis. Here is an overview of how the final system is set up:
 
