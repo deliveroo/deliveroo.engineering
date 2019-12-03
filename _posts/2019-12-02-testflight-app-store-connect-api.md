@@ -73,8 +73,7 @@ def generate_token
    },
    private_key,
    "ES256",
-   header_fields={
-     kid: KEY_ID }
+   header_fields={ kid: KEY_ID }
   )
 end
 
