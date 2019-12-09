@@ -29,7 +29,7 @@ $ curl -g “https://api.appstoreconnect.apple.com/v1/builds?limit=10&sort=-vers
 In the query above, replace `<apple_app_id>` with your own app ID.
 The JWT token can be generated with the script below, taken from the [WWDC video presentation](https://developer.apple.com/videos/play/wwdc2018-303/?time=2019) about the App Store Connect API.
 
-The curl request above returns some JSON that contains amongst other things, the build number of the latest ten betas. It is then simple enough to look for the highest version number that has the following state: `“externalBuildState”: “IN_BETA_TESTING”`. You’ll have to do a bit of processing: the response follows the [JSON:API](https://jsonapi.org/) format and contains a `data` object which contains the version number and an `included` object which contains the build state. You can map the version number to a build state by joining on the opaque IDs.
+The curl request above returns some JSON that contains amongst other things, the build number of the latest ten betas. It is then simple enough to look for the highest version number that has the following state: `“externalBuildState”: “IN_BETA_TESTING”`. You’ll have to do a bit of processing: the response follows the [JSON:API](https://jsonapi.org/) format and contains a `data` object which contains the version number and an `included` object which contains the build state. You can map the version number to a build state by joining on the opaque IDs (see sample code below).
 
 ## Authenticating with App Store Connect API
 
@@ -40,13 +40,13 @@ As you must not embed a private key within an app we built a service to query th
 The lambda takes around 2 seconds to run, most of this time is spent waiting for a response from the App Store Connect API. This is a long delay and means the configuration endpoint can’t query the lambda directly, even occasionally or it would increase latency for some requests. A simple solution has been to have a background worker query the lambda periodically and cache the result in Redis. Here is an overview of how the final system is set up:
 
 <figure>
-![Diagram for App Store Connect APi Usage at Deliveroo](/images/posts/testflight-app-store-connect-api/app-store-connect-lambda.png)
+![Diagram for App Store Connect API Usage at Deliveroo](/images/posts/testflight-app-store-connect-api/app-store-connect-lambda.png)
 </figure>
 
 ## Try It Yourself
 
 1. Go to App Store Connect Users and Access section
-2. Create an API key, make a note of the Key ID and issuer ID.
+2. Create an API key, make a note of the key ID and issuer ID.
 3. Download the key and save it securely, you will not be able to download it again
 4. Copy the script below in a file named `testflight.rb` for example and place it in the same folder as your private key. Set the values for `ISSUER_ID`, `KEY_ID` and `APP_ID`.
 5. Run the script: `$ ruby testflight.rb`. This should print something like `Latest TestFlight beta version: 21566`
