@@ -86,16 +86,16 @@ Configuration files for CF are written either in YAML or JSON.
 In this document, I'll take you through the steps I went through on how to convert CF to TF. In particular, a recent project I worked on.
 In case you haven't heard about it, CIS is the Center for Internet Security, and they provide cyber security standards and best practices.
 Recently, AWS launched a new service called AWS Security Hub, which analyses security findings from various supported AWS and third-party products. Security hub supports
-the CIS AWS Foundations Benchmark, (read more at [https://www.cisecurity.org/benchmark/amazon_web_services/]) which, quoting
+the CIS AWS Foundations Benchmark, (read more [here](https://www.cisecurity.org/benchmark/amazon_web_services/])) which, quoting
 CIS is "An objective, consensus-driven security guideline for the AWS Cloud Providers". To jump straight into it, AWS Security
-Architects partnered up with Accenture and created a CIS-Quickstart written in CloudFormation [https://github.com/aws-quickstart/quickstart-compliance-cis-benchmark]
+Architects partnered up with Accenture and created a (CIS-Quickstart)(https://github.com/aws-quickstart/quickstart-compliance-cis-benchmark] written in CloudFormation
 but it is built using CloudFormation, not Terraform. So, after looking around, realised there wasn't any versions written in Terraform, and also
 no guides on how to translate it. Or automated translation tools for the matter (future work? hit me up for a collab) I decided to
 do it manually, as I felt this was a bit of a sensitive project to be testing automated tools on. But fear not, I did not do it as manually as you think. Simplicity above everything!
 
 ### Part 1: Understand the structure, state the stack
 
-Lets take a look at how the CloudFormation CIS Benchmark Quickstart [https://github.com/aws-quickstart/quickstart-compliance-cis-benchmark] works.
+Lets take a look at how the CloudFormation [CIS Benchmark Quickstart](https://github.com/aws-quickstart/quickstart-compliance-cis-benchmark) works.
 
 ![](https://camo.githubusercontent.com/f600ecf22ac9fbac422f02251f3910f9636e5376/68747470733a2f2f64302e6177737374617469632e636f6d2f706172746e65722d6e6574776f726b2f517569636b53746172742f646174617368656574732f717569636b73746172742d6172636869746563747572652d666f722d6369732d62656e63686d61726b2d6f6e2d6177732e706e67)
 
@@ -147,8 +147,8 @@ CloudFormation templates. It only accepts JSON templates.
 
 > Possible challenge: templates built in YAML instead of JSON
 
-No problem! I had this myself, after a bit of googling, there is actually a tool explicitly for the translation of YAML to JSON in CF:
-[https://github.com/awslabs/aws-cfn-template-flip]
+No problem! I had this myself, after a bit of googling, there is actually a tool called [cfn-flip](https://github.com/awslabs/aws-cfn-template-flip) explicitly for the translation of YAML to JSON in CF:
+
 
 So for example, if you want to create the template in json:
 
@@ -229,7 +229,7 @@ resource "aws_cloudformation_stack" "cloudtrail-setup" {
 
 Now you can simply run and manage your stacks using Terraform. I suggest to
 always be careful with sensitive data and parameters and follow best practices.
-You can read more about it here [https://www.terraform.io/docs/providers/aws/r/cloudformation_stack_set.html#template_url]
+You can read more about it [here](https://www.terraform.io/docs/providers/aws/r/cloudformation_stack_set.html#template_url)
 
 ### Conclusion
 
