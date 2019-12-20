@@ -14,10 +14,10 @@ excerpt: >
 
 For those starting with either Terraform or CloudFormation this guide is a good way to understand the differences between the two.
 I found myself a little bit stuck because I needed to find/create code (in this case) that would help me in Benchmarking our
-compliance status in AWS. I found a solution in CloudFormation, so I wandered if there was some sort of translator tool (there wasn'),
+compliance status in AWS. I found a solution in CloudFormation, so I wondered if there was some sort of translator tool (there wasn't),
 and if not, how and where would I start translating this code? Would it be worth me building it from scratch in Terraform?
 
-# How to convert CloudFormation to Terraform: CIS Foundations Quickstart
+# How to convert CloudFormation (CF) to Terraform (TF): CIS Foundations Quickstart
 
 
 #### First lets state the differences and how each syntax is built:
@@ -108,8 +108,8 @@ The stack can be described as follows:
 Templates are the following:
 
 - Pre-requisites template: makes sure CloudTrail, config and S3 are created or exist and meet the preconditions for CIS Benchmarking:
--   Config must have an active recorder running.
--   CloudTrail must be delivering logs to CloudWatch Logs
+    - Config must have an active recorder running.
+    - CloudTrail must be delivering logs to CloudWatch Logs
 - Config Setup template: sets the configurations needed for AWS config
 - CloudTrail-setup template: sets the configurations needed for CloudTrail
 - CIS-benchmark template: this is the tricky one, it contains all 42 objectives the account should meet to be CIS foundations compliant.
@@ -235,6 +235,6 @@ You can read more about it [here](https://www.terraform.io/docs/providers/aws/r/
 
 When it comes to features, CF and TF are not equivalent. It is not possible to express what CF is able to deploy in TF.
 Which is why I aimed at this solution, translating line by line would be very tedious, so if that is your case i'd suggest
-rewriting the entire module in TF. However writting a translator would be complex but very useful, still would have to figure
+rewriting the entire module in TF. However writing a translator would be complex but very useful, still would have to figure
 out how it would work when CF uses intrinsic functions (please contact me for ideas!) but i'd guess that'll be for future work.
 I hope this quick workaround helped you out!
