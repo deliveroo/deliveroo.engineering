@@ -88,8 +88,7 @@ In case you haven't heard about it, CIS is the Center for Internet Security, and
 Recently, AWS launched a new service called AWS Security Hub, which analyses security findings from various supported AWS and third-party products. Security hub supports
 the CIS AWS Foundations Benchmark, (read more [here](https://www.cisecurity.org/benchmark/amazon_web_services/])) which, quoting
 CIS is "An objective, consensus-driven security guideline for the AWS Cloud Providers". To jump straight into it, AWS Security
-Architects partnered up with Accenture and created a [CIS-Foundations Quickstart](https://github.com/aws-quickstart/quickstart-compliance-cis-benchmark) written in CloudFormation
-but it is built using CloudFormation, not Terraform. So, after looking around, realised there wasn't any versions written in Terraform, and also
+Architects partnered up with Accenture and created a [CIS-Foundations Quickstart](https://github.com/aws-quickstart/quickstart-compliance-cis-benchmark) written in CloudFormation. So, after looking around, realised there wasn't any versions written in Terraform, and also
 no guides on how to translate it. Or automated translation tools for the matter (future work? hit me up for a collab) I decided to
 do it manually, as I felt this was a bit of a sensitive project to be testing automated tools on. But fear not, I did not do it as manually as you think. Simplicity above everything!
 
