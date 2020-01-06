@@ -5,8 +5,8 @@ authors:
   - "Tugberk Ugurlu"
 excerpt: >
   One of the limitation of Go programming language is the lack of built-in object constructor 
-  support. In this post, we will see how this have a negative impact on the code we write and 
-  how we can get around that by gluing togther some of the exising language concepts.
+  support. In this post, we will see how this can have a negative impact on the code we write 
+  and how we can get around that by gluing together some of the existing language concepts.
 ---
 
 Coming from a heavy production experience with languages such as C# and TypeScript, I must admit 
@@ -27,9 +27,9 @@ with Go, I am keen to document what I think is the solution here is.
 to express a solution to this problem here which is based on [what John made me aware of first](https://twitter.com/bitfield/status/1074682570389028866).
 
 Now, when I say constructors in the title of the post here, I must confess that it’s a bit of a 
-lie as I don’t see a way of having pure object constructors like we have with C# in Go without 
-changes in the language itself. However, we can workaround the lack of constructors in Go by 
-leveraging some other aspects of the language such as package scoping and interfaces and 
+lie as I don’t see a way of having pure object constructors like we have with C# or Java in Go 
+without changes in the language itself. However, we can work around the lack of constructors in 
+Go by leveraging some other aspects of the language such as package scoping and interfaces and 
 essentially [adopt the factory method pattern](https://en.wikipedia.org/wiki/Factory_method_pattern).
 
 Let’s first touch on these two aspects of Go and we will then see how we can take advantage of 
@@ -65,7 +65,7 @@ package main
 
 import (
 	"fmt"
-            "github.com/tugberkugurlu/go-package-scope/singers"
+        "github.com/tugberkugurlu/go-package-scope/singers"
 )
 
 func main() {
@@ -88,7 +88,7 @@ Go from [Uday's great article on this topic](https://medium.com/rungo/everything
 but this should be enough for us to get going for our example.
 
 ## Interfaces
-Let's now look at interfaces in Go, which act very similar to what you would expect them to be. However, the way you implement interfaces is very different to how you would do in C#, Java or TypeScript. The main difference is that you don’t explicitly declare that a struct implements an interface in Go. A struct is considered as an implementation of an interface by the compiler as long as it implements all the methods within it. Let’s look at the following example:
+Let's now look at interfaces in Go, which act very similar to what you would expect them to be. However, the way you implement interfaces is very different to how you would do in C#, Java or TypeScript. The main difference is that you don’t explicitly declare that a struct implements an interface in Go. A struct is considered as an implementation of an interface by the compiler as long as it implements all the methods within it with matching signatures. Let’s look at the following example:
 
 ```golang
 package main
@@ -174,7 +174,8 @@ func singToConsole(singer singers.Singer) {
 }
 ```
 
-Why is this good and how does this make our code more reliable? Two important aspects we have here, which are sort of related to each other.
+Why is this good and how does this make our code more reliable? There are three important aspects we have here that's worth
+mentioning and I will list them below.
 
 ### Eliminates the risk of being unable to act on implementation struct having new mandatory fields
 
@@ -318,6 +319,196 @@ if err != nil {
 // ...
 ```
 
-## Do I Really Need Interfaces For This?
+### Allows you to control the flow of your implementation
 
-Well, you don't but you should :) How and why, you may ask. Maybe we can touch on that topic in another post as this one has already become a long one.
+The below code is a simplified and intended-use scenario of an interesting bug we had on production a while ago:
+
+```golang
+package main
+
+import (
+	"fmt"
+)
+
+type JazzSinger struct {
+	count int
+}
+
+func (j *JazzSinger) Sing() string {
+	j.count++
+	return "Des yeux qui font baisser les miens"
+}
+
+func (j *JazzSinger) Count() int {
+	return j.count
+}
+
+func main() {
+	s := &JazzSinger{}
+	singToConsole(s)
+	fmt.Println(s.Count())
+	singToConsole(s)
+	fmt.Println(s.Count())
+}
+
+func singToConsole(singer *JazzSinger) {
+	fmt.Println(singer.Sing())
+}
+```
+
+This code works as expected and the singer sings as expected, and count is incremented as expected, all great!
+
+```
+Des yeux qui font baisser les miens
+1
+Des yeux qui font baisser les miens
+2
+```
+
+This works because our method signature on the `JazzSinger` struct accepts a pointer to an instance of `JazzSinger` which 
+means that the count will be incremented as expected even if the type is passed around, and that's what's happening with 
+the above scenario. 
+
+However, can we guess what will happen if we change our usage as below:
+
+```golang
+func main() {
+	s := JazzSinger{}
+	singToConsole(s)
+	fmt.Println(s.Count())
+	singToConsole(s)
+	fmt.Println(s.Count())
+}
+
+func singToConsole(singer JazzSinger) {
+	fmt.Println(singer.Sing())
+}
+```
+
+My first would have been that compiler will fail here, and this is a perfectly reasonable assumption to make 
+since, you know, we are not passing a pointer to `Sing` method call. Well, if you are making the same the assumption I have made, 
+you will be so wrong. This compiles perfectly but it won't work as expected:
+
+```
+Des yeux qui font baisser les miens
+0
+Des yeux qui font baisser les miens
+0
+```
+
+The worst part is that this will actually work if we were to get rid of the `singToConsole` function and embed its implementation:
+
+```golang
+func main() {
+	s := JazzSinger{}
+	s.Sing()
+	fmt.Println(s.Count())
+	s.Sing()
+	fmt.Println(s.Count())
+}
+```
+
+```
+Des yeux qui font baisser les miens
+1
+Des yeux qui font baisser les miens
+2
+```
+
+This is the exact reason why your tests will pass even if they have the wrong usage!
+
+```golang
+package main
+
+import (
+	"github.com/deliveroo/assert-go"
+	"testing"
+)
+
+func TestJazzSinger(t *testing.T) {
+	t.Run("count increments as expected", func(t *testing.T) {
+		singer := JazzSinger{}
+		singer.Sing()
+		singer.Sing()
+		assert.Equal(t, singer.Count(), 2)
+	})
+}
+```
+
+```
+➜  jazz-singer git:(master) ✗ go test -v
+=== RUN   TestJazzSinger
+=== RUN   TestJazzSinger/count_increments_as_expected
+--- PASS: TestJazzSinger (0.00s)
+    --- PASS: TestJazzSinger/count_increments_as_expected (0.00s)
+PASS
+ok  	github.com/tugberkugurlu/algos-go/jazz-singer	0.549s
+```
+
+After a bit more digging, it actually turned out that this is actually the intended behavior of Go, and it's 
+even [documented in its spec](https://golang.org/ref/spec#Calls):
+
+> A method call x.m() is valid if the method set of (the type of) x contains m and the argument list can be assigned to the parameter list of m. If x is addressable and &x's method set contains m, x.m() is shorthand for (&x).m().
+
+I am still unsure why this could be useful, but it's what it's, and it's so easy to make the same mistake since you can ensure how 
+the consumer will flow the type as the creator of the type if it can be constructed freely. In fact, the decision of how the type 
+should be flowed should be the decision of the owner (i.e. its package) of the type, not the consumer, and I have never found a case 
+where I needed to flow a type both as a pointer or value. Languages like C# puts the burden of this choice onto the author of the 
+type by forcing them to choose between a `class` and `struct`.
+
+In Go, you can make this safer through the use of the constructor pattern as well, by ensuring that your struct is not allowed to be constructed directly and you controlling how the initialized value should be flowed.
+
+```golang
+package singers
+
+type Singer interface {
+	Sing()  string
+	Count() int
+}
+
+type jazzSinger struct {
+	count int
+}
+
+func (j *jazzSinger) Sing() string {
+	j.count++
+	return "Des yeux qui font baisser les miens"
+}
+
+func (j *jazzSinger) Count() string {
+	return j.count
+}
+
+func NewJazzSinger() Singer {
+	return &jazzSinger{}
+}
+```
+
+The consumer of this type needs to construct it through `NewJazzSinger` function here, which is making the decision to flow the type as a pointer because it needs to be able to mutate its own state as it's being used.
+
+```golang
+package main
+
+import (
+	"fmt"
+	"github.com/tugberkugurlu/go-package-scope/singers"
+)
+
+func main() {
+	s := singers.NewJazzSinger()
+	singToConsole(s)
+	fmt.Println(s.Count())
+	singToConsole(s)
+	fmt.Println(s.Count())
+}
+
+func singToConsole(singer singers.Singer) {
+	fmt.Println(singer.Sing())
+}
+```
+
+## Conclusion
+
+Modeling your domain is hard and it's even harder if you have rich models which hold a mutable state along with explicit behaviours. Go programming language may not give you all the tools directly to model your domain in a rich way as some other programming languages provide. However, it's still possible to 
+make it work for some cases by adopting some usage principles. Constructor pattern is one of them, and it has been one of the most 
+useful ones for me since I can confidently encapsulate the initialisation logic of my model by enforcing state validity within a package scope.
