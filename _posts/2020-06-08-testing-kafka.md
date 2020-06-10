@@ -4,12 +4,12 @@ title:  "Testing Kafka Consumption"
 authors:
   - "Tim Baker"
 excerpt: >
-    A strategy to test consuming from kafka without going too deep.
+    A strategy to test consuming from a fully functional kafka instance without going too deep.
 ---
 
-This post outlines a strategy for testing an application's dependency on consuming from kafka that doesn't involve stubs or mocks. It involves creating a dockerized instance of kafka and zookeeper to use exclusively within your tests.
+This post outlines a strategy for testing an application's dependency on consuming from kafka by creating a dockerized instance of kafka and zookeeper to use exclusively within your tests. Primarily it's suitable in situations where mocks/stubs don't provide the level of test coverage you desire, for example when using an unsable API where the method signatures or expected responses are subject to change.
 
-Kafka is an external dependency of the application under test, and when testing behaviour it's tempting to stub it out, or assert against mocks. For example you might do this:
+Kafka is an external dependency of the application under test, and when testing behaviour it's common to stub it out, or assert against mocks. For example you might do this:
 
 ```ruby
 # Stub the poll method on the consumer to return the message that we want.
@@ -17,7 +17,9 @@ Kafka is an external dependency of the application under test, and when testing 
 allow(consumer).to receive(:poll).and_return(message)
 ```
 
-This is fine most of the time, but I recently found myself writing code that made use of a few public but not particularly well trodden APIs in a pre 1.0 kafka library. I was concerned that my stubbed tests would continue to pass even if an API changed, so I introduced a running kafka and zookeeper instance to my tests and it was easier than I expected.
+This is fine most of the time, and a lot of languages have a verified double that ensures compatibility as far as the method call is concerned. However even instance doubles don't guarantee that the responses are compatible with the underlying object.
+
+I recently found myself writing code that made use of a few public but not particularly well trodden APIs in a pre 1.0 kafka library, where breaking changes are to be expected in both the method definition and the structure of the responses. I was concerned that my stubbed tests would continue to pass even if an API changed, so I introduced a running kafka and zookeeper instance to my tests and it was easier than I expected.
 
 To get the instances running firstly define your kafka and zookeeper instances in a docker compose file:
 
