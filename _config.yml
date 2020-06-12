@@ -37,7 +37,7 @@ plugins:
    - jekyll-paginate
    - jekyll-seo-tag
 
-paginate: 3
+paginate: 9
 paginate_path: "/articles/page:num/"
 
 collections:
