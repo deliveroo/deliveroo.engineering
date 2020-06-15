@@ -45,7 +45,7 @@ later…
 
 A few different uses, but the most common use is in an
 [ECS Cluster](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/clusters.html),
-a grouping of EC2 machines used as a home for ECS tasks - these are the
+a grouping of EC2 machines used as a home for ECS Tasks - these are the
 Dockerized containers of our applications that are running with a command
 specified by the engineer in a config file.
 
@@ -80,21 +80,24 @@ on how much spare capacity there is. If there’s not enough spare capacity to
 immediately run another 40 large docker containers, we bump up the desired count
 of EC2 instances in the cluster, and EC2 spins up new machines (the number of
 machines we start up depends on how much below approximately 40 large container
-capacity we are). New EC2 instances can take up to 10 minutes before they’re
-ready to be used by ECS, so we need to have quite a large buffer to deal with
-dinnertime spikes in demand.
+capacity we are). New EC2 instances can take a few minutes before they’re ready
+to be used by ECS, so we need to have a buffer to deal with unexpected spikes in
+demand.
 
 ## How do we change or upgrade the machine image used?
 
 Circling back to the software that is preinstalled on these EC2 servers. When
-booted up, an Amazon Machine Image (AMI) is used, which installs the basic
-tools you need to make the machine usable. Amazon provides a Linux AMI which we
-have built upon in the past to create our own machine image. We use this to run
-scripts which give all our running ECS tasks access to things that all
-Deliveroo’s services will need, such as software (like the
-[Datadog agent](https://docs.datadoghq.com/agent/) which sends metrics to
-Datadog), roles and security policies, and environment variables that we need to
-apply to the containers.
+booted up, an Amazon Machine Image (AMI) is used, which has some basic tools
+installed on it to make the machine usable. Amazon provides a base AMI which we
+have built upon, using [Packer](https://github.com/hashicorp/packer) and
+[Ansible](https://github.com/ansible/ansible), to create our own Amazon
+Linux-derived machine image. This, and some initialization scripts, give all our
+running ECS tasks access to things that all Deliveroo’s services will need, such
+as software (like the [Datadog agent](https://docs.datadoghq.com/agent/) which
+sends metrics to Datadog, and
+[AWS Inspector](https://aws.amazon.com/inspector/), AWS's automated security
+assessment service), roles, security policies, and environment variables that
+we need to apply to the containers.
 
 The process of rolling out a new machine image when an update is available, or
 when we make changes to our custom machine image, is not as straightforward as
