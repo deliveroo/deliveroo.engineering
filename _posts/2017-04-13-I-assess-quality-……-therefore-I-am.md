@@ -46,7 +46,7 @@ A couple of weeks back, I was simulating doze mode on android, marshmallow/nouga
 
 An event was added on iOS to ascertain how many riders are using the external map rather than the one built into the app. Firebase analytics was used to track this event.
 
-Over the past few weeks I’ve been working on adding tests to Loris, Loris is the end to end API test framework. The aim is to automate basic business flows, and regression scenarios. If you want to know more about this lovely service its authors, Victoria Puscas and Troy Harris, have [written a post here explaining it](http://deliveroo.engineering/2017/03/28/hackday-and-the-17pound-soda.html).
+Over the past few weeks I’ve been working on adding tests to Loris, Loris is the end to end API test framework. The aim is to automate basic business flows, and regression scenarios. If you want to know more about this lovely service its authors, Victoria Puscas and Troy Harris, have [written a post here explaining it](https://deliveroo.engineering/2017/03/28/hackday-and-the-17pound-soda.html).
 
 ## “If you can dream…and not make dreams your master”
 
@@ -62,5 +62,3 @@ Deliveroo is a forward-thinking company where new ideas are harnessed/cultivated
 ## “Yours is the Earth and everything that’s in it, And which is more – you’ll be a man, my son”
 
 Thank you for reading my blog, if I am allowed to write another article, my next topic of conversation will be mobile automation and how we’re using that to further improve the QA process.
-
-

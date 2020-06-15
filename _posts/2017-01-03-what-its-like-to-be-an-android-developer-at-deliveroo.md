@@ -26,7 +26,7 @@ Our team takes code quality extremely seriously.  We also believe in code review
 
 The engineering team at Deliveroo values pair-programming and promotes cross-team work. I've had the opportunity to work with a bit of backend Ruby and frontend web and I felt warmly encouraged and supported by our team.
 
-Check out our collection of [technical guidelines](http://deliveroo.engineering/guidelines/) to find out more how we build things at Deliveroo!
+Check out our collection of [technical guidelines](https://deliveroo.engineering/guidelines/) to find out more how we build things at Deliveroo!
 
 
 ## Good architecture
@@ -49,4 +49,3 @@ In short, if you're looking for a great place to work (have I mentioned free foo
 <figure class="small">
 ![The Android Team](/images/posts/what-its-like-to-be-an-android-developer-at-deliveroo/android-team.png)
 </figure>
-

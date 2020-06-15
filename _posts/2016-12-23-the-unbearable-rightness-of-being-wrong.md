@@ -54,7 +54,7 @@ To illustrate the benefits of my points above, here are just two slices of the *
 
 ### HTTP Caching in Rails
 
-As we do the startup thing and move away from a monolith towards a growing number of services, there are numerous factors to consider, not just around building or maintaining the applications themselves, but ensuring they communicate with each other really well. A lot of these are documented in [our open guidelines for your reading pleasure](http://deliveroo.engineering/guidelines/api-design/).
+As we do the startup thing and move away from a monolith towards a growing number of services, there are numerous factors to consider, not just around building or maintaining the applications themselves, but ensuring they communicate with each other really well. A lot of these are documented in [our open guidelines for your reading pleasure](https://deliveroo.engineering/guidelines/api-design/).
 
 One of these considerations is reducing roundtrips between the client and the server with suitable [HTTP cache headers](https://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html).
 

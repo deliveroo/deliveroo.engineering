@@ -1,6 +1,6 @@
 # deliveroo.engineering
 
-The [deliveroo.engineering](http://deliveroo.engineering) blog is the Deliveroo
+The [deliveroo.engineering](https://deliveroo.engineering) blog is the Deliveroo
 Engineering team’s presence on the web. It is hosted using
 [Github Pages][github-pages], which runs on [Jekyll][jekyll]. The main bits of
 the blog are built using [Liquid][liquid] and [SCSS][sass]. Content written for
@@ -70,10 +70,10 @@ appropriately with `bugfix`, `design`, `refactor` etc.
 [github-pages]: https://pages.github.com
 [jekyll]: https://jekyllrb.com
 [liquid]: https://shopify.github.io/liquid/
-[sass]: http://sass-lang.com
-[markdown]: http://daringfireball.net/projects/markdown/syntax/
+[sass]: https://sass-lang.com
+[markdown]: https://daringfireball.net/projects/markdown/syntax/
 [ruby-version]: https://github.com/deliveroo/deliveroo.engineering/blob/gh-pages/.ruby-version
-[markdown-formatting]: http://deliveroo.engineering/guidelines/meta/#formatting-guidelines
+[markdown-formatting]: https://deliveroo.engineering/guidelines/meta/#formatting-guidelines
 [example-post]: https://github.com/deliveroo/deliveroo.engineering/blob/gh-pages/_posts/YYYY-MM-DD-your-blog-post-name.md
 [example-bio]: https://github.com/deliveroo/deliveroo.engineering/blob/gh-pages/_authors/_example-bio.md
 [portraits-folder]: https://github.com/deliveroo/deliveroo.engineering/tree/gh-pages/images/portraits
