@@ -32,7 +32,7 @@ _Amazon's description of EC2_
 
 I would say this; an EC2 host is a server. More simply, it is a computer. It is
 (in most cases) not an actual physical server in a rack, and Amazon abstracts
-that detail away us, but I find I get my head around the concept easier by
+that detail away from us, but I find I get my head around the concept easier by
 thinking of them as physical machines anyway. The machines we generally use have
 16 vCPUs and 64 GiB of Memory (RAM).
 
@@ -49,7 +49,7 @@ a grouping of EC2 machines used as a home for ECS Tasks - these are the
 Dockerized containers of our applications that are running with a command
 specified by the engineer in a config file.
 
-## ECS? what’s that, and how is it related to EC2?
+## ECS? What’s that, and how is it related to EC2?
 
 ECS is AWS’s Elastic Container Service. It is an orchestration service that
 makes sure the correct number of each service is running in the environment.
@@ -101,10 +101,10 @@ we need to apply to the containers.
 
 The process of rolling out a new machine image when an update is available, or
 when we make changes to our custom machine image, is not as straightforward as
-I’m used to (I have a new-found appreciation for release management software).
-Only newly created EC2 machines will be built using this new image, and so the
-process of rolling out is one of the following on each of our AWS environments
-(sandbox, staging, production):
+I’m used to as an application developer (I have a new-found appreciation for
+release management software). Only newly created EC2 machines will be built
+using this new image, and so the process of rolling out is one of the following
+on each of our AWS environments (sandbox, staging, production):
 
 * Disabling some of the cluster autoscaling rules, as we only want EC2 instances
 using the old image being terminated when the cluster gets too big.
