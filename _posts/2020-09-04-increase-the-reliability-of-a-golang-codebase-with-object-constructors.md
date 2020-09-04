@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  "Increase the Reliability of a Golang Codebase with Object Constructors"
+title:  "Increase the Reliability of a Go Codebase with Object Constructors"
 authors:
   - "Tugberk Ugurlu"
 excerpt: >
-  One of the limitation of Go programming language is the lack of built-in object constructor 
+  One of the limitations of Go programming language is the lack of built-in object constructor 
   support. In this post, we will see how this can have a negative impact on the code we write 
   and how we can get around that by gluing together some of the existing language concepts.
 ---
@@ -18,7 +18,7 @@ software in code in a robust way, especially in a codebase where you get to work
 such as lack of [sum types](https://github.com/golang/go/issues/19412) and generics support (lucky, [generics support seems to be on its way](https://go.googlesource.com/proposal/+/master/design/go2draft-generics-overview.md)). 
 One of these limitations I have come across is not [having any built-in constructor support](https://twitter.com/tourismgeek/status/1074325233220374528).
 
-I came across this limitation before using Golang in an anger and I was anticipating this to be 
+I came across this limitation before using Go in an anger and I was anticipating this to be 
 a bit of a limitation. At the same time, I was also being open-minded. After seeing a few of the 
 problems that lack of constructors caused while getting some experience under my belt 
 with Go, I am keen to document what I the solution that worked for the codebase I work on, and what the advantages of that solution are. 
@@ -39,9 +39,9 @@ feature.
 ## Package Scoping
 Go doesn’t have access modifiers such as private, internal or public per se. However, you can 
 influence whether a type should be internal to a package or should be exposed through naming in 
-Go. When your type is named by starting with a lowercase letter, it will only be available 
-within the package itself. This rule also applies to the functions, and members of the types 
-such as fields and methods.
+Go respectively by "unexporting" or "exporting" them. When your type is named by starting with a
+lowercase letter, it will only be available within the package itself. This rule also applies to the 
+functions, and members of the types such as fields and methods.
 
 For example, the below code sample does not compile successfully in Go:
 
@@ -88,7 +88,7 @@ Go from [Uday's great article on this topic](https://medium.com/rungo/everything
 but this should be enough for us to get going for our example.
 
 ## Interfaces
-Let's now look at interfaces in Go, which act very similar to what you would expect them to be. However, the way you implement interfaces is very different to how you would do in C#, Java or TypeScript. The main difference is that you don’t explicitly declare that a struct implements an interface in Go. A struct is considered as an implementation of an interface by the compiler as long as it implements all the methods within it with matching signatures. Let’s look at the following example:
+Let's now look at interfaces in Go, which act very similar to what you would expect them to be. However, the way you "implement" (in Go "satisfy") interfaces is very different to how you would do in C#, Java or TypeScript. The main difference is that you don’t explicitly declare that a struct implements an interface in Go. A struct is considered to be satisfying an interface by the compiler as long as it provides all the methods within it with matching signatures, or in the Go terminology, as long as the ["method set"](https://golang.org/ref/spec#Method_sets) of the type can satisfy the interface requirements. Let’s look at the following example:
 
 ```golang
 package main
@@ -131,7 +131,7 @@ will hugely help us when it comes to work around the lack of constructors in Go.
 
 These two aspects of the language can be brought together to allow us to hide the implementation 
 from the contract by only exposing what we need. The challenge here is to be able to provide a 
-way to construct the implementation. This is lucky easy enough to work around in Go, by exposing 
+way to construct the implementation. This is luckily easy enough to work around in Go, by exposing 
 a public static function from the package which can access the internal implementation but 
 expose it through the interface, which would be as below example:
 
@@ -234,7 +234,7 @@ If we were to build our application directly without modifying the main package 
 	want (singers.LyricsProvider)
 ```
 
-We wouldn't get this level of feedback if we were to directly initialize the struct directly. What we wouldn't get instead is a failure on runtime:
+We wouldn't get this level of feedback if we were to initialize the struct directly. What we wouldn't get instead is a failure on runtime:
 
 ```
 ➜  go-package-scope go run main.go  
@@ -385,7 +385,7 @@ func singToConsole(singer JazzSinger) {
 }
 ```
 
-My first would have been that compiler will fail here, and this is a perfectly reasonable assumption to make 
+My first assumption would have been that compiler will fail here, and this is a perfectly reasonable assumption to make 
 since, you know, we are not passing a pointer to `Sing` method call. Well, if you are making the same the assumption I have made, 
 you will be so wrong. This compiles perfectly but it won't work as expected:
 
@@ -450,7 +450,7 @@ even [documented in its spec](https://golang.org/ref/spec#Calls):
 
 > A method call x.m() is valid if the method set of (the type of) x contains m and the argument list can be assigned to the parameter list of m. If x is addressable and &x's method set contains m, x.m() is shorthand for (&x).m().
 
-I am still unsure why this could be useful, but it's what it's, and it's so easy to make the same mistake since you can ensure how 
+I am still unsure why this could be useful, but it is what it is, and it's so easy to make the same mistake since you can ensure how 
 the consumer will flow the type as the creator of the type if it can be constructed freely. In fact, the decision of how the type 
 should be flowed should be the decision of the owner (i.e. its package) of the type, not the consumer, and I have never found a case 
 where I needed to flow a type both as a pointer or value. Languages like C# puts the burden of this choice onto the author of the 
@@ -509,6 +509,6 @@ func singToConsole(singer singers.Singer) {
 
 ## Conclusion
 
-Modeling your domain is hard and it's even harder if you have rich models which hold a mutable state along with explicit behaviours. Go programming language may not give you all the tools directly to model your domain in a rich way as some other programming languages provide. However, it's still possible to 
+Modelling your domain is hard and it's even harder if you have rich models which hold a mutable state along with explicit behaviours. Go programming language may not give you all the tools directly to model your domain in a rich way as some other programming languages provide. However, it's still possible to 
 make it work for some cases by adopting some usage principles. Constructor pattern is one of them, and it has been one of the most 
 useful ones for me since I can confidently encapsulate the initialisation logic of my model by enforcing state validity within a package scope.
