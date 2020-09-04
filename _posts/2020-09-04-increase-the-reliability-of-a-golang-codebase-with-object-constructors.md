@@ -13,15 +13,15 @@ Coming from a heavy production experience with languages such as C# and TypeScri
 that my journey with Go has been a bumpy ride so far, even if the scale is definitely heavier on 
 the positive side. Go certainly shines in some parts such as its runtime efficiency, built-in 
 tooling support and its simplicity which allows you to get up to speed with it so quickly! 
-However, there are some areas where it just limits your ability to express and model your 
+However, there are some areas where it limits your ability to express and model your 
 software in code in a robust way, especially in a codebase where you get to work on as a team 
 such as lack of [sum types](https://github.com/golang/go/issues/19412) and generics support (lucky, [generics support seems to be on its way](https://go.googlesource.com/proposal/+/master/design/go2draft-generics-overview.md)). 
 One of these limitations I have come across is not [having any built-in constructor support](https://twitter.com/tourismgeek/status/1074325233220374528).
 
 I came across this limitation before using Golang in an anger and I was anticipating this to be 
 a bit of a limitation. At the same time, I was also being open-minded. After seeing a few of the 
-problems that lack of constructors caused when I started getting some experience under my belt 
-with Go, I am keen to document what I think is the solution here is. 
+problems that lack of constructors caused while getting some experience under my belt 
+with Go, I am keen to document what I the solution that worked for the codebase I work on, and what the advantages of that solution are. 
 
 > I must give credit to [John Arundel](https://twitter.com/bitfield). Thanks to [the discussion we have had on Twitter](https://twitter.com/bitfield/status/1074637347193581568), I am able 
 to express a solution to this problem here which is based on [what John made me aware of first](https://twitter.com/bitfield/status/1074682570389028866).
