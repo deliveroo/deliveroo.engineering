@@ -182,7 +182,7 @@ Unlike other languages (such as TypeScript), Go doesn't have a way to enforce as
 would not help us here - we would need to track all updates to the struct's fields manually, which is 
 tedious and error prone (specially in large codebases). Best case scenario, the code would be well tested 
 and the unit tests would break. Worst case scenario, the code would blow up at Runtime, which would require 
-a rollback to this release. To make matters worse, your application could be happily working without any 
+a rollback of this release. To make matters worse, your application could be happily working without any 
 crashes, but the its behaviour could be wrong due to the way the implementation might work. This one is 
 the hardest and potentially harmful bugs to catch as it could have a larger impact on your efforts and 
 the outcome you wanted to achieve in the first place.
