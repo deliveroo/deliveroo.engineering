@@ -388,7 +388,7 @@ func singToConsole(singer JazzSinger) {
 }
 ```
 
-My first guess was that compiler will would here, and this is a perfectly reasonable assumption to make 
+My first guess was that compiler would fail here, and this is a perfectly reasonable assumption to make 
 since we are not passing a pointer to `Sing` method call. If you made the same assumption as I did, you would be 
 wrong. This compiles perfectly but it won't work as expected:
 
