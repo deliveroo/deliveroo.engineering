@@ -520,7 +520,7 @@ reducing the pointer usage.
 It's actually possible to eliminate to use of interface here, and just returning the raw struct. Howevever, that also comes with its own drawback:
 
  - If you return the exported struct, the consumer of your package can initialize a new struct without using the constructor, e.g. `JazzSinger{}`. Allowing the consumers to bypass constructor usage will come with its own problems as we have seen in this post.
- - If you return an unexported struct, you will make it hard (and mostly likely impossible) for the consumers of your package to accumulate the results from the constructor. [This Go Playground example](https://play.golang.org/p/bbcScQ0uxcY) shows where this might be critical.
+ - If you return an unexported struct, you will make it hard for the consumers of your package to accumulate the results from the constructor. [This Go Playground example](https://play.golang.org/p/bbcScQ0uxcY) shows where this might be critical. This can be worked around by owning the interface that matches at least the partial signature of the unexported struct at the consumption level. [This Go Playground example](https://play.golang.org/p/nziCc82w4EI) shows how to achieve that.
 
 In any case, it's best to be informed about this drawback, and go with the right option which will fit into your use case.
 
