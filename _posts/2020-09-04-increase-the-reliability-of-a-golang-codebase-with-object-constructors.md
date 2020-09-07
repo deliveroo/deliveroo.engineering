@@ -21,20 +21,19 @@ One of these limitations I have come across is not [having any built-in construc
 I came across this limitation before using Go in an anger and I was anticipating this to be 
 a bit of a limitation. At the same time, I was also being open-minded. After seeing a few of the 
 problems that lack of constructors caused while getting some experience under my belt 
-with Go, I am keen to document what I the solution that worked for the codebase I work on, and what the advantages of that solution are. 
+with Go. In this post I will share a solution that worked for our team, and the advantages of adopting such solution.
 
 > I must give credit to [John Arundel](https://twitter.com/bitfield). Thanks to [the discussion we have had on Twitter](https://twitter.com/bitfield/status/1074637347193581568), I am able 
 to express a solution to this problem here which is based on [what John made me aware of first](https://twitter.com/bitfield/status/1074682570389028866).
 
 Now, when I say constructors in the title of the post here, I must confess that it’s a bit of a 
-lie as I don’t see a way of having pure object constructors like we have with C# or Java in Go 
+overstatement because I don’t see a way of having pure object constructors like we have with C# or Java in Go 
 without changes in the language itself. However, we can work around the lack of constructors in 
 Go by leveraging some other aspects of the language such as package scoping and interfaces and 
 essentially [adopt the factory method pattern](https://en.wikipedia.org/wiki/Factory_method_pattern).
 
-Let’s first touch on these two aspects of Go and we will then see how we can take advantage of 
-these aspects to make our code more robust and protect against unexpected consumptions in the 
-feature.
+Let’s first touch on these two aspects of Go, and see how we can use them to our advantage to make our code 
+more robust and protect against unexpected consumptions in the feature.
 
 ## Package Scoping
 Go doesn’t have access modifiers such as private, internal or public per se. However, you can 
@@ -43,7 +42,7 @@ Go respectively by "unexporting" or "exporting" them. When your type is named by
 lowercase letter, it will only be available within the package itself. This rule also applies to the 
 functions, and members of the types such as fields and methods.
 
-For example, the below code sample does not compile successfully in Go:
+For example, the following code sample does not compile:
 
 `singers/jazzsinger.go` file:
 
@@ -74,7 +73,7 @@ func main() {
 }
 ```
 
-If we were to run this code, we would get the below error:
+If we were to run this code, we would get the following error:
 
 ```
 ➜  go-package-scope go run main.go
@@ -131,9 +130,9 @@ will hugely help us when it comes to work around the lack of constructors in Go.
 
 These two aspects of the language can be brought together to allow us to hide the implementation 
 from the contract by only exposing what we need. The challenge here is to be able to provide a 
-way to construct the implementation. This is luckily easy enough to work around in Go, by exposing 
-a public static function from the package which can access the internal implementation but 
-expose it through the interface, which would be as below example:
+way to construct the implementation. Fortunately, there is a workaround for this in Go: we can 
+define an exported function within the package, which has access to the internal implementation, 
+but also exposes it through the interface, as shown in the example below:
 
 ```golang
 package singers
@@ -174,14 +173,22 @@ func singToConsole(singer singers.Singer) {
 }
 ```
 
-Why is this good and how does this make our code more reliable? There are three important aspects we have here that's worth
-mentioning and I will list them below.
+Why is this good and how does this make our code more reliable? Let's go over the main advantages of this 
+technique, and how they make our code more reliable.
 
-### Eliminates the risk of being unable to act on implementation struct having new mandatory fields
+### Changes in the struct's fields would make our code fail in compile time, rather than runtime
 
-This is because the compiler would not help us here if we were to construct the struct through struct initialization and start assigning the fields directly as Go doesn't have a way to enforce this unlike other languages such as TypeScript do. We need to follow all the usage and update them manually, which is going to be tedious and error-prone in a large codebase. At best case scenario, you will have some unit tests broken if they are written correctly. In a worst case scenario, your code will blow up at Runtime which will require you to rollback your release. Believe it or not, this is still not the worst case, The worst case here is that your application will happily work w/o any crashes but the behaviour of the application could be wrong due to the way the implementation might work. This one is the hardest to catch and more painful one to swallow as it could have a larger impact on your efforts and outcome you wanted to achieve in the first place.
+Unlike other languages (such as TypeScript), Go doesn't have a way to enforce assigning fields directly 
+(omitted fields default to the zero value, which may not always be what you want) - so the compiler 
+would not help us here - we would need to track all updates to the struct's fields manually, which is 
+tedious and error prone (specially in large codebases). Best case scenario, the code would be well tested 
+and the unit tests would break. Worst case scenario, the code would blow up at Runtime, which would require 
+a rollback to this release. To make matters worse, your application could be happily working without any 
+crashes, but the its behaviour could be wrong due to the way the implementation might work. This one is 
+the hardest and potentially harmful bugs to catch as it could have a larger impact on your efforts and 
+the outcome you wanted to achieve in the first place.
 
-Let's imagine a case for our jazzSinger to start getting the lyrics from an external resource. You would structure this by providing an interface and allowing jazzSinger to call into that, which may look like below:
+Let's imagine our `jazzSinger` would start getting lyrics from an external resource. You would structure this by providing an interface and allowing jazzSinger to call into that, which would look like the following snippet/example:
 
 ```golang
 package singers
@@ -224,7 +231,7 @@ func NewJazzSinger(lyrics LyricsProvider) Singer {
 }
 ```
 
-If we were to build our application directly without modifying the main package (which is the consumer of the singers package), we will receive the below error:
+If we were to build our application directly without modifying the main package (which is the consumer of the singers package), we would see the following error:
 
 ```
 ➜  go-package-scope go build main.go 
@@ -234,7 +241,7 @@ If we were to build our application directly without modifying the main package 
 	want (singers.LyricsProvider)
 ```
 
-We wouldn't get this level of feedback if we were to initialize the struct directly. What we wouldn't get instead is a failure on runtime:
+We wouldn't get this level of feedback if we were to initialize the struct directly. What we would get instead is a failure:
 
 ```
 ➜  go-package-scope go run main.go  
@@ -253,13 +260,10 @@ exit status 2
 
 ### Allows you to provide parameter validation as early as possible 
 
-Which also allows the consumer to explicitly act on potential errors. I must be honest here that 
-we mostly need this level of validation due to Go's inability to provide non-nil pointer flowing 
-which is provided in languages like TypeScript. if you check out [my post on TypeScript](https://www.telerik.com/blogs/uncovering-typescript-for-c-developers#no-more-billion-dollar-mistakes-protection-against-null-and-undefined), 
-you can see here on what I mean by this. However, there are still genuine other cases where a 
-compiler cannot guard against your own business logic. In the case of our example above, 
-we can still make our code compile successfully with the constructor implementation but 
-get a runtime error:
+Enforcing parameter validation also allows the consumer to explicitly act on potential errors. 
+I must be honest here, we mostly need this level of validation due to Go's inability to enforce nil pointer check before accessing the value, which is provided in languages like TypeScript. [My post on TypeScript](https://www.telerik.com/blogs/uncovering-typescript-for-c-developers#no-more-billion-dollar-mistakes-protection-against-null-and-undefined) demonstrates what I mean by this. However, there are genuinely other cases where a compiler cannot guard against your own 
+business logic. In our example above, we can still make our code compile successfully with 
+the constructor implementation but get a runtime error:
 
 ```golang
 package main
@@ -279,7 +283,7 @@ func singToConsole(singer singers.Singer) {
 }
 ```
 
-When we run, we would see the below error even if we are able to compile the code successfully:
+When we run we see the error below - even though the code compiled successfully:
 
 ```
 ➜  go-package-scope go build main.go
@@ -321,7 +325,7 @@ if err != nil {
 
 ### Allows you to control the flow of your implementation
 
-The below code is a simplified and intended-use scenario of an interesting bug we had on production a while ago:
+The code below is a simplified and intended-use scenario of an interesting bug we had in production a while ago:
 
 ```golang
 package main
@@ -356,7 +360,7 @@ func singToConsole(singer *JazzSinger) {
 }
 ```
 
-This code works as expected and the singer sings as expected, and count is incremented as expected, all great!
+This code works as expected: the singer sings, and the count is incremented. All great!
 
 ```
 Des yeux qui font baisser les miens
@@ -385,9 +389,9 @@ func singToConsole(singer JazzSinger) {
 }
 ```
 
-My first assumption would have been that compiler will fail here, and this is a perfectly reasonable assumption to make 
-since, you know, we are not passing a pointer to `Sing` method call. Well, if you are making the same the assumption I have made, 
-you will be so wrong. This compiles perfectly but it won't work as expected:
+My first guess would have been that compiler will fail here, and this is a perfectly reasonable assumption to make 
+since we are not passing a pointer to `Sing` method call. If you made the same assumption as I did, you would be 
+wrong. This compiles perfectly but it won't work as expected:
 
 ```
 Des yeux qui font baisser les miens
@@ -396,7 +400,7 @@ Des yeux qui font baisser les miens
 0
 ```
 
-The worst part is that this will actually work if we were to get rid of the `singToConsole` function and embed its implementation:
+The worst part is that this would actually work if we were to get rid of the `singToConsole` function and embed its implementation:
 
 ```golang
 func main() {
@@ -445,7 +449,7 @@ PASS
 ok  	github.com/tugberkugurlu/algos-go/jazz-singer	0.549s
 ```
 
-After a bit more digging, it actually turned out that this is actually the intended behavior of Go, and it's 
+After a bit more digging, it turned out that this is actually the intended behavior of Go, and it's 
 even [documented in its spec](https://golang.org/ref/spec#Calls):
 
 > A method call x.m() is valid if the method set of (the type of) x contains m and the argument list can be assigned to the parameter list of m. If x is addressable and &x's method set contains m, x.m() is shorthand for (&x).m().
@@ -509,6 +513,10 @@ func singToConsole(singer singers.Singer) {
 
 ## Conclusion
 
-Modelling your domain is hard and it's even harder if you have rich models which hold a mutable state along with explicit behaviours. Go programming language may not give you all the tools directly to model your domain in a rich way as some other programming languages provide. However, it's still possible to 
-make it work for some cases by adopting some usage principles. Constructor pattern is one of them, and it has been one of the most 
-useful ones for me since I can confidently encapsulate the initialisation logic of my model by enforcing state validity within a package scope.
+Modelling your domain is hard and it's even harder if you have rich models which hold a mutable state 
+along with explicit behaviours. Go programming language may may not give you all the tools to directly 
+model your domain in a rich way as some other programming languages provide. However, it's still 
+possible to make it work for some cases by adopting some usage principles. 
+Constructor pattern is one of them, and it has been one of the most 
+useful ones for me since I can confidently encapsulate the initialisation logic of my model by enforcing 
+state validity within a package scope.
