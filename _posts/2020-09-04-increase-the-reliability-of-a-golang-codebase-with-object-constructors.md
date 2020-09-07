@@ -175,7 +175,7 @@ func singToConsole(singer singers.Singer) {
 Why is this good and how does this make our code more reliable? Let's go over the main advantages of this 
 technique, and how they make our code more reliable.
 
-### Changes in the struct's fields would make our code fail in compile time, rather than runtime
+### Changes in the struct's fields would make our code fail at compile time, rather than runtime
 
 Unlike other languages (such as TypeScript), Go doesn't have a way to enforce assigning fields directly 
 (omitted fields default to the zero value, which may not always be what you want) - so the compiler 
