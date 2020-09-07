@@ -15,7 +15,7 @@ Go certainly shines in some parts such as its runtime efficiency, built-in
 tooling support and its simplicity which allows you to get up to speed with it so quickly! 
 However, there are some areas where it limits your ability to express and model your 
 software in code in a robust way, especially in a codebase where you get to work on as a team 
-such as lack of [sum types](https://github.com/golang/go/issues/19412) and generics support (lucky, [generics support seems to be on its way](https://go.googlesource.com/proposal/+/master/design/go2draft-generics-overview.md)). 
+such as lack of [sum types](https://github.com/golang/go/issues/19412) and generics support (luckily, [generics support seems to be on its way](https://go.googlesource.com/proposal/+/master/design/go2draft-generics-overview.md)). 
 One of these limitations I have come across is not [having any built-in constructor support](https://twitter.com/tourismgeek/status/1074325233220374528).
 
 I stumbled upon this limitation while learning Go, but I was mostly being open-minded. After seeing a few of the 
