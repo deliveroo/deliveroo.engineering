@@ -510,6 +510,20 @@ func singToConsole(singer singers.Singer) {
 }
 ```
 
+## Drawbacks of using Interfaces
+
+Returning an Interface from your constructor function allows you to encapsulate the implementation details fully, and disallow 
+uncontrolled changes in your state. However, this comes with its own trade-off that since as the consumer of a specific package/library, you need to do further digging to understand the intent, and whether the underlying type is being returned as a value 
+or as a pointer. This can be significant for some use cases where, for example, you want to reduce the pressure from the garbage collector by 
+reducing the pointer usage.
+
+It's actually possible to eliminate to use of interface here, and just returning the raw struct. Howevever, that also comes with its own drawback:
+
+ - If you return the exported struct, the consumer of your package can initialize a new struct without using the constructor, e.g. `JazzSinger{}`. Allowing the consumers to bypass constructor usage will come with its own problems as we have seen in this post.
+ - If you return an unexported struct, you will make it hard (and mostly likely impossible) for the consumers of your package to accumulate the results from the constructor. [This Go Playground example](https://play.golang.org/p/bbcScQ0uxcY) shows where this might be critical.
+
+In any case, it's best to be informed about this drawback, and go with the right option which will fit into your use case.
+
 ## Conclusion
 
 Modelling your domain is hard and it's even harder if you have rich models which hold a mutable state 
