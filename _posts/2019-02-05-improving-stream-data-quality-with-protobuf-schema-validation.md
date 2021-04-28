@@ -3,6 +3,7 @@ layout: post
 title:  "Improving Stream Data Quality With Protobuf Schema Validation"
 authors:
   - "Tom Seddon"
+  - "Mahesh Mudi"
 excerpt: >
   The requirements for fast and reliable data pipelines are growing quickly at Deliveroo as the business continues 
   to grow and innovate. We have delivered an event streaming platform which gives strong guarantees on data 
