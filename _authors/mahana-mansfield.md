@@ -2,7 +2,7 @@
 layout:     authors
 collection: authors
 name:       "Mahana Mansfield"
-jobtitle:   "Head of Growth and Consumer Algorithms"
+jobtitle:   "Data Science Director"
 portrait:   "/images/portraits/mahana-mansfield.jpg"
 ---
 
