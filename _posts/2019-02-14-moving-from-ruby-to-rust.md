@@ -280,7 +280,7 @@ Keep in mind, that Rust code is almost a 1:1 copy of the Ruby code in terms of t
 
 ## Conclusion
 
-Our project was successful: moving from Ruby to Rust was a success that dramatically sped up our dipatch process, and gave us more head-room in which we could try implementing more advanced algorithms.
+Our project was successful: moving from Ruby to Rust was a success that dramatically sped up our dispatch process, and gave us more head-room in which we could try implementing more advanced algorithms.
 
 The gradual migration and careful feature flagging mitigated most of the risks of the project. We were able to deliver it in smaller, incremental parts, just like any other feature that we normally build in Deliveroo.
 
