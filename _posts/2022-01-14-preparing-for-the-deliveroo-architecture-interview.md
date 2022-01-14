@@ -19,7 +19,7 @@ Many companies have an Architecture Interview as part of their hiring process an
 
 Although these tips are obviously based on Deliveroo's Architecture Interview they will mostly apply to other companies hiring processes as well, so let's get to it:
 
-### There's no right answer
+### There's no single right answer
 In the interview we'll be asking you to design a new system from scratch. The requirements for the system will be deliberately open ended and so there will not be a "correct solution". So, don't worry about trying to find a trick or technology that'll make it trivial and feel free to explain what technologies you think might be suitable, and where the trade-offs are, before picking one to use in your implantation. We're really looking to see how you go about turning a fuzzy project brief into a solid technical plan.
 
 ### Use what you know
