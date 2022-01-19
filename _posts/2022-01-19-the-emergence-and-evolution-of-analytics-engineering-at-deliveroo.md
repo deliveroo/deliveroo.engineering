@@ -4,12 +4,9 @@ title:  "The Emergence and Evolution of Analytics Engineering at Deliveroo"
 authors:
   - "Andrew Ferrier"
 excerpt: >
-  Analytics engineering has emerged as a new and exciting discipline, on the back of rapid advancements in tools and services built in the cloud. Deliveroo's journey in this realm of 
+  In the first of what we hope will be a series of blog posts about our analytics engineering discipline and some of the work we do, we first introduce the team, where it has come from, and how we’re evolving our organisational model in step with our growth. We’ll also touch on some of the tools we use, challenges we face, and the future we’re working towards.
 
 ---
-
-
-In the first of what we hope will be a series of blog posts about our analytics engineering discipline and some of the work we do, we first introduce the team, where it has come from, and how we’re evolving our organisational model in step with our growth. We’ll also touch on some of the tools we use, challenges we face, and the future we’re working towards.
 
 ## What is Analytics Engineering at Deliveroo?
 
