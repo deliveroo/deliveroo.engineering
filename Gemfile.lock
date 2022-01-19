@@ -54,8 +54,8 @@ GEM
     formatador (0.2.5)
     forwardable-extended (2.6.0)
     gemoji (3.0.1)
-    github-pages (219)
-      github-pages-health-check (= 1.17.7)
+    github-pages (221)
+      github-pages-health-check (= 1.17.9)
       jekyll (= 3.9.0)
       jekyll-avatar (= 0.7.0)
       jekyll-coffeescript (= 1.1.1)
@@ -95,10 +95,10 @@ GEM
       liquid (= 4.0.3)
       mercenary (~> 0.3)
       minima (= 2.5.1)
-      nokogiri (>= 1.10.4, < 2.0)
+      nokogiri (>= 1.12.5, < 2.0)
       rouge (= 3.26.0)
       terminal-table (~> 1.4)
-    github-pages-health-check (1.17.7)
+    github-pages-health-check (1.17.9)
       addressable (~> 2.3)
       dnsruby (~> 1.60)
       octokit (~> 4.0)
@@ -308,7 +308,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  github-pages (= 219)
+  github-pages (= 221)
   guard-jekyll-plus
   guard-livereload
 
