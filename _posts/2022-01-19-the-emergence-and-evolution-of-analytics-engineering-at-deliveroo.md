@@ -64,7 +64,7 @@ What’s more, Analytics Platform are also now part of a newly-formed data platf
 
 ## A Constantly Evolving Challenge
 
-As has been the case since day one at Deliveroo, we’ll no doubt have to continue to evolve our technical and strategic thinking in step with the internal needs of the business. The orgasnisational model and processes that fit now may not fit us in 12 months time, and that is a reality we've learnt to live with.
+As has been the case since day one at Deliveroo, we’ll no doubt have to continue to evolve our technical and strategic thinking in step with the internal needs of the business. The organisational model and processes that fit now may not fit us in 12 months time, and that is a reality we've learnt to live with.
 
 What's more, the analytics engineering discipline itself is changing at a rapid pace. The playbook for organisational models and the underlying tech stack is constantly under revision, driven forward by competing vendors, and an ever-expanding community of analytics engineers (many of which we take constant inspiration from!).
 
