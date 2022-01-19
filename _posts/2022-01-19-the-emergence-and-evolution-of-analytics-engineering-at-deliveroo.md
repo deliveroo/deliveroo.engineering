@@ -39,8 +39,8 @@ It wasn’t long though before we made our first data engineering hires. They to
 Around the time we passed around 1000 scripts in our twice daily SQL transformations pipeline, we spun up an “infrastructure” team within BI to specialise in said pipeline.
 
 There were two final and important factors that elevated the need for what we now know as our Analytics Engineering team beyond doubt.
-BI was merged into a rapidly growing data science org, and it was becoming quickly evident that our commitment to put data science and analytics at the centre of everything we did was increasingly out-pacing our ability to maintain and build adequate, reliable data sets.
-The evolution of what was data engineering into a data services team that owned and maintained our Kafka deployment created a vacuum around our analytics platform tools.
+- BI was merged into a rapidly growing data science org, and it was becoming quickly evident that our commitment to put data science and analytics at the centre of everything we did was increasingly out-pacing our ability to maintain and build adequate, reliable data sets.
+- The evolution of what was data engineering into a data services team that owned and maintained our Kafka deployment created a vacuum around our analytics platform tools.
 
 Thus Analytics Engineering at Deliveroo was born.
 
