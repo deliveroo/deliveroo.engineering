@@ -38,7 +38,7 @@ It wasn’t long though before we made our first data engineering hires. They to
 
 Around the time we passed around 1000 scripts in our twice daily SQL transformations pipeline, we spun up an “infrastructure” team within BI to specialise in said pipeline.
 
-There were two final and important factors that elevated the need for what we now know as our analytics engineering team beyond doubt.
+There were two final and important factors that elevated the need for what we now know as our Analytics Engineering team beyond doubt.
 BI was merged into a rapidly growing data science org, and it was becoming quickly evident that our commitment to put data science and analytics at the centre of everything we did was increasingly out-pacing our ability to maintain and build adequate, reliable data sets.
 The evolution of what was data engineering into a data services team that owned and maintained our Kafka deployment created a vacuum around our analytics platform tools.
 
@@ -56,15 +56,15 @@ To achieve all of these goals, we’ll need more highly skilled engineers, and w
 
 The first and most important of these is a move towards domain-focused pods of analytics engineers. Deliveroo’s data estate is vast and complex, and it has been many years since anyone has been able to have even a reasonable grasp on all of our data, across restaurants, rider, consumer, finance and more. These pods will start by embedding within the corresponding data science teams, which is where a lot of the domain knowledge and relationships that we wish to inherit reside. We’ll gradually break free of this dependency as the team grows in size and influence, becoming an independent entity that partners directly with engineers, product managers and business stakeholders from their area of focus. 
 
-The deployment of specialised analytics engineers will result in higher quality data being available for data scientists, machine learning engineers and business users, and will unburden data scientists from this kind of work. The impact, particularly for data science, is thus two-fold: more time to deliver higher quality insights.
+The deployment of specialised analytics engineers will result in higher quality data being available for data scientists, machine learning engineers and business users, and will unburden data scientists from this kind of work. The impact, particularly for data science, is thus two-fold: more _time_ to deliver higher _quality_ insights.
 
 To ensure the highest chance of success for this model, we’ve split the team in two, and spun up an Analytics Platform team. This team will focus on all of the “platforms” that host and process and surface the data that domain-focused analytics engineers are responsible for. Snowflake, Looker and Prefect (our orchestration layer) are at the heart of this analytics platform stack, and alongside data integrations, and strong working knowledge of our Kafka streaming platform, the skillset is more akin to a classic data engineer.
 
-What’s more, analytics platform are also now part of a newly-formed data platform group, consisting of a well-established experimentation platform team, and a newly forged machine learning platform team.
+What’s more, Analytics Platform are also now part of a newly-formed data platform group, consisting of a well-established experimentation platform team, and a newly forged machine learning platform team.
 
 ## A Constantly Evolving Challenge
 
-As has been the case since day one at Deliveroo, we’ll no doubt have to continue to evolve our technical and strategic thinking in step with the internal needs of the business.
+As has been the case since day one at Deliveroo, we’ll no doubt have to continue to evolve our technical and strategic thinking in step with the internal needs of the business. The orgasnisational model and processes that fit now may not fit us in 12 months time, and that's a reality we've learnt to live with.
 
 In particular, we’re in the middle of scaling up to one of the largest analytics engineering teams currently in existence, at a time where even the small-scale playbook is still being written on the back of a rapidly advancing stack.
 
