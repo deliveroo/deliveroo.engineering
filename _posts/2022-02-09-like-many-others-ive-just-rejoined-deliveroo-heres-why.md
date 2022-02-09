@@ -69,9 +69,9 @@ The worst you’ll get is a few raised eyebrows, but they’ll drop soon enough.
 
 
 
-*** If this has resonated with you and you’re interested in coming back to Deliveroo as well - do reach out to your former manager or somebody else in your management team. For Data Science, this’ll be Mahana Mansfield or Ela Osterberger. 
+***If this has resonated with you and you’re interested in coming back to Deliveroo as well - do reach out to your former manager or somebody else in your management team. For Data Science, this’ll be Mahana Mansfield or Ela Osterberger.***
 
-If you’d spent a meaningful amount of time at Deliveroo previously and are aiming for the same level, it’ll likely just be a series of informal conversations about where you’ll best fit in and be happiest (amongst the other important bits). If you’re feeling a little more ambitious and want to level-up, expect a light-weight expedited interview process.
+***If you’d spent a meaningful amount of time at Deliveroo previously and are aiming for the same level, it’ll likely just be a series of informal conversations about where you’ll best fit in and be happiest (amongst the other important bits). If you’re feeling a little more ambitious and want to level-up, expect a light-weight expedited interview process.***
 
-We’re really excited to hear from you again!***
+***We’re really excited to hear from you again!***
 
