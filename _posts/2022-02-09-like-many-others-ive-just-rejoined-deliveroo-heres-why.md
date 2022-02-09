@@ -1,13 +1,13 @@
 ---
 layout: post
-title:  "Like many others, i’ve just re-joined Deliveroo. Here’s why."
+title:  "Like many others, I’ve just re-joined Deliveroo. Here’s why."
 authors:
   - "Jordan Freedman"
 excerpt: >
   Hey! I’m Jordan, a Senior Data Scientist in the Partner Growth team at Deliveroo. 
 
   
-  I've just re-joined Deliveroo after leaving last year. Maybe you’re thinking of re-joining a former company too, or even better (for us), re-joining Deliveroo! If so, you might be grappling with similar considerations to the ones I had. Here’s the reasons I decided to come back - maybe they’ll resonate with you. 
+  I've just re-joined Deliveroo after leaving last year. Maybe you’re thinking of re-joining a former company too or even better (for us), re-joining Deliveroo! If so, you might be grappling with similar considerations to the ones I had. Here’s the reasons I decided to come back - maybe they’ll resonate with you. 
 ---
 
 
