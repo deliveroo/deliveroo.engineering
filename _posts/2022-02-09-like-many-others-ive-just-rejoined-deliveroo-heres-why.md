@@ -43,7 +43,7 @@ Then there’s further expansion in two other initiatives which I was already ve
 
 Finally, there was just so much new talent who I was keen to collaborate with and learn from. The new Chief Product & Technology Officer Devesh Mishra joined at the end of 2021, bringing with him 16 years of experience solving some of Amazon’s most difficult problems. And then there’s the Data Science team in particular which has now grown to 160 people, one of the biggest in Europe (and it’s still growing!).
 
-These are just a few of the changes I was personally excited about, but there really is so much happening at Deliveroo - from new products and features, to solving complex logistical problems to driving user-generated content - that I really could have chosen many others too.
+These are just a few of the changes I was personally excited about, but there really is so much happening at Deliveroo - from new products and features, to solving complex logistical problems, to driving user-generated content - that I really could have chosen many others too.
 
 
 ### All things considered, Deliveroo is the right place for me to thrive and grow.
