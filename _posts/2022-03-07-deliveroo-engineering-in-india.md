@@ -72,3 +72,5 @@ Hitech City Main Road
 Hyderabad- 500081, Telangana
 
 # Current Openings in India
+
+You can find our openings [on our career page](https://careers.deliveroo.co.uk/?country=india&remote=&remote=true&team=any#filter-careers)
