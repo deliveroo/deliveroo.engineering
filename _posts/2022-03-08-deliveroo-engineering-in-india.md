@@ -45,19 +45,13 @@ Devesh Mishra said: *“Some of the world’s leading tech talent is based in In
 To foster meaningful integration between the UK and India-based tech teams, Deliveroo will enable its UK technology team members to spend time in India to help with onboarding and knowledge-sharing.
 
 # Q&A
-
 ## FAQ 1: What are the primary goals of the India engineering centre?
-
 The main goal for the India engineering centre is to add much-needed and highly skilled engineering talent for Deliveroo. The centre will support our main engineering hub in HQ and enable us to accelerate the growth of the team. The UK remains an incredibly important hiring market for us, and the centre of our tech org. However, given the incredibly competitive nature of the talent market at the moment, and the pace at which we want to scale the business, we think it makes sense to add an additional supporting hub in India to add capacity so we can hit those targets. It should also enable us to bring business-critical features to market more quickly.
-
 ## FAQ 2: What are some of the benefits that we can foresee from India?
-
 The core benefit of opening up India as a new hub is to provide much-needed additional highly-skilled engineers within our engineering team. This will help accelerate the pace at which we can hit our targets and deliver business-critical projects which allow the company to scale fast.
 
 Other benefits include availability and access to a mature and diverse tech talent pool including candidates who have experience in Fortune 1000 companies; time zone proximity to all key Deliveroo regions (UK&I, Europe, APAC and ME).
-
 ## FAQ 3: Since it is an Engineering centre, are we having a physical location in India?
-
 Yes. Although Deliveroo India will be an engineering centre only, we still think there is significant value in maintaining a physical presence. We think this will help teams on the ground better understand the Deliveroo culture and embed quickly into the organisation.
 
 # Location
