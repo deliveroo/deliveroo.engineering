@@ -34,7 +34,7 @@ India is home to many hugely talented engineers and tech professionals. The team
 Developing new application services to accelerate Deliveroo's fast-growing grocery segment
 ensuring a best-in-class rider proposition and improve network efficiency
 Delivering enhanced, scalable automation systems
-ensuring seamless, fast consumer experiences
+ensuring seamless, fast consumer experiences.
 
 Will Shu, Deliveroo CEO and founder, said: *"Deliveroo is growing rapidly with an ambitious vision to become the definitive global online food platform. Opening up a new engineering hub in India will extend our global team of incredible engineering talent. The Centre will help us to continue to unlock new innovations for each side of our marketplace, developing a world-leading service for consumers, restaurants and grocers, and riders. This is an exciting development for Deliveroo and I look forward to working with our new colleagues in India.”*
 
