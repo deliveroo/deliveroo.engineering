@@ -10,13 +10,11 @@ excerpt: >
 
 # Deliveroo launches new Engineering Centre in India
 
-***Global food delivery platform aims to expand its world-class engineering capabilities with a new team of talent from across India***
+* ***Global food delivery platform aims to expand its world-class engineering capabilities with a new team of talent from across India.***
 
-***New Engineering Centre launched in Hyderabad will employ over 150 engineers by the end of 2022 as part of a multi-year project***
+* ***New Engineering Centre launched in Hyderabad will employ over 150 engineers by the end of 2022 as part of a multi-year project.***
 
-***Engineers will work on products for Deliveroo’s growing grocery service, supporting the rider network and improving the in-app customer experience***
-
-# India, March 09,2022
+* ***Engineers will work on products for Deliveroo’s growing grocery service, supporting the rider network and improving the in-app customer experience.***
 
 Deliveroo, a global food delivery company operating across Europe, the Middle East, Asia, and Australia, announces the launch of its India Engineering Centre in Hyderabad.
 
@@ -34,9 +32,9 @@ Deliveroo operates a three-sided marketplace made up of consumers, restaurants a
 
 India is home to many hugely talented engineers and tech professionals. The teams of engineers at the Centre will work on expediting software engineering and development across the fields of mobile apps, Cloud Computing, Artificial Intelligence (AI), Machine Learning (ML), Robotic Process Automation (RPA) and Data Analytics. More specifically they will initially focus on projects including, but not limited to:
 Developing new application services to accelerate Deliveroo's fast-growing grocery segment
-Ensuring a best-in-class rider proposition and improve network efficiency
+ensuring a best-in-class rider proposition and improve network efficiency
 Delivering enhanced, scalable automation systems
-Ensuring seamless, fast consumer experiences
+ensuring seamless, fast consumer experiences
 
 Will Shu, Deliveroo CEO and founder, said: *"Deliveroo is growing rapidly with an ambitious vision to become the definitive global online food platform. Opening up a new engineering hub in India will extend our global team of incredible engineering talent. The Centre will help us to continue to unlock new innovations for each side of our marketplace, developing a world-leading service for consumers, restaurants and grocers, and riders. This is an exciting development for Deliveroo and I look forward to working with our new colleagues in India.”*
 
