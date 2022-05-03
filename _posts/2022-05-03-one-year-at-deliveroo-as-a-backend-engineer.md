@@ -57,6 +57,11 @@ quite daunting. But if you’re an experienced enough engineer, you’ll know th
 an issue. On-call documentation (we call these Playbooks), DataDog logs, and other engineers are all the things you’ll 
 need when looking into problems.
 
+Eventually some internal team changes led to me setting up a new, smaller rota specifically for the menus service. This 
+meant my team only had to manage 1 service rather than 7, which has made a big difference. I feel that this change 
+allowed my team to own the health of the service more than before. We know the ins and outs of the service which allows 
+us to diagnose problems and also create solutions far quicker.
+
 ### Interviewing
 Now this is something I’m still getting to grips with. This was also another task I was anxious about doing. I had never
 interviewed anyone for a role until joining Deliveroo. What if I assess the candidate incorrectly? What if I gave the 
