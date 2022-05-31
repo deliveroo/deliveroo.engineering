@@ -310,7 +310,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  github-pages (= 225)
+  github-pages
   guard-jekyll-plus
   guard-livereload
 
