@@ -2,7 +2,7 @@
 layout:     authors
 collection: authors
 name:       "Sanyia Saidova"
-jobtitle:   "Software Engineer, Production Engineering"
+jobtitle:   "Senior Software Engineer, Production Engineering"
 portrait:   "/images/portraits/sanyia-saidova.jpg"
 ---
 
