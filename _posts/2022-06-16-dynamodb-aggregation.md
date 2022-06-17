@@ -26,7 +26,7 @@ In December 2021, we added the ability for our users to favourite restaurants. T
 <img src="/images/posts/dynamodb-aggregation/fav_restaurant.gif" alt="Favouriting a Restaurant" style="max-width:461px">
 </figure>
 
-Clicking the heart favourites the restaurant, and clicking it again unfavourites the restaurant.
+Clicking the heart favourites the restaurant, and clicking it again un-favourites the restaurant.
 
 ## How is Favourites Data Stored?
 
@@ -87,7 +87,7 @@ Instead, to aggregate favourites we implemented the following design (more detai
 ### Implementation Details
 
 #### Atomic Updates
-2 Lambda functions could be running at the same time so its important that `favourite_count` is updated atomically to prevent a race condition. This is done using an an update expression, but instead of using the `SET` action, we use the [`ADD`](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html#Expressions.UpdateExpressions.ADD) action. 
+2 Lambda functions could be running at the same time so it's important that `favourite_count` is updated atomically to prevent a race condition. This is done using an an update expression, but instead of using the `SET` action, we use the [`ADD`](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html#Expressions.UpdateExpressions.ADD) action. 
 
 #### Lambda Retry Strategy
 An ['event source mapping'](https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html) is configured to read from our DynamoDB stream and invoke the Lambda function. We have it set so that it only sends up to 100 events to the Lambda function per invocation, and if the Lambda function fails, we'll retry up to 20 times before the events are sent to a dead-letter queue. In addition, the batch of events gets [bisected on every retry](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html#cfn-lambda-eventsourcemapping-bisectbatchonfunctionerror).
@@ -108,7 +108,7 @@ The Lambda function receives a batch of events and may have to update the `favou
         <tr>
             <td>
               <ul style="margin: 1em auto;">
-                <li>Aggregation is done in realtime</li>
+                <li>Aggregation is done in real-time</li>
                 <li>Aggregation is done asynchronously (doesn't slow down the API)</li>
                 <li>Design is scalable (greater favouriting throughput will simply invoke more Lambdas)</li>
               </ul>
@@ -156,7 +156,7 @@ We first considered this approach:
 1. Maintain a map of restaurant id -> favourite count
 1. Update the `AggregatedFavourites` table
 
-Running this script could potentially take a few hours. If our users are busy favouriting/unfavouriting restaurants during this process, this could result in the seed data being very stale by the time the once-off script updates the DB.
+Running this script could potentially take a few hours. If our users are busy favouriting/un-favouriting restaurants during this process, this could result in the seed data being very stale by the time the once-off script updates the DB.
 
 Although we can, we did not want to disable the ability to favourite restaurants while seeding the `AggregatedFavourites` table.
 
