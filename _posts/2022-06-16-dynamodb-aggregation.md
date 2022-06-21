@@ -166,7 +166,7 @@ Instead, what we did is iterate over each of our restaurant ids, and then for ea
 
 Scanning the table for just 1 restaurant is much faster (a few minutes) which means that the seed data is very unlikely to be stale.
 
-The seed script processed restaurants concurrently and took just under 1 hour to run, aggregating 6M `Favourite` items in total.
+The seed script processed restaurants concurrently and took just under 1 hour to run, aggregating a few million `Favourite` items in total.
 
 We are still considering running this script on a schedule (every week or so), just in case the data in `AggregateFavourites` ever gets out of sync.
 
