@@ -87,7 +87,7 @@ Instead, to aggregate favourites we implemented the following design (more detai
 ### Implementation Details
 
 #### Atomic Updates
-2 Lambda functions could be running at the same time so it's important that `favourite_count` is updated atomically to prevent a race condition. This is done using an an update expression, but instead of using the `SET` action, we use the [`ADD`](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html#Expressions.UpdateExpressions.ADD) action. 
+Multiple Lambda functions could be running at the same time so it's important that `favourite_count` is updated atomically to prevent a race condition. This is done using an an update expression, but instead of using the `SET` action, we use the [`ADD`](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/Expressions.UpdateExpressions.html#Expressions.UpdateExpressions.ADD) action. 
 
 #### Lambda Retry Strategy
 An ['event source mapping'](https://docs.aws.amazon.com/lambda/latest/dg/invocation-eventsourcemapping.html) is configured to read from our DynamoDB stream and invoke the Lambda function. We have it set so that it only sends up to 100 events to the Lambda function per invocation, and if the Lambda function fails, we'll retry up to 20 times before the events are sent to a dead-letter queue. In addition, the batch of events gets [bisected on every retry](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-lambda-eventsourcemapping.html#cfn-lambda-eventsourcemapping-bisectbatchonfunctionerror).
