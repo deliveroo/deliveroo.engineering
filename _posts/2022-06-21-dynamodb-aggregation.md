@@ -51,7 +51,7 @@ A list of restaurants ordered from most to least favourited
 </figcaption>
 </figure>
 
-In the future, we’ll be using this aggregated data for many other features, such as displaying the total favourite count per restaurant:
+In the future, we’ll be using this aggregated data to explore and experiment with many new features, for example, displaying the total favourite count per restaurant:
 
 <figure>
 <img src="/images/posts/dynamodb-aggregation/fav_metadata.png" alt="Most Favourited Count" style="max-width:375px;padding:0;border:1px solid #CCC;background-color:#FFF;border-radius:5px;">
