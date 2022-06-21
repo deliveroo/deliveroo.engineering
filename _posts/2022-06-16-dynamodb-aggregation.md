@@ -6,7 +6,7 @@ authors:
 excerpt: >
   DynamoDB is great for quick data access, low-latency and scalability. However,
   one downside is that it does not support aggregation functionality like 
-  relational DB's do. This is how we tackled this problem using DynamoDB Streams...
+  relational DB's do. This is how we tackled this problem using DynamoDB Streams.
 
 ---
 
