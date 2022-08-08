@@ -1,16 +1,18 @@
 ---
 layout: post
-title:  "Deliveroo at the Athena"
+title:  "See some ways Deliveroo champion women and non-binary people in tech"
 authors:
 - "Natalia Eremeeva"
 excerpt: >
-  Find out how Deliveroo supports hackathons by Athena to support women and non-binary talent.
+  Find out how Deliveroo sponsors hackathons by Athena to support women and non-binary talent.
 ---
 
 ## Hack on!
 In June 2022, Deliveroo was one of the main sponsors for the Athena Hackathon! The on-site event (with a virtual build-up), organised every year by ShowCode, aims to encourage, inspire and champion some of the amazing women and non-binary talent in the tech industry.
 
 We spent the hacking weekend speaking to prospective talent, encouraging the hackers, handing out Deliveroo Swag and providing technical mentorship with the support of our Data Science org.
+
+![Deliveroo representatives at the hackathon](/images/posts/athena-hackathon/f37c5006-09fc-4e2f-8eb2-8c1d9766f19b.JPG)
 
 ## Take a look at some of the key highlights from June's event
 
@@ -35,5 +37,6 @@ Erika Morena Sierra spoke about her transition from IC to manager
 
 Alina Nastasoiu explained how we tell stories with data at Deliveroo
 <iframe width="560" height="315" src="https://www.youtube.com/embed/sE0bFfwB-YA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+![Alina Nastasoiu presenting](/images/posts/athena-hackathon/IMG-7642.jpg)
 
 We hope you enjoy watching the talks, and congrats again to all the participants!
