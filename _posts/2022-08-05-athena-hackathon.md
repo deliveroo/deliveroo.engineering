@@ -23,6 +23,8 @@ We spent the hacking weekend speaking to prospective talent, encouraging the hac
 
 Whilst it was fantastic to see the winning projects and watch the collective hard work come to fruition, overall participation in the event was the most important thing. The dedication and passion for technology and solution building was palpable and we proudly fuelled the good work (which ran into the small hours!) with our  “Dinner with Deliveroo” catering service. A huge well done to the team behind Data Saver Mode, a team of individuals who met and teamed up at the event, and also won the competition!
 
+![Hackathon winners](/images/posts/athena-hackathon/Winners.jpeg)
+
 ## Building the skills
 The Athena Hackathon was punctuated with workshops, webinars and tutorials and our very own engineers, engineering managers and data scientists:
 
