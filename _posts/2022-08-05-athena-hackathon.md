@@ -4,7 +4,7 @@ title:  "See some ways Deliveroo champion women and non-binary people in tech"
 authors:
 - "Natalia Eremeeva"
 excerpt: >
-  Find out how Deliveroo sponsors hackathons by Athena to support women and non-binary talent.
+  Find out how Deliveroo's sponsorship of the Athena Hackathon supports women and non-binary talent in tech
 ---
 
 ## Hack on!
@@ -26,7 +26,7 @@ Whilst it was fantastic to see the winning projects and watch the collective har
 ![Hackathon winners](/images/posts/athena-hackathon/Winners.jpeg)
 
 ## Building the skills
-The Athena Hackathon was punctuated with workshops, webinars and tutorials and our very own engineers, engineering managers and data scientists:
+The Athena Hackathon was punctuated with workshops, webinars and tutorials and our very own engineers, engineering managers and data scientists who participated in the event and delivered presentations:
 
 Gina Wiley spoke about overcoming Imposter Syndrome
 <iframe width="560" height="315" src="https://www.youtube.com/embed/mCfT_Inyzmo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
