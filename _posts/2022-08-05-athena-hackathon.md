@@ -8,6 +8,7 @@ excerpt: >
 ---
 
 ## Hack on!
+
 In June 2022, Deliveroo was one of the main sponsors for the Athena Hackathon! The on-site event (with a virtual build-up), organised every year by ShowCode, aims to encourage, inspire and champion some of the amazing women and non-binary talent in the tech industry.
 
 We spent the hacking weekend speaking to prospective talent, encouraging the hackers, handing out Deliveroo Swag and providing technical mentorship with the support of our Data Science org.
@@ -29,16 +30,21 @@ Whilst it was fantastic to see the winning projects and watch the collective har
 The Athena Hackathon was punctuated with workshops, webinars and tutorials and our very own engineers, engineering managers and data scientists who participated in the event and delivered presentations:
 
 Gina Wiley spoke about overcoming Imposter Syndrome
-<iframe width="560" height="315" src="https://www.youtube.com/embed/mCfT_Inyzmo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/mCfT_Inyzmo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Mathilda Thompson gave a brief introduction to how the internet works
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Wre7qaMmiFo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/Wre7qaMmiFo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Erika Morena Sierra spoke about her transition from IC to manager
-<iframe width="560" height="315" src="https://www.youtube.com/embed/nY8XqrRd_44" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/nY8XqrRd_44" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 Alina Nastasoiu explained how we tell stories with data at Deliveroo
-<iframe width="560" height="315" src="https://www.youtube.com/embed/sE0bFfwB-YA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/sE0bFfwB-YA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ![Alina Nastasoiu presenting](/images/posts/athena-hackathon/IMG-7642.jpg)
 
 We hope you enjoy watching the talks, and congrats again to all the participants!
