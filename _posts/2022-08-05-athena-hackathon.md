@@ -27,7 +27,7 @@ Whilst it was fantastic to see the winning projects and watch the collective har
 ![Hackathon winners](/images/posts/athena-hackathon/Winners.jpeg)
 
 ## Building the skills
-The Athena Hackathon was punctuated with workshops, webinars and tutorials and our very own engineers, engineering managers and data scientists who participated in the event and delivered presentations:
+The Athena Hackathon was punctuated with workshops, webinars and tutorials and our very own engineers, engineering managers and data scientists participated in the event and delivered presentations on the following:
 
 Gina Wiley spoke about overcoming Imposter Syndrome
 
