@@ -44,6 +44,7 @@ Erika Morena Sierra spoke about her transition from IC to manager
 Alina Nastasoiu explained how we tell stories with data at Deliveroo
 
 <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/sE0bFfwB-YA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 ![Alina Nastasoiu presenting](/images/posts/athena-hackathon/IMG-7642.jpg)
 
 We hope you enjoy watching the talks, and congrats again to all the participants!
