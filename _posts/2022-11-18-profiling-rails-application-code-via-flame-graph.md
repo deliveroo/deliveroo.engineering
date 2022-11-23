@@ -11,7 +11,7 @@ date: 2022-11-21T13:10:23+0100
 
 As part of our 2022 Q4 readiness goals, we were working on optimising one of our endpoints which had started spiking in latency and consequently leading to response times of > 4 seconds.
 
-This increased latency resulted in the real world impact of our riders intermittently receiving 503 errors, when they wanted to switch zones in Deliveroo's rider app.
+This increased latency resulted in the real world impact of our riders intermittently receiving 503 errors when they wanted to switch zones in Deliveroo's rider app.
 
 {:refdef: style="text-align: center;"}
 <br>
