@@ -21,7 +21,7 @@ This increased latency resulted in the real world impact of our riders intermitt
 <br>
 {: refdef}
 
-Our initial investigations did not point to any obvious bottlenecks - DB or the EC2 instance slowing down due to increased traffic etc. 
+Our initial investigations did not point to any obvious bottlenecks, such as the database or the EC2 instance slowing down due to increased traffic, etc. 
 
 Neither was the data being queried via the API too large and nor was the code in question new. (*It was untouched for the past 5 years*).
 
