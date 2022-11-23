@@ -33,7 +33,7 @@ For some reason the response time for this API was quite big and a large chunk o
 *Datadog narrowed down the problem to time spent in the Rails App*
 <br>
 {: refdef}
-Thus, there was a need to further isolate different bits of the code to see where the problem lied. Thankfully Datadog had a neat little feature which helped - [Spans](www.google.com).
+Thus, there was a need to further isolate different bits of the code to see where the problem lay. Thankfully Datadog had a neat little feature which helped - [Spans](https://docs.datadoghq.com/tracing/guide/add_span_md_and_graph_it/).
 
 We deployed our code with a few Datadog spans and narrowed the issue down to the below piece of non-performant code.
 
@@ -57,8 +57,7 @@ Since adding further Datadog spans was a slow and frictional process, we resorte
 
 ## The Problem
 
-We wanted a quick way to stress test a piece of Rails application code in our local development environment and get feedback 
-on our improvements without relying on production code changes, deployments or Datadog.
+We wanted a quick way to stress test a piece of Rails application code in our local development environment and get feedback on our improvements without relying on production code changes, deployments or Datadog.
 
 ## The Solution
 
@@ -102,7 +101,7 @@ cat stack-file |  ~/GitHub/FlameGraph/flamegraph.pl --countname=ms --width=1600 
 
 The flame graph analysis helped us conclude that our serialiser was spending too much time initialising redundant objects. We removed the generation of redundant objects and achieved a 60% reduction in latency.
 
-Even though the data being queried and packaged into the hash was < 1000, the process of packaging was not optimal and led to the initialisation of an exponential number of objects which caused the slowdown.
+Even though the data being queried and packaged into the hash was < 1000 records, the process of packaging was not optimal and led to the initialisation of an exponential number of objects which caused the slowdown.
 
 {:refdef: style="text-align: center;"}
 ![Datadog time breakdown](/images/posts/profiling-rails-application-code-via-flame-graph/latency-improvements.png){: width="750" }
