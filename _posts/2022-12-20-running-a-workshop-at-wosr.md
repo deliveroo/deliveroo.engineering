@@ -6,7 +6,7 @@ authors:
 - "Natasha Stokes"
 excerpt: >
   How I ran a workshop at the Women of Silicon Roundabout conference and really got out of my comfort zone to do so.
-date: 2022-12-20T14:10:16+0100
+date: 2022-12-20T15:45:16+0100
 ---
 
 On the 22-23rd November 2022, the Women of Silicon Roundabout conference came to the London ExCeL with Deliveroo as the headline sponsor. Over 250 speakers brought talks and workshops over the two days, giving attendees a huge rage of insights, advice, and inspiration. The overarching theme of the conference was The Power of Resilience, and I’d like to share my own story of resilience and adapting to unexpected situations.
