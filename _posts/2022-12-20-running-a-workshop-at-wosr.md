@@ -1,7 +1,7 @@
 ---
 layout: post
 
-title: Stepping out of my comfort zone to run a workshop at the WOSR conference
+title: Stepping out of my comfort zone to run a workshop at the Women of Silicon Roundabout conference
 authors:
 - "Natasha Stokes"
 excerpt: >
