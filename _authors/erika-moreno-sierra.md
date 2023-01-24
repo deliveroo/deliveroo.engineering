@@ -2,11 +2,11 @@
 layout:     authors
 collection: authors
 name:       "Erika Moreno Sierra"
-jobtitle:   "Software Engineer"
+jobtitle:   "Software Engineering Manager"
 portrait:   "/images/portraits/erika-moreno-sierra.jpg"
 ---
 
-I'm a backend engineer here at Deliveroo.
+I'm a engineering manager here at Deliveroo.
 
 I was born in Spain, where I studied Computer Engineering. Soon after finishing, I moved to Dublin for a couple of years. The plan was to go back to Madrid after that but instead I ended up in London. My family has stopped asking me when I will be back.
 
