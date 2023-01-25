@@ -23,7 +23,9 @@ In August 2022, Deliveroo opened its doors to external tech enthusiasts and cont
 
 We spent the evening listening to talks from our amazing Care team, covering both technical and product focussed topics, eating some amazing food and answering questions with a live Q&A on the Roo Pitch!
 
-![A photo taken from the front of the Roo pitch, looking up at the bleachers which are almost full with attendees. Some atttendees are sitting around the side of the pitch on on the benches as well as some on the laying mats. Dan and Daniel can be seen on the sofa answering questions](/images/posts/roo-talks-care-august/roo-pitch.jpeg)
+<figure style="text-align: center;">
+  ![A photo taken from the front of the Roo pitch, looking up at the bleachers which are almost full with attendees. Some atttendees are sitting around the side of the pitch on on the benches as well as some on the laying mats. Dan and Daniel can be seen on the sofa answering questions](/images/posts/roo-talks-care-august/roo-pitch.jpeg)
+</figure>
 
 Here are some of the key highlights from our August event:
 
@@ -33,7 +35,9 @@ Here are some of the key highlights from our August event:
 - The Deliveroo and OpenAPI swag was very popular
 - Feedback across the talks were extremely positive with all attendees wanting to hear of the next event in 2023
 
-![Two attendees showing off their free Deliveroo branded tote bags, smilling at the camera](/images/posts/roo-talks-care-august/swag.jpeg)
+<figure style="text-align: center;">
+  ![Two attendees showing off their free Deliveroo branded tote bags, smilling at the camera](/images/posts/roo-talks-care-august/swag.jpeg)
+</figure>
 
 The evening was hosted by [Erika Moreno Sierra](http://localhost:4000/authors/erika-moreno-sierra/) who joined Deliveroo as a Software Engineer five years ago, before becoming one of our Engineering Managers within the Consumer space!
 
@@ -69,12 +73,16 @@ Although generally thought of as providing self-service functionality or agent s
 
 Care also builds and maintains the tools that enable live chat or calls between a rider and a consumer, for instance when the rider can’t find the consumer’s front door, or if a second rider needs to be assigned for a particularly large order. Care therefore works with a lot of different technologies and integrates with a lot of systems at scale to minimise the likelihood and impact of potential incidents.
 
-![Looking at the big screen on the Roo pitch, where James King is mid sentence, slightly obscured by Erika Moreno Sierra who is facing the screen](/images/posts/roo-talks-care-august/james.jpeg)
+<figure style="text-align: center;">
+  ![Looking at the big screen on the Roo pitch, where James King is mid sentence, slightly obscured by Erika Moreno Sierra who is facing the screen](/images/posts/roo-talks-care-august/james.jpeg)
+</figure>
 
 # Thanks, and hope to see you soon!
 
 We’d love to say a big thank you to the ~150 of you who attended, as well as a big thank you to the [OpenAPI Foundation](https://www.openapis.org/) for sending some awesome OpenAPI stickers for our attendees.
 
-![The kitchen in the Deliveroo offices filled with several groups of people chatting over food and drink](/images/posts/roo-talks-care-august/chatting-over-food.jpeg)
+<figure style="text-align: center;">
+  ![The kitchen in the Deliveroo offices filled with several groups of people chatting over food and drink](/images/posts/roo-talks-care-august/chatting-over-food.jpeg)
+</figure>
 
 Although there’s not yet a date in the diary, we’re hoping to run another event in the new year. Watch this space for more details.
