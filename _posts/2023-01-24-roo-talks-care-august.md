@@ -8,7 +8,7 @@ authors:
 - "Jamie Tanna"
 - "James King"
 excerpt: >
-  Find out how Deliveroo’s Roo-Talks series continued last Summer!
+  Find out how Deliveroo's Roo-Talks series continued last Summer!
 date: 2023-01-24T16:44:23+0000
 ---
 ## Table of Contents
@@ -73,9 +73,9 @@ How do you build a collection of services and systems that handle 28 million con
 
 # About Care at Deliveroo
 
-Although generally thought of as providing self-service functionality or agent support for order issues, the Care function within Deliveroo isn’t just related to resolving issues with orders. Our Care function continuously connects the consumers, riders, restaurants and agents in the marketplace, making sure everyone has a great experience with Deliveroo.
+Although generally thought of as providing self-service functionality or agent support for order issues, the Care function within Deliveroo isn't just related to resolving issues with orders. Our Care function continuously connects the consumers, riders, restaurants and agents in the marketplace, making sure everyone has a great experience with Deliveroo.
 
-Care also builds and maintains the tools that enable live chat or calls between a rider and a consumer, for instance when the rider can’t find the consumer’s front door, or if a second rider needs to be assigned for a particularly large order. Care therefore works with a lot of different technologies and integrates with a lot of systems at scale to minimise the likelihood and impact of potential incidents.
+Care also builds and maintains the tools that enable live chat or calls between a rider and a consumer, for instance when the rider can't find the consumer's front door, or if a second rider needs to be assigned for a particularly large order. Care therefore works with a lot of different technologies and integrates with a lot of systems at scale to minimise the likelihood and impact of potential incidents.
 
 <figure style="text-align: center;">
   ![Looking at the big screen on the Roo pitch, where James King is mid sentence, slightly obscured by Erika Moreno Sierra who is facing the screen](/images/posts/roo-talks-care-august/james.jpeg)
@@ -83,10 +83,10 @@ Care also builds and maintains the tools that enable live chat or calls between 
 
 # Thanks, and hope to see you soon!
 
-We’d love to say a big thank you to the ~150 of you who attended, as well as a big thank you to the [OpenAPI Foundation](https://www.openapis.org/) for sending some awesome OpenAPI stickers for our attendees.
+We'd love to say a big thank you to the ~150 of you who attended, as well as a big thank you to the [OpenAPI Foundation](https://www.openapis.org/) for sending some awesome OpenAPI stickers for our attendees.
 
 <figure style="text-align: center;">
   ![The kitchen in the Deliveroo offices filled with several groups of people chatting over food and drink](/images/posts/roo-talks-care-august/chatting-over-food.jpeg)
 </figure>
 
-Although there’s not yet a date in the diary, we’re hoping to run another event in the new year. Watch this space for more details.
+Although there's not yet a date in the diary, we're hoping to run another event in the new year. Watch this space for more details.
