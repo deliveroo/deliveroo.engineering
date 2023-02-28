@@ -23,6 +23,10 @@ In August 2022, Deliveroo opened its doors to external tech enthusiasts and cont
 
 We spent the evening listening to talks from our amazing Care team, covering both technical and product focussed topics, eating some amazing food and answering questions with a live Q&A on the Roo Pitch!
 
+Although generally thought about as providing tools to provide self-service functionality or agent support for order issues, the Care function within Deliveroo isn't always just related to issues with orders. Deliveroo's Care function connects the customers, riders, restaurants and agents, making sure everyone has a great experience with Deliveroo.
+
+Care also builds and maintains tools to cover live chat or calls between a rider and a customer, for instance when the rider can't find the customer's front door, or if a second rider needs to be assigned for a particularly large order. Care therefore works with a lot of technologies, and integrates with a lot of systems at scale, and has to deal with 10x increase in traffic when there's an incident!
+
 <figure style="text-align: center;">
   ![A photo taken from the front of the Roo pitch, looking up at the bleachers which are almost full with attendees. Some atttendees are sitting around the side of the pitch on on the benches as well as some on the laying mats. Dan and Daniel can be seen on the sofa answering questions](/images/posts/roo-talks-care-august/roo-pitch.jpeg)
 </figure>
