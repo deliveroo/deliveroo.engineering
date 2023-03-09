@@ -47,7 +47,7 @@ Some of Deliveroo's services have a lot of environment variables, some with larg
 
 ## The temporary fix
 
-Remove newly added variables to reduce the size below the limit and put in checks to PR's to avoid adding new ones. This fixes the immediate problem but blocks us releasing any new releases that require environment file configuration. 
+Remove newly added variables to reduce the size below the limit and put in checks to PR's to avoid adding new ones. This fixes the immediate problem but blocks us from releasing any new releases that require environment file configuration. 
 
 Additionally, review existing environment variables that can be safely removed, which might temporarily give us some wiggle room but not in the long term.
 
@@ -85,7 +85,7 @@ Each environment file will contain one key, value pair per line of the form
 NAME=value
 ```
 
-Using environment files allowed us to store them separately from the task definition and reducing its size to below the limit.
+Using environment files allowed us to store them separately from the task definition and reduce its size to below the limit.
 
 ## Intermittent failures
 
