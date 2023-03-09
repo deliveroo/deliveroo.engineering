@@ -1,0 +1,49 @@
+name: "CodeQL - Minimal incremental analysis"
+
+on:
+on:
+  push:
+    branches:
+      - "gh-pages"  # Change this to the branch to default branch
+      - "!ignore/branch" # Ignore CodeQL scan for these branches
+      - "!test/*" # Ignore CodeQL scan for these branches
+  pull_request:
+    branches:
+      - "gh-pages"  # Change this to the branch to default branch
+    paths-ignore:
+      - '**/*.md'
+      - '**/*.txt'
+  # If your project is not actively developed, consider scheduling CodeQL scans
+  #schedule:
+  # - cron: '44 22 * * 5' # Run CodeQL scan every Friday at 10:44 PM UTC
+  
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 30 # Set timeout to 30 minutes; Change if your project takes longer to scan
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript', 'ruby' ]
+     
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{matrix.language}}"
