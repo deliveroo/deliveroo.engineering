@@ -1,0 +1,74 @@
+name: "CodeQL - Complete analysis"
+
+on:
+  schedule:
+    - cron: '44 23 14 * *' # Run CodeQL scan on a day of every month at 11:44 PM UTC
+    
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    timeout-minutes: 30 # Set timeout to 30 minutes; Change if your project takes longer to scan
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'javascript', 'ruby' ]
+     
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - if: matrix.language == 'javascript'
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16 # The version of Node.js to use
+        cache: 'npm'
+        # cache-dependancy-path: '**/package-lock.json' # The path to package-lock.json file to find dependancies to cache
+        # registry-url: 'https://registry.npmjs.org/' # The private registry to use for the Node.js packages
+
+    - if: matrix.language == 'javascript'
+      name: Install Node.js dependencies
+      run: "npm ci --ignore-scripts"
+      # working-directory: ./path/to/your/project # The path to your project if its a monorepo
+      #env:
+      #  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # The NPM token to use for authentication
+
+    # This step will try to find a Dockerfile in the repository and extract the Ruby version from it.
+    # If you don't use Docker, you can remove this step and add the Ruby version directly to the
+    # ruby-version parameter in the `ruby/setup-ruby` step below.
+    - if: matrix.language == 'ruby'
+      name: Find Ruby version in Dockerfile
+      id: find-ruby-version-in-dockerfile
+      run: |
+        ruby_version=$(find . -name Dockerfile -exec sed -En 's/^FROM ruby:([0-9.]+)(.*)/\1/p' {} \;)
+        if [ -z "$ruby_version" ]; then
+          echo "No Dockerfile found, using default Ruby version"
+          ruby_version="2.7"
+        else
+          echo "Found Dockerfile, using Ruby version $ruby_version"
+        fi
+        echo USE_RUBY_VERSION=$ruby_version >> $GITHUB_OUTPUT
+
+    - if: matrix.language == 'ruby'
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ steps.find-ruby-version-in-dockerfile.outputs.USE_RUBY_VERSION }} # The version of Ruby to use
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: ${{ matrix.language }}
+
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      with:
+        category: "/language:${{matrix.language}}"
