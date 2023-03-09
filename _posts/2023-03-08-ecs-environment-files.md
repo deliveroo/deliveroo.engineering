@@ -16,8 +16,7 @@ excerpt: >
 
 ## Background
 
-
-At Deliveroo, our engineers use hopper, an internal CD tool, as part of our [release][app-dev] [process][app-dev-vid], to deploy changes into production. Our containers run on [ECS][deliveroo-ecs]. Hopper stores environment variables in its database (and links to SSM for sensitive values). During deployment, Hopper generates a new [ECS Task definition][task-def] and registers it with AWS, inserting environment variables as necessary. Hopper then uses this new task definition to upgrade the service in ECS.
+As part of Deliveroo's [release process][app-dev], we use Hopper to deploy changes into production. Our containers run on [ECS][deliveroo-ecs]. Hopper stores environment variables in its database (and links to SSM for sensitive values). During deployment, Hopper generates a new [ECS Task definition][task-def] and registers it with AWS, inserting environment variables as necessary. Hopper then uses this new task definition to upgrade the service in ECS.
 
 Task definition snippet:
 
@@ -44,7 +43,7 @@ Task definition snippet:
 
 ## The problem
 
-Some of Deliveroo's services have a lot of environment variables, some with incredibly large values. This is particularly true for some older services that have grown organically over time. AWS have a hard [limit][ecs-limit] on the size of the task definition - it cannot exceed 64KiB. These task definitions started going over the limit, which meant Deliveroo were unable to deploy some key services and unable to add new environment variables.
+Some of Deliveroo's services have a lot of environment variables, some with large values. This is particularly true for some older services that have grown organically over time. AWS have a hard [limit][ecs-limit] on the size of the task definition - it cannot exceed 64KiB. These task definitions started going over the limit, which meant Deliveroo were unable to deploy some key services and unable to add new environment variables.
 
 ## The temporary fix
 
@@ -99,7 +98,7 @@ Releases using the new environment file feature would intermittently fail and au
 Task failed to start. ResourceInitializationError: resource cannot be initialized for task arn:aws:ecs:eu-west-1:000000000000:task/production/4d48d7b08b8a467f89d6161a73f0ea29: open /data/envfiles/...
 ```
 
-The logs were truncated which made tracking down the issue harder. Initially we thought could it be a concurrency bug where the task would start before we uploaded the environment file. We ruled this out quickly as we also saw in our logs this was occurring overnight as the service would auto-scale. As other tasks were successfully running (and had been for many hours), the environment file must be present with the correct permissions and configuration. The intermittent nature of the issue and the error log hinting that the issue was the environment file had not been downloaded locally, lead me to believe the issue was a concurrency bug in the ECS agent, although I had no proof.
+The logs were truncated which made tracking down the issue harder. Initially we thought it could be a concurrency bug where the task would start before we uploaded the environment file. We ruled this out quickly as we also saw in our logs this was occurring overnight as the service would auto-scale. As other tasks were successfully running (and had been for many hours), the environment file must be present with the correct permissions and configuration. The intermittent nature of the issue and the error log hinting that the issue was the environment file had not been downloaded locally, lead me to believe the issue was a concurrency bug in the ECS agent, although I had no proof.
 
 ### Turning to AWS Support
 
@@ -136,5 +135,4 @@ Deploying the new agent has since fixed the issue, and we're now using environme
 [fix-pr]:https://github.com/aws/amazon-ecs-agent/pull/3554
 [ecs-limit]:https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-quotas.html
 [app-dev]:https://deliveroo.engineering/2018/02/21/application-deployment.html
-[app-dev-vid]:https://www.youtube.com/watch?v=e4qYgVfj6P8
 [env-files]:https://docs.aws.amazon.com/AmazonECS/latest/developerguide/taskdef-envfiles.html
