@@ -26,7 +26,11 @@ takes no more than a couple of seconds each time you make a change.
 
 We love it when our engineers are able to share the lessons of their experiences
 with the world (and each other!). If you have anything you’d like to write about
-which has relevance to the world of engineering, create a pull request!
+which has relevance to the world of engineering, it'd be great to hear it!
+
+First, check out the [internal documentation on writing blog posts](https://go.roo.tools/eng-blog/contribute).
+
+Then, once the post is ready to go:
 
 1. Name your branch `blog-posts/name-of-your-post`.
 2. Read the meta-guidelines on
