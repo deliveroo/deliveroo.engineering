@@ -42,25 +42,6 @@ which has relevance to the world of engineering, create a pull request!
 7. Invite feedback from the Engineering team!
 8. Request review from the [Engineering Editorial team](https://github.com/orgs/deliveroo/teams/working-group-engineering-blog)!
 
-## Submitting an engineering guideline
-
-As well as a place to share our experiences and insights, the engineering blog
-is also a repository of our accumulated best practices for development across
-all the different technologies we work with. There are numerous
-[guidelines][guidelines] documents corresponding to these technologies; you
-can contribute to these with your own insights, linting or formatting rules,
-or create an entirely new guideline for anything we don’t yet document or have
-standards for.
-
-1. Name your branch `guidelines/whatever-it-relates-to`.
-2. Read the meta-guidelines on
-   [how to format your guidelines with Markdown][markdown-formatting].
-3. Look at the [example guidelines][example-guidelines] to get an idea on how to
-   structure your guidelines document.
-4. Test your guidelines documentation locally to ensure it looks okay.
-5. Create a pull request and tag it with `guideline for review`.
-6. Invite feedback from the Engineering team!
-
 ## Submitting improvements to the blog website
 
 If you’re submitting a general improvement or bugfix to the blog website itself,
