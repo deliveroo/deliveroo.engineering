@@ -35,7 +35,7 @@ Task definition snippet:
                 "value": "value"
               }
             ]
-          
+
         }
     ]
 }
@@ -47,11 +47,11 @@ Some of Deliveroo's services have a lot of environment variables, some with larg
 
 ## The temporary fix
 
-We removed newly added variables to reduce the size below the limit and put in checks to pull requests to avoid adding new ones. This fixed the immediate problem but blocked us from releasing any new releases that required environment file configuration. 
+We removed newly added variables to reduce the size below the limit and put in checks to pull requests to avoid adding new ones. This fixed the immediate problem but blocked us from releasing any new releases that required environment file configuration.
 
 Additionally, we reviewed existing environment variables to find those that could be safely removed, which might temporarily give us some wiggle room but not in the long term.
 
-## Compression 
+## Compression
 We thought we might be able to use compression to reduce the overall size of the environment variable/value pairs. After some initial digging into this, it turned out we had already compressed the variables into a bundle which our init process would decode for our main application. We needed to try something else.
 
 ## Environment files
@@ -73,7 +73,7 @@ ECS provides an alternative way to pass environment variables to containers - [e
                 "type": "s3"
               }
             ]
-          
+
         }
     ]
 }
@@ -124,7 +124,7 @@ level=error time=2022-12-07T16:55:34Z msg="Unable to open environment file at /d
 level=debug time=2022-12-07T16:55:34Z msg="Downloaded envfile from s3 and saved to /data/envfiles/<snip>/envfile.env" module=envfile.go
 ```
 
-Which showed the file being accessed **before** the download completed. This confirmed a concurrency bug in the ECS agent. The issue was [fixed][fix-pr] by AWS. 
+Which showed the file being accessed **before** the download completed. This confirmed a concurrency bug in the ECS agent. The issue was [fixed][fix-pr] by AWS.
 
 The underlying issue was that in the dependency graph in the ecs-agent each environment file was referenced by the same id. In our case we had multiple environment files (one per container) - one file would download successfully but all files were marked as downloaded as they had the same name.
 
