@@ -9,4 +9,16 @@ layout: default
   </header>
 
   {{ content }}
+
+  {% assign posts = site.posts | where_exp: "post","post.authors contains page.name" %}
+  {% if posts.size > 0 %}
+    <p>{{ page.name }} has written the following posts:</p>
+
+    {% for post in posts %}
+    <li>
+      <a href="{{ post.url }}">{{ post.title }}</a> ({{ post.date | date: "%Y-%m-%d" }})
+    </li>
+    {% endfor %}
+  {% endif %}
+
 </article>
