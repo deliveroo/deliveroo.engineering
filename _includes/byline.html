@@ -3,9 +3,17 @@
   {% if include.authors %}
     by
     {% for author in include.authors %}
+      {% assign found = site.authors | where:"name",author %}
+
       {% if include.authors.size > 1 %}{% if author == include.authors.last %} &amp; {% endif %}{% endif %}
       {% if include.authors.size > 2 %}{% if author != include.authors.first %}{% if author != include.authors.last %}, {% endif %}{% endif %}{% endif %}
+
+      {% if found.size > 0 %}
       <span class="author"><a href="/authors/{{ author | slugify }}">{{ author }}</a></span>
+      {% else %}
+      <span class="author">{{ author }}</span>
+      {% endif %}
+
       {% if include.authors.size < 2 %}{% if author != include.authors.last %}{% if author != include.authors.first %}, {% endif %}{% endif %}{% endif %}
     {% endfor %}
   {% endif %}
