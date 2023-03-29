@@ -16,7 +16,7 @@ excerpt: >
 
 ## Background
 
-We use the [Amazon Web Services][aws] (AWS) cloud provider to host our containers, primarily with the [Amazon Elastic Container Service][ecs] (ECS). As part of Deliveroo's [release process][app-dev], we use Hopper (Deliveroo's internal Continuous Deployment tool) to deploy changes into production. We use environment variables to configure some of our applications. Hopper stores environment variables in its database (and links to [AWS Systems Manager Parameter Store][param-store] for sensitive values). During a deployment to ECS, Hopper generates a new [ECS Task definition][task-def] and registers it with ECS, inserting environment variables as necessary. Hopper then uses this new task definition to update the service in ECS.
+We use the [Amazon Web Services][aws] (AWS) cloud provider to host our containers, primarily with the [Amazon Elastic Container Service][ecs] (ECS). As part of Deliveroo's [release process][app-dev], we use Hopper (Deliveroo's internal Continuous Deployment tool) to deploy changes into production. We use environment variables to configure some of our applications. Hopper stores environment variables in its database (and links to [AWS Secrets Manager][secrets-manager] for sensitive values). During a deployment to ECS, Hopper generates a new [ECS Task definition][task-def] and registers it with ECS, inserting environment variables as necessary. Hopper then uses this new task definition to update the service in ECS.
 
 Task definition snippet:
 
@@ -138,4 +138,4 @@ Deploying the new agent has since fixed the issue, and we're now using environme
 [ecs-limit]:https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-quotas.html
 [app-dev]:https://deliveroo.engineering/2018/02/21/application-deployment.html
 [env-files]:https://docs.aws.amazon.com/AmazonECS/latest/developerguide/taskdef-envfiles.html
-[param-store]:https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html
+[secrets-manager]:https://aws.amazon.com/secrets-manager/
