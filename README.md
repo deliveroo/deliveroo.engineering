@@ -33,12 +33,10 @@ First, check out the [internal documentation on writing blog posts](https://go.r
 Then, once the post is ready to go:
 
 1. Name your branch `blog-posts/name-of-your-post`.
-2. Read the meta-guidelines on
-   [how to format your post with Markdown][markdown-formatting].
-3. Look at the [example blog post][example-post] to get an idea on how to
+3. Look at the [blog post template][template] to get an idea on how to
    structure your post.
 4. If you’ve not written a blog post before, create an author bio page using the
-   [example bio][example-bio] as a template, and add a square photo of yourself
+   [bio template][template] as a template, and add a square photo of yourself
    to [the portraits folder][portraits-folder]. Ideally this should be a JPEG of
    at least 600px _square_.
 5. Test your blog post locally to ensure it looks okay.
@@ -58,9 +56,7 @@ appropriately with `bugfix`, `design`, `refactor` etc.
 [sass]: https://sass-lang.com
 [markdown]: https://daringfireball.net/projects/markdown/syntax/
 [ruby-version]: https://github.com/deliveroo/deliveroo.engineering/blob/gh-pages/.ruby-version
-[markdown-formatting]: https://deliveroo.engineering/guidelines/meta/#formatting-guidelines
-[example-post]: https://github.com/deliveroo/deliveroo.engineering/blob/gh-pages/_posts/YYYY-MM-DD-your-blog-post-name.md
-[example-bio]: https://github.com/deliveroo/deliveroo.engineering/blob/gh-pages/_authors/_example-bio.md
+[post-example]: https://github.com/deliveroo/deliveroo.engineering/blob/gh-pages/_posts/YYYY-MM-DD-your-blog-post-name.md
+[bio-example]: https://github.com/deliveroo/deliveroo.engineering/blob/gh-pages/_authors/_example-bio.md
 [portraits-folder]: https://github.com/deliveroo/deliveroo.engineering/tree/gh-pages/images/portraits
 [guidelines]: https://github.com/deliveroo/deliveroo.engineering/tree/gh-pages/_guidelines
-[example-guidelines]: https://github.com/deliveroo/deliveroo.engineering/tree/gh-pages/_guidelines/_example-guidelines.md
