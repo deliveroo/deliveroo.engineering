@@ -1,15 +1,19 @@
 ---
 layout: post
-title:  "The road to run Apache Flink applications on AWS KDA"
+title:  "The road to running Apache Flink applications on AWS KDA"
 authors:
   - "Duc Anh Khu"
 excerpt: >
-  In this blog post, we will share the lessons we’ve learnt to run our Apache
+  In this blog post, we will share the lessons we've learnt to run our Apache
   Flink applications on AWS KDA, a managed Apache Flink service.
+date: 2023-04-02T09:00:00+0000
 ---
 
 <figure>
+</figure>
+<figure style="text-align: center;">
 ![Squirrel on the road to reach the cloud - DALL-E](/images/posts/the-road-to-run-apache-flink-applications-on-aws-kda/dall-e-1.png)
+*Squirrel on the road to reach the cloud - <a href="https://openai.com/product/dall-e-2">DALL-E</a>*
 </figure>
 
 ## Table of Contents
@@ -20,67 +24,58 @@ excerpt: >
 
 ## What is Apache Flink?
 
-From the Apache Flink’s official documentation:
+According to the [official documentation](https://flink.apache.org/what-is-flink/flink-architecture/#what-is-apache-flink--architecture)
+, Apache Flink is:
 
-**_Apache Flink is a framework and distributed processing engine for stateful
-computations over unbounded and bounded data streams._**
+**_a framework and distributed processing engine for stateful computations over
+unbounded and bounded data streams._**
 
-That sentence is heavily packed with technical terminology. Let’s unpick them
+That sentence is heavily packed with technical terminology. Let's unpick them
 one by one.
 
 **Framework**
 
-Out of the box, Apache Flink is a framework to build data processing
-applications. Like any other streaming frameworks, it provides abstractions such
-as `source` , `sink`  and operators such as `filter` , `map` and `flatMap`. It
-also provides connectors to well known technologies such as Apache Kafka, AWS
-Kinesis Stream, AWS S3, ElasticSearch and many more.
+Like other streaming frameworks, Apache Flink provides abstractions such
+as `source`, `sink` and operators such as `filter`, `map` and `flatMap`.
+Additionally, there are connectors to well known technologies such as Apache
+Kafka, AWS Kinesis Stream, AWS S3, ElasticSearch and many more.
 
 **Distributed processing engine**
 
 An Apache Flink cluster is made up of a Job Manager and multiple Task Managers.
 The Job Manager coordinates the Task Managers and manages their resources. An
-Apache Flink application is a job. Once it is submitted to the cluster via the
-Job Manager, it is converted into an execution graph of multiple tasks, which in
-turns, get distributed to be run on the Task Managers.
+application is a job that can be submitted to the cluster via the Job Manager,
+which in turn, gets distributed to be run on the Task Managers.
 
 **Stateful computations**
 
-We choose to use Apache Flink because of this powerful capability. In a stateless
-stream processing application, events are processed one by one. In contrast,
-stateful means that events can be aggregated into a state store before being
-emitted downstream. For example, to join events from two Kafka topics A and B on
-a common key, the application needs to hold one event from topic A in a state
-until it eventually receives another event with the same key from topic B before
-emitting an event downstream.
+It means that events can be aggregated into a state store before being emitted
+downstream.
 
 **Unbounded and bounded data streams**
 
 This simply means streaming and batching respectively. Streaming is the first
 class citizen in Apache Flink, however, it can also handle batching by treating
-batching as a stream that has an ending (bounded). This is the opposite of
-Apache Spark where streaming is achieved by micro batch processing.
+batching as a stream that has an ending (bounded).
 
 ## Why do we use Apache Flink?
 
 At Deliveroo, we use Apache Kafka heavily for inter services communication and
 for analytics purposes. We have a lot of use cases where Kafka messages need to
 be enriched such as merging Kafka topics or to calculate user interaction
-sessions for analytics. The high level diagram below shows Apache Flink's 
-RocksDB state store can be used to sessionize user interactions events:
+sessions for analytics. Using Apache Flink enables us to solve these use cases
+in a repeatable way, using a vendor independent and production-ready technology.
 
 <figure>
-![Using Apache Flink’s RockDB state store to sessionize user interactions events](/images/posts/the-road-to-run-apache-flink-applications-on-aws-kda/sessionize.png)
+![Using Apache Flink's RockDB state store to sessionize user interactions events](/images/posts/the-road-to-run-apache-flink-applications-on-aws-kda/sessionize.png)
 </figure>
-
-Apache Flink enables us to solve these use cases in a repeatable way, 
-using a vendor independent and production-ready technology.
 
 ### What is AWS KDA?
 
 Amazon Kinesis Data Analytics is managed Apache Flink on AWS. It allows Apache
 Flink applications to be run
-in [application mode](https://nightlies.apache.org/flink/flink-docs-master/docs/deployment/overview/#application-mode), 
+in [application mode](https://nightlies.apache.org/flink/flink-docs-master/docs/deployment/overview/#application-mode)
+,
 abstracting away the complexity of managing Apache Flink clusters.
 
 ### Why did we choose AWS KDA?
@@ -90,42 +85,33 @@ standalone, [kubernetes](https://nightlies.apache.org/flink/flink-docs-master/do
 and [YARN](https://nightlies.apache.org/flink/flink-docs-master/docs/deployment/resource-providers/yarn/)
 . It is also provided by cloud vendors such as AWS, AliCloud and Cloudera. Out
 of these options, either using AWS KDA or self managing on a Kubernetes
-cluster (AWS EKS) stand out the most. This is because our teams already have
-some experience with AWS and Kubernetes.
-
-Between these two options, we didn't choose Kubernetes approach because
-the [Apache Flink Kubernetes Operator](https://github.com/apache/flink-kubernetes-operator)
-was still in beta and other operators did not seem to be in active development.
-Additionally, the overhead of managing additional Kubernetes clusters did not
-make sense when we only have a handful of Flink applications to start with. When
-the Kubernetes Operator project starts releasing stable versions, and Apache
-Flink adoption within Deliveroo grows, we will potentially re-evaluate this
-decision.
-
-From our personal experience, AWS KDA is not completely a fully managed Apache
-Flink service, there are quirks and gaps. For example, it doesn't support batch
-mode and only supports RocksDB state backend. However, it definitely abstracted
-and simplified some aspects of managing and operating Apache Flink. Resources of
-a cluster such as CPU and memory are abstracted
-as [KPU](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html#how-scaling-kpus). 
-As Apache Flink adoption within the organisation is still low, choosing AWS
-KDA is a low risk decision for us as we don’t need to rely on other teams or
-manage Apache Flink clusters ourselves.
+cluster (AWS EKS) stood out the most. We chose to use AWS KDA because it
+abstracts and simplifies the management and operation of Apache Flink cluster.
+To run on AWS KDA, applications are restricted to use streaming mode, RocksDB
+for state backend and resources of a cluster such as CPU and memory are
+abstracted
+as [KPU](https://docs.aws.amazon.com/kinesisanalytics/latest/java/how-scaling.html#how-scaling-kpus)
+.
+These work for us as our use cases meet these requirements. As Apache Flink
+adoption within the organisation is still low, choosing AWS KDA is a low risk
+decision for us as we don't need to rely on other teams or manage Apache Flink
+clusters ourselves.
 
 ### What have we learnt?
 
-#### Lesson 0 - The good stuff 👍
+#### Lesson 1 - The good stuff 👍
 
 **Deployment**
 
-Deploying an Apache Flink application on AWS KDA is very straightforward. It is
+Deploying an Apache Flink application on AWS KDA is straightforward. It is
 very similar to deploying an AWS Lambda. The code artifact needs to be packaged
 into a `jar` file (for Java) or a `zip` file (for Python). The artifact then
 gets uploaded to S3 and the AWS KDA application needs to be pointed to that S3
 object. We use the combination
-of [terraform resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kinesisanalyticsv2_application), 
+of [terraform resource](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kinesisanalyticsv2_application)
+,
 [Docker multi-stage builds](https://docs.docker.com/build/building/multi-stage/)
-and [CircleCI](https://circleci.com/) to automate our CICD pipeline.
+and [CircleCI](https://circleci.com/) to automate our CICD pipelines.
 
 **Flink Dashboard**
 
@@ -141,14 +127,6 @@ for debugging backpressure.
 In addition to Apache Flink metrics, AWS KDA provides additional metrics for AWS
 MSK (Kafka) and AWS Kinesis Stream. These metrics include lag, commit success
 and failure counts. All metrics are available in CloudWatch.
-
-#### Lesson 1 - Documentation and Support 😵‍💫
-
-This was the hardest lesson. At the time when we were looking in to AWS KDA, the
-documentation was vastly out dated, we struggled to package our PyFlink
-application because the code examples were incorrect and inconsistent. It took a
-long time for us to get to the bottom of these issues after raising AWS support
-tickets, Github issues and asking on Apache Flink’s Slack workspace.
 
 #### Lesson 2 - PyFlink 🐍
 
@@ -170,10 +148,11 @@ Python applications. Hence, our Python applications have a Java dependency.
 
 Packaging up a PyFlink application to work with AWS KDA was challenging for us,
 mainly because of the lack of documentation. But overall, our PyFlink
-application’s build is much more complicated than our Java applications. We
+application's build is much more complicated than our Java applications. We
 use [Docker multi-stage builds](https://docs.docker.com/build/building/multi-stage/)
-to build a Java library to bridge the gap between Python and Java APIs as
-mentioned earlier. The Java library then becomes a jar file and is added to the
+to build a Java library, bridging the gap between Python and Java APIs as
+mentioned earlier. The Java library gets packaged into a jar file and bundled
+with the
 build of our PyFlink projects.
 
 **Testing**
@@ -240,7 +219,7 @@ valid_kafka_event_src.union(valid_kinesis_event_src)
 
 However, testing in Apache Flink can be cumbersome. Specifically, to test an
 operator's logic, source(s) and sink(s) can then be stubbed, allowing inspection
-on the operator’s input and output; however, a mini cluster needs to be spun up
+on the operator's input and output; however, a mini cluster needs to be spun up
 in memory. This makes the tests very slow because the cluster needs to be warmed
 up and teared down. Additionally, with limited resources while running these
 tests locally or in a CI environment, tests can only be run sequentially.
@@ -260,68 +239,17 @@ self.env.execute()
 In the snippet above, the source is stubbed with static data from a list of
 events and the sink is a `test_sink` . By running the static events through
 the `BotTagEnrichment`  operator, we can collect its output from the `test_sink`
-and compare it with our expectation. `self.env.execute()` is to run the mini
+and compare it with our expectation. `self.env.execute()` is to run the
+application on the mini
 cluster.
 
-#### Lesson 4 - Operations 🛠️
-
-**Logging and monitoring**
-
-Logging is straightforward since AWS KDA forwards logs to CloudWatch. CloudWatch
-Log Insights has an unfriendly UX and peculiar DSL query language, which can
-make exploring logs difficult. We use Datadog throughout Deliveroo and hence
-also need to set up a
-Datadog [forwarder](https://docs.datadoghq.com/logs/guide/forwarder/), which
-essentially is an AWS lambda to forward all logs to Datadog. Fortunately, this
-can be Terraform-ed and it works with metrics as well. From Datadog, we can set
-up monitors to get alerted when the application is degraded. Our alerts cover:
-
-* Application uptime, CPU and memory utilisation
-* Checkpointing size, failure and duration
-* Number of records in and out
-* Lags on Kinesis Stream and Kafka
-
-**Data Backfilling**
-
-When the application degrades because of a bug or encounters some unrecoverable
-failures, backfilling data is usually required. Since our downstream services
-can handle duplicates, backfilling data becomes easier for us. Both Kinesis
-Stream and Kafka provide a mechanism to reset to a particular point in time, we
-use these features to reset their offsets and backfill data.
-
-During backfilling, we noticed that Kinesis Stream consumer can take a long time
-to get through the lag due to its limit in read throughput of 2MB per shard,
-while Kafka consumer didn't have this issue although the Kafka topic and the
-Kinesis Stream both have the same number of partitions and shards. This problem
-creates a slow stream and a fast stream. As downstream operators process events
-as they
-come, watermarks on sources and operators advance differently, causing skewness
-in watermark which, in turn, can lead to growing state size due to longer events
-aggregation. As a precaution, we implemented a throttling mechanism to slow down 
-the fast stream by making parallelism of the sources configurable. Luckily, we
-haven't had to use it yet.
-
-```python
-env.add_source(
-   kafka_consumer,
-   type_info=source_field_types,
-).uid(SRC_CONSUMER_EVENTS_KAFKA)
-   .name(SRC_CONSUMER_EVENTS_KAFKA)
-   .set_parallelism(config.parallelism.src_kafka)
-   .set_max_parallelism(config.parallelism.src_kafka)
-```
-
-#### Lesson 5 - The Missing Pieces 🧩
+#### Lesson 4 - The Missing Pieces 🧩
 
 Even though AWS KDA is a managed Apache Flink service, it is not perfect and
 there are gaps that we need to fill.
 
-<figure>
-![Holes in the cloud - DALL-E](/images/posts/the-road-to-run-apache-flink-applications-on-aws-kda/dall-e-2.png)
-</figure>
-
 * A snapshot (save point) is automatically created on stopping the application.
-  However there isn’t a way to schedule creation of snapshots (and cleaning them
+  However there isn't a way to schedule creation of snapshots (and cleaning them
   up).
 * Code artifacts are stored in S3 and are required to be there for versioning
   purposes, for example, if we need to revert to a previous version of the app.
@@ -343,12 +271,15 @@ there are gaps that we need to fill.
 * The concept of KPU and parallelism can be confusing and hard to configure. For
   example, application A of `40 Parallelism / 2 ParallelismPerKPU = 20 KPU` and
   application B of `40 Parallelism / 6 ParallelismPerKPU = 7 KPU`. From the
-  screenshots below, we can see that different Parallelism and ParallelismPerKPU
+  screenshots below, we can see that different `Parallelism`
+  and `ParallelismPerKPU`
   can result in different number of task managers with different resources
-  allocation. Higher KPU gives us fewer task managers, but each of them have
-  hefty resources (CPU and RAM), whereas lower KPU gives us many small task
+  allocation. Higher `KPU` and lower `ParallelismPerKPU` gives us fewer task
+  managers, but each of them have
+  hefty resources (CPU and RAM), whereas lower `KPU` and
+  higher `ParallelismPerKPU` gives us many small task
   managers. The nonlinearity of physical resources under the
-  hood makes KPU abstract less useful.
+  hood makes the KPU abstraction less useful.
 
 <figure>
 ![Application A - 20 KPU](/images/posts/the-road-to-run-apache-flink-applications-on-aws-kda/kpu-20.png)
