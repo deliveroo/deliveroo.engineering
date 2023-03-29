@@ -5,7 +5,7 @@ authors:
   - "Simon Apen-Sadler"
 excerpt: >
   How Deliveroo passes environment variables to containers in production
-
+date: 2023-03-29T15:07:01+0100
 ---
 
 ## Table of Contents
