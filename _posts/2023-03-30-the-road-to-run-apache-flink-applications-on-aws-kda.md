@@ -6,7 +6,7 @@ authors:
 excerpt: >
   In this blog post, we will share the lessons we've learnt to run our Apache
   Flink applications on AWS KDA, a managed Apache Flink service.
-date: 2023-03-31T12:00:00+0000
+date: 2023-03-30T16:09:58+0100
 ---
 
 <figure>
