@@ -5,7 +5,7 @@ authors:
   - "Jack Dai"
 excerpt: >
   How we’ve balanced fraud risk and friction: Deliveroo's Journey with 3DS rule experimentation
-date: 2023-05-16T16:31:03+0100
+date: 2023-05-17T12:16:11+0100
 
 ---
 ## Table of Contents
