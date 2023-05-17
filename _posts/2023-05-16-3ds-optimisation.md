@@ -55,7 +55,7 @@ In practice, we ran all of the experiments through Ravelin. Ravelin’s rule pla
 ## Thinking in terms of cost benefit
 To evaluate the rules, we devised an equation that accounted for various financial factors beyond fraud prevention alone that the rule could have. Instead of just thinking about the fraud it prevented, we added in information about the operational profit, 3DS fees, and any additional compensation costs. Below shows the equation we used.
 
-Cost benefit = Additional Operational profit + 3DS fees saved + Additional Chargeback costs (inc. fees) - Additional Compensation costs
+Cost benefit = Additional Operational profit + 3DS fees saved - Additional Chargeback costs (inc. fees) - Additional Compensation costs
 
 Another thing we consider when removing rules is fraud rates - Card schemes (such as VISA and Mastercard) impose strict penalties if you breach certain fraud levels. We always make sure to keep well within card scheme rules by keeping our fraud rates very low.
 
