@@ -34,7 +34,7 @@ It is worth noting that other parties involved in the payment processing flow (P
 So, why not just 3DS everyone?
 
 <figure>
-![Hmmm](/images/posts/3ds-optimisation/scooby-doo-meme.png)
+![Scooby Doo meme, showing Fred unmasking the baddie. Before unmasking the baddie is captioned with "We've eliminated all fraud", and after unmasking says "by eliminating all orders"](/images/posts/3ds-optimisation/scooby-doo-meme.png)
 </figure>
 
 Whilst 3DS is highly effective in preventing fraud, it comes with its trade offs. Whenever you authenticate a customer, you introduce friction into their purchase journey, and inevitably cause a percentage of transactions to be lost. So, whilst we could send all orders to 3DS and eliminate almost all fraud, we’d see sizable drops in both order volume, profit, customer retention/experience, and negatively impact what is mostly genuine customers. Indeed, extremely high 3DS rates sometimes result in lower authorisation rates as Issuers rate the merchants as riskier.
