@@ -5,7 +5,7 @@ authors:
   - "Durga Krishnan"
 excerpt: >
   In this blog post, explore the personal journey of one of our EM's and see how she has harnessed resilience in her career.
-date: 2023-07-21T10:42:04+0100
+date: 2023-07-21T11:30:04+0100
 ---
 
 ***Durga, thanks for taking the time out. It would be great if you could start by introducing yourself and your role here.***
