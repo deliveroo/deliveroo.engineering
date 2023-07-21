@@ -4,13 +4,13 @@ title:  "The Importance of resilience"
 authors:
   - "Durga Krishnan"
 excerpt: >
-  In this blog post, explore the personal journey of one of our EM’s and see how she has harnessed resilience in her career.
+  In this blog post, explore the personal journey of one of our EM's and see how she has harnessed resilience in her career.
 date: 2023-07-21T10:42:04+0100
 ---
 
 ***Durga, thanks for taking the time out. It would be great if you could start by introducing yourself and your role here.***
 
-I’m Durga Krishnan, I joined Deliveroo nine months ago as an Engineering Manager in Care. I have over 15 years of experience in the Tech industry. I started my career as a Software Engineer and moved to an Engineering Management role over four years ago.
+I'm Durga Krishnan, I joined Deliveroo nine months ago as an Engineering Manager in Care. I have over 15 years of experience in the Tech industry. I started my career as a Software Engineer and moved to an Engineering Management role over four years ago.
 
 
 ***Why did you choose resilience as a topic to explore in this blog post, and what does resilience mean to you?***
@@ -37,7 +37,7 @@ When I find myself facing difficult situations, the initial step I take is ackno
 
 ***Do you have any advice for women or other minority groups who are trying to out a career in Tech?***
 
-Firstly, always be yourself. As a neurodivergent woman of colour, I spent the first few years of my professional life in the UK trying to blend in, which was exhausting. If you are not accepted for who you are, then it is probably not the right place for you. I’ve learned that sometimes the best thing you can do is to walk away from situations/places where you don’t feel you aren’t valued or can’t be yourself. Nothing is worth your mental health! 
+Firstly, always be yourself. As a neurodivergent woman of colour, I spent the first few years of my professional life in the UK trying to blend in, which was exhausting. If you are not accepted for who you are, then it is probably not the right place for you. I've learned that sometimes the best thing you can do is to walk away from situations/places where you don't feel you aren't valued or can't be yourself. Nothing is worth your mental health! 
 
 Secondly, play to your strengths. One of the best pieces of advice I got from my mentor was to find a role that combines my strengths with my passion. When you focus on your strengths, you tap into your natural talents, abilities, and skills. This allows you to perform at your best and achieve higher levels of success. Focusing on your strengths doesn't mean ignoring areas of improvement. The idea is to strike a balance between leveraging your strengths and acquiring new competencies to become a well-rounded individual.
 
