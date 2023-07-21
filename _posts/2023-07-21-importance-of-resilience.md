@@ -23,7 +23,9 @@ I believe resilience is really important because meeting challenges, personally 
 ***When in your role as an Engineering Manager and a Woman in Tech have you had to implement resilience?***
 
 I struggled to find a job when I moved to the UK in 2013, despite having significant experience. I applied for 15 - 20 jobs per week for nearly two months without securing an interview. I'm pleased to say this turned around after obtaining a first interview which led to an offer! But that was just the beginning of the challenges I have faced in my career. 
+
 Over the last 10 years, I have had to show resilience in fighting to be recognised as a woman in Tech and I believe this has helped me get to where I am today. Although the process can be uncomfortable and challenging, I view it as an opportunity for personal growth. By actively addressing and confronting biases, I have not only become stronger myself but also found the ability to assist and empower other women in similar situations.
+
 I actively pursue growth, embrace new responsibilities, and boldly voice my ambitions to my manager. I've discovered the importance of advocating for myself. I also regularly engage with our Employee Resource Groups, which has empowered me to champion the needs of marginalised individuals and drive meaningful transformations in policies, practices, and culture within the organisation. Most importantly, I have learned to acknowledge and celebrate my achievements and give myself credit for the progress I make. 
 
 
