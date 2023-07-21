@@ -8,12 +8,6 @@ excerpt: >
 date: 2023-07-21T10:42:04+0100
 ---
 
-## Table of Contents
-{:.no_toc}
-
-1. Automatic Table of Contents Here
-{:toc}
-
 ***Durga, thanks for taking the time out. It would be great if you could start by introducing yourself and your role here.***
 
 I’m Durga Krishnan, I joined Deliveroo nine months ago as an Engineering Manager in Care. I have over 15 years of experience in the Tech industry. I started my career as a Software Engineer and moved to an Engineering Management role over four years ago.
