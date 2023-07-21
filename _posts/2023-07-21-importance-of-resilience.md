@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Importance of resilience"
+title:  "The Importance of resilience"
 authors:
   - "Durga Krishnan"
 excerpt: >
