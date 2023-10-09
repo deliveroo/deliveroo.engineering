@@ -16,7 +16,7 @@ In my current role, I'm responsible for managing a dynamic team of seven skilled
 
 ***What made you choose Deliveroo as a place of work?***
 
-While I hadn't personally used the app as it isn't available in India, I dedicated time to learn about the company and its goals.One aspect that surprised me in a positive way is how quickly Deliveroo adapts to market dynamics. Considering that we operate in a  dynamic industry like food delivery, I knew there would be a lot of interesting challenges to solve and that generally comes with a steep learning curve, which I was looking forward to at that stage of my career.
+While I hadn't personally used the app as it isn't available in India, I dedicated time to learn about the company and its goals. One aspect that surprised me in a positive way is how quickly Deliveroo adapts to market dynamics. Considering that we operate in a  dynamic industry like food delivery, I knew there would be a lot of interesting challenges to solve and that generally comes with a steep learning curve, which I was looking forward to at that stage of my career.
 
 The opportunity for autonomy and flexibility in my work was particularly appealing to me, and this was reflected in the seamless nature of my interactions right from Day 1 - from the introductory call with the recruiter up to the moment I received the offer letter. This indicated to me  the kind of culture the company is striving to cultivate, and reinforced my belief that such a culture would significantly contribute to my overall well-being.
 
